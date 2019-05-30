@@ -1,0 +1,17 @@
+version: '3'
+services:
+  app:
+    image: thundermoon:runner
+    environment:
+      DATABASE_URL: ecto://thundermoon:thundermoon@db/thundermoon_dev
+      SECRET_KEY_BASE: 8ikvBxNcx6vG5HtGcopT4K2BlUnTDyTPz2ZK304UDCUxjMKFq2kNT2KydwqVSLq7
+    ports:
+      - "80:4000"
+    depends_on:
+      - db
+  db:
+    image: postgres:11.3-alpine
+    environment:
+      POSTGRES_USER: thundermoon
+      POSTGRES_PASSWORD: thundermoon
+      POSTGRES_DB: thundermoon_dev
