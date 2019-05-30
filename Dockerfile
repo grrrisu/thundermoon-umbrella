@@ -43,9 +43,9 @@ WORKDIR /app
 COPY config/ /app/config
 COPY apps/ /app/apps
 
-#ENV DATABASE_URL ecto://192.168.1.2./thundermoon_dev
-#ENV SECRET_KEY_BASE 8ikvBxNcx6vG5HtGcopT4K2BlUnTDyTPz2ZK304UDCUxjMKFq2kNT2KydwqVSLq7
+ENV DATABASE_URL ecto://192.168.1.2/thundermoon_dev
+ENV SECRET_KEY_BASE set_later
 
 RUN mix compile
-#RUN mix release --env=prod
-CMD ["mix", "phx.server"]
+ADD run.sh /app/run.sh
+CMD ["/app/run.sh"]
