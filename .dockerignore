@@ -48,6 +48,9 @@ npm-debug.log
 # variables.
 # /config/*.secret.exs
 
+# Database
+/data/
+
 # Developer tools
 .git
 
