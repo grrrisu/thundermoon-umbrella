@@ -26,7 +26,7 @@ COPY apps/thundermoon_web/assets/package*.json /app/apps/thundermoon_web/assets/
 COPY --from=builder /app/deps/phoenix/ /app/deps/phoenix
 COPY --from=builder /app/deps/phoenix_html/ /app/deps/phoenix_html
 
-WORKDIR apps/thundermoon_web/assets
+WORKDIR /app/apps/thundermoon_web/assets
 RUN npm ci
 COPY apps/thundermoon_web/assets /app/apps/thundermoon_web/assets
 RUN npm run deploy
@@ -43,9 +43,8 @@ WORKDIR /app
 COPY config/ /app/config
 COPY apps/ /app/apps
 
-ENV DATABASE_URL ecto://192.168.1.2/thundermoon_dev
 ENV SECRET_KEY_BASE set_later
 
 RUN mix compile
-ADD run.sh /app/run.sh
+COPY *.sh /app/
 CMD ["/app/run.sh"]

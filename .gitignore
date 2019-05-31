@@ -24,6 +24,8 @@ erl_crash.dump
 
 # ignore secret files
 /config/*.secret.exs
+.env/app
+.env/db
 
 # Database 
 /data/

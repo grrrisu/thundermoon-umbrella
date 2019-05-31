@@ -1,20 +1,27 @@
-version: '3'
+version: '3.7'
 services:
   app:
     image: thundermoon:runner
+    env_file:
+     - .env/app
     environment:
-      DATABASE_URL: ecto://thundermoon:thundermoon@db/thundermoon_dev
-      SECRET_KEY_BASE: 8ikvBxNcx6vG5HtGcopT4K2BlUnTDyTPz2ZK304UDCUxjMKFq2kNT2KydwqVSLq7
+      PORT: 4000
+      DB_HOST: db
+      DB_DATABASE: thundermoon_prod
+      DB_USER: thundermoon
     ports:
       - "80:4000"
     depends_on:
       - db
+    command: sh -c './wait-for.sh db:5432 -- ./run.sh'
+      
   db:
     image: postgres:11.3-alpine
+    env_file:
+     - .env/db
     environment:
       POSTGRES_USER: thundermoon
-      POSTGRES_PASSWORD: thundermoon
-      POSTGRES_DB: thundermoon_dev
+      POSTGRES_DB: thundermoon_prod
       PG_DATA_DIR: data
     volumes:
       - ./data:/var/lib/postgresql/data
