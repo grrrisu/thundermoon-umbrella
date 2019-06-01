@@ -3,7 +3,7 @@ services:
   app:
     image: thundermoon:test
     environment:
-      DB_HOST: postgres
+      DB_HOST: db
       PORT: 4000
       SECRET_KEY_BASE: a_test_key_base
     command: 'mix do format --check-formatted, test'
