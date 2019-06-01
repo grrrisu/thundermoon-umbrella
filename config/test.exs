@@ -2,11 +2,16 @@ use Mix.Config
 
 # Configure your database
 config :thundermoon, Thundermoon.Repo,
-  username: "postgres",
-  password: "postgres",
   database: "thundermoon_test",
-  hostname: System.get_env("DB_HOST"),
+  hostname: System.get_env("DB_HOST") || "localhost",
+  show_sensitive_data_on_connection_error: true,
   pool: Ecto.Adapters.SQL.Sandbox
+
+if System.get_env("DB_USER") do
+  config :thundermoon, Thundermoon.Repo,
+    username: System.get_env("DB_USER"),
+    password: System.get_env("DB_PASSWORD")
+end
 
 # We don't run a server during test. If one is required,
 # you can enable the server option below.
