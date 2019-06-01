@@ -32,6 +32,23 @@ COPY apps/thundermoon_web/assets /app/apps/thundermoon_web/assets
 RUN npm run deploy
 
 ########################################################
+# docker build -t thundermoon:test --target=test .
+FROM builder as test
+
+COPY --from=assets /app/apps/thundermoon_web/priv/static/ /app/apps/thundermoon_web/priv/static/
+#WORKDIR /app/apps/thundermoon_web/
+#RUN mix phx.digest
+
+WORKDIR /app
+COPY config/ /app/config
+COPY apps/ /app/apps
+COPY mix.* /app/
+COPY .formatter.exs /app/.formatter.exs
+
+ENV MIX_ENV=test
+RUN mix do deps.get deps.compile compile
+
+########################################################
 # docker build -t thundermoon:runner --target=runner .
 FROM builder as runner
 

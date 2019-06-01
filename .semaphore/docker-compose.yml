@@ -1,0 +1,16 @@
+version: '3.7'
+services:
+  app:
+    image: thundermoon:test
+    environment:
+      DB_HOST: postgres
+      PORT: 4000
+      SECRET_KEY_BASE: a_test_key_base
+    command: 'mix do format --check-formatted, test'
+      
+  db:
+    image: postgres:11.3-alpine
+    environment:
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_DB: thundermoon_test
