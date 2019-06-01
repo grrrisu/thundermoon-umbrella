@@ -2,8 +2,8 @@ use Mix.Config
 
 # Configure your database
 config :thundermoon, Thundermoon.Repo,
-  # username: "postgres",
-  # password: "postgres",
+  username: "postgres",
+  password: "postgres",
   database: "thundermoon_test",
   hostname: "localhost",
   pool: Ecto.Adapters.SQL.Sandbox
