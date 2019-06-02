@@ -15,6 +15,9 @@ blocks:
           - checkout
           - docker build -t thundermoon:test --target=test .
       jobs:
+        - name: check formatted
+          commands:
+            - docker run thundermoon:test mix format --check-formatted
         - name: mix test
           commands:
             - docker-compose -f .semaphore/docker-compose.yml up --abort-on-container-exit --exit-code-from app
