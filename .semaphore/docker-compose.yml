@@ -8,7 +8,7 @@ services:
       DB_PASSWORD: postgres
       PORT: 4000
       SECRET_KEY_BASE: a_test_key_base
-    command: 'mix do format --check-formatted, test'
+    command: 'mix test'
       
   db:
     image: postgres:11.3-alpine
