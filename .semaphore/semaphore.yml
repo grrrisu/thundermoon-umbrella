@@ -18,3 +18,8 @@ blocks:
         - name: mix test
           commands:
             - docker-compose -f .semaphore/docker-compose.yml up --abort-on-container-exit --exit-code-from app
+  - name: build container
+    task:
+      jobs:
+        - name: trigger build
+        - commands: curl -X POST https://cloud.docker.com/api/build/v1/source/6cf0df60-a5ac-4730-93db-7ee62ea385a5/trigger/8d13610d-d969-4c5c-81b5-3c5d254c5c69/call/
