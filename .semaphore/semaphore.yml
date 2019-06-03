@@ -46,3 +46,10 @@ blocks:
             - echo POSTGRES_PASSWORD="${DB_PASSWORD}" >> .env/db
             - docker build -t $IMAGE_TAG --target=runner .
             - docker push $IMAGE_TAG
+promotions:
+  - name: Deploy staging
+    pipeline_file: deploy.yml
+    auto_promote_on:
+      - result: passed
+        branch:
+          - master
