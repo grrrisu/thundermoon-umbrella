@@ -18,3 +18,19 @@ stop application
 ```
 docker-compose down
 ```
+
+## Semaphore
+
+set dockerhub credentials as semaphore secrets
+
+```
+sem create secret dockerhub-secrets \
+  -e DOCKER_USERNAME=<your-dockerhub-username> \
+  -e DOCKER_PASSWORD=<your-dockerhub-password>
+```
+
+set app specific credentials
+
+````
+sem create secret thundermoon-secrets -e DB_PASSWORD=<password> -e SECRET_KEY_BASE=<secret>
+```
