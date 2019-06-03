@@ -18,7 +18,7 @@ secret_key_base =
 
 config :thundermoon_web, ThundermoonWeb.Endpoint,
   url: [host: "thundermoon.zero-x.net", port: 80],
-  cache_static_manifest: "priv/static/cache_manifest.json"
+  cache_static_manifest: "priv/static/cache_manifest.json",
   http: [:inet6, port: String.to_integer(System.get_env("PORT") || "4000")],
   secret_key_base: secret_key_base
 
