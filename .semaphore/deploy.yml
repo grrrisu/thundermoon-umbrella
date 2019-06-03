@@ -1,0 +1,37 @@
+version: v1.0
+name: Deploy
+agent:
+  machine:
+    type: e1-standard-2
+    os_image: ubuntu1804
+
+blocks:
+  - name: "Deploy to the lab"
+    task:
+      env_vars:
+        - name: SSH_USER_AT_HOST
+          value: grrrisu@139.162.147.122
+        - name: SSH_OPTIONS
+          value: -o StrictHostKeyChecking=no
+      secrets:
+        - name: dockerhub-secrets
+        - name: deploy-key
+      prologue:
+        commands:
+          - checkout
+          - mkdir -p .env
+          - touch .env/app
+          - echo DB_PASSWORD="${DB_PASSWORD}" >> .env/app
+          - echo SECRET_KEY_BASE="${SECRET_KEY_BASE}" >> .env/app
+          - touch .env/db
+          - echo POSTGRES_PASSWORD="${DB_PASSWORD}" >> .env/db
+      jobs:
+        - name: Deploy
+          commands:
+            - chmod 0600 ~/.keys/*
+            - ssh-add ~/.keys/*
+            - "ssh $SSH_OPTIONS $SSH_USER_AT_HOST mkdir -p .env/"
+            - "scp $SSH_OPTIONS $HOME/.env/app $SSH_USER_AT_HOST:.env/app"
+            - "scp $SSH_OPTIONS $HOME/.env/db $SSH_USER_AT_HOST:.env/db"
+            - "scp $SSH_OPTIONS deploy/docker-compose.yml $SSH_USER_AT_HOST:"
+            

@@ -33,4 +33,10 @@ set app specific credentials
 
 ````
 sem create secret thundermoon-secrets -e DB_PASSWORD=<password> -e SECRET_KEY_BASE=<secret>
+````
+
+add `deploy-key` containing the private key to the secrets and add the pub key to the deploy server
+
+````
+sem create secret deploy-key -f ~/.ssh/id_rsa_semaphoreci:~/keys/deploy-key
 ```
