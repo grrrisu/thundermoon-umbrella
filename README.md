@@ -10,7 +10,7 @@ set the corresponding values in those files and then run:
 
 ```
 docker build -t thundermoon:runner --target=runner .
-docker-compose up
+IMAGE=thundermoon:runner docker-compose up
 ```
 
 stop application
