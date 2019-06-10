@@ -14,7 +14,7 @@ blocks:
         - name: SSH_OPTIONS
           value: -o StrictHostKeyChecking=no
         - name: SITE_PATH
-          value: /srv/sites/thundermoon/
+          value: /srv/sites/thundermoon
       secrets:
         - name: thundermoon-secrets
         - name: dockerhub-secrets
@@ -34,8 +34,11 @@ blocks:
             - chmod 0600 ~/.keys/*
             - ssh-add ~/.keys/*
             - "ssh $SSH_OPTIONS $SSH_USER_AT_HOST mkdir -p $SITE_PATH"
-            - "ssh $SSH_OPTIONS $SSH_USER_AT_HOST mkdir -p $SITE_PATH.env/"
-            - "scp $SSH_OPTIONS .env/app $SSH_USER_AT_HOST:$SITE_PATH.env/app"
-            - "scp $SSH_OPTIONS .env/db $SSH_USER_AT_HOST:$SITE_PATH.env/db"
+            - "ssh $SSH_OPTIONS $SSH_USER_AT_HOST mkdir -p $SITE_PATH/.env/"
+            - "scp $SSH_OPTIONS .env/app $SSH_USER_AT_HOST:$SITE_PATH/.env/app"
+            - "scp $SSH_OPTIONS .env/db $SSH_USER_AT_HOST:$SITE_PATH/.env/db"
             - "scp $SSH_OPTIONS docker-compose.yml $SSH_USER_AT_HOST:$SITE_PATH"
+            - "scp $SSH_OPTIONS .semaphore/deploy.sh $SSH_USER_AT_HOST:$SITE_PATH"
+            - "ssh $SSH_OPTIONS $SSH_USER_AT_HOST chmod u+x $SITE_PATH/deploy.sh"
+            - ssh $SSH_OPTIONS $SSH_USER_AT_HOST TAG=$SEMAPHORE_GIT_BRANCH sh $SITE_PATH/deploy.sh
             
