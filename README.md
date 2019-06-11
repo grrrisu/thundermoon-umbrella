@@ -19,6 +19,22 @@ stop application
 docker-compose down
 ```
 
+## Production
+
+stop docker stack
+
+`docker stack rm thundermoon`
+
+### Debug
+
+ssh into production server, then
+
+```
+docker ps
+docker run -it <container-id> sh
+iex -S mix
+```
+
 ## Semaphore
 
 set dockerhub credentials as semaphore secrets
