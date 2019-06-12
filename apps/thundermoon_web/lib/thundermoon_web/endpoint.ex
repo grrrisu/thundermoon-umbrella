@@ -13,7 +13,8 @@ defmodule ThundermoonWeb.Endpoint do
     at: "/",
     from: :thundermoon_web,
     gzip: false,
-    only: ~w(css fonts images js favicon.ico robots.txt)
+    only: ~w(css fonts images js favicon.ico robots.txt),
+    only_matching: ~w(app)
 
   # Code reloading can be explicitly enabled under the
   # :code_reloader configuration of your endpoint.

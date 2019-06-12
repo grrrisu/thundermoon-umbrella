@@ -21,13 +21,14 @@ config :thundermoon_web, ThundermoonWeb.Endpoint,
   code_reloader: true,
   check_origin: false,
   watchers: [
-    # node: [
-    #   "node_modules/webpack/bin/webpack.js",
-    #   "--mode",
-    #   "development",
-    #   "--watch-stdin",
-    #   cd: Path.expand("../apps/thundermoon_web/assets", __DIR__)
-    # ]
+    node: [
+      "node_modules/parcel-bundler/bin/cli.js",
+      "watch",
+      "js/app.js",
+      "--out-dir",
+      "../priv/static",
+      cd: Path.expand("../apps/thundermoon_web/assets", __DIR__)
+    ]
   ]
 
 # ## SSL Support
