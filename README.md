@@ -48,7 +48,7 @@ sem create secret dockerhub-secrets \
 set app specific credentials
 
 ````
-sem create secret thundermoon-secrets -e DB_PASSWORD=<password> -e SECRET_KEY_BASE=<secret>
+sem create secret thundermoon-secrets -e DB_PASSWORD=<password> -e SECRET_KEY_BASE=<secret> -e BUGSNAG_API_KEY=<secret>
 ````
 
 add `deploy-key` containing the private key to the secrets and add the pub key to the deploy server

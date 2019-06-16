@@ -1,5 +1,6 @@
 defmodule ThundermoonWeb.Router do
   use ThundermoonWeb, :router
+  use Plugsnag
 
   pipeline :browser do
     plug :accepts, ["html"]
