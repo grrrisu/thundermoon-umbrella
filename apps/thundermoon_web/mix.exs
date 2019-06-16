@@ -24,7 +24,7 @@ defmodule ThundermoonWeb.MixProject do
   def application do
     [
       mod: {ThundermoonWeb.Application, []},
-      extra_applications: [:logger, :runtime_tools]
+      extra_applications: [:logger, :runtime_tools, :plugsnag, :bugsnag]
     ]
   end
 
