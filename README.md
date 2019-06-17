@@ -2,7 +2,7 @@
 
 ## Docker
 
-start application in a docker container
+to start the application in a docker container
 
 first copy and rename the files in `.env` to `app` and `db`.
 
@@ -47,12 +47,15 @@ sem create secret dockerhub-secrets \
 
 set app specific credentials
 
-````
-sem create secret thundermoon-secrets -e DB_PASSWORD=<password> -e SECRET_KEY_BASE=<secret> -e BUGSNAG_API_KEY=<secret>
-````
+```
+sem create secret thundermoon-secrets \
+  -e DB_PASSWORD=<password> \
+  -e SECRET_KEY_BASE=<secret> \
+  -e BUGSNAG_API_KEY=<secret>
+```
 
 add `deploy-key` containing the private key to the secrets and add the pub key to the deploy server
 
-````
+```
 sem create secret deploy-key -f ~/.ssh/id_rsa_semaphoreci:/home/semaphore/.keys/deploy-key
 ```
