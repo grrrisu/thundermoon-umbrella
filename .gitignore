@@ -27,5 +27,8 @@ erl_crash.dump
 .env/app
 .env/db
 
+# Logs
+/log/*.log
+
 # Database 
 /data/
