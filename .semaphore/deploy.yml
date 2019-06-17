@@ -14,7 +14,7 @@ blocks:
         - name: SSH_OPTIONS
           value: -o StrictHostKeyChecking=no
         - name: SITE_PATH
-          value: /srv/sites/thundermoon
+          value: /srv/sites/thundermoon.zero-x.net
       secrets:
         - name: thundermoon-secrets
         - name: dockerhub-secrets
