@@ -32,14 +32,12 @@ blocks:
       jobs:
         - name: Deploy
           commands:
+            # the data and log direcotries, as well as logrotate is handled by ansible
             - chmod 0600 ~/.keys/*
             - ssh-add ~/.keys/*
-            - "ssh $SSH_OPTIONS $SSH_USER_AT_HOST mkdir -p $SITE_PATH"
             - "ssh $SSH_OPTIONS $SSH_USER_AT_HOST mkdir -p $SITE_PATH/.env/"
             - "scp $SSH_OPTIONS .env/app $SSH_USER_AT_HOST:$SITE_PATH/.env/app"
             - "scp $SSH_OPTIONS .env/db $SSH_USER_AT_HOST:$SITE_PATH/.env/db"
-            - "ssh $SSH_OPTIONS $SSH_USER_AT_HOST mkdir -p $SITE_PATH/log/"
-            - "ssh $SSH_OPTIONS $SSH_USER_AT_HOST chmod a+w $SITE_PATH/log/"
             - "scp $SSH_OPTIONS docker-compose.yml $SSH_USER_AT_HOST:$SITE_PATH"
             - "scp $SSH_OPTIONS .semaphore/deploy.sh $SSH_USER_AT_HOST:$SITE_PATH"
             - "ssh $SSH_OPTIONS $SSH_USER_AT_HOST chmod u+x $SITE_PATH/deploy.sh"
