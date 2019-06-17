@@ -69,8 +69,10 @@ config :thundermoon_web, ThundermoonWeb.Endpoint,
 # Do not print debug messages in production
 config :logger, level: :info
 
+# set database config either by DATABASE_URL or DB_USER/PASSWORD/DATABASE/HOST
 config :thundermoon, Thundermoon.Repo,
   # ssl: true,
+  url: System.get_env("DATABASE_URL "),
   username: System.get_env("DB_USER"),
   password: System.get_env("DB_PASSWORD"),
   database: System.get_env("DB_DATABASE"),

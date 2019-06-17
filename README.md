@@ -29,6 +29,8 @@ stop docker stack
 
 Docker container releases with `heroku.yml`
 
+Set the values in `.env/app` as Config Vars of your application settings
+
 ```
 heroku container:push web --app thundermoon
 heroku container:release web --app thundermoon
