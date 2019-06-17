@@ -25,6 +25,15 @@ stop docker stack
 
 `docker stack rm thundermoon`
 
+### Heroku
+
+Docker container releases with `heroku.yml`
+
+```
+heroku container:push web --app thundermoon
+heroku container:release web --app thundermoon
+```
+
 ### Debug
 
 ssh into production server, then
