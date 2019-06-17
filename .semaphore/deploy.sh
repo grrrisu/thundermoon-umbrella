@@ -7,7 +7,7 @@ IMAGE=grrrocker/thundermoon-umbrella:$TAG
 echo "pull image $IMAGE..."
 docker pull $IMAGE
 
-cd /srv/sites/thundermoon
+cd /srv/sites/thundermoon.zero-x.net
 
 if docker node ls > /dev/null 2>&1; then
   echo "swarm already initialized"
