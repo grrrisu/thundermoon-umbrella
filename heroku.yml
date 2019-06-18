@@ -5,9 +5,9 @@ setup:
   addons:
   - plan: heroku-postgresql
     as: DATABASE
-release:
-  image: web
-  command:
-    - mix ecto.migrate
+# release:
+#   image: web
+#   command:
+#     - mix ecto.migrate
 run:
   web: mix phx.server
