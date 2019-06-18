@@ -1,6 +1,8 @@
 build:
   docker:
-    web: Dockerfile
+    web: 
+      dockerfile: Dockerfile
+      target: runner
 setup:
   addons:
   - plan: heroku-postgresql
@@ -9,5 +11,5 @@ setup:
 #   image: web
 #   command:
 #     - mix ecto.migrate
-run:
-  web: mix phx.server
+# run:
+#   web: mix phx.server
