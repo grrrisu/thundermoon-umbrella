@@ -42,8 +42,9 @@ COPY --from=assets /app/apps/thundermoon_web/priv/static/ /app/apps/thundermoon_
 WORKDIR /app
 COPY config/ /app/config
 COPY apps/ /app/apps
+COPY .formatter.exs /app/
 COPY mix.* /app/
-COPY .formatter.exs /app/.formatter.exs
+
 
 ENV MIX_ENV=test
 RUN mix do deps.get deps.compile compile
