@@ -77,6 +77,8 @@ config :thundermoon, Thundermoon.Repo,
   hostname: System.get_env("DB_HOST"),
   pool_size: String.to_integer(System.get_env("POOL_SIZE") || "10")
 
+config :bugsnag, api_key: System.get_env("BUGSNAG_API_KEY")
+
 # Finally import the config/prod.secret.exs which loads secrets
 # and configuration from environment variables.
 # import_config "prod.secret.exs"
