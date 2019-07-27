@@ -1,5 +1,5 @@
 # docker build -t thundermoon:builder --target=builder .
-FROM elixir:1.8.2-alpine as builder
+FROM elixir:1.9.0-alpine as builder
 RUN apk add --no-cache \
     gcc \
     git \

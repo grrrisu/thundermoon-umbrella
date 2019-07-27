@@ -18,7 +18,7 @@ services:
     command: sh -c './wait-for.sh db:5432 -- ./run.sh'
       
   db:
-    image: postgres:11.3-alpine
+    image: postgres:11.4-alpine
     env_file:
      - .env/db
     environment:
