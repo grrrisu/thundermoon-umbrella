@@ -46,10 +46,14 @@ stop docker stack
 
 ssh into production server, then
 
-```
+```shell
 docker ps
-docker run -it <container-id> sh
+docker exec -it <container-id> sh
 ./bin/thundermoon_umbrella remote
+```
+
+```elixir
+:observer_cli.start()
 ```
 
 ## Semaphore
