@@ -25,11 +25,13 @@ docker-compose down
 
 manually test release can be built 
 
-```
-export SECRET_KEY_BASE=REALLY_LONG_SECRET
-export DATABASE_URL=ecto://<user>:<password>@localhost/thundermoon_dev
+```shell
 MIX_ENV=prod mix phx.digest
 MIX_ENV=prod mix release
+
+SECRET_KEY_BASE=REALLY_LONG_SECRET \
+DATABASE_URL=ecto://<user>:<password>@localhost/thundermoon_dev \
+_build/prod/rel/thundermoon_umbrella/bin/thundermoon_umbrella start
 ```
 
 ## Production
