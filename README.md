@@ -19,6 +19,19 @@ stop application
 docker-compose down
 ```
 
+## Developement
+
+### Release
+
+manually test release can be built 
+
+```
+export SECRET_KEY_BASE=REALLY_LONG_SECRET
+export DATABASE_URL=ecto://<user>:<password>@localhost/thundermoon_dev
+MIX_ENV=prod mix phx.digest
+MIX_ENV=prod mix release
+```
+
 ## Production
 
 stop docker stack
