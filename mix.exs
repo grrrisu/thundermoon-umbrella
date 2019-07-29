@@ -4,8 +4,17 @@ defmodule Thundermoon.Umbrella.MixProject do
   def project do
     [
       apps_path: "apps",
+      version: "0.0.1",
       start_permanent: Mix.env() == :prod,
-      deps: deps()
+      deps: deps(),
+      releases: [
+        thundermoon_umbrella: [
+          applications: [
+            thundermoon_web: :permanent
+          ],
+          include_executables_for: [:unix]
+        ]
+      ]
     ]
   end
 

@@ -20,7 +20,8 @@ config :thundermoon_web, ThundermoonWeb.Endpoint,
   url: [host: "thundermoon.zero-x.net", port: 80],
   cache_static_manifest: "priv/static/cache_manifest.json",
   http: [:inet6, port: String.to_integer(System.get_env("PORT") || "4000")],
-  secret_key_base: secret_key_base
+  secret_key_base: secret_key_base,
+  server: true
 
 # ## SSL Support
 #
@@ -71,10 +72,7 @@ config :logger, level: :info
 
 config :thundermoon, Thundermoon.Repo,
   # ssl: true,
-  username: System.get_env("DB_USER"),
-  password: System.get_env("DB_PASSWORD"),
-  database: System.get_env("DB_DATABASE"),
-  hostname: System.get_env("DB_HOST"),
+  url: System.get_env("DATABASE_URL"),
   pool_size: String.to_integer(System.get_env("POOL_SIZE") || "10")
 
 config :bugsnag, api_key: System.get_env("BUGSNAG_API_KEY")
