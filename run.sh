@@ -1,6 +1,6 @@
 #!/bin/sh
 set -e
 
-mix ecto.migrate
-mix run apps/thundermoon/priv/repo/seeds.exs
-mix phx.server > log/phoenix.log 2>&1
+./bin/thundermoon_umbrella eval "Thundermoon.Release.migrate"
+./bin/thundermoon_umbrella eval "Thundermoon.Release.seeds"
+./bin/thundermoon_umbrella start > log/phoenix.log 2>&1

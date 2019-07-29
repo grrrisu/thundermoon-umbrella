@@ -1,3 +1,3 @@
-DB_PASSWORD=a_password
+DATABASE_URL=ecto://thundermoon:replace-with-password@db/thundermoon_prod
 SECRET_KEY_BASE=a_key
 BUGSNAG_API_KEY=0123456789abcdef0123456789abcdef

@@ -66,3 +66,37 @@ ENV SECRET_KEY_BASE set_later
 RUN mix compile
 COPY *.sh /app/
 CMD ["/app/run.sh"]
+
+#########################################################
+# docker build -t thundermoon:releaser --target=releaser .
+FROM builder as releaser
+
+COPY --from=assets /app/apps/thundermoon_web/priv/static/ /app/apps/thundermoon_web/priv/static/
+WORKDIR /app/apps/thundermoon_web/
+RUN mix phx.digest
+
+WORKDIR /app
+COPY config/ /app/config
+COPY apps/ /app/apps
+
+RUN mix compile 
+RUN mix release
+
+#########################################################
+# docker build -t thundermoon:app --target=app .
+FROM alpine:3.9 as app
+
+RUN apk add --update bash openssl
+
+#RUN mkdir /app
+WORKDIR /app
+
+COPY --from=releaser /app/_build/prod/rel/thundermoon_umbrella /app
+COPY *.sh /app/
+
+#RUN chown -R nobody: /app
+#USER nobody
+
+ENV HOME=/app
+
+CMD ["/app/run.sh"]
