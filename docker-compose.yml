@@ -6,9 +6,6 @@ services:
      - .env/app
     environment:
       PORT: 4000
-      DB_HOST: db
-      DB_DATABASE: thundermoon_prod
-      DB_USER: thundermoon
     ports:
       - "80:4000"
     volumes:

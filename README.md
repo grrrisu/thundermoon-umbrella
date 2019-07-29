@@ -9,8 +9,8 @@ first copy and rename the files in `.env` to `app` and `db`.
 set the corresponding values in those files and then run:
 
 ```
-docker build -t thundermoon:runner --target=runner .
-IMAGE=thundermoon:runner docker-compose up
+docker build -t thundermoon:app --target=app .
+IMAGE=thundermoon:app docker-compose up
 ```
 
 stop application
@@ -49,7 +49,7 @@ ssh into production server, then
 ```
 docker ps
 docker run -it <container-id> sh
-iex -S mix
+./bin/thundermoon_umbrella remote
 ```
 
 ## Semaphore
