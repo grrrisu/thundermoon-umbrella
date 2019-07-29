@@ -30,7 +30,7 @@ MIX_ENV=prod mix phx.digest
 MIX_ENV=prod mix release
 
 export SECRET_KEY_BASE=REALLY_LONG_SECRET
-exprot DATABASE_URL=ecto://<user>:<password>@localhost/thundermoon_dev
+export DATABASE_URL=ecto://<user>:<password>@localhost/thundermoon_dev
 
 _build/dev/rel/my_app/bin/my_app eval "Thundermoon.Release.migrate"
 _build/prod/rel/thundermoon_umbrella/bin/thundermoon_umbrella start

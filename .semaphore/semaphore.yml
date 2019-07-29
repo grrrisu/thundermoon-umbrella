@@ -45,7 +45,7 @@ blocks:
             - echo BUGSNAG_API_KEY="${BUGSNAG_API_KEY}" >> .env/app
             - touch .env/db
             - echo POSTGRES_PASSWORD="${DB_PASSWORD}" >> .env/db
-            - docker build -t $IMAGE_TAG --target=runner .
+            - docker build -t $IMAGE_TAG --target=app .
             - docker push $IMAGE_TAG
 promotions:
   - name: Deploy
