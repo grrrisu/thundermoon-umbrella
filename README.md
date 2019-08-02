@@ -21,9 +21,15 @@ docker-compose down
 
 ## Developement
 
+### Migration
+
+to create a migration issue the command in `app/thundermoon` directory and specify the repo
+
+`mix ecto.gen.migration create_user -r Thundermoon.Repo`
+
 ### Release
 
-manually test release can be built 
+manually test release can be built
 
 ```shell
 MIX_ENV=prod mix phx.digest
