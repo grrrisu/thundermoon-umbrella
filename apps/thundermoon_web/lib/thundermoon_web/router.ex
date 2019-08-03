@@ -18,6 +18,7 @@ defmodule ThundermoonWeb.Router do
     pipe_through :browser
 
     get "/", PageController, :index
+    get "/dashboard", PageController, :dashboard
   end
 
   # Other scopes may use custom stacks.
