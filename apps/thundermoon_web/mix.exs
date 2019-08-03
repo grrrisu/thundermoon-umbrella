@@ -24,7 +24,7 @@ defmodule ThundermoonWeb.MixProject do
   def application do
     [
       mod: {ThundermoonWeb.Application, []},
-      extra_applications: [:logger, :runtime_tools, :plugsnag, :bugsnag]
+      extra_applications: [:logger, :runtime_tools, :plugsnag, :bugsnag, :ueberauth]
     ]
   end
 
@@ -46,7 +46,9 @@ defmodule ThundermoonWeb.MixProject do
       {:thundermoon, in_umbrella: true},
       {:jason, "~> 1.0"},
       {:poison, "~> 3.1"},
-      {:plug_cowboy, "~> 2.0"}
+      {:plug_cowboy, "~> 2.0"},
+      {:ueberauth, "~> 0.6"},
+      {:ueberauth_github, github: "ueberauth/ueberauth_github"}
     ]
   end
 

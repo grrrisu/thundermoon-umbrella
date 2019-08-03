@@ -5,6 +5,8 @@
 
 <section class="row">
   <article class="column">
+    <%= link "Login", to: Routes.auth_path(@conn, :request) %>
+    <br/>
     <%= link "Dashboard", to: "/dashboard" %>
   </article>
 </section>
