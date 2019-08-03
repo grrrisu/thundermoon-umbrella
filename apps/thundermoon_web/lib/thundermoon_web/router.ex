@@ -19,6 +19,9 @@ defmodule ThundermoonWeb.Router do
 
     get "/", PageController, :index
     get "/dashboard", PageController, :dashboard
+
+    get "/auth/github", AuthController, :request
+    get "/auth/github/callback", AuthController, :callback
   end
 
   # Other scopes may use custom stacks.
