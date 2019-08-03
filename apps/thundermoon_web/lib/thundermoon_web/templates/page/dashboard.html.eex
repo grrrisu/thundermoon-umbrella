@@ -1,0 +1,4 @@
+<section class="phx-hero">
+  <h1><%= gettext "Welcome %{name}!", name: "user" %></h1>
+  <p>Dashboard</p>
+</section>
