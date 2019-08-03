@@ -1,12 +1,13 @@
 <section class="phx-hero">
-  <h1><%= gettext "Welcome to %{name}!", name: "Phoenix" %></h1>
+  <h1><%= gettext "Welcome to %{name}!", name: "Thundermoon" %></h1>
   <p>A productive web framework that<br/>does not compromise speed or maintainability.</p>
 </section>
 
 <section class="row">
   <article class="column">
-    <%= link "Login", to: Routes.auth_path(@conn, :request) %>
-    <br/>
-    <%= link "Dashboard", to: "/dashboard" %>
+    <%= link to: Routes.auth_path(@conn, :request) do %>
+      <%= img_tag(Routes.static_path(@conn, "/images/github-logo.svg"), width: 32, height: 32) %>
+      <span>Login</span>
+    <% end %>
   </article>
 </section>
