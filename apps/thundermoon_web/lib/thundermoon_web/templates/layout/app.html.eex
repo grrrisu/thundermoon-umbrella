@@ -13,6 +13,18 @@
         <nav role="navigation">
           <ul>
             <li><%= link "Dashboard", to: "/dashboard" %></li>
+            <%= if signed_in?(@conn) do %>
+              <li>
+                <%= link "Logout", to: Routes.auth_path(@conn, :delete), method: :delete %>
+              </li>
+            <% else %>
+              <li>
+                <%= link to: Routes.auth_path(@conn, :request) do %>
+                  <span>Login</span>
+                  <%= img_tag(Routes.static_path(@conn, "/images/github-logo.svg"), class: "github-logo") %>
+                <% end %>
+              </li>
+            <% end %>
           </ul>
         </nav>
         <%= link to: "https://github.com/grrrisu/thundermoon-umbrella", class: "logo" do %>
