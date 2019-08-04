@@ -1,4 +1,4 @@
 <section class="phx-hero">
-  <h1><%= gettext "Welcome %{name}!", name: "user" %></h1>
+  <h1><%= gettext "Welcome %{name}!", name: @current_user.username %></h1>
   <p>Dashboard</p>
 </section>
