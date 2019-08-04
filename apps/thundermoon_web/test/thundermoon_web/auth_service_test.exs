@@ -11,7 +11,7 @@ defmodule ThundermoonWeb.AuthServiceTest do
   end
 
   test "return authenticated user" do
-    setup_user()
+    db_user = setup_user()
 
     auth = %Ueberauth.Auth{
       uid: 123,
@@ -27,6 +27,7 @@ defmodule ThundermoonWeb.AuthServiceTest do
 
     {:ok, user} = AuthService.find_or_create(auth)
     assert %User{external_id: 123, username: "art_spiegelman"} = user
+    assert db_user.id == user.id
   end
 
   test "create authenticated user" do

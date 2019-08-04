@@ -16,9 +16,9 @@ defmodule Thundermoon.AccountsTest do
         email: "robert@crumb.com"
       })
 
-    assert "robert_crumb" = user.username
-    assert "robert@crumb.com" = user.email
-    assert "member" = user.role
+    assert "robert_crumb" == user.username
+    assert "robert@crumb.com" == user.email
+    assert "member" == user.role
   end
 
   test "create a admin" do
@@ -30,9 +30,9 @@ defmodule Thundermoon.AccountsTest do
         role: "admin"
       })
 
-    assert "gilbert_shelton" = user.username
-    assert "gilbert@shelton.com" = user.email
-    assert "admin" = user.role
+    assert "gilbert_shelton" == user.username
+    assert "gilbert@shelton.com" == user.email
+    assert "admin" == user.role
   end
 
   test "force create member" do
@@ -43,22 +43,22 @@ defmodule Thundermoon.AccountsTest do
         role: "admin"
       })
 
-    assert "robert_crumb" = user.username
-    assert "member" = user.role
+    assert "robert_crumb" == user.username
+    assert "member" == user.role
   end
 
   test "find by external_id" do
     setup_users()
 
     user = Accounts.find_by_external_id(789)
-    assert 789 = user.external_id
+    assert 789 == user.external_id
   end
 
   test "return authenticated user from db" do
-    setup_users()
+    db_user = setup_users()
 
     {:ok, user} = Accounts.find_or_create(%{external_id: 789, username: "art_spiegelman"})
-    assert 789 = user.external_id
+    assert db_user.id == user.id
   end
 
   test "create authenticated user" do
@@ -67,6 +67,6 @@ defmodule Thundermoon.AccountsTest do
     refute Accounts.find_by_external_id(007)
     {:ok, user} = Accounts.find_or_create(%{external_id: 007, username: "another_spiegelman"})
     assert Accounts.find_by_external_id(007)
-    assert "another_spiegelman" = user.username
+    assert "another_spiegelman" == user.username
   end
 end
