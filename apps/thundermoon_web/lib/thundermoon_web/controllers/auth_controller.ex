@@ -35,7 +35,7 @@ defmodule ThundermoonWeb.AuthController do
 
   def delete(conn, _params) do
     conn
-    |> put_flash(:info, "logged out!")
+    |> put_flash(:info, "Logged out!")
     |> clear_session()
     |> redirect(to: "/")
   end
