@@ -27,6 +27,8 @@ blocks:
           - echo DATABASE_URL="ecto://thundermoon:${DB_PASSWORD}@db/thundermoon_prod" >> .env/app
           - echo SECRET_KEY_BASE="${SECRET_KEY_BASE}" >> .env/app
           - echo BUGSNAG_API_KEY="${BUGSNAG_API_KEY}" >> .env/app
+          - echo GITHUB_CLIENT_ID="${GITHUB_CLIENT_ID}" >> .env/app
+          - echo GITHUB_CLIENT_SECRET="${GITHUB_CLIENT_SECRET}" >> .env/app
           - touch .env/db
           - echo POSTGRES_PASSWORD="${DB_PASSWORD}" >> .env/db
       jobs:
@@ -42,4 +44,3 @@ blocks:
             - "scp $SSH_OPTIONS .semaphore/deploy.sh $SSH_USER_AT_HOST:$SITE_PATH"
             - "ssh $SSH_OPTIONS $SSH_USER_AT_HOST chmod u+x $SITE_PATH/deploy.sh"
             - ssh $SSH_OPTIONS $SSH_USER_AT_HOST TAG=$SEMAPHORE_GIT_BRANCH sh $SITE_PATH/deploy.sh
-            

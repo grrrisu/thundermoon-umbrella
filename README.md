@@ -78,7 +78,9 @@ set app specific credentials
 sem create secret thundermoon-secrets \
   -e DB_PASSWORD=<password> \
   -e SECRET_KEY_BASE=<secret> \
-  -e BUGSNAG_API_KEY=<secret>
+  -e BUGSNAG_API_KEY=<secret> \
+  -e GITHUB_CLIENT_ID=<secret> \
+  -e GITHUB_CLIENT_SECRET=<secret>
 ```
 
 add `deploy-key` containing the private key to the secrets and add the pub key to the deploy server
