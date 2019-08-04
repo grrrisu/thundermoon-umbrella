@@ -14,19 +14,27 @@ defmodule ThundermoonWeb.Router do
     plug :accepts, ["json"]
   end
 
+  pipeline :public do
+    plug :browser
+  end
+
+  pipeline :private do
+    plug :browser
+    plug ThundermoonWeb.AuthPlug
+  end
+
   scope "/", ThundermoonWeb do
-    pipe_through :browser
+    pipe_through :public
 
     get "/", PageController, :index
-    get "/dashboard", PageController, :dashboard
 
     get "/auth/github", AuthController, :request
     get "/auth/github/callback", AuthController, :callback
     delete "/auth", AuthController, :delete
   end
 
-  # Other scopes may use custom stacks.
-  # scope "/api", ThundermoonWeb do
-  #   pipe_through :api
-  # end
+  scope "/", ThundermoonWeb do
+    pipe_through :private
+    get "/dashboard", PageController, :dashboard
+  end
 end
