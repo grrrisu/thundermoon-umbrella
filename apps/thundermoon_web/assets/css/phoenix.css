@@ -108,7 +108,7 @@ header nav ul,
 header nav li {
   margin: 0;
   padding: 0;
-  display: block;
+  display: inline-block;
   text-align: right;
   white-space: nowrap;
 }

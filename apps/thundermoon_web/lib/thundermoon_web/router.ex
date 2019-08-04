@@ -22,6 +22,7 @@ defmodule ThundermoonWeb.Router do
 
     get "/auth/github", AuthController, :request
     get "/auth/github/callback", AuthController, :callback
+    delete "/auth", AuthController, :delete
   end
 
   # Other scopes may use custom stacks.
