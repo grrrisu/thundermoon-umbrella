@@ -37,6 +37,10 @@ config :ueberauth, Ueberauth,
     github: {Ueberauth.Strategy.Github, [allow_private_emails: true]}
   ]
 
+config :canary, repo: Thundermoon.Repo, 
+  unauthorized_handler: {ThundermoonWeb.AuthorizationHelpers, :handle_unauthorized},
+  not_found_handler: {ThundermoonWeb.AuthorizationHelpers, :handle_not_found}
+
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
 import_config "#{Mix.env()}.exs"

@@ -1,5 +1,7 @@
 %{
   "bugsnag": {:hex, :bugsnag, "1.7.0", "447d260f9a90cfd2a4d2d39211a76d3949584d8f4014e1488592027f2bbbbf09", [:mix], [{:httpoison, "~> 0.13 or ~> 1.0", [hex: :httpoison, repo: "hexpm", optional: false]}, {:poison, "~> 1.5 or ~> 2.0 or ~> 3.0", [hex: :poison, repo: "hexpm", optional: false]}], "hexpm"},
+  "canada": {:hex, :canada, "1.0.2", "040e4c47609b0a67d5773ac1fbe5e99f840cef173d69b739beda7c98453e0770", [:mix], [], "hexpm"},
+  "canary": {:hex, :canary, "1.1.1", "4138d5e05db8497c477e4af73902eb9ae06e49dceaa13c2dd9f0b55525ded48b", [:mix], [{:canada, "~> 1.0.1", [hex: :canada, repo: "hexpm", optional: false]}, {:ecto, ">= 1.1.0", [hex: :ecto, repo: "hexpm", optional: false]}, {:plug, "~> 1.0", [hex: :plug, repo: "hexpm", optional: false]}], "hexpm"},
   "certifi": {:hex, :certifi, "2.5.1", "867ce347f7c7d78563450a18a6a28a8090331e77fa02380b4a21962a65d36ee5", [:rebar3], [{:parse_trans, "~>3.3", [hex: :parse_trans, repo: "hexpm", optional: false]}], "hexpm"},
   "connection": {:hex, :connection, "1.0.4", "a1cae72211f0eef17705aaededacac3eb30e6625b04a6117c1b2db6ace7d5976", [:mix], [], "hexpm"},
   "cowboy": {:hex, :cowboy, "2.6.3", "99aa50e94e685557cad82e704457336a453d4abcb77839ad22dbe71f311fcc06", [:rebar3], [{:cowlib, "~> 2.7.3", [hex: :cowlib, repo: "hexpm", optional: false]}, {:ranch, "~> 1.7.1", [hex: :ranch, repo: "hexpm", optional: false]}], "hexpm"},
