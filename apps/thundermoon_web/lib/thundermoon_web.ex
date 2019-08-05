@@ -22,6 +22,7 @@ defmodule ThundermoonWeb do
       use Phoenix.Controller, namespace: ThundermoonWeb
       import Plug.Conn
       import ThundermoonWeb.Gettext
+      import Canary.Plugs
       alias ThundermoonWeb.Router.Helpers, as: Routes
     end
   end
