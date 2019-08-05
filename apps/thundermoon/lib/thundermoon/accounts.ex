@@ -1,11 +1,23 @@
 defmodule Thundermoon.Accounts do
   import Ecto.Query, warn: false
 
+  alias Ecto.Changeset
+
   alias Thundermoon.Repo
   alias Thundermoon.Accounts.User
 
   def count() do
     Repo.aggregate(User, :count, :id)
+  end
+
+  def all_users do
+    Repo.all(User)
+  end
+
+  def user_changeset(id) do
+    User
+    |> Repo.get(id)
+    |> Changeset.change()
   end
 
   def create_user(params \\ {}) do
