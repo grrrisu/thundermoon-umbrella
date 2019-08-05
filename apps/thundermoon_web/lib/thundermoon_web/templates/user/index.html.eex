@@ -20,9 +20,13 @@
             <%= user.username %>
           </td>
           <td>
-            <%= link "edit", to: Routes.user_path(@conn, :edit, user) %>
-            &nbsp;|&nbsp;
-            <%= link "delete", to: Routes.user_path(@conn, :delete, user), method: :delete, confirm: "Do you really want to delete user #{user.username}?" %>
+            <%= if can? @current_user, :edit, user do %>
+              <%= link "edit", to: Routes.user_path(@conn, :edit, user) %>
+            <% end %>
+            <%= if can? @current_user, :delete, user do %>
+              &nbsp;|&nbsp;
+              <%= link "delete", to: Routes.user_path(@conn, :delete, user), method: :delete, confirm: "Do you really want to delete user #{user.username}?" %>
+            <% end %>
           </td>
         </tr>
         <% end %>

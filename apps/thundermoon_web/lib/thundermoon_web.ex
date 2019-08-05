@@ -41,6 +41,7 @@ defmodule ThundermoonWeb do
 
       import ThundermoonWeb.ErrorHelpers
       import ThundermoonWeb.Gettext
+      import Canada.Can
       alias ThundermoonWeb.Router.Helpers, as: Routes
     end
   end
