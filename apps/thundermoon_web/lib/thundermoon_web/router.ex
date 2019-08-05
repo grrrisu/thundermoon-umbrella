@@ -37,6 +37,6 @@ defmodule ThundermoonWeb.Router do
     pipe_through :private
 
     get "/dashboard", PageController, :dashboard
-    resources "/users", UserController
+    resources "/users", UserController, only: [:index, :edit, :update, :delete]
   end
 end
