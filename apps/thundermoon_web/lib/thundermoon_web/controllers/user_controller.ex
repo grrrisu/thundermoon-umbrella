@@ -3,6 +3,8 @@ defmodule ThundermoonWeb.UserController do
 
   alias Thundermoon.Accounts
 
+  plug :load_and_authorize_resource, model: Thundermoon.Accounts.User
+
   def index(conn, _params) do
     users = Accounts.all_users()
     render(conn, "index.html", users: users)
@@ -28,7 +30,7 @@ defmodule ThundermoonWeb.UserController do
   end
 
   def delete(conn, %{"id" => id}) do
-    case Accounts.destroy_user(id) do
+    conn = case Accounts.destroy_user(id) do
       {:ok, _user} ->
         put_flash(conn, :info, "User has been deleted")
 
