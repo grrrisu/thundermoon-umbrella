@@ -3,13 +3,7 @@ defmodule ThundermoonWeb.AuthController do
 
   plug Ueberauth
 
-  alias Ueberauth.Strategy.Helpers
-
   alias ThundermoonWeb.AuthService
-
-  def request(conn, _params) do
-    render(conn, "login.html", callback_url: Helpers.callback_url(conn))
-  end
 
   def callback(%{assigns: %{ueberauth_failure: _fails}} = conn, _params) do
     conn
