@@ -20,9 +20,16 @@ defmodule Thundermoon.Accounts do
     |> Changeset.change()
   end
 
+  def update_user(id, params) do
+    User
+    |> Repo.get(id)
+    |> User.update_changeset(params)
+    |> Repo.update()
+  end
+
   def create_user(params \\ {}) do
     %User{}
-    |> User.changeset(params)
+    |> User.create_changeset(params)
     |> Repo.insert()
   end
 

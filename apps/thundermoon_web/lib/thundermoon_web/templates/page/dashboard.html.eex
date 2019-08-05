@@ -2,3 +2,12 @@
   <h1><%= gettext "Welcome %{name}!", name: @current_user.username %></h1>
   <p>Dashboard</p>
 </section>
+
+<section class="row">
+  <article class="column">
+    Where to go:
+    <ul>
+      <li><%= link "Users", to: Routes.user_path(@conn, :index) %></li>
+    </ul>
+  </article>
+</section>
