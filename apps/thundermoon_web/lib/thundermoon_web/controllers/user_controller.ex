@@ -26,4 +26,16 @@ defmodule ThundermoonWeb.UserController do
         |> render("edit.html", user: changeset)
     end
   end
+
+  def delete(conn, %{"id" => id}) do
+    case Accounts.destroy_user(id) do
+      {:ok, _user} ->
+        put_flash(conn, :info, "User has been deleted")
+
+      {:error, _changeset} ->
+        put_flash(conn, :error, "Deleting user has failed!")
+    end
+
+    redirect(conn, to: Routes.user_path(conn, :index))
+  end
 end
