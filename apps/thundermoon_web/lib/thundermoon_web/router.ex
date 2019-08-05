@@ -35,6 +35,8 @@ defmodule ThundermoonWeb.Router do
 
   scope "/", ThundermoonWeb do
     pipe_through :private
+
     get "/dashboard", PageController, :dashboard
+    resources "/users", UserController
   end
 end

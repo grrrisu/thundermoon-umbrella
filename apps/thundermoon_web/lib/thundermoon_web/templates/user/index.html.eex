@@ -1,0 +1,30 @@
+<section class="row">
+  <article class="column">
+    <h1>Users</h1>
+
+    <table>
+      <thead>
+        <tr>
+          <th></th>
+          <th>Username</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <%= for user <- @users do %>
+        <tr>
+          <td>
+            <%= img_tag user.avatar, class: "avatar" %>
+          </td>
+          <td>
+            <%= user.username %>
+          </td>
+          <td>
+            <%= link "edit", to: Routes.user_path(@conn, :edit, user) %>
+          </td>
+        </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </article>
+</section>

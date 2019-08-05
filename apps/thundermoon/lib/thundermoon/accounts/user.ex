@@ -13,7 +13,7 @@ defmodule Thundermoon.Accounts.User do
     timestamps()
   end
 
-  def changeset(user, params \\ {}) do
+  def changeset(user, params \\ %{}) do
     user
     |> cast(params, [:username, :email, :role, :name, :external_id, :avatar])
     |> validate_required([:username, :role, :external_id])

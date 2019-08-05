@@ -1,0 +1,38 @@
+<section>
+  <article>
+    <div class="row">
+      <div class="column">
+        <h1>Edit User</h1>
+      </div>
+    </div>
+    <div class="row">
+      <div class="column column-75">
+        <%= form_for @user, Routes.user_path(@conn, :update, @user.data.id), fn f -> %>
+          <fieldset>
+            <label for="user_name">Full Name</label>
+            <%= text_input f, :name %>
+            <%= error_tag(f, :name) %>
+
+            <label for="user_username">Username</label>
+            <%= text_input f, :username %>
+            <%= error_tag(f, :username) %>
+
+            <label for="user_email">E-Mail</label>
+            <%= text_input f, :email %>
+            <%= error_tag(f, :email) %>
+
+            <div>
+              <%= submit "Update" %>
+              <%= link("Cancel", to: Routes.user_path(@conn, :index), class: 'float-right') %>
+            </div>
+          </fieldset>
+        <% end %>
+      </div>
+      <div class="column column-25">
+        <div class="avatar-big">
+          <%= img_tag @user.data.avatar, class: "" %>
+        </div>
+      </div>
+    </div>
+  </article>
+</section>
