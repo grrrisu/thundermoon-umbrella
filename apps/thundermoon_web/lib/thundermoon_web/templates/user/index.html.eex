@@ -21,6 +21,8 @@
           </td>
           <td>
             <%= link "edit", to: Routes.user_path(@conn, :edit, user) %>
+            &nbsp;|&nbsp;
+            <%= link "delete", to: Routes.user_path(@conn, :delete, user), method: :delete, confirm: "Do you really want to delete user #{user.username}?" %>
           </td>
         </tr>
         <% end %>

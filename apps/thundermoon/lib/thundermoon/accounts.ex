@@ -50,4 +50,10 @@ defmodule Thundermoon.Accounts do
     |> where(external_id: ^external_id)
     |> Repo.one()
   end
+
+  def destroy_user(id) do
+    User
+    |> Repo.get!(id)
+    |> Repo.delete()
+  end
 end
