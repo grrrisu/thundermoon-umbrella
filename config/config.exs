@@ -37,7 +37,8 @@ config :ueberauth, Ueberauth,
     github: {Ueberauth.Strategy.Github, [allow_private_emails: true]}
   ]
 
-config :canary, repo: Thundermoon.Repo, 
+config :canary,
+  repo: Thundermoon.Repo,
   unauthorized_handler: {ThundermoonWeb.AuthorizationHelpers, :handle_unauthorized},
   not_found_handler: {ThundermoonWeb.AuthorizationHelpers, :handle_not_found}
 

@@ -66,7 +66,6 @@ defmodule ThundermoonWeb.UserControllerTest do
       conn = delete(conn, "users/#{List.last(users).id}")
       assert redirected_to(conn) == "/"
     end
-
   end
 
   describe "as admin" do
