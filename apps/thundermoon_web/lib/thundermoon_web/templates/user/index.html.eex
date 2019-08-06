@@ -25,7 +25,7 @@
             <% end %>
             <%= if can? @current_user, :delete, user do %>
               &nbsp;|&nbsp;
-              <%= link "delete", to: Routes.user_path(@conn, :delete, user), method: :delete, confirm: "Do you really want to delete user #{user.username}?" %>
+              <%= link "delete", to: Routes.user_path(@conn, :delete, user), method: :delete, data: [confirm: "Do you really want to delete user #{user.username}"] %>
             <% end %>
           </td>
         </tr>
