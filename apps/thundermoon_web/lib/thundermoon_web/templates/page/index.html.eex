@@ -1,10 +1,10 @@
 <section class="phx-hero">
   <h1><%= gettext "Welcome to %{name}!", name: "Thundermoon" %></h1>
-  <p>A productive web framework that<br/>does not compromise speed or maintainability.</p>
+  <p>some sim examples</p>
 </section>
 
 <section class="row">
   <article class="column">
-    <a href="https://github.com/grrrisu/thundermoon-umbrella">Github</a>
+
   </article>
 </section>

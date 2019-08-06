@@ -11,8 +11,13 @@
     <header>
       <section class="container">
         <nav role="navigation">
+          <%= if signed_in?(@conn) do %>
           <ul>
             <li><%= link "Dashboard", to: "/dashboard" %></li>
+            <li><%= link "Users", to: Routes.user_path(@conn, :index) %></li>
+          </ul>
+          <% end %>
+          <ul>
             <%= if signed_in?(@conn) do %>
               <li>
                 <%= link "Logout", to: Routes.auth_path(@conn, :delete), method: :delete %>
@@ -27,7 +32,7 @@
             <% end %>
           </ul>
         </nav>
-        <%= link to: "https://github.com/grrrisu/thundermoon-umbrella", class: "logo" do %>
+        <%= link to: "/", class: "logo" do %>
           <%= img_tag Routes.static_path(@conn, "/images/thunderbirdmoon.jpg"), alt: "Thundermoon"%>
         <% end %>
       </section>
@@ -37,6 +42,14 @@
       <p class="alert alert-danger" role="alert"><%= get_flash(@conn, :error) %></p>
       <%= render @view_module, @view_template, assigns %>
     </main>
+    <footer>
+      <section class="container">
+        <%= link to: "https://github.com/grrrisu/thundermoon-umbrella" do %>
+          <%= img_tag Routes.static_path(@conn, "/images/github-logo.svg"), class: "github-logo", alt: "github"%>
+          Github
+        <% end %>
+      </section>
+    </footer>
     <script type="text/javascript" src="<%= Routes.static_path(@conn, "/app.js") %>"></script>
   </body>
 </html>
