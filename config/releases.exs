@@ -5,6 +5,7 @@ config :thundermoon_web, ThundermoonWeb.Endpoint,
   cache_static_manifest: "priv/static/cache_manifest.json",
   http: [:inet6, port: String.to_integer(System.get_env("PORT", "4000"))],
   secret_key_base: System.fetch_env!("SECRET_KEY_BASE"),
+  live_view: [signing_salt: System.fetch_env!("SECRET_LIVE_VIEW_KEY")],
   server: true
 
 config :thundermoon, Thundermoon.Repo,
