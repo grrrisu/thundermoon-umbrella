@@ -29,9 +29,11 @@
         <% end %>
       </div>
       <div class="column column-25">
-        <div class="avatar-big">
-          <%= img_tag @user.data.avatar, class: "" %>
-        </div>
+        <%= if @user.data.avatar do %>
+          <div class="avatar-big">
+            <%= img_tag @user.data.avatar, class: "" %>
+          </div>
+        <% end %>
       </div>
     </div>
   </article>

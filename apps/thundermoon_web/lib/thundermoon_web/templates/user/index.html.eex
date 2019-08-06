@@ -14,7 +14,9 @@
         <%= for user <- @users do %>
         <tr>
           <td>
-            <%= img_tag user.avatar, class: "avatar" %>
+            <%= if user.avatar do %>
+              <%= img_tag user.avatar, class: "avatar" %>
+            <% end %>
           </td>
           <td>
             <%= user.username %>
