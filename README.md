@@ -1,5 +1,13 @@
 # Thundermoon.Umbrella
 
+[Changelog](./changelog.md)
+
+Umbrella App for
+
+* [Thundermoon](apps/thundermoon/README.md)
+
+* [ThundermoonWeb](apps/thundermoon_web/README.md)
+
 ## Docker
 
 to start the application in a docker container
@@ -77,7 +85,7 @@ docker exec -it <container-id> sh
 
 set dockerhub credentials as semaphore secrets
 
-```
+```shell
 sem create secret dockerhub-secrets \
   -e DOCKER_USERNAME=<your-dockerhub-username> \
   -e DOCKER_PASSWORD=<your-dockerhub-password>
