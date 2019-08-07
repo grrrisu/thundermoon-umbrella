@@ -21,6 +21,17 @@ docker-compose down
 
 ## Developement
 
+### Setup
+
+To start the application
+
+* Install dependencies with `mix deps.get`
+* Create and migrate your database with `mix ecto.create`
+* Install Node.js dependencies with `cd apps/thundermoon_apps/assets && npm install`
+* Start Phoenix endpoint with `mix phx.server`
+
+Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
+
 ### Migration
 
 to create a migration issue the command in `app/thundermoon` directory and specify the repo
@@ -81,7 +92,7 @@ sem create secret thundermoon-secrets \
   -e SECRET_LIVE_VIEW_KEY=<secret> \
   -e BUGSNAG_API_KEY=<secret> \
   -e GITHUB_CLIENT_ID=<secret> \
-  -e GITHUB_CLIENT_SECRET=<secret> 
+  -e GITHUB_CLIENT_SECRET=<secret>
 ```
 
 add `deploy-key` containing the private key to the secrets and add the pub key to the deploy server
