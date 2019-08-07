@@ -49,6 +49,7 @@ defmodule ThundermoonWeb.MixProject do
       {:plug_cowboy, "~> 2.0"},
       {:ueberauth, "~> 0.6"},
       {:ueberauth_github, github: "ueberauth/ueberauth_github"},
+      {:canada, "~> 1.0.1"},
       {:canary, "~> 1.1.1"}
     ]
   end
