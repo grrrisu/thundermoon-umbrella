@@ -8,6 +8,7 @@
     Where to go:
     <ul>
       <li><%= link "Users", to: Routes.user_path(@conn, :index) %></li>
+      <li><%= link "Chat", to: Routes.live_path(@conn, ThundermoonWeb.ChatLive) %></li>
     </ul>
   </article>
 </section>
