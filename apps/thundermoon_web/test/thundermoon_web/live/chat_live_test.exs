@@ -1,0 +1,41 @@
+defmodule ThundermoonWeb.ChatLiveTest do
+  use ThundermoonWeb.ConnCase
+  import Phoenix.LiveViewTest
+  @endpoint ThundermoonWeb.Endpoint
+
+  import ThundermoonWeb.AuthSupport
+
+  alias Thundermoon.Factory
+
+  def login(%{conn: conn}) do
+    current_user = Factory.create(:user, %{username: "crumb"})
+    conn = login_as(conn, current_user)
+    %{conn: conn}
+  end
+
+  describe "a guest" do
+    test "should be redirected", %{conn: conn} do
+      conn = get(conn, "/chat")
+      assert redirected_to(conn) == "/"
+    end
+  end
+
+  describe "a member" do
+    setup [:login]
+
+    test "disconnected and connected mount", %{conn: conn} do
+      conn = get(conn, "/chat")
+      assert html_response(conn, 200) =~ "<h1>Chat</h1>"
+      {:ok, _view, html} = live(conn)
+      assert html =~ "<h1>Chat</h1>"
+    end
+
+    test "sends a message", %{conn: conn} do
+      {:ok, view, _html} = live(conn, "/chat")
+      data = %{"message" => %{"text" => "hello there"}}
+      html = render_submit(view, :send, data)
+      assert html =~ "crumb"
+      assert html =~ "hello there"
+    end
+  end
+end

@@ -1,2 +1,15 @@
 <h1>Chat</h1>
 <h3><%= @current_user.username %></h3>
+
+<div id="messages">
+  <%= for message <- Enum.reverse(@messages) do %>
+  <div class="row">
+    <div class="user column column-25"><%= message.user %></div>
+    <div class="text column column-75"><%= message.text %></div>
+  </div>
+  <% end %>
+</div>
+<%= form_for :message, "#", [phx_submit: :send], fn f -> %>
+  <%= text_input f, :text %>
+  <%= submit "Send" %>
+<% end %>
