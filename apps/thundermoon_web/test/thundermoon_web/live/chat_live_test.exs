@@ -5,11 +5,8 @@ defmodule ThundermoonWeb.ChatLiveTest do
 
   import ThundermoonWeb.AuthSupport
 
-  alias Thundermoon.Factory
-
   def login(%{conn: conn}) do
-    current_user = Factory.create(:user, %{username: "crumb"})
-    conn = login_as(conn, current_user)
+    conn = login_as(conn, %{username: "crumb"})
     %{conn: conn}
   end
 
