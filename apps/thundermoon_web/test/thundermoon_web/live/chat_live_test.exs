@@ -28,11 +28,11 @@ defmodule ThundermoonWeb.ChatLiveTest do
     end
 
     test "sends a message", %{conn: conn} do
+      @endpoint.subscribe("chat")
       {:ok, view, _html} = live(conn, "/chat")
       data = %{"message" => %{"text" => "hello there"}}
-      html = render_submit(view, :send, data)
-      assert html =~ "crumb"
-      assert html =~ "hello there"
+      render_submit(view, :send, data)
+      assert_receive(%{event: "send", payload: %{user: "crumb", text: "hello there"}})
     end
   end
 end
