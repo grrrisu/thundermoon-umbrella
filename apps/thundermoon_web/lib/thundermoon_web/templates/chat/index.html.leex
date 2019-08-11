@@ -10,6 +10,6 @@
   <% end %>
 </div>
 <%= form_for :message, "#", [phx_submit: :send], fn f -> %>
-  <%= text_input f, :text %>
+  <%= text_input f, :text, placeholder: "message" %>
   <%= submit "Send" %>
 <% end %>
