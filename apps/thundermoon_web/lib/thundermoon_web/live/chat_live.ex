@@ -7,11 +7,12 @@ defmodule ThundermoonWeb.ChatLive do
   alias ThundermoonWeb.Endpoint
   alias ThundermoonWeb.ChatView
   alias ThundermoonWeb.Presence
+  alias ThundermoonWeb.ChatMessages
 
   def mount(session, socket) do
     user = Repo.get!(User, session[:current_user_id])
     if connected?(socket), do: subscribe(user)
-    messages = []
+    messages = ChatMessages.list()
     users = extract_users(Presence.list("chat"))
     {:ok, assign(socket, %{current_user: user, messages: messages, users: users})}
   end
@@ -24,6 +25,7 @@ defmodule ThundermoonWeb.ChatLive do
   def handle_event("send", %{"message" => %{"text" => text}}, socket) do
     username = socket.assigns.current_user.username
     message = %{user: username, text: text}
+    ChatMessages.add(message)
     Endpoint.broadcast("chat", "send", message)
     {:noreply, socket}
   end
@@ -38,14 +40,13 @@ defmodule ThundermoonWeb.ChatLive do
         %{
           event: "presence_diff",
           topic: "chat",
-          payload: %{joins: new_diff, leaves: %{}}
+          payload: _payload
         },
         socket
       ) do
-    user = extract_users(new_diff) |> List.first()
-    new_users = [user | socket.assigns.users] |> Enum.uniq()
+    users = extract_users(Presence.list("chat"))
 
-    {:noreply, assign(socket, %{users: new_users})}
+    {:noreply, assign(socket, %{users: users})}
   end
 
   defp subscribe(user) do
