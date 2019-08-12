@@ -17,3 +17,11 @@
 * Authorization with Canada and Canary
 
 * Phoenix Live View
+
+## 0.2.0
+
+* Chat with Live View
+
+* Store chat messages in GenServer
+
+* TODO functional tests with Hound
