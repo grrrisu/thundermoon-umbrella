@@ -1,3 +1,5 @@
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/2ab69a409d24453fa5431a92f7d9050e)](https://www.codacy.com/app/grrrisu/thundermoon-umbrella?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=grrrisu/thundermoon-umbrella&amp;utm_campaign=Badge_Grade)
+
 # Thundermoon.Umbrella
 
 [Changelog](./changelog.md)
