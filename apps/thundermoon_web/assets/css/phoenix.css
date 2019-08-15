@@ -131,14 +131,3 @@ header nav a {
     flex-basis: 527px;
   }
 }
-
-footer {
-  width: 100%;
-  position: fixed;
-  left: 0;
-  bottom: 0;
-  background: #fdfdfd;
-  border-top: 1px solid #eaeaea;
-  margin-top: 2rem;
-  padding: 2rem 0rem;
-}

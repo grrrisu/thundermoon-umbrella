@@ -1,3 +1,18 @@
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+footer {
+  margin-top: auto;
+  width: 100%;
+  background: #fdfdfd;
+  border-top: 1px solid #eaeaea;
+  padding: 2rem 0rem;
+}
+
+
 .github-logo, .avatar {
   width: 32px;
   height: 32px;
