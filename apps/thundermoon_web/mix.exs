@@ -41,7 +41,6 @@ defmodule ThundermoonWeb.MixProject do
       {:phoenix_pubsub, "~> 1.1"},
       {:phoenix_ecto, "~> 4.0"},
       {:phoenix_html, "~> 2.11"},
-      {:phoenix_live_reload, "~> 1.2", only: :dev},
       {:phoenix_live_view, github: "phoenixframework/phoenix_live_view"},
       {:gettext, "~> 0.11"},
       {:thundermoon, in_umbrella: true},
@@ -51,7 +50,9 @@ defmodule ThundermoonWeb.MixProject do
       {:ueberauth, "~> 0.6"},
       {:ueberauth_github, github: "ueberauth/ueberauth_github"},
       {:canada, "~> 1.0.1"},
-      {:canary, "~> 1.1.1"}
+      {:canary, "~> 1.1.1"},
+      {:phoenix_live_reload, "~> 1.2", only: :dev},
+      {:hound, "~> 1.0", only: :test}
     ]
   end
 
