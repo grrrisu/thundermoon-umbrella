@@ -1,5 +1,5 @@
 # docker build -t thundermoon:builder --target=builder .
-FROM elixir:1.9.0-alpine as builder
+FROM elixir:1.9.1-alpine as builder
 RUN apk add --no-cache \
     gcc \
     git \
@@ -80,7 +80,7 @@ WORKDIR /app
 COPY config/ /app/config
 COPY apps/ /app/apps
 
-RUN mix compile 
+RUN mix compile
 RUN mix release
 
 #########################################################
