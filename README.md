@@ -46,6 +46,24 @@ to create a migration issue the command in `app/thundermoon` directory and speci
 
 `mix ecto.gen.migration create_user -r Thundermoon.Repo`
 
+### Testing
+
+Functional Testing with hound needs phantom.js, start it in a separat shell with:
+
+```shell
+phantomjs --wd
+```
+
+#### Troubleshooting
+
+sometimes this error happens:
+
+```
+ ** (Protocol.UndefinedError) protocol String.Chars not implemented for %Hound.Element{uuid: ":wdc:1565884110272"} of type Hound.Element (a struct). This protocol is implemented for the following type(s): Postgrex.Copy, Postgrex.Query, Decimal, Float, DateTime, Time, List, Version.Requirement, Atom, Integer, Version, Date, BitString, NaiveDateTime, URI
+ ```
+
+Then delete ```_build/test/consolidated/Elixir.String.Chars.beam``` and it will go away for some time.
+
 ### Release
 
 manually test release can be built
@@ -93,7 +111,7 @@ sem create secret dockerhub-secrets \
 
 set app specific credentials
 
-```
+```shell
 sem create secret thundermoon-secrets \
   -e DB_PASSWORD=<password> \
   -e SECRET_KEY_BASE=<secret> \
