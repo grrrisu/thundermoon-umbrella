@@ -17,6 +17,7 @@ end
 # you can enable the server option below.
 config :thundermoon_web, ThundermoonWeb.Endpoint,
   http: [port: 4002],
+  url: [host: System.get_env("APP_HOST") || "localhost"],
   server: true
 
 # Print only warnings and errors during test
@@ -24,5 +25,7 @@ config :logger, level: :warn
 
 config :hound,
   driver: "phantomjs",
+  host: "http://#{System.get_env("BROWSER_HOST") || "localhost"}",
   port: 8910,
-  app_port: 4002
+  app_port: 4002,
+  app_host: "http://#{System.get_env("APP_HOST") || "localhost"}"
