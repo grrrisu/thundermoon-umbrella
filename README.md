@@ -50,6 +50,26 @@ to create a migration issue the command in `app/thundermoon` directory and speci
 
 ### Testing
 
+### Cypress
+
+#### Install
+
+```npm install cypress```
+
+#### Run
+
+run the application
+
+```mix phx.server```
+
+start the cypress Test Runner
+
+```npm run cypress```
+
+start testing ....
+
+### Hound
+
 Functional Testing with hound needs phantom.js, start it in a separat shell with:
 
 ```shell
