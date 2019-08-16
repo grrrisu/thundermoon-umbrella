@@ -4,7 +4,8 @@
   "scripts": {
     "deploy": "parcel build js/app.js --out-dir ../priv/static",
     "watch": "parcel watch js/app.js --out-dir ../priv/static",
-    "clean": "rm -r ../priv/static/*"
+    "clean": "rm -r ../priv/static/*",
+    "cypress": "cypress open"
   },
   "dependencies": {
     "phoenix": "file:../../../deps/phoenix",
@@ -14,6 +15,7 @@
   "devDependencies": {
     "@babel/core": "^7.5.5",
     "@babel/preset-env": "^7.5.5",
+    "cypress": "^3.4.1",
     "parcel-bundler": "^1.12.3",
     "parcel-plugin-static-files-copy": "^2.1.2",
     "sass": "^1.22.7"
