@@ -2,6 +2,8 @@ defmodule ThundermoonWeb.LoginTest do
   use ThundermoonWeb.ConnCase
   use Hound.Helpers
 
+  alias Thundermoon.Factory
+
   hound_session()
 
   test "vist root" do
@@ -10,7 +12,8 @@ defmodule ThundermoonWeb.LoginTest do
   end
 
   test "dashboard" do
-    navigate_to("/dashboard")
-    assert visible_text({:css, "h1"}) == "Welcome to Thundermoon!"
+    current_user = Factory.create(:user, %{username: "crumb"})
+    navigate_to("/dashboard?current_user_id=#{current_user.id}")
+    assert visible_text({:css, "h1"}) == "Welcome crumb!"
   end
 end

@@ -21,6 +21,11 @@ defmodule ThundermoonWeb.Router do
 
   pipeline :private do
     plug :browser
+
+    if Mix.env() == :test do
+      plug ThundermoonWeb.BackdoorAuthPlug
+    end
+
     plug ThundermoonWeb.AuthPlug
   end
 
