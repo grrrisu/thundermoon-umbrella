@@ -6,8 +6,17 @@ describe('root page', function() {
 });
 
 describe('dashboard page', function() {
-  it('should see the title', function() {
+
+  beforeEach(function() {
     cy.visit("http://localhost:4000/auth/integration?external_user_id=123");
+  });
+
+  afterEach(function() {
+    cy.contains('Logout').click();
+  })
+
+  it('should see the title', function() {
+
     cy.visit("http://localhost:4000/dashboard");
     cy.contains('Welcome crumb');
   })
