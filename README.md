@@ -56,11 +56,17 @@ to create a migration issue the command in `app/thundermoon` directory and speci
 
 ```npm install cypress```
 
+```
+MIX_ENV=integration mix ecto.create
+MIX_ENV=integration mix ecto.migrate
+MIX_ENV=integration mix run apps/thundermoon/priv/repo/seeds.exs
+```
+
 #### Run
 
 run the application
 
-```mix phx.server```
+```MIX_ENV=integration mix phx.server```
 
 start the cypress Test Runner
 

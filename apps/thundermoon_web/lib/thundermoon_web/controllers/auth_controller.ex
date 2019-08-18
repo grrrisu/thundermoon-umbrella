@@ -4,6 +4,23 @@ defmodule ThundermoonWeb.AuthController do
   plug Ueberauth
 
   alias ThundermoonWeb.AuthService
+  alias Thundermoon.Accounts
+
+  def integration(conn, %{"external_user_id" => id}) do
+    if Mix.env() == :integration do
+      case Accounts.find_by_external_id(id) do
+        nil ->
+          conn
+          |> put_flash(:error, "no user found with external_user_id #{id}")
+          |> redirect(to: "/")
+
+        user ->
+          conn
+          |> put_session(:current_user_id, user.id)
+          |> redirect(to: "/dashboard")
+      end
+    end
+  end
 
   def callback(%{assigns: %{ueberauth_failure: _fails}} = conn, _params) do
     conn

@@ -21,11 +21,6 @@ defmodule ThundermoonWeb.Router do
 
   pipeline :private do
     plug :browser
-
-    if Mix.env() == :test do
-      plug ThundermoonWeb.BackdoorAuthPlug
-    end
-
     plug ThundermoonWeb.AuthPlug
   end
 
@@ -35,6 +30,7 @@ defmodule ThundermoonWeb.Router do
     get "/", PageController, :index
 
     get "/auth/github", AuthController, :request
+    get "/auth/integration", AuthController, :integration
     get "/auth/github/callback", AuthController, :callback
     delete "/auth", AuthController, :delete
   end
