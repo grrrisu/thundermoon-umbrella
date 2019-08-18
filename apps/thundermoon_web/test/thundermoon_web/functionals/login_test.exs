@@ -11,9 +11,9 @@ defmodule ThundermoonWeb.LoginTest do
     assert visible_text({:css, "h1"}) == "Welcome to Thundermoon!"
   end
 
-  test "dashboard" do
-    current_user = Factory.create(:user, %{username: "crumb"})
-    navigate_to("/dashboard?current_user_id=#{current_user.id}")
-    assert visible_text({:css, "h1"}) == "Welcome crumb!"
-  end
+  # test "dashboard" do
+  #   current_user = Factory.create(:user, %{username: "crumb"})
+  #   navigate_to("/dashboard?current_user_id=#{current_user.id}")
+  #   assert visible_text({:css, "h1"}) == "Welcome crumb!"
+  # end
 end

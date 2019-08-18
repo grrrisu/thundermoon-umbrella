@@ -13,14 +13,20 @@ blocks:
       prologue:
         commands:
           - checkout
-          - docker build -t thundermoon:test --target=test .
       jobs:
         - name: check formatted
           commands:
+            - docker build -t thundermoon:test --target=test .
             - docker run thundermoon:test mix format --check-formatted
         - name: mix test
           commands:
+            - docker build -t thundermoon:test --target=test .
             - docker-compose -f .semaphore/docker-compose.yml up --abort-on-container-exit --exit-code-from app
+        - name: cypress
+          commands:
+            - mv config/dev.secret.example.exs config/dev.secret.exs
+            - docker build -t thundermoon:integration --target=integration .
+            - docker-compose -f .semaphore/docker-compose.integration.yml up --abort-on-container-exit --exit-code-from browser
   - name: build container
     task:
       secrets:
@@ -36,7 +42,7 @@ blocks:
           - export IMAGE_TAG=$DOCKER_REPOSITORY:$SEMAPHORE_GIT_BRANCH
       jobs:
         - name: push build
-          commands: 
+          commands:
             - checkout
             - mkdir -p .env
             - touch .env/app
@@ -45,6 +51,7 @@ blocks:
             - echo BUGSNAG_API_KEY="${BUGSNAG_API_KEY}" >> .env/app
             - touch .env/db
             - echo POSTGRES_PASSWORD="${DB_PASSWORD}" >> .env/db
+            - mv config/dev.secret.example.exs config/dev.secret.exs
             - docker build -t $IMAGE_TAG --target=app .
             - docker push $IMAGE_TAG
 promotions:

@@ -51,8 +51,8 @@ ENV MIX_ENV=test
 RUN mix do deps.get deps.compile compile
 
 ########################################################
-# docker build -t thundermoon:runner --target=runner .
-FROM builder as runner
+# docker build -t thundermoon:integration --target=integration .
+FROM builder as integration
 
 COPY --from=assets /app/apps/thundermoon_web/priv/static/ /app/apps/thundermoon_web/priv/static/
 WORKDIR /app/apps/thundermoon_web/
@@ -63,10 +63,11 @@ COPY config/ /app/config
 COPY apps/ /app/apps
 
 ENV SECRET_KEY_BASE set_later
+ENV MIX_ENV=integration
 
 RUN mix compile
 COPY *.sh /app/
-CMD ["/app/run.sh"]
+CMD ["/app/run_integration.sh"]
 
 #########################################################
 # docker build -t thundermoon:releaser --target=releaser .
