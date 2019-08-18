@@ -1,7 +1,0 @@
-{
-  "integrationFolder": "../test/cypress/integration",
-  "supportFile": "../test/cypress/support",
-  "pluginsFile": "../test/cypress/plugins",
-  "fixturesFolder": "../test/cypress/fixtures",
-  "baseUrl": "http://localhost:4000"
-}

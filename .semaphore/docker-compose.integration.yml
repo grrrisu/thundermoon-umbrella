@@ -1,0 +1,40 @@
+version: '3.7'
+services:
+  app:
+    image: thundermoon:integration
+    environment:
+      DB_HOST: db
+      DB_USER: postgres
+      DB_PASSWORD: postgres
+      PORT: 4000
+      SECRET_KEY_BASE: a_test_key_base
+      GITHUB_CLIENT_ID: 123
+      GITHUB_CLIENT_SECRET: abcdefg
+    ports:
+      - 4000:4000
+    volumes:
+      - test-e2e:/app/apps/thundermoon_web/test
+    depends_on:
+      - db
+    working_dir: /app
+    command: sh ./run_integration.sh
+
+  db:
+    image: postgres:11.4-alpine
+    environment:
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_DB: thundermoon_integration
+
+  browser:
+    image: cypress/included:3.4.1
+    environment:
+      CYPRESS_baseUrl: 'http://app:4000'
+    working_dir: /e2e
+    volumes:
+      - test-e2e:/e2e
+    depends_on:
+      - app
+
+volumes:
+  test-e2e:
