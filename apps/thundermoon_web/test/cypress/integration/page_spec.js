@@ -4,7 +4,7 @@ describe("root page", function() {
   it("should see the title", function() {
     cy.visit("/");
     cy.contains("Thundermoon");
-  })
+  });
 });
 
 describe("dashboard page", function() {
