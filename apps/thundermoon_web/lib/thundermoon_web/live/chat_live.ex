@@ -1,6 +1,8 @@
 defmodule ThundermoonWeb.ChatLive do
   use Phoenix.LiveView
 
+  import Canada.Can
+
   alias Thundermoon.Repo
   alias Thundermoon.Accounts.User
 
@@ -30,12 +32,26 @@ defmodule ThundermoonWeb.ChatLive do
     {:noreply, socket}
   end
 
+  def handle_event("clear", _value, socket) do
+    if socket.assigns.current_user |> can?(:delete, ChatMessages) do
+      ChatMessages.clear()
+      Endpoint.broadcast("chat", "clear", %{})
+    end
+
+    {:noreply, socket}
+  end
+
   # this is triggered by the pubsub broadcast event
   def handle_info(%{event: "send", payload: message}, socket) do
     messages = [message | socket.assigns.messages]
     {:noreply, assign(socket, %{messages: messages})}
   end
 
+  def handle_info(%{event: "clear", payload: _}, socket) do
+    {:noreply, assign(socket, %{messages: []})}
+  end
+
+  # this is triggered if someone leaves or joins the chat
   def handle_info(
         %{
           event: "presence_diff",
