@@ -41,6 +41,5 @@ defmodule ThundermoonWeb.Router do
     get "/dashboard", PageController, :dashboard
     resources "/users", UserController, only: [:index, :edit, :update, :delete]
     live "/chat", ChatLive, session: [:current_user_id]
-    delete "/chat", ChatController, :delete
   end
 end

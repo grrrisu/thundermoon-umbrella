@@ -5,8 +5,15 @@ defmodule ThundermoonWeb.ChatLiveTest do
 
   import ThundermoonWeb.AuthSupport
 
-  def login(%{conn: conn}) do
+  alias ThundermoonWeb.ChatMessages
+
+  def login_as_member(%{conn: conn}) do
     conn = login_as(conn, %{username: "crumb"})
+    %{conn: conn}
+  end
+
+  def login_as_admin(%{conn: conn}) do
+    conn = login_as(conn, %{username: "gilbert_shelton", role: "admin"})
     %{conn: conn}
   end
 
@@ -18,7 +25,7 @@ defmodule ThundermoonWeb.ChatLiveTest do
   end
 
   describe "a member" do
-    setup [:login]
+    setup [:login_as_member]
 
     test "disconnected and connected mount", %{conn: conn} do
       conn = get(conn, "/chat")
@@ -38,6 +45,30 @@ defmodule ThundermoonWeb.ChatLiveTest do
     test "sees users", %{conn: conn} do
       {:ok, _view, html} = live(conn, "/chat")
       assert html =~ "<div class=\"user\">crumb</div>"
+    end
+
+    test "can not clear messages", %{conn: conn} do
+      ChatMessages.add(%{user: "franquin", text: "Bonjour"})
+      {:ok, view, html} = live(conn, "/chat")
+      assert html =~ "Bonjour"
+      render_click(view, :clear)
+      conn = get(conn, "/chat")
+      assert html_response(conn, 200) =~ "Bonjour"
+      ChatMessages.clear()
+    end
+  end
+
+  describe "an admin" do
+    setup [:login_as_admin]
+
+    test "can clear all messages", %{conn: conn} do
+      ChatMessages.add(%{user: "franquin", text: "Bonjour"})
+      {:ok, view, html} = live(conn, "/chat")
+      assert html =~ "Bonjour"
+      render_click(view, :clear)
+      conn = get(conn, "/chat")
+      refute html_response(conn, 200) =~ "Bonjour"
+      ChatMessages.clear()
     end
   end
 end
