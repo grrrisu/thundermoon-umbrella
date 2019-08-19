@@ -134,6 +134,6 @@ sem create secret thundermoon-secrets \
 
 add `deploy-key` containing the private key to the secrets and add the pub key to the deploy server
 
-```
+```shell
 sem create secret deploy-key -f ~/.ssh/id_rsa_semaphoreci:/home/semaphore/.keys/deploy-key
 ```

@@ -20,5 +20,5 @@ describe("dashboard page", function() {
   it("should see the title", function() {
     cy.visit("/dashboard");
     cy.contains("Welcome crumb");
-  })
+  });
 });
