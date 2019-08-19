@@ -51,8 +51,7 @@ defmodule ThundermoonWeb.MixProject do
       {:ueberauth_github, github: "ueberauth/ueberauth_github"},
       {:canada, "~> 1.0.1"},
       {:canary, "~> 1.1.1"},
-      {:phoenix_live_reload, "~> 1.2", only: :dev},
-      {:hound, "~> 1.0", only: :test}
+      {:phoenix_live_reload, "~> 1.2", only: :dev}
     ]
   end
 
