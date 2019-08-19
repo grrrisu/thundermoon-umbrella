@@ -15,3 +15,7 @@ alias Thundermoon.Accounts
 unless Accounts.find_by_external_id(123) do
   Factory.create(:user, %{external_id: 123, username: "crumb"})
 end
+
+unless Accounts.find_by_external_id(456) do
+  Factory.create(:user, external_id: 456, username: "gilbert_shelton", role: "admin")
+end

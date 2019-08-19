@@ -24,6 +24,7 @@ defmodule ThundermoonWeb do
       import ThundermoonWeb.Gettext
       import Phoenix.LiveView.Controller, only: [live_render: 3]
       import Canary.Plugs
+      import Canada.Can
       alias ThundermoonWeb.Router.Helpers, as: Routes
     end
   end
