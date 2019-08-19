@@ -1,5 +1,17 @@
 # Changelog
 
+## 0.2.0
+
+* Chat with Live View
+
+* Store chat messages in GenServer
+
+* integration tests with cypress.io
+
+* new environment `integration` for CI
+
+* new docker compose for integrtion on CI
+
 ## 0.1.0
 
 * Runs as Docker container
@@ -17,11 +29,3 @@
 * Authorization with Canada and Canary
 
 * Phoenix Live View
-
-## 0.2.0
-
-* Chat with Live View
-
-* Store chat messages in GenServer
-
-* TODO functional tests with Hound
