@@ -74,23 +74,6 @@ start the cypress Test Runner
 
 start testing ....
 
-### Hound
-
-Functional Testing with hound needs phantom.js, start it in a separat shell with:
-
-```shell
-phantomjs --wd
-```
-
-#### Troubleshooting
-
-sometimes this error happens:
-
-```
- ** (Protocol.UndefinedError) protocol String.Chars not implemented for %Hound.Element{uuid: ":wdc:1565884110272"} of type Hound.Element (a struct). This protocol is implemented for the following type(s): Postgrex.Copy, Postgrex.Query, Decimal, Float, DateTime, Time, List, Version.Requirement, Atom, Integer, Version, Date, BitString, NaiveDateTime, URI
- ```
-
-Then delete ```_build/test/consolidated/Elixir.String.Chars.beam``` and it will go away for some time.
 
 ### Release
 

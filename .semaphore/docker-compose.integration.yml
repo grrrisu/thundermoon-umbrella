@@ -16,7 +16,6 @@ services:
       - test-e2e:/app/apps/thundermoon_web/test
     depends_on:
       - db
-    working_dir: /app
     command: sh ./run_integration.sh
 
   db:
