@@ -33,6 +33,8 @@ defmodule Thundermoon.Umbrella.MixProject do
   defp deps do
     [
       {:observer_cli, "~> 1.5"},
+      {:sentry, "~> 7.0"},
+      {:jason, "~> 1.1"}
     ]
   end
 end
