@@ -110,6 +110,12 @@ docker exec -it <container-id> sh
 :observer_cli.start()
 ```
 
+### Send Test Error
+
+```shell
+mix sentry.send_test_event
+```
+
 ## Semaphore
 
 set dockerhub credentials as semaphore secrets
