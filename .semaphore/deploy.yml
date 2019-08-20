@@ -26,7 +26,6 @@ blocks:
           - touch .env/app
           - echo DATABASE_URL="ecto://thundermoon:${DB_PASSWORD}@db/thundermoon_prod" >> .env/app
           - echo SECRET_KEY_BASE="${SECRET_KEY_BASE}" >> .env/app
-          - echo BUGSNAG_API_KEY="${BUGSNAG_API_KEY}" >> .env/app
           - echo GITHUB_CLIENT_ID="${GITHUB_CLIENT_ID}" >> .env/app
           - echo GITHUB_CLIENT_SECRET="${GITHUB_CLIENT_SECRET}" >> .env/app
           - echo SECRET_LIVE_VIEW_KEY="${SECRET_LIVE_VIEW_KEY}" >> .env/app

@@ -48,7 +48,6 @@ blocks:
             - touch .env/app
             - echo DB_PASSWORD="${DB_PASSWORD}" >> .env/app
             - echo SECRET_KEY_BASE="${SECRET_KEY_BASE}" >> .env/app
-            - echo BUGSNAG_API_KEY="${BUGSNAG_API_KEY}" >> .env/app
             - touch .env/db
             - echo POSTGRES_PASSWORD="${DB_PASSWORD}" >> .env/db
             - mv config/dev.secret.example.exs config/dev.secret.exs
