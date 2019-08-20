@@ -33,7 +33,6 @@ defmodule Thundermoon.Umbrella.MixProject do
   defp deps do
     [
       {:observer_cli, "~> 1.5"},
-      {:plugsnag, "~> 1.3.0"}
     ]
   end
 end

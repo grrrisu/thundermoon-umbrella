@@ -127,7 +127,6 @@ sem create secret thundermoon-secrets \
   -e DB_PASSWORD=<password> \
   -e SECRET_KEY_BASE=<secret> \
   -e SECRET_LIVE_VIEW_KEY=<secret> \
-  -e BUGSNAG_API_KEY=<secret> \
   -e GITHUB_CLIENT_ID=<secret> \
   -e GITHUB_CLIENT_SECRET=<secret>
 ```

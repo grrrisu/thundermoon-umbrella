@@ -1,6 +1,5 @@
 DATABASE_URL=ecto://thundermoon:replace-with-password@db/thundermoon_prod
 SECRET_KEY_BASE=a_key
 SECRET_LIVE_VIEW_KEY=another_key
-BUGSNAG_API_KEY=0123456789abcdef0123456789abcdef
 GITHUB_CLIENT_ID=123
 GITHUB_CLIENT_SECRET=123456
