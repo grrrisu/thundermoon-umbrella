@@ -31,10 +31,6 @@ defmodule Thundermoon.Umbrella.MixProject do
   # Dependencies listed here are available only for this project
   # and cannot be accessed from applications inside the apps folder
   defp deps do
-    [
-      {:observer_cli, "~> 1.5"},
-      {:sentry, "~> 7.0"},
-      {:jason, "~> 1.1"}
-    ]
+    []
   end
 end

@@ -57,9 +57,7 @@ to create a migration issue the command in `app/thundermoon` directory and speci
 ```npm install cypress```
 
 ```
-MIX_ENV=integration mix ecto.create
-MIX_ENV=integration mix ecto.migrate
-MIX_ENV=integration mix run apps/thundermoon/priv/repo/seeds.exs
+MIX_ENV=integration mix do ecto.create, ecto.migrate, run apps/thundermoon/priv/repo/seeds.exs
 ```
 
 ##### Run
@@ -73,7 +71,6 @@ start the cypress Test Runner
 ```npm run cypress```
 
 start testing ....
-
 
 ### Release
 
@@ -95,6 +92,10 @@ _build/prod/rel/thundermoon_umbrella/bin/thundermoon_umbrella start
 stop docker stack
 
 `docker stack rm thundermoon`
+
+restart docker swarm
+
+`TAG=<container_tag> deploy.sh`
 
 ### Debug
 
