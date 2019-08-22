@@ -8,26 +8,54 @@ agent:
     os_image: ubuntu1804
 
 blocks:
+  - name: build container
+    task:
+      secrets:
+        - name: dockerhub-secrets
+      env_vars:
+        - name: DOCKER_REPOSITORY
+          value: grrrocker/thundermoon-umbrella
+      jobs:
+        - name: store docker image
+          commands:
+            # Authenticate to the registry for all jobs in the block
+            - checkout
+            - echo "${DOCKER_PASSWORD}" | docker login -u "${DOCKER_USERNAME}" --password-stdin
+            - mv config/dev.secret.example.exs config/dev.secret.exs
+            - docker build -t thundermoon:app --target=app .
+            - docker tag thundermoon:app "$DOCKER_REPOSITORY":"$SEMAPHORE_GIT_BRANCH"
+            - docker push "$DOCKER_REPOSITORY":"$SEMAPHORE_GIT_BRANCH"
   - name: "Test"
     task:
+      secrets:
+        - name: dockerhub-secrets
+      env_vars:
+        - name: DOCKER_REPOSITORY
+          value: grrrocker/thundermoon-umbrella
+        - name: DOCKER_CACHE
+          value: $DOCKER_USERNAME:thundermoon-umbrella:$SEMAPHORE_GIT_BRANCH
       prologue:
         commands:
           - checkout
+          - docker images
+          - echo "${DOCKER_PASSWORD}" | docker login -u "${DOCKER_USERNAME}" --password-stdin
+          - docker pull "$DOCKER_REPOSITORY":"$SEMAPHORE_GIT_BRANCH"
+          - docker images
       jobs:
         - name: check formatted
           commands:
-            - docker build -t thundermoon:test --target=test .
+            - docker build --cache-from $DOCKER_CACHE -t thundermoon:test --target=test .
             - docker run thundermoon:test mix format --check-formatted
         - name: mix test
           commands:
-            - docker build -t thundermoon:test --target=test .
+            - docker build --cache-from $DOCKER_CACHE -t thundermoon:test --target=test .
             - docker-compose -f .semaphore/docker-compose.yml up --abort-on-container-exit --exit-code-from app
         - name: cypress
           commands:
             - mv config/dev.secret.example.exs config/dev.secret.exs
-            - docker build -t thundermoon:integration --target=integration .
+            - docker build --cache-from $DOCKER_CACHE -t thundermoon:integration --target=integration .
             - docker-compose -f .semaphore/docker-compose.integration.yml up --abort-on-container-exit --exit-code-from browser
-  - name: build container
+  - name: publish container
     task:
       secrets:
         - name: dockerhub-secrets
@@ -35,11 +63,15 @@ blocks:
       env_vars:
         - name: DOCKER_REPOSITORY
           value: grrrocker/thundermoon-umbrella
+        - name: DOCKER_CACHE
+          value: $DOCKER_USERNAME:thundermoon-umbrella:$SEMAPHORE_GIT_BRANCH
       prologue:
         commands:
           # Authenticate to the registry for all jobs in the block
           - echo "${DOCKER_PASSWORD}" | docker login -u "${DOCKER_USERNAME}" --password-stdin
-          - export IMAGE_TAG=$DOCKER_REPOSITORY:$SEMAPHORE_GIT_BRANCH
+          - export IMAGE_TAG=$DOCKER_REPOSITORY:"$SEMAPHORE_GIT_SHA"-"$SEMAPHORE_WORKFLOW_ID"
+          - docker pull "$DOCKER_REPOSITORY":"$SEMAPHORE_GIT_BRANCH"
+          - docker images
       jobs:
         - name: push build
           commands:
@@ -52,7 +84,7 @@ blocks:
             - touch .env/db
             - echo POSTGRES_PASSWORD="${DB_PASSWORD}" >> .env/db
             - mv config/dev.secret.example.exs config/dev.secret.exs
-            - docker build -t $IMAGE_TAG --target=app .
+            - docker build --cache-from $DOCKER_CACHE -t $IMAGE_TAG --target=app .
             - docker push $IMAGE_TAG
 promotions:
   - name: Deploy
