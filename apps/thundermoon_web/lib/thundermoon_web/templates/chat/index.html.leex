@@ -12,7 +12,7 @@
   <%= text_input f, :text, placeholder: "write a message" %>
   <%= submit "Send" %>
 <% end %>
-<%= if can?(@current_user, :delete, ThundermoonWeb.ChatMessages) do %>
+<%= if can?(@current_user, :delete, Thundermoon.ChatMessages) do %>
   <a href="#" phx-click="clear">Clear all messages</a>
 <% end %>
 

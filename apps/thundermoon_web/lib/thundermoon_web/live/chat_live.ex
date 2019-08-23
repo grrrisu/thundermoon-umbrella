@@ -5,11 +5,11 @@ defmodule ThundermoonWeb.ChatLive do
 
   alias Thundermoon.Repo
   alias Thundermoon.Accounts.User
+  alias Thundermoon.ChatMessages
 
   alias ThundermoonWeb.Endpoint
   alias ThundermoonWeb.ChatView
   alias ThundermoonWeb.Presence
-  alias ThundermoonWeb.ChatMessages
 
   def mount(session, socket) do
     user = Repo.get!(User, session[:current_user_id])

@@ -1,7 +1,7 @@
-defmodule ThundermoonWeb.ChatMessagesTest do
+defmodule Thundermoon.ChatMessagesTest do
   use ExUnit.Case, async: true
 
-  alias ThundermoonWeb.ChatMessages
+  alias Thundermoon.ChatMessages
 
   setup(_) do
     ChatMessages.clear()

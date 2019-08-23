@@ -5,7 +5,7 @@ defmodule ThundermoonWeb.ChatLiveTest do
 
   import ThundermoonWeb.AuthSupport
 
-  alias ThundermoonWeb.ChatMessages
+  alias Thundermoon.ChatMessages
 
   def login_as_member(%{conn: conn}) do
     conn = login_as(conn, %{username: "crumb"})

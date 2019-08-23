@@ -1,4 +1,4 @@
-defmodule ThundermoonWeb.ChatMessages do
+defmodule Thundermoon.ChatMessages do
   use Agent
 
   def start_link(_opts \\ []) do

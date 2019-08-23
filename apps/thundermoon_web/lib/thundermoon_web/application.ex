@@ -11,7 +11,7 @@ defmodule ThundermoonWeb.Application do
       # Start the endpoint when the application starts
       ThundermoonWeb.Endpoint,
       ThundermoonWeb.Presence,
-      ThundermoonWeb.ChatMessages
+      Thundermoon.ChatMessages
       # Starts a worker by calling: ThundermoonWeb.Worker.start_link(arg)
       # {ThundermoonWeb.Worker, arg},
     ]
