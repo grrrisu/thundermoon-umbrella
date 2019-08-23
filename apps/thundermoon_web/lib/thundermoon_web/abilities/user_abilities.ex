@@ -1,6 +1,6 @@
 defmodule ThundermoonWeb.UserAbilities do
   alias Thundermoon.Accounts.User
-  alias ThundermoonWeb.ChatMessages
+  alias Thundermoon.ChatMessages
 
   defimpl Canada.Can, for: User do
     # User
