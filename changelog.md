@@ -12,6 +12,8 @@
 
 * new docker compose for integrtion on CI
 
+* replace Bugsnag with Sentry
+
 ## 0.1.0
 
 * Runs as Docker container
