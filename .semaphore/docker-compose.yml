@@ -6,9 +6,7 @@ services:
       DB_HOST: db
       DB_USER: postgres
       DB_PASSWORD: postgres
-      PORT: 4000
       SECRET_KEY_BASE: a_test_key_base
-      BROWSER_HOST: browser
       APP_HOST: app
     ports:
       - 4002:4002
@@ -20,9 +18,3 @@ services:
       POSTGRES_PASSWORD: postgres
       POSTGRES_USER: postgres
       POSTGRES_DB: thundermoon_test
-
-  browser:
-    image: wernight/phantomjs
-    ports:
-      - 8910:8910
-    command: 'phantomjs --wd'
