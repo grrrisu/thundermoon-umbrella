@@ -18,6 +18,7 @@ fi
 
 echo "stack deploy"
 IMAGE=$IMAGE docker stack deploy --with-registry-auth -c docker-compose.yml --prune $APP_NAME
+docker service update --publish-add published=4000,target=4000 thundermoon_app
 
 echo " docker prune..."
 docker system prune -af
