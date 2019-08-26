@@ -7,13 +7,13 @@ services:
     environment:
       PORT: 4000
     ports:
-      - "80:4000"
+      - "4000:4000"
     volumes:
       - ./log:/app/log
     depends_on:
       - db
     command: sh -c './wait-for.sh db:5432 -- ./run.sh'
-      
+
   db:
     image: postgres:11.4-alpine
     env_file:
