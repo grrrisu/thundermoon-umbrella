@@ -41,7 +41,7 @@ defmodule ThundermoonWeb.MixProject do
       {:phoenix_pubsub, "~> 1.1"},
       {:phoenix_ecto, "~> 4.0"},
       {:phoenix_html, "~> 2.11"},
-      {:phoenix_live_view, github: "phoenixframework/phoenix_live_view"},
+      {:phoenix_live_view, "~> 0.1.1"},
       {:gettext, "~> 0.11"},
       {:thundermoon, in_umbrella: true},
       {:jason, "~> 1.1"},
