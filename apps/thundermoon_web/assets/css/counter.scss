@@ -1,9 +1,31 @@
 .counter {
   display: grid;
-  grid-template-columns: 250px 250px 250px;
-  grid-template-rows: 150px 150px 150px;
+  grid-gap: 10px 10px;
+  grid-template-columns: repeat(3, 5rem);
+  grid-template-rows: 5rem 7rem 5rem;
+  justify-content: start;
+  align-items: center;
+  justify-items: center;
 
-  div {
-    border: 1px #888 solid;
+  .inc-button {
+    grid-row-start: 1;
+    grid-row-end: 2;
+  }
+
+  .digit {
+    grid-row-start: 2;
+    grid-row-end: 3;
+    font-family: Courier, monospace;
+    font-size: 7rem;
+  }
+
+  .dec-button {
+    grid-row-start: 3;
+    grid-row-end: 4;
+  }
+
+  a.button {
+    margin-bottom: 0rem;
+    padding: 0px 1.5rem;
   }
 }
