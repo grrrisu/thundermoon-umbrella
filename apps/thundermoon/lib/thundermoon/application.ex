@@ -7,7 +7,9 @@ defmodule Thundermoon.Application do
 
   def start(_type, _args) do
     children = [
-      Thundermoon.Repo
+      Thundermoon.Repo,
+      Thundermoon.ChatMessages,
+      Thundermoon.CounterSupervisor
     ]
 
     Supervisor.start_link(children, strategy: :one_for_one, name: Thundermoon.Supervisor)

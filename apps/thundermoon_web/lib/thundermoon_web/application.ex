@@ -10,8 +10,7 @@ defmodule ThundermoonWeb.Application do
     children = [
       # Start the endpoint when the application starts
       ThundermoonWeb.Endpoint,
-      ThundermoonWeb.Presence,
-      Thundermoon.ChatMessages
+      ThundermoonWeb.Presence
       # Starts a worker by calling: ThundermoonWeb.Worker.start_link(arg)
       # {ThundermoonWeb.Worker, arg},
     ]
