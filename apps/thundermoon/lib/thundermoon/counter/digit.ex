@@ -1,8 +1,9 @@
 defmodule Thundermoon.Digit do
-  use Agent
+  # agent is temporary as it will be restarted by the counter
+  use Agent, restart: :temporary
 
-  def start() do
-    Agent.start(fn -> 0 end)
+  def start(n \\ 0) do
+    Agent.start(fn -> n end)
   end
 
   def start_link() do
@@ -10,6 +11,6 @@ defmodule Thundermoon.Digit do
   end
 
   def inc(pid) do
-    Agent.update(pid, fn n -> raise "tschüsss" end)
+    Agent.update(pid, fn _n -> raise "tschüsss" end)
   end
 end

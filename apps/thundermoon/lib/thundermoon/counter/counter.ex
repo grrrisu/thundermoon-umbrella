@@ -2,27 +2,27 @@ defmodule Thundermoon.Counter do
   use GenServer
 
   alias Thundermoon.Digit
+  alias Thundermoon.DigitSupervisor
 
   def start_link(opts) do
     GenServer.start_link(__MODULE__, :ok, opts)
   end
 
   def init(:ok) do
-    digit_1 = create_digit()
-    digit_10 = create_digit()
-    digit_100 = create_digit()
-    {:ok, %{digit_1: digit_1, digit_10: digit_10, digit_100: digit_100}}
+    state =
+      %{}
+      |> create_digit(:digit_1, 0)
+      |> create_digit(:digit_10, 0)
+      |> create_digit(:digit_100, 0)
+
+    {:ok, state}
   end
 
   def handle_info({:DOWN, ref, :process, _pid, _reason}, state) do
-    {crashed_digit, _pid_ref} =
-      Enum.find(state, fn digit ->
-        digit |> elem(1) |> Map.get(:ref) == ref
-      end)
+    {crashed_digit, _pid_ref} = find_digit(state, ref)
+    new_state = create_digit(state, crashed_digit, 0)
 
-    IO.inspect(crashed_digit)
-
-    {:noreply, state}
+    {:noreply, new_state}
   end
 
   def handle_info(msg, state) do
@@ -30,9 +30,19 @@ defmodule Thundermoon.Counter do
     {:noreply, state}
   end
 
-  defp create_digit() do
-    {:ok, pid} = Digit.start()
+  defp find_digit(state, ref) do
+    Enum.find(state, fn digit ->
+      digit
+      |> elem(1)
+      |> Map.get(:ref) == ref
+    end)
+  end
+
+  defp create_digit(state, key, value) do
+    child = %{id: Digit, start: {Digit, :start, [value]}}
+    {:ok, pid} = DynamicSupervisor.start_child(DigitSupervisor, child)
+
     ref = Process.monitor(pid)
-    %{pid: pid, ref: ref}
+    Map.put(state, key, %{pid: pid, ref: ref})
   end
 end

@@ -7,6 +7,7 @@ defmodule Thundermoon.CounterSupervisor do
 
   def init(:ok) do
     children = [
+      {DynamicSupervisor, name: Thundermoon.DigitSupervisor, strategy: :one_for_one},
       {Thundermoon.Counter, name: Thundermoon.Counter}
     ]
 
