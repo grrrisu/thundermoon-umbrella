@@ -8,6 +8,18 @@ defmodule Thundermoon.Counter do
     GenServer.start_link(__MODULE__, :ok, opts)
   end
 
+  def get_digits() do
+    GenServer.call(__MODULE__, :get_digits)
+  end
+
+  def inc(digit) do
+    GenServer.cast(__MODULE__, {:inc, digit})
+  end
+
+  def dec(digit) do
+    GenServer.cast(__MODULE__, {:dec, digit})
+  end
+
   def init(:ok) do
     state =
       %{}
@@ -18,6 +30,32 @@ defmodule Thundermoon.Counter do
     {:ok, state}
   end
 
+  def handle_call(:get_digits, _from, state) do
+    digits = %{
+      digit_1: Digit.get(state.digit_1.pid),
+      digit_10: Digit.get(state.digit_10.pid),
+      digit_100: Digit.get(state.digit_100.pid)
+    }
+
+    {:reply, digits, state}
+  end
+
+  def handle_cast({:inc, digit}, state) do
+    state
+    |> get_digit(digit)
+    |> Digit.inc()
+
+    {:noreply, state}
+  end
+
+  def handle_cast({:dec, digit}, state) do
+    state
+    |> get_digit(digit)
+    |> Digit.dec()
+
+    {:noreply, state}
+  end
+
   def handle_info({:DOWN, ref, :process, _pid, _reason}, state) do
     {crashed_digit, _pid_ref} = find_digit(state, ref)
     new_state = create_digit(state, crashed_digit, 0)
@@ -26,6 +64,7 @@ defmodule Thundermoon.Counter do
   end
 
   def handle_info(msg, state) do
+    IO.puts("info")
     IO.inspect(msg)
     {:noreply, state}
   end
@@ -36,6 +75,11 @@ defmodule Thundermoon.Counter do
       |> elem(1)
       |> Map.get(:ref) == ref
     end)
+  end
+
+  defp get_digit(state, number) do
+    key = String.to_atom("digit_#{number}")
+    Map.get(state, key).pid
   end
 
   defp create_digit(state, key, value) do

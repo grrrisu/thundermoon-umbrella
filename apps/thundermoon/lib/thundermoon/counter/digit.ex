@@ -10,7 +10,21 @@ defmodule Thundermoon.Digit do
     Agent.start_link(fn -> 0 end)
   end
 
+  def get(pid) do
+    Agent.get(pid, & &1)
+  end
+
   def inc(pid) do
-    Agent.update(pid, fn _n -> raise "tschüsss" end)
+    Agent.update(pid, fn n ->
+      n + 1
+      # raise "tschüsss"
+    end)
+  end
+
+  def dec(pid) do
+    Agent.update(pid, fn n ->
+      n - 1
+      # raise "tschüsss"
+    end)
   end
 end

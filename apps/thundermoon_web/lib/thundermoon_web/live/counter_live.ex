@@ -3,10 +3,13 @@ defmodule ThundermoonWeb.CounterLive do
 
   import Canada.Can
 
+  alias Thundermoon.Counter
+
   alias ThundermoonWeb.CounterView
 
   def mount(session, socket) do
-    {:ok, socket}
+    digits = Counter.get_digits()
+    {:ok, assign(socket, digits: digits)}
   end
 
   def render(assigns) do
@@ -14,12 +17,19 @@ defmodule ThundermoonWeb.CounterLive do
   end
 
   def handle_event("inc", value, socket) do
-    IO.puts("inc")
+    Counter.inc(value)
+    send(self(), "update")
     {:noreply, socket}
   end
 
   def handle_event("dec", value, socket) do
-    IO.puts("dec")
+    Counter.dec(value)
+    send(self(), "update")
     {:noreply, socket}
+  end
+
+  def handle_info("update", socket) do
+    digits = Counter.get_digits()
+    {:noreply, assign(socket, digits: digits)}
   end
 end
