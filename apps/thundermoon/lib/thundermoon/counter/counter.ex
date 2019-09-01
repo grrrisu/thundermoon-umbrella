@@ -21,23 +21,16 @@ defmodule Thundermoon.Counter do
   end
 
   def init(:ok) do
-    state =
-      %{}
-      |> create_digit(:digit_1, 0)
-      |> create_digit(:digit_10, 0)
-      |> create_digit(:digit_100, 0)
+    {:ok, nil}
+  end
 
-    {:ok, state}
+  def handle_call(:get_digits, _from, nil) do
+    state = create()
+    {:reply, digits_to_map(state), state}
   end
 
   def handle_call(:get_digits, _from, state) do
-    digits = %{
-      digit_1: Digit.get(state.digit_1.pid),
-      digit_10: Digit.get(state.digit_10.pid),
-      digit_100: Digit.get(state.digit_100.pid)
-    }
-
-    {:reply, digits, state}
+    {:reply, digits_to_map(state), state}
   end
 
   def handle_cast({:inc, digit}, state) do
@@ -82,8 +75,23 @@ defmodule Thundermoon.Counter do
     Map.get(state, key).pid
   end
 
+  defp digits_to_map(state) do
+    %{
+      digit_1: Digit.get(state.digit_1.pid),
+      digit_10: Digit.get(state.digit_10.pid),
+      digit_100: Digit.get(state.digit_100.pid)
+    }
+  end
+
+  defp create() do
+    %{}
+    |> create_digit(:digit_1, 0)
+    |> create_digit(:digit_10, 0)
+    |> create_digit(:digit_100, 0)
+  end
+
   defp create_digit(state, key, value) do
-    child = %{id: Digit, start: {Digit, :start, [value]}}
+    child = %{id: Digit, start: {Digit, :start, [key, value]}}
     {:ok, pid} = DynamicSupervisor.start_child(DigitSupervisor, child)
 
     ref = Process.monitor(pid)
