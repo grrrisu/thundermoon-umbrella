@@ -18,6 +18,7 @@ defmodule Thundermoon.Digit do
   def inc(pid) do
     Agent.update(pid, fn state ->
       update(state, fn ->
+        if state.value == 9, do: raise("too big")
         state.value + 1
       end)
     end)
@@ -26,6 +27,7 @@ defmodule Thundermoon.Digit do
   def dec(pid) do
     Agent.update(pid, fn state ->
       update(state, fn ->
+        if state.value == 0, do: raise("too small")
         state.value - 1
       end)
     end)

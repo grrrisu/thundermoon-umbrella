@@ -34,22 +34,27 @@ defmodule Thundermoon.Counter do
   end
 
   def handle_cast({:inc, digit}, state) do
-    state
-    |> get_digit(digit)
-    |> Digit.inc()
-
+    execute_action(state, digit, &Digit.inc(&1))
     {:noreply, state}
   end
 
   def handle_cast({:dec, digit}, state) do
-    state
-    |> get_digit(digit)
-    |> Digit.dec()
+    execute_action(state, digit, &Digit.dec(&1))
 
     {:noreply, state}
   end
 
+  defp execute_action(state, digit, func) do
+    # execute in its own process to not crash as well if it fails
+    spawn(fn ->
+      state
+      |> get_digit(digit)
+      |> func.()
+    end)
+  end
+
   def handle_info({:DOWN, ref, :process, _pid, _reason}, state) do
+    IO.puts("DOWN {ref}")
     {crashed_digit, _pid_ref} = find_digit(state, ref)
     new_state = create_digit(state, crashed_digit, 0)
 
