@@ -4,10 +4,10 @@ defmodule Thundermoon.Digit do
 
   alias ThundermoonWeb.Endpoint
 
-  def start(key, value \\ 0) do
+  def start(counter, key, value \\ 0) do
     Agent.start(fn ->
       broadcast(key, value)
-      %{key: key, value: value}
+      %{counter: counter, key: key, value: value}
     end)
   end
 
@@ -17,20 +17,32 @@ defmodule Thundermoon.Digit do
 
   def inc(pid) do
     Agent.update(pid, fn state ->
-      update(state, fn ->
-        if state.value == 9, do: raise("too big")
-        state.value + 1
-      end)
+      update(state, fn -> compute_inc(state) end)
     end)
   end
 
   def dec(pid) do
     Agent.update(pid, fn state ->
-      update(state, fn ->
-        if state.value == 0, do: raise("too small")
-        state.value - 1
-      end)
+      update(state, fn -> compute_dec(state) end)
     end)
+  end
+
+  defp compute_inc(%{value: 9} = state) do
+    send(state.counter, {:overflow, [state.key, :inc]})
+    0
+  end
+
+  defp compute_inc(%{value: n}) do
+    n + 1
+  end
+
+  defp compute_dec(%{value: 0} = state) do
+    send(state.counter, {:overflow, [state.key, :dec]})
+    0
+  end
+
+  defp compute_dec(%{value: n}) do
+    n - 1
   end
 
   defp update(state, func) do

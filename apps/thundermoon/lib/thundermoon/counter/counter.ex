@@ -53,18 +53,41 @@ defmodule Thundermoon.Counter do
     end)
   end
 
-  def handle_info({:DOWN, ref, :process, _pid, _reason}, state) do
-    IO.puts("DOWN {ref}")
+  def handle_info({:DOWN, ref, :process, _pid, reason}, state) do
+    IO.inspect(reason)
     {crashed_digit, _pid_ref} = find_digit(state, ref)
     new_state = create_digit(state, crashed_digit, 0)
 
     {:noreply, new_state}
   end
 
+  def handle_info({:overflow, [digit, :inc]}, state) do
+    state
+    |> Map.get(bigger_digit(digit))
+    |> Map.get(:pid)
+    |> Digit.inc()
+
+    {:noreply, state}
+  end
+
+  def handle_info({:overflow, [_digit, :dec]}, state) do
+    raise "counter overflow"
+
+    {:noreply, state}
+  end
+
   def handle_info(msg, state) do
     IO.puts("info")
     IO.inspect(msg)
     {:noreply, state}
+  end
+
+  defp bigger_digit(crashed_digit) do
+    case crashed_digit do
+      :digit_1 -> :digit_10
+      :digit_10 -> :digit_100
+      :digit_100 -> raise "counter overflow"
+    end
   end
 
   defp find_digit(state, ref) do
@@ -96,7 +119,7 @@ defmodule Thundermoon.Counter do
   end
 
   defp create_digit(state, key, value) do
-    child = %{id: Digit, start: {Digit, :start, [key, value]}}
+    child = %{id: Digit, start: {Digit, :start, [self(), key, value]}}
     {:ok, pid} = DynamicSupervisor.start_child(DigitSupervisor, child)
 
     ref = Process.monitor(pid)
