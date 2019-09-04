@@ -21,12 +21,7 @@ defmodule Thundermoon.Counter do
   end
 
   def init(:ok) do
-    {:ok, nil}
-  end
-
-  def handle_call(:get_digits, _from, nil) do
-    state = create()
-    {:reply, digits_to_map(state), state}
+    {:ok, create()}
   end
 
   def handle_call(:get_digits, _from, state) do
