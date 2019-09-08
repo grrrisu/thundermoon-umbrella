@@ -39,6 +39,13 @@ defmodule Thundermoon.Counter do
     {:noreply, state}
   end
 
+  def terminate(reason, state) do
+    IO.puts("terminating with #{reason}")
+    Agent.stop(state.digit_1.pid)
+    Agent.stop(state.digit_10.pid)
+    Agent.stop(state.digit_100.pid)
+  end
+
   defp execute_action(state, digit, func) do
     # execute in its own process to not crash as well if it fails
     spawn(fn ->
@@ -48,8 +55,7 @@ defmodule Thundermoon.Counter do
     end)
   end
 
-  def handle_info({:DOWN, ref, :process, _pid, reason}, state) do
-    IO.inspect(reason)
+  def handle_info({:DOWN, ref, :process, _pid, _reason}, state) do
     {crashed_digit, _pid_ref} = find_digit(state, ref)
     new_state = create_digit(state, crashed_digit, 0)
 
