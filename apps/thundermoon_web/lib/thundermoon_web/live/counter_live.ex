@@ -3,6 +3,7 @@ defmodule ThundermoonWeb.CounterLive do
 
   import Canada.Can
 
+  alias Thundermoon.CounterRealm
   alias Thundermoon.Counter
 
   alias ThundermoonWeb.CounterView
@@ -10,6 +11,7 @@ defmodule ThundermoonWeb.CounterLive do
 
   def mount(_session, socket) do
     Endpoint.subscribe("counter")
+    :ok = CounterRealm.create()
     digits = Counter.get_digits()
     {:ok, assign(socket, digits: digits)}
   end

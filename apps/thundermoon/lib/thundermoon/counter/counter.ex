@@ -1,4 +1,15 @@
 defmodule Thundermoon.Counter do
+  @moduledoc """
+  This module provides functions to read and change the counter.
+  It acts as a single point of entry to the counter.
+  It takes care that only one operation is executed and that
+  after a change a read operation will reflect this changes:
+  ```
+  assert %{digit_1: 0, digit_10: 0, digit_100: 0} = Counter.get_digits()
+  Counter.inc(10)
+  assert %{digit_1: 0, digit_10: 1, digit_100: 0} = Counter.get_digits()
+  ```
+  """
   use GenServer
 
   alias Thundermoon.Digit
@@ -21,12 +32,7 @@ defmodule Thundermoon.Counter do
   end
 
   def init(:ok) do
-    {:ok, nil}
-  end
-
-  def handle_call(:get_digits, _from, nil) do
-    state = create()
-    {:reply, digits_to_map(state), state}
+    {:ok, create()}
   end
 
   def handle_call(:get_digits, _from, state) do
@@ -44,17 +50,21 @@ defmodule Thundermoon.Counter do
     {:noreply, state}
   end
 
-  defp execute_action(state, digit, func) do
-    # execute in its own process to not crash as well if it fails
-    spawn(fn ->
-      state
-      |> get_digit(digit)
-      |> func.()
-    end)
+  def terminate(reason, state) do
+    IO.puts("terminating with #{reason}")
+    Agent.stop(state.digit_1.pid)
+    Agent.stop(state.digit_10.pid)
+    Agent.stop(state.digit_100.pid)
   end
 
-  def handle_info({:DOWN, ref, :process, _pid, reason}, state) do
-    IO.inspect(reason)
+  defp execute_action(state, number, func) do
+    case get_digit(state, number) do
+      {:ok, digit} -> func.(digit.pid)
+      :error -> nil
+    end
+  end
+
+  def handle_info({:DOWN, ref, :process, _pid, _reason}, state) do
     {crashed_digit, _pid_ref} = find_digit(state, ref)
     new_state = create_digit(state, crashed_digit, 0)
 
@@ -100,7 +110,7 @@ defmodule Thundermoon.Counter do
 
   defp get_digit(state, number) do
     key = String.to_atom("digit_#{number}")
-    Map.get(state, key).pid
+    Map.fetch(state, key)
   end
 
   defp digits_to_map(state) do
