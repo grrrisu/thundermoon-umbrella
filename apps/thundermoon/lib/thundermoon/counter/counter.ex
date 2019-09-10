@@ -10,7 +10,8 @@ defmodule Thundermoon.Counter do
   assert %{digit_1: 0, digit_10: 1, digit_100: 0} = Counter.get_digits()
   ```
   """
-  use GenServer
+  # GenServer is temporary as it will be restarted by the counter realm
+  use GenServer, restart: :temporary
 
   alias Thundermoon.Digit
   alias Thundermoon.DigitSupervisor
@@ -19,16 +20,16 @@ defmodule Thundermoon.Counter do
     GenServer.start_link(__MODULE__, :ok, opts)
   end
 
-  def get_digits() do
-    GenServer.call(__MODULE__, :get_digits)
+  def get_digits(pid) do
+    GenServer.call(pid, :get_digits)
   end
 
-  def inc(digit) do
-    GenServer.cast(__MODULE__, {:inc, digit})
+  def inc(pid, digit) do
+    GenServer.cast(pid, {:inc, digit})
   end
 
-  def dec(digit) do
-    GenServer.cast(__MODULE__, {:dec, digit})
+  def dec(pid, digit) do
+    GenServer.cast(pid, {:dec, digit})
   end
 
   def init(:ok) do
@@ -46,12 +47,12 @@ defmodule Thundermoon.Counter do
 
   def handle_cast({:dec, digit}, state) do
     execute_action(state, digit, &Digit.dec(&1))
-
     {:noreply, state}
   end
 
   def terminate(reason, state) do
-    IO.puts("terminating with #{reason}")
+    IO.puts("terminating with")
+    IO.inspect(reason)
     Agent.stop(state.digit_1.pid)
     Agent.stop(state.digit_10.pid)
     Agent.stop(state.digit_100.pid)

@@ -5,6 +5,8 @@
 * Use Nginx as server service (not as docker container)
   with Letsencrypt (not as docker container)
 
+* Counter Example
+
 ## 0.2.0
 
 * Chat with Live View
