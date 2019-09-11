@@ -1,38 +1,15 @@
 defmodule Thundermoon.CounterRealm do
   @moduledoc """
-  This is the root of the counter realm.
-  It acts as a single point of entry to the counter.
+  This is the static part of the counter realm.
+  It creates and recreates the counter.
   """
   use GenServer
 
-  alias Thundermoon.Counter
+  alias Thundermoon.CounterRoot
+  alias Thundermoon.CounterSupervisor
 
   def start_link(opts) do
     GenServer.start_link(__MODULE__, :ok, opts)
-  end
-
-  def create() do
-    GenServer.call(__MODULE__, :create)
-  end
-
-  def get_counter() do
-    GenServer.call(__MODULE__, :get_counter)
-  end
-
-  def get_digits() do
-    get_counter() |> Counter.get_digits()
-  end
-
-  def inc(digit) do
-    get_counter() |> Counter.inc(digit)
-  end
-
-  def dec(digit) do
-    get_counter() |> Counter.dec(digit)
-  end
-
-  def reset() do
-    get_counter() |> Counter.reset()
   end
 
   def init(:ok) do
@@ -65,7 +42,9 @@ defmodule Thundermoon.CounterRealm do
   end
 
   defp create_counter do
-    {:ok, pid} = DynamicSupervisor.start_child(Thundermoon.CounterSupervisor, Thundermoon.Counter)
+    {:ok, pid} =
+      DynamicSupervisor.start_child(CounterSupervisor, CounterRoot)
+
     ref = Process.monitor(pid)
     %{ref: ref, pid: pid}
   end
