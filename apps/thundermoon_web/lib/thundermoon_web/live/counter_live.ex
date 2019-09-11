@@ -4,6 +4,7 @@ defmodule ThundermoonWeb.CounterLive do
   import Canada.Can
 
   alias Thundermoon.CounterRealm
+  alias Thundermoon.Counter
   alias Thundermoon.Repo
   alias Thundermoon.Accounts.User
 
@@ -36,16 +37,12 @@ defmodule ThundermoonWeb.CounterLive do
     if socket.assigns.current_user |> can?(:reset, Counter) do
       CounterRealm.reset()
     end
+
     {:noreply, socket}
   end
 
   def handle_info(%{event: "update", topic: "counter", payload: new_digit}, socket) do
     new_digits = Map.merge(socket.assigns.digits, new_digit)
     {:noreply, assign(socket, %{digits: new_digits})}
-  end
-
-  def handle_info("update", socket) do
-    digits = CounterRealm.get_digits()
-    {:noreply, assign(socket, digits: digits)}
   end
 end

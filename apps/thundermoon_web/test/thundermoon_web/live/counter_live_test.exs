@@ -5,7 +5,7 @@ defmodule ThundermoonWeb.CounterLiveTest do
 
   import ThundermoonWeb.AuthSupport
 
-  alias Thundermoon.Counter
+  alias Thundermoon.CounterRealm
 
   def login_as_member(%{conn: conn}) do
     conn = login_as(conn, %{username: "crumb"})
@@ -32,6 +32,7 @@ defmodule ThundermoonWeb.CounterLiveTest do
       assert html_response(conn, 200) =~ "<h1>Counter</h1>"
       {:ok, _view, html} = live(conn)
       assert html =~ "<h1>Counter</h1>"
+      CounterRealm.reset()
     end
 
     test "inc digit 10", %{conn: conn} do
@@ -39,7 +40,7 @@ defmodule ThundermoonWeb.CounterLiveTest do
       {:ok, view, _html} = live(conn, "/counter")
       render_click(view, :inc, "10")
       assert_receive(%{event: "update", payload: %{digit_10: 1,}})
-      Counter.reset()
+      CounterRealm.reset()
     end
 
     test "dec digit 10", %{conn: conn} do
@@ -49,7 +50,7 @@ defmodule ThundermoonWeb.CounterLiveTest do
       assert_receive(%{event: "update", payload: %{digit_10: 1,}})
       render_click(view, :dec, "10")
       assert_receive(%{event: "update", payload: %{digit_10: 0,}})
-      Counter.reset()
+      CounterRealm.reset()
     end
 
     # test "sees users", %{conn: conn} do
