@@ -5,15 +5,18 @@ defmodule ThundermoonWeb.CounterLive do
 
   alias Thundermoon.CounterRealm
   alias Thundermoon.Counter
+  alias Thundermoon.Repo
+  alias Thundermoon.Accounts.User
 
   alias ThundermoonWeb.CounterView
   alias ThundermoonWeb.Endpoint
 
-  def mount(_session, socket) do
+  def mount(session, socket) do
+    user = Repo.get!(User, session[:current_user_id])
     Endpoint.subscribe("counter")
     :ok = CounterRealm.create()
     digits = Counter.get_digits()
-    {:ok, assign(socket, digits: digits)}
+    {:ok, assign(socket, current_user: user, digits: digits)}
   end
 
   def render(assigns) do
@@ -27,6 +30,13 @@ defmodule ThundermoonWeb.CounterLive do
 
   def handle_event("dec", value, socket) when value in ["1", "10", "100"] do
     Counter.dec(value)
+    {:noreply, socket}
+  end
+
+  def handle_event("reset", _value, socket) do
+    if socket.assigns.current_user |> can?(:reset, Counter) do
+      Counter.reset()
+    end
     {:noreply, socket}
   end
 

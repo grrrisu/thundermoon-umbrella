@@ -31,7 +31,12 @@ defmodule Thundermoon.Counter do
     GenServer.cast(__MODULE__, {:dec, digit})
   end
 
+  def reset() do
+    GenServer.cast(__MODULE__, :reset)
+  end
+
   def init(:ok) do
+    IO.puts "create"
     {:ok, create()}
   end
 
@@ -50,8 +55,13 @@ defmodule Thundermoon.Counter do
     {:noreply, state}
   end
 
+  def handle_cast(:reset, state) do
+    {:stop, "reset", state}
+  end
+
   def terminate(reason, state) do
-    IO.puts("terminating with #{reason}")
+    IO.puts("terminating with:")
+    IO.inspect(reason)
     Agent.stop(state.digit_1.pid)
     Agent.stop(state.digit_10.pid)
     Agent.stop(state.digit_100.pid)
