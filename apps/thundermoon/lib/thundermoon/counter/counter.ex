@@ -1,7 +1,6 @@
 defmodule Thundermoon.Counter do
   @moduledoc """
   This module provides functions to read and change the counter.
-  It acts as a single point of entry to the counter.
   It takes care that only one operation is executed and that
   after a change a read operation will reflect this changes:
   ```
@@ -32,6 +31,10 @@ defmodule Thundermoon.Counter do
     GenServer.cast(pid, {:dec, digit})
   end
 
+  def reset(pid) do
+    GenServer.cast(pid, :reset)
+  end
+
   def init(:ok) do
     {:ok, create()}
   end
@@ -50,8 +53,12 @@ defmodule Thundermoon.Counter do
     {:noreply, state}
   end
 
+  def handle_cast(:reset, state) do
+    {:stop, "reset", state}
+  end
+
   def terminate(reason, state) do
-    IO.puts("terminating with")
+    IO.puts("terminating with:")
     IO.inspect(reason)
     Agent.stop(state.digit_1.pid)
     Agent.stop(state.digit_10.pid)

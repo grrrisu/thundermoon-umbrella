@@ -1,4 +1,8 @@
 defmodule Thundermoon.CounterRealm do
+  @moduledoc """
+  This is the root of the counter realm.
+  It acts as a single point of entry to the counter.
+  """
   use GenServer
 
   alias Thundermoon.Counter
@@ -25,6 +29,10 @@ defmodule Thundermoon.CounterRealm do
 
   def dec(digit) do
     get_counter() |> Counter.dec(digit)
+  end
+
+  def reset() do
+    get_counter() |> Counter.reset()
   end
 
   def init(:ok) do
