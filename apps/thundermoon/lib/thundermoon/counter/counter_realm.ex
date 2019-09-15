@@ -42,8 +42,7 @@ defmodule Thundermoon.CounterRealm do
   end
 
   defp create_counter do
-    {:ok, pid} =
-      DynamicSupervisor.start_child(CounterSupervisor, CounterRoot)
+    {:ok, pid} = DynamicSupervisor.start_child(CounterSupervisor, CounterRoot)
 
     ref = Process.monitor(pid)
     %{ref: ref, pid: pid}

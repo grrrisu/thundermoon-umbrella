@@ -7,7 +7,7 @@ describe("counter page", function() {
   });
 
   afterEach(function() {
-    //cy.contains("Clear all messages").click();
+    cy.contains("reset").click();
     cy.contains("Logout").click();
   });
 
@@ -45,9 +45,6 @@ describe("counter page", function() {
     cy.get("#digit-10-inc").click();
     cy.get("#digit-10").should("have.text", "0");
     cy.get("#digit-100").should("have.text", "1");
-
-    cy.get("#digit-100-dec").click();
-    cy.get("#digit-100").should("have.text", "0");
   });
 
   it("dec to next digit should reset counter", function () {

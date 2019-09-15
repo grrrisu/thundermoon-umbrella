@@ -80,7 +80,6 @@ defmodule Thundermoon.CounterRoot do
 
   def handle_info(msg, state) do
     IO.puts("info")
-    IO.inspect(msg)
     {:noreply, state}
   end
 
