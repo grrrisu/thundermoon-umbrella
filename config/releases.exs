@@ -6,6 +6,7 @@ config :thundermoon_web, ThundermoonWeb.Endpoint,
   http: [:inet6, port: String.to_integer(System.get_env("PORT", "4000"))],
   secret_key_base: System.fetch_env!("SECRET_KEY_BASE"),
   live_view: [signing_salt: System.fetch_env!("SECRET_LIVE_VIEW_KEY")],
+  check_origin: ["https://thundermoon.zero-x.net", "//localhost:4000"],
   server: true
 
 config :thundermoon, Thundermoon.Repo,

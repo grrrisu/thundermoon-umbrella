@@ -35,8 +35,9 @@ docker-compose down
 
 To start the application
 
+* Copy `config/dev.secret.example.exs` to `config/dev.secret.exs` and replace ueberauth `client_id` and `client_secret` with your Github App credentials
 * Install dependencies with `mix deps.get`
-* Create and migrate your database with `mix ecto.create`
+* Create and migrate your database with `mix do ecto.create, ecto.migrate`
 * Install Node.js dependencies with `cd apps/thundermoon_apps/assets && npm install`
 * Start Phoenix endpoint with `mix phx.server`
 
