@@ -1,0 +1,31 @@
+<h1>Counter</h1>
+
+<div class="counter">
+  <div class="inc-button">
+    <a href="#" id="digit-100-inc" class="button" phx-value="100" phx-click="inc">+</a>
+  </div>
+  <div id="digit-100" class="digit"><%= @digits.digit_100 %></div>
+  <div class="dec-button">
+    <a href="#" id="digit-100-dec" class="button" phx-value="100" phx-click="dec">-</a>
+  </div>
+
+  <div class="inc-button">
+    <a href="#" id="digit-10-inc" class="button" phx-value="10" phx-click="inc">+</a>
+  </div>
+  <div id="digit-10" class="digit"><%= @digits.digit_10 %></div>
+  <div class="dec-button">
+    <a href="#" id="digit-10-dec" class="button" phx-value="10" phx-click="dec">-</a>
+  </div>
+
+  <div class="inc-button">
+    <a href="#" id="digit-1-inc" class="button" phx-value="1" phx-click="inc">+</a>
+  </div>
+  <div id="digit-1" class="digit"><%= @digits.digit_1 %></div>
+  <div class="dec-button">
+    <a href="#" id="digit-1-dec" class="button" phx-value="1" phx-click="dec">-</a>
+  </div>
+</div>
+
+<%= if can?(@current_user, :reset, Thundermoon.Counter) do %>
+  <a href="#" phx-click="reset">reset</a>
+<% end %>
