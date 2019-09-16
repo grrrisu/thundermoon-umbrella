@@ -10,23 +10,23 @@ defmodule Thundermoon.Counter do
     GenServer.call(CounterRealm, :create)
   end
 
-  def get_counter() do
-    GenServer.call(CounterRealm, :get_counter)
+  def get_root() do
+    GenServer.call(CounterRealm, :get_root)
   end
 
   def get_digits() do
-    get_counter() |> GenServer.call(:get_digits)
+    get_root() |> GenServer.call(:get_digits)
   end
 
   def inc(digit) do
-    get_counter() |> GenServer.cast({:inc, digit})
+    get_root() |> GenServer.cast({:inc, digit})
   end
 
   def dec(digit) do
-    get_counter() |> GenServer.cast({:dec, digit})
+    get_root() |> GenServer.cast({:dec, digit})
   end
 
   def reset() do
-    get_counter() |> GenServer.call(:reset)
+    get_root() |> GenServer.call(:reset)
   end
 end
