@@ -26,4 +26,6 @@
   </div>
 </div>
 
-<a href="#" phx-click="reset">reset</a>
+<%= if can?(@current_user, :reset, Thundermoon.Counter) do %>
+  <a href="#" phx-click="reset">reset</a>
+<% end %>

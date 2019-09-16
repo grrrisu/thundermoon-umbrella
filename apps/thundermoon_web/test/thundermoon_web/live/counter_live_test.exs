@@ -53,33 +53,26 @@ defmodule ThundermoonWeb.CounterLiveTest do
       Counter.reset()
     end
 
-    # test "sees users", %{conn: conn} do
-    #   {:ok, _view, html} = live(conn, "/counter")
-    #   assert html =~ "<div class=\"user\">crumb</div>"
-    # end
-
-    # test "can not clear messages", %{conn: conn} do
-    #   ChatMessages.add(%{user: "franquin", text: "Bonjour"})
-    #   {:ok, view, html} = live(conn, "/counter")
-    #   assert html =~ "Bonjour"
-    #   render_click(view, :clear)
-    #   conn = get(conn, "/counter")
-    #   assert html_response(conn, 200) =~ "Bonjour"
-    #   ChatMessages.clear()
-    # end
+    test "can not reset the counter", %{conn: conn} do
+      @endpoint.subscribe("counter")
+      {:ok, view, html} = live(conn, "/counter")
+      refute html =~ "reset"
+      render_click(view, :reset)
+      refute_receive(%{event: "update", payload: %{}})
+    end
   end
 
-  # describe "an admin" do
-  #   setup [:login_as_admin]
+  describe "an admin" do
+    setup [:login_as_admin]
 
-  #   test "can clear all messages", %{conn: conn} do
-  #     ChatMessages.add(%{user: "franquin", text: "Bonjour"})
-  #     {:ok, view, html} = live(conn, "/counter")
-  #     assert html =~ "Bonjour"
-  #     render_click(view, :clear)
-  #     conn = get(conn, "/counter")
-  #     refute html_response(conn, 200) =~ "Bonjour"
-  #     ChatMessages.clear()
-  #   end
-  # end
+    test "can reset the counter", %{conn: conn} do
+      @endpoint.subscribe("counter")
+      {:ok, view, html} = live(conn, "/counter")
+      assert html =~ "reset"
+      render_click(view, :reset)
+      assert_receive(%{event: "update", payload: %{digit_1: 0}})
+      assert_receive(%{event: "update", payload: %{digit_10: 0}})
+      assert_receive(%{event: "update", payload: %{digit_100: 0}})
+    end
+  end
 end
