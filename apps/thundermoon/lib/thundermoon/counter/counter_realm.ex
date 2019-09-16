@@ -27,8 +27,8 @@ defmodule Thundermoon.CounterRealm do
     {:reply, {:ok, state.pid}, state}
   end
 
-  def handle_call(:get_counter, _from, state) do
     {:reply, state.pid, state}
+  def handle_call(:get_root, _from, state) do
   end
 
   def handle_info({:DOWN, ref, :process, _pid, _reason}, state) do
