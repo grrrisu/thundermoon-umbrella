@@ -31,7 +31,7 @@
     <a href="#" phx-click="toggle-sim-start" phx-value="<%= @label_sim_start %>" class="button"><%= @label_sim_start %></a>
 
     <%= if can?(@current_user, :reset, Thundermoon.Counter) do %>
-      <a href="#" phx-click="reset">reset</a>
+      <a href="#" phx-click="reset" class="button button-warning">reset</a>
     <% end %>
   </div>
 </div>
