@@ -60,6 +60,15 @@ defmodule ThundermoonWeb.CounterLiveTest do
       render_click(view, :reset)
       refute_receive(%{event: "update", payload: %{}})
     end
+
+    test "can start and stop sim", %{conn: conn} do
+      @endpoint.subscribe("counter")
+      {:ok, view, _html} = live(conn, "/counter")
+      render_click(view, "toggle-sim-start", "start")
+      assert_receive(%{event: "sim", payload: %{started: true}})
+      render_click(view, "toggle-sim-start", "stop")
+      assert_receive(%{event: "sim", payload: %{started: false}})
+    end
   end
 
   describe "an admin" do
