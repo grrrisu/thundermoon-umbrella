@@ -15,8 +15,9 @@ defmodule ThundermoonWeb.CounterLive do
     Endpoint.subscribe("counter")
     {:ok, _} = Counter.create()
     digits = Counter.get_digits()
-    label_sim_start = if Counter.started?(), do: "stop", else: "start"
-    {:ok, assign(socket, current_user: user, digits: digits, label_sim_start: label_sim_start)}
+
+    socket = set_label_sim_start(socket, Counter.started?())
+    {:ok, assign(socket, current_user: user, digits: digits)}
   end
 
   def render(assigns) do
@@ -54,5 +55,14 @@ defmodule ThundermoonWeb.CounterLive do
   def handle_info(%{event: "update", topic: "counter", payload: new_digit}, socket) do
     new_digits = Map.merge(socket.assigns.digits, new_digit)
     {:noreply, assign(socket, %{digits: new_digits})}
+  end
+
+  def handle_info(%{event: "sim", topic: "counter", payload: %{started: started}}, socket) do
+    {:noreply, set_label_sim_start(socket, started)}
+  end
+
+  defp set_label_sim_start(socket, started) do
+    label = if started, do: "stop", else: "start"
+    assign(socket, label_sim_start: label)
   end
 end

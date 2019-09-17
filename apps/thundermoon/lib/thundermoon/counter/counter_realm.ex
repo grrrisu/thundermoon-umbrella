@@ -8,6 +8,8 @@ defmodule Thundermoon.CounterRealm do
   alias Thundermoon.CounterRoot
   alias Thundermoon.CounterSupervisor
 
+  alias ThundermoonWeb.Endpoint
+
   def start_link(opts) do
     GenServer.start_link(__MODULE__, :ok, opts)
   end
@@ -37,6 +39,7 @@ defmodule Thundermoon.CounterRealm do
 
   def handle_cast(:start, %{sim: nil} = state) do
     send(self(), :sim_counter)
+    Endpoint.broadcast("counter", "sim", %{started: true})
     {:noreply, state}
   end
 
@@ -52,6 +55,7 @@ defmodule Thundermoon.CounterRealm do
 
   def handle_cast(:stop, %{sim: sim} = state) do
     Process.cancel_timer(sim)
+    Endpoint.broadcast("counter", "sim", %{started: false})
     {:noreply, %{state | sim: nil}}
   end
 
