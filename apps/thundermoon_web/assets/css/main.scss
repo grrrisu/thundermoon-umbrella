@@ -24,6 +24,12 @@ footer {
   margin-right: auto;
 }
 
+.button-warning {
+  color: darken($color-warning, 40%);
+  background-color: $color-warning;
+  border-color: $color-warning;
+}
+
 .avatar-big {
   width: 150px;
   height: 150px;
