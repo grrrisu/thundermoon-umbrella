@@ -18,6 +18,10 @@ defmodule Thundermoon.Counter do
     GenServer.cast(CounterRealm, :stop)
   end
 
+  def started?() do
+    GenServer.call(CounterRealm, :started?)
+  end
+
   def get_root() do
     GenServer.call(CounterRealm, :get_root)
   end

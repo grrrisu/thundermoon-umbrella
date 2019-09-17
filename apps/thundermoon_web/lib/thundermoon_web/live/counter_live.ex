@@ -15,7 +15,8 @@ defmodule ThundermoonWeb.CounterLive do
     Endpoint.subscribe("counter")
     {:ok, _} = Counter.create()
     digits = Counter.get_digits()
-    {:ok, assign(socket, current_user: user, digits: digits)}
+    label_sim_start = if Counter.started?(), do: "stop", else: "start"
+    {:ok, assign(socket, current_user: user, digits: digits, label_sim_start: label_sim_start)}
   end
 
   def render(assigns) do
@@ -29,6 +30,16 @@ defmodule ThundermoonWeb.CounterLive do
 
   def handle_event("dec", value, socket) when value in ["1", "10", "100"] do
     Counter.dec(value)
+    {:noreply, socket}
+  end
+
+  def handle_event("toggle-sim-start", "start", socket) do
+    Counter.start()
+    {:noreply, socket}
+  end
+
+  def handle_event("toggle-sim-start", "stop", socket) do
+    Counter.stop()
     {:noreply, socket}
   end
 

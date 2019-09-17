@@ -31,8 +31,12 @@ defmodule Thundermoon.CounterRealm do
     {:reply, state.root.pid, state}
   end
 
+  def handle_call(:started?, _from, %{sim: sim} = state) do
+    {:reply, not is_nil(sim), state}
+  end
+
   def handle_cast(:start, %{sim: nil} = state) do
-    Process.send(self(), :sim_counter, 1000)
+    send(self(), :sim_counter)
     {:noreply, state}
   end
 
@@ -52,7 +56,7 @@ defmodule Thundermoon.CounterRealm do
   end
 
   def handle_info(:sim_counter, state) do
-    CounterRoot.inc(state.root.pid, 1)
+    GenServer.cast(state.root.pid, {:inc, 1})
     counter_sim = Process.send_after(self(), :sim_counter, 1000)
     {:noreply, %{state | sim: counter_sim}}
   end
