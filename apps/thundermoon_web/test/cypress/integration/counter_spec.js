@@ -82,5 +82,5 @@ describe("counter page", function() {
     cy.contains("start").click();
     cy.get("#digit-1").should("have.text", "1");
     cy.contains("stop").click();
-  })
+  });
 });
