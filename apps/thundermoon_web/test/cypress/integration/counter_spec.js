@@ -4,15 +4,15 @@ describe("counter page", function() {
 
   beforeEach(function() {
     cy.visit("/auth/integration?external_user_id=456");
+    cy.visit("/counter");
+    cy.contains("reset").click();
   });
 
   afterEach(function() {
-    cy.contains("reset").click();
     cy.contains("Logout").click();
   });
 
   it("inc and dec all digits", function() {
-    cy.visit("/counter");
     cy.get("#digit-1").should("have.text", "0");
     cy.get("#digit-1-inc").click();
     cy.get("#digit-1").should("have.text", "1");
@@ -32,8 +32,7 @@ describe("counter page", function() {
     cy.get("#digit-100").should("have.text", "0");
   });
 
-  it("inc to next digit", function () {
-    cy.visit("/counter");
+  it("inc to next digit", function() {
     cy.get("#digit-10").should("have.text", "0");
     cy.get("#digit-100").should("have.text", "0");
 
@@ -47,8 +46,7 @@ describe("counter page", function() {
     cy.get("#digit-100").should("have.text", "1");
   });
 
-  it("dec to next digit should reset counter", function () {
-    cy.visit("/counter");
+  it("dec to next digit should reset counter", function() {
     cy.get("#digit-1-inc").click();
     cy.get("#digit-1").should("have.text", "1");
     cy.get("#digit-10-inc").click();
@@ -63,4 +61,26 @@ describe("counter page", function() {
     cy.get("#digit-10").should("have.text", "0");
     cy.get("#digit-100").should("have.text", "0");
   });
+
+  it("reset counter", function() {
+    cy.get("#digit-1-inc").click();
+    cy.get("#digit-1").should("have.text", "1");
+    cy.get("#digit-10-inc").click();
+    cy.get("#digit-10").should("have.text", "1");
+    cy.get("#digit-100-inc").click();
+    cy.get("#digit-100").should("have.text", "1");
+
+    cy.contains("reset").click();
+
+    cy.get("#digit-1").should("have.text", "0");
+    cy.get("#digit-10").should("have.text", "0");
+    cy.get("#digit-100").should("have.text", "0");
+  });
+
+  it("start counter sim", function() {
+    cy.get("#digit-1").should("have.text", "0");
+    cy.contains("start").click();
+    cy.get("#digit-1").should("have.text", "1");
+    cy.contains("stop").click();
+  })
 });
