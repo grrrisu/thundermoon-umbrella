@@ -1,10 +1,20 @@
+.counter-wrapper {
+  display: grid;
+  align-items: center;
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.counter-controls {
+}
+
 .counter {
   display: grid;
-  grid-gap: 10px 10px;
+  grid-gap: 0.5rem 0.5rem;
   grid-template-columns: repeat(3, 5rem);
   grid-template-rows: 5rem 7rem 5rem;
   justify-content: start;
   align-items: center;
+
   justify-items: center;
 
   .inc-button {
