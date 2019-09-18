@@ -5,21 +5,22 @@ defmodule Thundermoon.Counter do
   """
 
   alias Thundermoon.CounterRealm
+  alias Thundermoon.CounterSimulation
 
   def create() do
     GenServer.call(CounterRealm, :create)
   end
 
   def start() do
-    GenServer.cast(CounterRealm, :start)
+    GenServer.cast(CounterSimulation, :start)
   end
 
   def stop() do
-    GenServer.cast(CounterRealm, :stop)
+    GenServer.cast(CounterSimulation, :stop)
   end
 
   def started?() do
-    GenServer.call(CounterRealm, :started?)
+    GenServer.call(CounterSimulation, :started?)
   end
 
   def get_root() do
