@@ -1,6 +1,6 @@
 # Changelog
 
-## 0.3.0
+## 0.2.1
 
 * Use Nginx as server service (not as docker container)
   with Letsencrypt (not as docker container)
@@ -10,6 +10,8 @@
 * CSS variables to define colors
 
 * Fix separate set current_user and check for member area
+
+* Fix clear input field after sending chat message
 
 ## 0.2.0
 
