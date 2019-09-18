@@ -16,7 +16,7 @@ defmodule ThundermoonWeb.ChatLive do
     if connected?(socket), do: subscribe(user)
     messages = ChatMessages.list()
     users = extract_users(Presence.list("chat"))
-    {:ok, assign(socket, %{current_user: user, messages: messages, users: users})}
+    {:ok, assign(socket, %{current_user: user, text: "", messages: messages, users: users})}
   end
 
   def render(assigns) do
@@ -29,7 +29,7 @@ defmodule ThundermoonWeb.ChatLive do
     message = %{user: username, text: text}
     ChatMessages.add(message)
     Endpoint.broadcast("chat", "send", message)
-    {:noreply, socket}
+    {:noreply, assign(socket, %{text: "trigger js hook"})}
   end
 
   def handle_event("clear", _value, socket) do

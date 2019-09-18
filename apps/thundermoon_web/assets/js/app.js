@@ -11,9 +11,17 @@ import css from "../css/app.scss";
 //
 import "phoenix_html";
 
+import {Socket} from "phoenix";
 import LiveSocket from "phoenix_live_view";
 
-let liveSocket = new LiveSocket("/live");
+let Hooks = {};
+Hooks.ChatText = {
+  updated() {
+    this.el.value = "";
+  }
+}
+
+let liveSocket = new LiveSocket("/live", Socket, {hooks: Hooks});
 liveSocket.connect();
 
 // Import local files
