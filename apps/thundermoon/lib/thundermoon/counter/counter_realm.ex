@@ -8,8 +8,6 @@ defmodule Thundermoon.CounterRealm do
   alias Thundermoon.CounterRoot
   alias Thundermoon.CounterSupervisor
 
-  alias ThundermoonWeb.Endpoint
-
   def start_link(opts) do
     GenServer.start_link(__MODULE__, :ok, opts)
   end
@@ -17,7 +15,7 @@ defmodule Thundermoon.CounterRealm do
   def init(:ok) do
     # we don't create the counter immediately as
     # the endpoint pubsub is not started at this point
-    {:ok, %{root: nil, sim: nil}}
+    {:ok, %{root: nil}}
   end
 
   def handle_call(:create, _from, %{root: nil} = state) do
@@ -31,38 +29,6 @@ defmodule Thundermoon.CounterRealm do
 
   def handle_call(:get_root, _from, state) do
     {:reply, state.root.pid, state}
-  end
-
-  def handle_call(:started?, _from, %{sim: sim} = state) do
-    {:reply, not is_nil(sim), state}
-  end
-
-  def handle_cast(:start, %{sim: nil} = state) do
-    send(self(), :sim_counter)
-    Endpoint.broadcast("counter", "sim", %{started: true})
-    {:noreply, state}
-  end
-
-  def handle_cast(:start, state) do
-    # already running
-    {:noreply, state}
-  end
-
-  def handle_cast(:stop, %{sim: nil} = state) do
-    # already stopped
-    {:noreply, state}
-  end
-
-  def handle_cast(:stop, %{sim: sim} = state) do
-    Process.cancel_timer(sim)
-    Endpoint.broadcast("counter", "sim", %{started: false})
-    {:noreply, %{state | sim: nil}}
-  end
-
-  def handle_info(:sim_counter, state) do
-    GenServer.cast(state.root.pid, {:inc, 1})
-    counter_sim = Process.send_after(self(), :sim_counter, 1000)
-    {:noreply, %{state | sim: counter_sim}}
   end
 
   def handle_info({:DOWN, ref, :process, _pid, _reason}, state) do
