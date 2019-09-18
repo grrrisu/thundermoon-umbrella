@@ -5,7 +5,11 @@
 * Use Nginx as server service (not as docker container)
   with Letsencrypt (not as docker container)
 
-* Counter Example
+* Counter Example, with realm, root, context, simulation modules
+
+* CSS variables to define colors
+
+* Fix separate set current_user and check for member area
 
 ## 0.2.0
 

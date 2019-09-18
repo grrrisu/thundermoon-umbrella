@@ -8,6 +8,7 @@ defmodule ThundermoonWeb.Router do
     plug Phoenix.LiveView.Flash
     plug :protect_from_forgery
     plug :put_secure_browser_headers
+    plug ThundermoonWeb.AuthPlug
   end
 
   pipeline :api do
@@ -20,7 +21,7 @@ defmodule ThundermoonWeb.Router do
 
   pipeline :private do
     plug :browser
-    plug ThundermoonWeb.AuthPlug
+    plug ThundermoonWeb.MemberareaPlug
   end
 
   scope "/", ThundermoonWeb do
