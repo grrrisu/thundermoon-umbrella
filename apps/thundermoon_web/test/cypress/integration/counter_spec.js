@@ -32,7 +32,7 @@ describe("counter page", function() {
     cy.get("#digit-100").should("have.text", "0");
   });
 
-  it("inc to next digit", function() {
+  it("inc next digit", function() {
     cy.get("#digit-10").should("have.text", "0");
     cy.get("#digit-100").should("have.text", "0");
 
@@ -46,7 +46,7 @@ describe("counter page", function() {
     cy.get("#digit-100").should("have.text", "1");
   });
 
-  it("dec to next digit should reset counter", function() {
+  it("dec same digit should reset counter", function() {
     cy.get("#digit-1-inc").click();
     cy.get("#digit-1").should("have.text", "1");
     cy.get("#digit-10-inc").click();
@@ -59,6 +59,17 @@ describe("counter page", function() {
 
     cy.get("#digit-1").should("have.text", "0");
     cy.get("#digit-10").should("have.text", "0");
+    cy.get("#digit-100").should("have.text", "0");
+  });
+
+  it("dec next digit", function() {
+    cy.get("#digit-100-inc").click();
+    cy.get("#digit-100").should("have.text", "1");
+
+    cy.get("#digit-1-dec").click();
+
+    cy.get("#digit-1").should("have.text", "9");
+    cy.get("#digit-10").should("have.text", "9");
     cy.get("#digit-100").should("have.text", "0");
   });
 
