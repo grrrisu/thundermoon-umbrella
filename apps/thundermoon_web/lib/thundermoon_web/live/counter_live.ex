@@ -24,22 +24,22 @@ defmodule ThundermoonWeb.CounterLive do
     CounterView.render("index.html", assigns)
   end
 
-  def handle_event("inc", value, socket) when value in ["1", "10", "100"] do
-    Counter.inc(value)
+  def handle_event("inc", %{"number" => number}, socket) when number in ["1", "10", "100"] do
+    Counter.inc(number)
     {:noreply, socket}
   end
 
-  def handle_event("dec", value, socket) when value in ["1", "10", "100"] do
-    Counter.dec(value)
+  def handle_event("dec", %{"number" => number}, socket) when number in ["1", "10", "100"] do
+    Counter.dec(number)
     {:noreply, socket}
   end
 
-  def handle_event("toggle-sim-start", "start", socket) do
+  def handle_event("toggle-sim-start", %{"action" => "start"}, socket) do
     Counter.start()
     {:noreply, socket}
   end
 
-  def handle_event("toggle-sim-start", "stop", socket) do
+  def handle_event("toggle-sim-start", %{"action" => "stop"}, socket) do
     Counter.stop()
     {:noreply, socket}
   end
