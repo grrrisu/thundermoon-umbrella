@@ -44,16 +44,9 @@ defmodule Thundermoon.CounterRoot do
   end
 
   def terminate(_reason, state) do
-    Agent.stop(state.digit_1.pid)
-    Agent.stop(state.digit_10.pid)
-    Agent.stop(state.digit_100.pid)
-  end
-
-  defp execute_action(state, number, func) do
-    case get_digit(state, number) do
-      {:ok, digit} -> func.(digit.pid)
-      :error -> nil
-    end
+    Enum.each(state, fn {_key, digit} ->
+      DynamicSupervisor.terminate_child(DigitSupervisor, digit.pid)
+    end)
   end
 
   def handle_info({:DOWN, ref, :process, _pid, _reason}, state) do
@@ -69,7 +62,8 @@ defmodule Thundermoon.CounterRoot do
         {:stop, :normal, state}
 
       sibling ->
-        {:noreply, inc_digit(state, sibling)}
+        inc_digit(state, sibling)
+        {:noreply, state}
     end
   end
 
@@ -80,6 +74,13 @@ defmodule Thundermoon.CounterRoot do
   def handle_info(_msg, state) do
     IO.puts("info")
     {:noreply, state}
+  end
+
+  defp execute_action(state, number, func) do
+    case get_digit(state, number) do
+      {:ok, digit} -> func.(digit.pid)
+      :error -> nil
+    end
   end
 
   defp bigger_digit(crashed_digit) do
