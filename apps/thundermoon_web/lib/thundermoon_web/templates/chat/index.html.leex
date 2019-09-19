@@ -1,5 +1,9 @@
 <h1>Chat</h1>
 
+<%= if can?(@current_user, :delete, Thundermoon.ChatMessages) do %>
+  <a href="#" phx-click="clear" style="float: right">Clear all messages</a>
+<% end %>
+<h3>Messages</h3>
 <div id="messages">
   <%= for message <- Enum.reverse(@messages) do %>
   <div>
@@ -12,10 +16,8 @@
   <%= text_input :message, :text, value: @text, "phx-hook": "ChatText", placeholder: "write a message" %>
   <%= submit "Send" %>
 <% end %>
-<%= if can?(@current_user, :delete, Thundermoon.ChatMessages) do %>
-  <a href="#" phx-click="clear">Clear all messages</a>
-<% end %>
 
+<h3>Users online</h3>
 <div class="users">
   <%= for user <- @users do %>
     <div class="user"><%= user.username %></div>
