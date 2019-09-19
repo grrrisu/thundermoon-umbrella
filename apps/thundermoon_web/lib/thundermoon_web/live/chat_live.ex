@@ -29,7 +29,7 @@ defmodule ThundermoonWeb.ChatLive do
     message = %{user: username, text: text}
     ChatMessages.add(message)
     Endpoint.broadcast("chat", "send", message)
-    {:noreply, assign(socket, %{text: "trigger js hook"})}
+    {:noreply, assign(socket, %{text: "#{text}-#{System.unique_integer()}"})}
   end
 
   def handle_event("clear", _value, socket) do
