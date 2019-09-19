@@ -3,32 +3,32 @@
 <div class="counter-wrapper">
   <div class="counter">
     <div class="inc-button">
-      <a href="#" id="digit-100-inc" class="button" phx-value="100" phx-click="inc">+</a>
+      <a href="#" id="digit-100-inc" class="button" phx-value-number="100" phx-click="inc">+</a>
     </div>
     <div id="digit-100" class="digit"><%= @digits.digit_100 %></div>
     <div class="dec-button">
-      <a href="#" id="digit-100-dec" class="button" phx-value="100" phx-click="dec">-</a>
+      <a href="#" id="digit-100-dec" class="button" phx-value-number="100" phx-click="dec">-</a>
     </div>
 
     <div class="inc-button">
-      <a href="#" id="digit-10-inc" class="button" phx-value="10" phx-click="inc">+</a>
+      <a href="#" id="digit-10-inc" class="button" phx-value-number="10" phx-click="inc">+</a>
     </div>
     <div id="digit-10" class="digit"><%= @digits.digit_10 %></div>
     <div class="dec-button">
-      <a href="#" id="digit-10-dec" class="button" phx-value="10" phx-click="dec">-</a>
+      <a href="#" id="digit-10-dec" class="button" phx-value-number="10" phx-click="dec">-</a>
     </div>
 
     <div class="inc-button">
-      <a href="#" id="digit-1-inc" class="button" phx-value="1" phx-click="inc">+</a>
+      <a href="#" id="digit-1-inc" class="button" phx-value-number="1" phx-click="inc">+</a>
     </div>
     <div id="digit-1" class="digit"><%= @digits.digit_1 %></div>
     <div class="dec-button">
-      <a href="#" id="digit-1-dec" class="button" phx-value="1" phx-click="dec">-</a>
+      <a href="#" id="digit-1-dec" class="button" phx-value-number="1" phx-click="dec">-</a>
     </div>
   </div>
 
   <div class="counter-controls">
-    <a href="#" phx-click="toggle-sim-start" phx-value="<%= @label_sim_start %>" class="button"><%= @label_sim_start %></a>
+    <a href="#" phx-click="toggle-sim-start" phx-value-action="<%= @label_sim_start %>" class="button"><%= @label_sim_start %></a>
 
     <%= if can?(@current_user, :reset, Thundermoon.Counter) do %>
       <a href="#" phx-click="reset" class="button button-warning">reset</a>
