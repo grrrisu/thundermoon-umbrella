@@ -62,13 +62,20 @@ defmodule Thundermoon.CounterRoot do
         {:stop, :normal, state}
 
       sibling ->
-        inc_digit(state, sibling)
+        get_digit_pid(state, sibling) |> Digit.inc()
         {:noreply, state}
     end
   end
 
-  def handle_info({:overflow, [_digit, :dec]}, state) do
-    {:stop, :normal, state}
+  def handle_info({:overflow, [digit, :dec]}, state) do
+    case bigger_digit(digit) do
+      {:error, "counter overflow"} ->
+        {:stop, :normal, state}
+
+      sibling ->
+        get_digit_pid(state, sibling) |> Digit.dec()
+        {:noreply, state}
+    end
   end
 
   def handle_info(_msg, state) do
@@ -91,11 +98,10 @@ defmodule Thundermoon.CounterRoot do
     end
   end
 
-  defp inc_digit(state, digit) do
+  defp get_digit_pid(state, digit) do
     state
     |> Map.get(digit)
     |> Map.get(:pid)
-    |> Digit.inc()
   end
 
   defp find_digit(state, ref) do

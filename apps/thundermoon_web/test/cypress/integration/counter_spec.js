@@ -51,8 +51,6 @@ describe("counter page", function() {
     cy.get("#digit-1").should("have.text", "1");
     cy.get("#digit-10-inc").click();
     cy.get("#digit-10").should("have.text", "1");
-    cy.get("#digit-100-inc").click();
-    cy.get("#digit-100").should("have.text", "1");
 
     cy.get("#digit-10-dec").click();
     cy.get("#digit-10-dec").click();
