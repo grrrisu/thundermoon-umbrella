@@ -54,11 +54,12 @@ defmodule ThundermoonWeb.CounterLiveTest do
     end
 
     test "can not reset the counter", %{conn: conn} do
-      @endpoint.subscribe("counter")
       {:ok, view, html} = live(conn, "/counter")
       refute html =~ "reset"
-      render_click(view, :reset)
-      refute_receive(%{event: "update", payload: %{}})
+
+      assert_redirect(view, "/", fn ->
+        render_click(view, :reset)
+      end)
     end
 
     test "can start and stop sim", %{conn: conn} do

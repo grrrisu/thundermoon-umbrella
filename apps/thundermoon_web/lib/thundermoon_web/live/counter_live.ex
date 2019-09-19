@@ -9,6 +9,7 @@ defmodule ThundermoonWeb.CounterLive do
 
   alias ThundermoonWeb.CounterView
   alias ThundermoonWeb.Endpoint
+  alias ThundermoonWeb.Router.Helpers, as: Routes
 
   def mount(session, socket) do
     user = Repo.get!(User, session[:current_user_id])
@@ -45,11 +46,14 @@ defmodule ThundermoonWeb.CounterLive do
   end
 
   def handle_event("reset", _value, socket) do
-    if socket.assigns.current_user |> can?(:reset, Counter) do
-      Counter.reset()
-    end
+    cond do
+      socket.assigns.current_user |> can?(:reset, Counter) ->
+        Counter.reset()
+        {:noreply, socket}
 
-    {:noreply, socket}
+      true ->
+        {:stop, not_authorized(socket)}
+    end
   end
 
   def handle_info(%{event: "update", topic: "counter", payload: new_digit}, socket) do
@@ -64,5 +68,11 @@ defmodule ThundermoonWeb.CounterLive do
   defp set_label_sim_start(socket, started) do
     label = if started, do: "stop", else: "start"
     assign(socket, label_sim_start: label)
+  end
+
+  defp not_authorized(socket) do
+    socket
+    |> put_flash(:error, "You are not authorized for this action")
+    |> redirect(to: Routes.page_path(Endpoint, :index))
   end
 end
