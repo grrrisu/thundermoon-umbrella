@@ -38,7 +38,7 @@ defmodule Thundermoon.Digit do
 
   defp compute_dec(%{value: 0} = state) do
     send(state.counter, {:overflow, [state.key, :dec]})
-    0
+    9
   end
 
   defp compute_dec(%{value: n}) do

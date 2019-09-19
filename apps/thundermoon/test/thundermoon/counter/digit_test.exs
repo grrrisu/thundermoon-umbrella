@@ -59,7 +59,7 @@ defmodule Thundermoon.DigitTest do
     assert Digit.get(digit) == 0
     assert :ok = Digit.dec(digit)
     assert_received {:overflow, [:digit_10, :dec]}
-    assert_broadcast_value(0)
-    assert Digit.get(digit) == 0
+    assert_broadcast_value(9)
+    assert Digit.get(digit) == 9
   end
 end
