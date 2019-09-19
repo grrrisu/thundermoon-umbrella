@@ -13,7 +13,7 @@ defmodule ThundermoonWeb.CounterLive do
 
   def mount(session, socket) do
     user = Repo.get!(User, session[:current_user_id])
-    Endpoint.subscribe("counter")
+    if connected?(socket), do: Endpoint.subscribe("counter")
     {:ok, _} = Counter.create()
     digits = Counter.get_digits()
 
