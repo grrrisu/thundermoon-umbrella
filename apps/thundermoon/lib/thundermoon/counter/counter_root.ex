@@ -30,7 +30,7 @@ defmodule Thundermoon.CounterRoot do
   # need to invoke call (not cast), otherwise the counter has not enough time
   # to terminate and be properly restarted
   def handle_call(:reset, _from, state) do
-    {:stop, "reset", nil, state}
+    {:stop, :normal, nil, state}
   end
 
   def handle_cast({:inc, digit}, state) do
