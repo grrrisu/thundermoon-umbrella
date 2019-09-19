@@ -13,6 +13,8 @@
 
 * Fix clear input field after sending chat message
 
+* Update to Phoenix Live View 0.2.1
+
 ## 0.2.0
 
 * Chat with Live View
