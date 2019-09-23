@@ -25,9 +25,7 @@ defmodule Sim.Grid do
 
   def get(grid, x, y) when is_integer(x) and is_integer(y) do
     {:error,
-     "coordinates x: #{x}, y: #{y} outside of grid width: #{map_size(grid)}, height: #{
-       map_size(grid[0])
-     }"}
+     "coordinates x: #{x}, y: #{y} outside of grid width: #{width(grid)}, height: #{height(grid)}"}
   end
 
   def get(_grid, x, y) do
@@ -41,12 +39,18 @@ defmodule Sim.Grid do
 
   def put(grid, x, y, _value) when is_integer(x) and is_integer(y) do
     {:error,
-     "coordinates x: #{x}, y: #{y} outside of grid width: #{map_size(grid)}, height: #{
-       map_size(grid[0])
-     }"}
+     "coordinates x: #{x}, y: #{y} outside of grid width: #{width(grid)}, height: #{height(grid)}"}
   end
 
   def put(_grid, x, y, _value) do
     {:error, "only integers are allowed as coordinates, x: #{x}, y: #{y}"}
+  end
+
+  def width(grid) do
+    map_size(grid)
+  end
+
+  def height(grid) do
+    map_size(grid[0])
   end
 end
