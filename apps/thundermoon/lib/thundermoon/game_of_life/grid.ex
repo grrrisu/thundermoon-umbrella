@@ -1,8 +1,8 @@
-defmodule Thundermoon.GameOfLife.Root do
+defmodule Thundermoon.GameOfLife.Grid do
   alias Sim.Grid
 
-  def start_link(opts \\ []) do
-    GenServer.start_link(__MODULE__, opts[:size], opts)
+  def start_link(size) do
+    GenServer.start_link(__MODULE__, size, name: __MODULE__)
   end
 
   def init(size) do

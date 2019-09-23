@@ -8,18 +8,17 @@ defmodule Sim.RealmSupervisor do
   def init(name) do
     children = [
       %{
-        id: Module.concat(name, "Realm"),
+        id: realm_module(name),
         start:
           {Sim.Realm, :start_link,
            [
              [
-               name: Module.concat(name, "Realm"),
-               supervisor_module: Module.concat(name, "RealmSupervisor"),
-               root_module: Module.concat(name, "Root")
+               name: realm_module(name),
+               supervisor_module: supervisor_module(name)
              ]
            ]}
-      }
-      # {DynamicSupervisor, name: supervisor_module, strategy: :one_for_one}
+      },
+      {DynamicSupervisor, name: supervisor_module(name), strategy: :one_for_one}
       # {DynamicSupervisor, name: Thundermoon.DigitSupervisor, strategy: :one_for_one},
       # {Thundermoon.CounterSimulation, name: Thundermoon.CounterSimulation}
     ]
@@ -27,7 +26,11 @@ defmodule Sim.RealmSupervisor do
     Supervisor.init(children, strategy: :rest_for_one)
   end
 
-  # def child_spec(module) do
-  #   Supervisor.child_spec(module)
-  # end
+  defp realm_module(name) do
+    Module.concat(name, "Realm")
+  end
+
+  defp supervisor_module(name) do
+    Module.concat(name, "RealmSupervisor")
+  end
 end
