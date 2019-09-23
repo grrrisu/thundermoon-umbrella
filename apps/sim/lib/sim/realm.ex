@@ -6,23 +6,22 @@ defmodule Sim.Realm do
   use GenServer
 
   def start_link(opts) do
-    GenServer.start_link(__MODULE__, {opts[:supervisor_module], opts[:root_module]},
-      name: opts[:name]
-    )
+    GenServer.start_link(__MODULE__, {opts[:supervisor_module]}, name: opts[:name])
   end
 
-  def init({supervisor_module, root_module}) do
+  def init({supervisor_module}) do
     # we don't create the counter immediately as
     # the endpoint pubsub is not started at this point
-    {:ok, %{root: nil, supervisor_module: supervisor_module, root_module: root_module}}
+    {:ok, %{root: nil, supervisor_module: supervisor_module}}
   end
 
-  def handle_call(:create, _from, %{root: nil} = state) do
+  def handle_call({:create, root_module, args}, _from, %{root: nil} = state) do
+    state = Map.merge(state, %{root_module: root_module, create_args: args})
     root = create_root(state)
     {:reply, {:ok, root.pid}, %{state | root: root}}
   end
 
-  def handle_call(:create, _from, %{root: root} = state) do
+  def handle_call({:create, _root_module, _args}, _from, %{root: root} = state) do
     {:reply, {:ok, root.pid}, state}
   end
 
@@ -42,7 +41,12 @@ defmodule Sim.Realm do
   end
 
   defp create_root(state) do
-    {:ok, pid} = DynamicSupervisor.start_child(state.supervisor_module, state.root_module)
+    child_spec = %{
+      id: state.root_module,
+      start: {state.root_module, :start_link, [state.create_args]}
+    }
+
+    {:ok, pid} = DynamicSupervisor.start_child(state.supervisor_module, child_spec)
 
     ref = Process.monitor(pid)
     %{ref: ref, pid: pid}

@@ -1,11 +1,10 @@
 defmodule Thundermoon.GameOfLife.RootTest do
   use ExUnit.Case, async: true
 
-  alias Sim.Grid
-  alias Thundermoon.GameOfLife.Root
+  alias Thundermoon.GameOfLife.Grid
 
   test "create a new grid" do
-    assert {:ok, grid} = Root.init(5)
-    assert is_boolean(Grid.get(grid, 4, 4))
+    assert {:ok, grid} = Grid.init(5)
+    assert is_boolean(Sim.Grid.get(grid, 4, 4))
   end
 end
