@@ -42,5 +42,6 @@ defmodule ThundermoonWeb.Router do
     resources "/users", UserController, only: [:index, :edit, :update, :delete]
     live "/chat", ChatLive, session: [:current_user_id]
     live "/counter", CounterLive, session: [:current_user_id]
+    live "/game_of_life", GameOfLifeLive, session: [:current_user_id]
   end
 end

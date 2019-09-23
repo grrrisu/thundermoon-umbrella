@@ -10,6 +10,7 @@
       <li><%= link "Users", to: Routes.user_path(@conn, :index) %></li>
       <li><%= link "Chat", to: Routes.live_path(@conn, ThundermoonWeb.ChatLive) %></li>
       <li><%= link "Counter", to: Routes.live_path(@conn, ThundermoonWeb.CounterLive) %></li>
+      <li><%= link "Game of Life", to: Routes.live_path(@conn, ThundermoonWeb.GameOfLifeLive) %></li>
     </ul>
   </article>
 </section>
