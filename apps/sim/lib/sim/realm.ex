@@ -25,6 +25,10 @@ defmodule Sim.Realm do
     {:reply, {:ok, root.pid}, state}
   end
 
+  def handle_call(:get_root, _from, %{root: nil} = state) do
+    {:reply, nil, state}
+  end
+
   def handle_call(:get_root, _from, state) do
     {:reply, state.root.pid, state}
   end

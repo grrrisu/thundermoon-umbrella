@@ -10,4 +10,15 @@ defmodule Thundermoon.GameOfLife do
   def create(size) do
     GenServer.call(Realm, {:create, Grid, size})
   end
+
+  def get_grid() do
+    case get_root() do
+      nil -> nil
+      pid -> GenServer.call(pid, :get_grid)
+    end
+  end
+
+  def get_root() do
+    GenServer.call(Realm, :get_root)
+  end
 end

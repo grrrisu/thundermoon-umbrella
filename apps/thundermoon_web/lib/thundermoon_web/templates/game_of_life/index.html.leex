@@ -1,1 +1,7 @@
 <h1>Game of Life</h1>
+
+<%= unless @grid do %>
+  <%= render "form.html" %>
+<%= else %>
+  <%= render "grid.html", grid: @grid %>
+<% end %>
