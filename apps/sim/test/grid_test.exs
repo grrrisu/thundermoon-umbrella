@@ -13,6 +13,11 @@ defmodule Sim.GridTest do
     assert %{0 => %{0 => 0, 1 => 0, 2 => 0}, 1 => %{0 => 0, 1 => 0, 2 => 0}} = grid
   end
 
+  test "create a new grid with a function" do
+    grid = Grid.create(2, 3, fn x, y -> x + y end)
+    assert 3 == Grid.get(grid, 1, 2)
+  end
+
   test "set and read from grid" do
     grid = Grid.create(2, 3)
     assert nil == Grid.get(grid, 1, 2)

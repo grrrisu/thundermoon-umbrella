@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.3.0
+
+* new application ```sim```
+
+* Sim.Grid a 2 dimensional map
+
+* abstraction of RealmSupervisor, Realm
+
 ## 0.2.1
 
 * Use Nginx as server service (not as docker container)

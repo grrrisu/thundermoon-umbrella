@@ -1,13 +1,21 @@
 defmodule Sim.Grid do
-  def create(width, height, default \\ nil) do
+  alias Sim.Grid
+
+  def create(width, height, default \\ nil)
+
+  def create(width, height, func) when is_function(func) do
     0..(width - 1)
     |> Map.new(fn x ->
       {x,
        0..(height - 1)
-       |> Map.new(fn n ->
-         {n, default}
+       |> Map.new(fn y ->
+         {y, func.(x, y)}
        end)}
     end)
+  end
+
+  def create(width, height, value) do
+    Grid.create(width, height, fn _x, _y -> value end)
   end
 
   def get(%{0 => columns} = grid, x, y)
