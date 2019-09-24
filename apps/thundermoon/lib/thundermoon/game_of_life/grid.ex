@@ -1,7 +1,7 @@
 defmodule Thundermoon.GameOfLife.Grid do
   use GenServer, restart: :temporary
 
-  alias Sim.Grid
+  alias Sim.SeamlessGrid, as: Grid
   alias ThundermoonWeb.Endpoint
 
   def start_link(size) do
