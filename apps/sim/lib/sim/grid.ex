@@ -14,12 +14,18 @@ defmodule Sim.Grid do
     end)
   end
 
+  def create(width, height, [[_c | _] | _r] = list) do
+    Grid.create(width, height, fn x, y ->
+      list |> Enum.at(height - (y + 1)) |> Enum.at(x)
+    end)
+  end
+
   def create(width, height, value) do
     Grid.create(width, height, fn _x, _y -> value end)
   end
 
   def get(%{0 => columns} = grid, x, y)
-      when x > 0 and x < map_size(grid) and y > 0 and y < map_size(columns) do
+      when x >= 0 and x < map_size(grid) and y >= 0 and y < map_size(columns) do
     get_in(grid, [x, y])
   end
 
@@ -33,7 +39,7 @@ defmodule Sim.Grid do
   end
 
   def put(%{0 => columns} = grid, x, y, value)
-      when x > 0 and x < map_size(grid) and y > 0 and y < map_size(columns) do
+      when x >= 0 and x < map_size(grid) and y >= 0 and y < map_size(columns) do
     put_in(grid, [x, y], value)
   end
 

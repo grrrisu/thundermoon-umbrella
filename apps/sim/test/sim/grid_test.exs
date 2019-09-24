@@ -18,6 +18,18 @@ defmodule Sim.GridTest do
     assert 3 == Grid.get(grid, 1, 2)
   end
 
+  test "create a new grid from a list" do
+    list = [
+      [0, 2, 3],
+      [4, 5, 6],
+      [7, 8, 9]
+    ]
+
+    grid = Grid.create(3, 3, list)
+    assert 7 == Grid.get(grid, 0, 0)
+    assert 3 == Grid.get(grid, 2, 2)
+  end
+
   test "set and read from grid" do
     grid = Grid.create(2, 3)
     assert nil == Grid.get(grid, 1, 2)
