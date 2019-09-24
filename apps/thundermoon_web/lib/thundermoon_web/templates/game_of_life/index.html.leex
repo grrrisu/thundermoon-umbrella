@@ -2,6 +2,6 @@
 
 <%= unless @grid do %>
   <%= render "form.html" %>
-<%= else %>
+<% else %>
   <%= render "grid.html", grid: @grid %>
 <% end %>
