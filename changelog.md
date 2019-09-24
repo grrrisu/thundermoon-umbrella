@@ -6,7 +6,11 @@
 
 * Sim.Grid a 2 dimensional map
 
+* Sim.SeamlessGrid a grid with no borders
+
 * abstraction of RealmSupervisor, Realm
+
+* Game of Life live view
 
 ## 0.2.1
 
