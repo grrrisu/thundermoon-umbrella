@@ -12,7 +12,8 @@ defmodule Thundermoon.Application do
       Thundermoon.CounterRealmSupervisor,
       %{
         id: Thundermoon.GameOfLife,
-        start: {Sim.RealmSupervisor, :start_link, [Thundermoon.GameOfLife]}
+        start:
+          {Sim.RealmSupervisor, :start_link, [Thundermoon.GameOfLife, ThundermoonWeb.Endpoint]}
       }
     ]
 

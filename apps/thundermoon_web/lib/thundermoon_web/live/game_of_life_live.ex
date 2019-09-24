@@ -7,7 +7,7 @@ defmodule ThundermoonWeb.GameOfLifeLive do
   alias ThundermoonWeb.Endpoint
 
   def mount(_session, socket) do
-    if connected?(socket), do: Endpoint.subscribe("game_of_life")
+    if connected?(socket), do: Endpoint.subscribe("Thundermoon.GameOfLife")
     grid = GameOfLife.get_grid()
     {:ok, assign(socket, grid: grid)}
   end
