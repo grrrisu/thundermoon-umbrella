@@ -2,6 +2,7 @@ defmodule Thundermoon.GameOfLife.Grid do
   use GenServer, restart: :temporary
 
   alias Sim.SeamlessGrid, as: Grid
+  alias Thundermoon.GameOfLife.Simulation
 
   alias ThundermoonWeb.Endpoint
 
@@ -17,13 +18,18 @@ defmodule Thundermoon.GameOfLife.Grid do
     {:reply, state.grid, state}
   end
 
+  def handle_cast(:sim, state) do
+    new_grid = Simulation.sim(state.grid)
+    {:noreply, %{state | grid: new_grid}}
+  end
+
   defp create(size) do
     grid =
       Grid.create(size, size, fn _x, _y ->
         :rand.uniform(3) == 1
       end)
 
-    Endpoint.broadcast("game_of_life", "update", %{grid: grid})
+    Endpoint.broadcast("Thundermoon.GameOfLife", "update", %{grid: grid})
     grid
   end
 end
