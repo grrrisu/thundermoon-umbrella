@@ -9,6 +9,7 @@ defmodule ThundermoonWeb.GameOfLifeLive do
   def mount(_session, socket) do
     if connected?(socket), do: Endpoint.subscribe("Thundermoon.GameOfLife")
     grid = GameOfLife.get_grid()
+    socket = set_label_sim_start(socket, GameOfLife.started?())
     {:ok, assign(socket, grid: grid)}
   end
 
@@ -22,12 +23,27 @@ defmodule ThundermoonWeb.GameOfLifeLive do
     {:noreply, socket}
   end
 
-  def handle_info(%{event: "sim", payload: %{started: _started}}, socket) do
+  def handle_event("toggle-sim-start", %{"action" => "start"}, socket) do
+    GameOfLife.start()
     {:noreply, socket}
+  end
+
+  def handle_event("toggle-sim-start", %{"action" => "stop"}, socket) do
+    GameOfLife.stop()
+    {:noreply, socket}
+  end
+
+  def handle_info(%{event: "sim", payload: %{started: started}}, socket) do
+    {:noreply, set_label_sim_start(socket, started)}
   end
 
   # this is triggered by the pubsub broadcast event
   def handle_info(%{event: "update", payload: %{grid: grid}}, socket) do
     {:noreply, assign(socket, grid: grid)}
+  end
+
+  defp set_label_sim_start(socket, started) do
+    label = if started, do: "stop", else: "start"
+    assign(socket, label_sim_start: label)
   end
 end
