@@ -14,7 +14,7 @@ defmodule Sim.SimulationLoop do
   end
 
   def handle_cast({:start, func}, %{sim: nil} = state) do
-    state = %{state | func: func}
+    state = Map.put(state, :func, func)
     send(self(), :tick)
     state.broadcaster.broadcast(state.topic, "sim", %{started: true})
     {:noreply, state}
@@ -37,7 +37,8 @@ defmodule Sim.SimulationLoop do
   end
 
   def handle_info(:tick, state) do
-    state.func()
+    # TODO run in a Task
+    state.func.()
     next_tick = Process.send_after(self(), :tick, 1000)
     {:noreply, %{state | sim: next_tick}}
   end
