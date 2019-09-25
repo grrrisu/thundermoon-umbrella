@@ -5,6 +5,7 @@ defmodule Thundermoon.GameOfLife do
   """
 
   alias Thundermoon.GameOfLife.{Realm, Grid, SimulationLoop}
+  alias Thundermoon.GameOfLife.Simulation
 
   def create(size) do
     GenServer.call(Realm, {:create, Grid, size})
@@ -14,6 +15,21 @@ defmodule Thundermoon.GameOfLife do
     case get_root() do
       nil -> nil
       pid -> GenServer.call(pid, :get_grid)
+    end
+  end
+
+  def set_grid(grid) do
+    case get_root() do
+      nil -> nil
+      pid -> GenServer.call(pid, {:set_grid, grid})
+    end
+  end
+
+  def toggle(x, y) do
+    case started?() do
+      true -> {:error, "no write operations while simulating allowed"}
+      # TODO
+      false -> {x, y}
     end
   end
 
@@ -29,7 +45,12 @@ defmodule Thundermoon.GameOfLife do
   end
 
   def start() do
-    func = fn -> Thundermoon.GameOfLife.sim() end
+    func = fn ->
+      get_grid()
+      |> Simulation.sim()
+      |> set_grid()
+    end
+
     GenServer.cast(SimulationLoop, {:start, func})
   end
 

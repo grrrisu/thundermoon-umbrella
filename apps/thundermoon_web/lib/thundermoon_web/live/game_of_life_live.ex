@@ -22,6 +22,10 @@ defmodule ThundermoonWeb.GameOfLifeLive do
     {:noreply, socket}
   end
 
+  def handle_info(%{event: "sim", payload: %{started: _started}}, socket) do
+    {:noreply, socket}
+  end
+
   # this is triggered by the pubsub broadcast event
   def handle_info(%{event: "update", payload: %{grid: grid}}, socket) do
     {:noreply, assign(socket, grid: grid)}

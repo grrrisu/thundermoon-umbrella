@@ -44,6 +44,6 @@ defmodule Sim.RealmSupervisor do
   end
 
   defp supervisor_module(name) do
-    Module.concat(name, "RealmSupervisor")
+    Module.concat(name, "RootSupervisor")
   end
 end
