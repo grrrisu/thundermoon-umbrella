@@ -3,5 +3,5 @@
 <%= unless @grid do %>
   <%= render "form.html" %>
 <% else %>
-  <%= render "grid.html", grid: @grid %>
+  <%= render "grid.html", grid: @grid, label_sim_start: @label_sim_start %>
 <% end %>
