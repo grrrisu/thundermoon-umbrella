@@ -28,11 +28,11 @@ defmodule Thundermoon.GameOfLife.Simulation do
   end
 
   def look_around(grid, x, y) do
-    Enum.map((x - 1)..(x + 1), fn cx ->
-      Enum.map((y - 1)..(y + 1), fn cy ->
-        case {cx, cy} do
+    Enum.map(-1..1, fn rx ->
+      Enum.map(-1..1, fn ry ->
+        case {rx, ry} do
           {0, 0} -> false
-          {cx, cy} -> Grid.get(grid, x + cx, y + cy)
+          {rx, ry} -> Grid.get(grid, x + rx, y + ry)
         end
       end)
     end)

@@ -39,7 +39,7 @@ defmodule Sim.SimulationLoop do
   def handle_info(:tick, state) do
     # TODO run in a Task
     state.func.()
-    next_tick = Process.send_after(self(), :tick, 1000)
+    next_tick = Process.send_after(self(), :tick, 100)
     {:noreply, %{state | sim: next_tick}}
   end
 end
