@@ -1,7 +1,7 @@
-defmodule Sim.SeamlessGridTest do
+defmodule Sim.TorusTest do
   use ExUnit.Case, async: true
 
-  alias Sim.SeamlessGrid, as: Grid
+  alias Sim.Torus, as: Grid
 
   test "create a new grid" do
     grid = Grid.create(2, 3)
