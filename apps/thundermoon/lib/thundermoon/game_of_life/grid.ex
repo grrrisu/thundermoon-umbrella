@@ -1,7 +1,7 @@
 defmodule Thundermoon.GameOfLife.Grid do
   use GenServer, restart: :temporary
 
-  alias Sim.SeamlessGrid, as: Grid
+  alias Sim.Torus, as: Grid
 
   alias ThundermoonWeb.Endpoint
 
