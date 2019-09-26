@@ -33,12 +33,21 @@ defmodule Sim.Realm do
     {:reply, state.root.pid, state}
   end
 
+  def handle_call(:restart_root, _from, %{root: nil} = state) do
+    {:reply, :ok, state}
+  end
+
+  def handle_call(:restart_root, _from, state) do
+    :ok = DynamicSupervisor.terminate_child(state.supervisor_module, state.root.pid)
+    {:reply, :ok, state}
+  end
+
   def handle_info({:DOWN, ref, :process, _pid, _reason}, state) do
     root =
       cond do
-        nil == state.root -> state
+        nil == state.root -> nil
         ref == state.root.ref -> create_root(state)
-        true -> state
+        true -> state.root
       end
 
     {:noreply, %{state | root: root}}
