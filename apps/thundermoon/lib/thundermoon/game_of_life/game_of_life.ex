@@ -25,6 +25,15 @@ defmodule Thundermoon.GameOfLife do
     end
   end
 
+  def recreate() do
+    :ok = GenServer.stop(Realm)
+  end
+
+  def restart() do
+    stop()
+    GenServer.call(Realm, :restart_root)
+  end
+
   def toggle(x, y) do
     case started?() do
       true -> {:error, "no write operations while simulating allowed"}

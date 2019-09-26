@@ -33,6 +33,17 @@ defmodule ThundermoonWeb.GameOfLifeLive do
     {:noreply, socket}
   end
 
+  def handle_event("restart", _value, socket) do
+    GameOfLife.restart()
+    {:noreply, socket}
+  end
+
+  def handle_event("recreate", _value, socket) do
+    GameOfLife.recreate()
+    socket = set_label_sim_start(socket, false)
+    {:noreply, assign(socket, %{grid: nil})}
+  end
+
   def handle_info(%{event: "sim", payload: %{started: started}}, socket) do
     {:noreply, set_label_sim_start(socket, started)}
   end
