@@ -1,7 +1,7 @@
 <div id="grid" style="grid-template-columns: repeat(<%= Sim.Grid.width(@grid) %>, 20px); grid-template-rows: repeat(<%= Sim.Grid.height(@grid) %>, 20px); width: <%= Sim.Grid.width(@grid) * 20 + 1 %>px">
-  <%= for {_, column} <- @grid do %>
-    <%= for {_, cell} <- column do %>
-      <div class="<%= cell && "alive" %>"></div>
+  <%= for x <- 0..(Sim.Grid.width(@grid) -1) do %>
+    <%= for y <- 0..(Sim.Grid.height(@grid) -1) do %>
+      <div class="<%= Sim.Grid.get(@grid, x, y) && "alive" %>"></div>
     <% end %>
   <% end %>
 </div>
