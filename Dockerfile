@@ -12,6 +12,7 @@ WORKDIR /app
 ENV MIX_ENV=prod
 
 COPY mix.* /app/
+COPY apps/sim/mix.exs /app/apps/sim/mix.exs
 COPY apps/thundermoon/mix.exs /app/apps/thundermoon/mix.exs
 COPY apps/thundermoon_web/mix.exs /app/apps/thundermoon_web/mix.exs
 RUN mix do deps.get --only prod, deps.compile
