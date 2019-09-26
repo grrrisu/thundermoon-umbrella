@@ -1,5 +1,5 @@
 defmodule Thundermoon.GameOfLife.Simulation do
-  alias Sim.SeamlessGrid, as: Grid
+  alias Sim.Torus, as: Grid
 
   def sim(grid) do
     Grid.create(Grid.width(grid), Grid.height(grid), &sim_cell(grid, &1, &2))

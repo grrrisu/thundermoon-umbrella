@@ -1,7 +1,7 @@
 defmodule Thundermoon.GameOfLife.SimulationTest do
   use ExUnit.Case, async: true
 
-  alias Sim.SeamlessGrid, as: Grid
+  alias Sim.Torus, as: Grid
   alias Thundermoon.GameOfLife.Simulation
 
   # https://de.wikipedia.org/wiki/Conways_Spiel_des_Lebens#Die_Spielregeln

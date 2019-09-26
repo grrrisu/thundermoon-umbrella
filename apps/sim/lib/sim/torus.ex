@@ -1,4 +1,4 @@
-defmodule Sim.SeamlessGrid do
+defmodule Sim.Torus do
   defdelegate create(width, height, value \\ nil), to: Sim.Grid
   defdelegate width(grid), to: Sim.Grid
   defdelegate height(grid), to: Sim.Grid
