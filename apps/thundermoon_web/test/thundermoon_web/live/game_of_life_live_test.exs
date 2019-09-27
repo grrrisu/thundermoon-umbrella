@@ -26,5 +26,11 @@ defmodule ThundermoonWeb.GameOfLifeLiveTest do
       {:ok, _view, html} = live(conn)
       assert html =~ "<h1>Game of Life</h1>"
     end
+
+    test "can not create a grid", %{conn: conn} do
+      conn = get(conn, "/game_of_life")
+      {:ok, _view, html} = live(conn)
+      assert html =~ "no simulation available"
+    end
   end
 end

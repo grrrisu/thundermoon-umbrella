@@ -1,6 +1,6 @@
 <div id="grid" style="grid-template-columns: repeat(<%= Sim.Grid.width(@grid) %>, 20px); grid-template-rows: repeat(<%= Sim.Grid.height(@grid) %>, 20px); width: <%= Sim.Grid.width(@grid) * 20 + 1 %>px">
-  <%= for x <- 0..(Sim.Grid.width(@grid) -1) do %>
-    <%= for y <- 0..(Sim.Grid.height(@grid) -1) do %>
+  <%= for x <- 0..(Sim.Grid.width(@grid) - 1) do %>
+    <%= for y <- 0..(Sim.Grid.height(@grid) - 1) do %>
       <div class="<%= Sim.Grid.get(@grid, x, y) && "alive" %>"></div>
     <% end %>
   <% end %>
@@ -8,5 +8,7 @@
 <div style="margin-top: 2rem">
   <a href="#" phx-click="toggle-sim-start" phx-value-action="<%= @label_sim_start %>" class="button"><%= @label_sim_start %></a>
   <a href="#" phx-click="restart" class="button button-warning">reset</a>
-  <a href="#" phx-click="recreate" class="button button-warning">recreate</a>
+  <%= if can?(@current_user, :create, Thundermoon.GameOfLife) do %>
+    <a href="#" phx-click="recreate" class="button button-warning">recreate</a>
+  <% end %>
 </div>

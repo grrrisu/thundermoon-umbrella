@@ -1,16 +1,22 @@
 defmodule ThundermoonWeb.GameOfLifeLive do
   use Phoenix.LiveView
 
+  import Canada.Can
+
+  alias Thundermoon.Repo
+  alias Thundermoon.Accounts.User
   alias Thundermoon.GameOfLife
 
   alias ThundermoonWeb.GameOfLifeView
   alias ThundermoonWeb.Endpoint
+  alias ThundermoonWeb.Router.Helpers, as: Routes
 
-  def mount(_session, socket) do
+  def mount(session, socket) do
+    current_user = Repo.get!(User, session[:current_user_id])
     if connected?(socket), do: Endpoint.subscribe("Thundermoon.GameOfLife")
     grid = GameOfLife.get_grid()
     socket = set_label_sim_start(socket, GameOfLife.started?())
-    {:ok, assign(socket, grid: grid)}
+    {:ok, assign(socket, current_user: current_user, grid: grid)}
   end
 
   def render(assigns) do
@@ -19,8 +25,10 @@ defmodule ThundermoonWeb.GameOfLifeLive do
 
   # this is triggered by live_view events
   def handle_event("create", %{"grid" => %{"size" => size}}, socket) do
-    GameOfLife.create(String.to_integer(size))
-    {:noreply, socket}
+    can_execute!(socket, :create, GameOfLife, fn socket ->
+      GameOfLife.create(String.to_integer(size))
+      {:noreply, socket}
+    end)
   end
 
   def handle_event("toggle-sim-start", %{"action" => "start"}, socket) do
@@ -39,9 +47,11 @@ defmodule ThundermoonWeb.GameOfLifeLive do
   end
 
   def handle_event("recreate", _value, socket) do
-    GameOfLife.recreate()
-    socket = set_label_sim_start(socket, false)
-    {:noreply, assign(socket, %{grid: nil})}
+    can_execute!(socket, :create, GameOfLife, fn socket ->
+      GameOfLife.recreate()
+      socket = set_label_sim_start(socket, false)
+      {:noreply, assign(socket, %{grid: nil})}
+    end)
   end
 
   def handle_info(%{event: "sim", payload: %{started: started}}, socket) do
@@ -56,5 +66,21 @@ defmodule ThundermoonWeb.GameOfLifeLive do
   defp set_label_sim_start(socket, started) do
     label = if started, do: "stop", else: "start"
     assign(socket, label_sim_start: label)
+  end
+
+  def can_execute!(socket, action, subject, func) do
+    cond do
+      socket.assigns.current_user |> can?(action, subject) ->
+        func.(socket)
+
+      true ->
+        {:stop, not_authorized(socket)}
+    end
+  end
+
+  defp not_authorized(socket) do
+    socket
+    |> put_flash(:error, "You are not authorized for this action")
+    |> redirect(to: Routes.page_path(Endpoint, :index))
   end
 end

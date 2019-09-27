@@ -1,7 +1,6 @@
 defmodule ThundermoonWeb.UserAbilities do
   alias Thundermoon.Accounts.User
-  alias Thundermoon.ChatMessages
-  alias Thundermoon.Counter
+  alias Thundermoon.{ChatMessages, Counter, GameOfLife}
 
   defimpl Canada.Can, for: User do
     # User
@@ -33,5 +32,9 @@ defmodule ThundermoonWeb.UserAbilities do
     # Counter
     def can?(%User{role: "admin"}, :reset, Counter), do: true
     def can?(%User{}, _action, Counter), do: false
+
+    # GameOfLife
+    def can?(%User{role: "admin"}, :create, GameOfLife), do: true
+    def can?(%User{}, _action, GameOfLife), do: false
   end
 end
