@@ -56,7 +56,7 @@ defmodule ThundermoonWeb.GameOfLifeLiveTest do
       GameOfLife.recreate()
     end
 
-    test "can reset grid", %{conn: conn} do
+    test "can reset the grid", %{conn: conn} do
       GameOfLife.create(3)
       @endpoint.subscribe("Thundermoon.GameOfLife")
       {:ok, view, _html} = live(conn, "/game_of_life")
@@ -65,6 +65,15 @@ defmodule ThundermoonWeb.GameOfLifeLiveTest do
       render_click(view, :restart)
       assert_receive(%{event: "sim", payload: %{started: false}})
       assert_receive(%{event: "update", payload: %{grid: %{}}})
+      GameOfLife.recreate()
+    end
+
+    test "can clear the grid", %{conn: conn} do
+      GameOfLife.create(3)
+      @endpoint.subscribe("Thundermoon.GameOfLife")
+      {:ok, view, _html} = live(conn, "/game_of_life")
+      render_click(view, :clear)
+      assert_receive(%{event: "update", payload: %{grid: %{0 => %{0 => false}}}})
       GameOfLife.recreate()
     end
 
