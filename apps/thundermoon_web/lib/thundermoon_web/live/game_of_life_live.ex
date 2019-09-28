@@ -41,6 +41,11 @@ defmodule ThundermoonWeb.GameOfLifeLive do
     {:noreply, socket}
   end
 
+  def handle_event("clear", _value, socket) do
+    GameOfLife.clear()
+    {:noreply, socket}
+  end
+
   def handle_event("restart", _value, socket) do
     GameOfLife.restart()
     {:noreply, socket}

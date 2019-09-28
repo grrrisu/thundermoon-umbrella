@@ -29,6 +29,11 @@ defmodule Thundermoon.GameOfLife do
     :ok = GenServer.stop(Realm)
   end
 
+  def clear() do
+    stop()
+    get_root() |> GenServer.call(:clear)
+  end
+
   def restart() do
     stop()
     GenServer.call(Realm, :restart_root)

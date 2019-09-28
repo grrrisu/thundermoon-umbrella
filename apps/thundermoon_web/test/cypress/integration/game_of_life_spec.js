@@ -43,12 +43,18 @@ describe("game of life page", function() {
       cy.contains("stop").click();
     });
 
-    it("I see a grid and can reset it", function() {
+    it("I can reset it", function() {
       cy.get("#grid").children(".cell").should("have.length", 25);
       cy.contains("start").click();
       cy.contains("reset").click();
       cy.contains("start").click();
       cy.contains("stop").click();
+    });
+
+    it("I can clear it", function() {
+      cy.get("#grid").children(".cell").should("have.length", 25);
+      cy.contains("clear").click();
+      cy.get("#grid").children(".cell:not(.active)").should("have.length", 25);
     });
 
   });

@@ -8,7 +8,7 @@
 
 * Sim.Torus a grid with no borders
 
-* abstraction of RealmSupervisor, Realm
+* abstraction of RealmSupervisor, Realm, SimulationLoop
 
 * Game of Life live view
 
