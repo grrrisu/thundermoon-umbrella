@@ -41,6 +41,11 @@ defmodule ThundermoonWeb.GameOfLifeLive do
     {:noreply, socket}
   end
 
+  def handle_event("toggle-cell", %{"x" => x, "y" => y}, socket) do
+    GameOfLife.toggle(String.to_integer(x), String.to_integer(y))
+    {:noreply, socket}
+  end
+
   def handle_event("clear", _value, socket) do
     GameOfLife.clear()
     {:noreply, socket}

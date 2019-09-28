@@ -42,8 +42,7 @@ defmodule Thundermoon.GameOfLife do
   def toggle(x, y) do
     case started?() do
       true -> {:error, "no write operations while simulating allowed"}
-      # TODO
-      false -> {x, y}
+      false -> get_root() |> GenServer.call({:toggle, x, y})
     end
   end
 

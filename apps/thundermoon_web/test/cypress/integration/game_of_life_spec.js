@@ -57,6 +57,18 @@ describe("game of life page", function() {
       cy.get("#grid").children(".cell:not(.active)").should("have.length", 25);
     });
 
+    it("I can change the value of a cell", function() {
+      cy.get("#grid").children(".cell").should("have.length", 25);
+      cy.contains("clear").click();
+
+      cy.get("#grid")
+      .children(".cell")
+      .first()
+      .should("not.have.class", "alive")
+      .click()
+      .should("have.class", "alive");
+    });
+
   });
 
   describe("as an admin", function() {

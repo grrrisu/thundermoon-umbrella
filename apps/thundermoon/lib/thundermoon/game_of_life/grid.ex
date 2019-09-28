@@ -22,6 +22,13 @@ defmodule Thundermoon.GameOfLife.Grid do
     {:reply, grid, %{state | grid: grid}}
   end
 
+  def handle_call({:toggle, x, y}, _from, state) do
+    value = Grid.get(state.grid, x, y)
+    new_grid = Grid.put(state.grid, x, y, not value)
+    broadcast(new_grid)
+    {:reply, new_grid, %{state | grid: new_grid}}
+  end
+
   def handle_call(:clear, _from, state) do
     new_grid = Grid.create(Grid.width(state.grid), Grid.height(state.grid), false)
     broadcast(new_grid)

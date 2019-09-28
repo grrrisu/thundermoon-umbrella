@@ -77,6 +77,17 @@ defmodule ThundermoonWeb.GameOfLifeLiveTest do
       GameOfLife.recreate()
     end
 
+    test "can change the value of a cell", %{conn: conn} do
+      GameOfLife.create(3)
+      @endpoint.subscribe("Thundermoon.GameOfLife")
+      {:ok, view, _html} = live(conn, "/game_of_life")
+      grid = GameOfLife.get_grid()
+      value = get_in(grid, [0, 0])
+      render_click(view, "toggle-cell", %{"x" => "0", "y" => "0"})
+      changed_value = not value
+      assert_receive(%{event: "update", payload: %{grid: %{0 => %{0 => ^changed_value}}}})
+    end
+
     test "can not recreate a grid", %{conn: conn} do
       {:ok, view, _html} = live(conn, "/game_of_life")
 
