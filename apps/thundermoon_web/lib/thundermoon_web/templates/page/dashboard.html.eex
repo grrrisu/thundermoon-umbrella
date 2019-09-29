@@ -7,10 +7,26 @@
   <article class="column">
     Where to go:
     <ul>
-      <li><%= link "Users", to: Routes.user_path(@conn, :index) %></li>
-      <li><%= link "Chat", to: Routes.live_path(@conn, ThundermoonWeb.ChatLive) %></li>
-      <li><%= link "Counter", to: Routes.live_path(@conn, ThundermoonWeb.CounterLive) %></li>
-      <li><%= link "Game of Life", to: Routes.live_path(@conn, ThundermoonWeb.GameOfLifeLive) %></li>
+      <li>
+        <%= link to: Routes.user_path(@conn, :index) do %>
+          <i class="la la-user"></i> Users
+        <% end %>
+      </li>
+      <li>
+        <%= link to: Routes.live_path(@conn, ThundermoonWeb.ChatLive) do %>
+          <i class="la la-comments"></i> Chat
+        <% end %>
+        </li>
+      <li>
+        <%= link to: Routes.live_path(@conn, ThundermoonWeb.CounterLive) do %>
+          <i class="la la-plus-square"></i> Counter
+        <% end %>
+        </li>
+      <li>
+        <%= link to: Routes.live_path(@conn, ThundermoonWeb.GameOfLifeLive) do  %>
+          <i class="la la-th"></i> Game Of Life
+        <% end %>
+        </li>
     </ul>
   </article>
 </section>

@@ -28,7 +28,7 @@
               <li>
                 <%= link to: Routes.auth_path(@conn, :request) do %>
                   <span>Login</span>
-                  <%= img_tag(Routes.static_path(@conn, "/images/github-logo.svg"), class: "github-logo") %>
+                  <i class="la la-2x la-github-square vertical-align-middle"></i>
                 <% end %>
               </li>
             <% end %>
