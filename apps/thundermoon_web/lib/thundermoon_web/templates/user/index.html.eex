@@ -23,11 +23,15 @@
           </td>
           <td>
             <%= if can? @current_user, :edit, user do %>
-              <%= link "edit", to: Routes.user_path(@conn, :edit, user) %>
+              <%= link to: Routes.user_path(@conn, :edit, user) do %>
+                <i class="la la-pencil"></i> edit
+              <% end %>
             <% end %>
             <%= if can? @current_user, :delete, user do %>
               &nbsp;|&nbsp;
-              <%= link "delete", to: Routes.user_path(@conn, :delete, user), method: :delete, data: [confirm: "Do you really want to delete user #{user.username}"] %>
+              <%= link to: Routes.user_path(@conn, :delete, user), method: :delete, data: [confirm: "Do you really want to delete user #{user.username}"] do %>
+                <i class="la la-trash"></i> delete
+              <% end %>
             <% end %>
           </td>
         </tr>
