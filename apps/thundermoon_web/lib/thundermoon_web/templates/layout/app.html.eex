@@ -20,7 +20,9 @@
           <ul>
             <%= if signed_in?(@conn) do %>
               <li>
-                <%= link "Logout", to: Routes.auth_path(@conn, :delete), method: :delete %>
+                <%= link to: Routes.auth_path(@conn, :delete), method: :delete  do %>
+                  Logout <i class="la la-sign-out"></i>
+                <% end %>
               </li>
             <% else %>
               <li>
