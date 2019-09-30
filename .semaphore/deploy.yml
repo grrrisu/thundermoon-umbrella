@@ -30,6 +30,7 @@ blocks:
           - echo GITHUB_CLIENT_SECRET="${GITHUB_CLIENT_SECRET}" >> .env/app
           - echo SECRET_LIVE_VIEW_KEY="${SECRET_LIVE_VIEW_KEY}" >> .env/app
           - echo SENTRY_DSN="${SENTRY_DSN}" >> .env/app
+          - echo SENTRY_RELEASE=$SEMAPHORE_GIT_SHA >> .env/app
           - touch .env/db
           - echo POSTGRES_PASSWORD="${DB_PASSWORD}" >> .env/db
       jobs:
