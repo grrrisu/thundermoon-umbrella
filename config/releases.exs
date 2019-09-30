@@ -19,4 +19,5 @@ config :ueberauth, Ueberauth.Strategy.Github.OAuth,
   client_secret: System.get_env("GITHUB_CLIENT_SECRET")
 
 config :sentry,
-  dsn: System.get_env("SENTRY_DSN")
+  dsn: System.get_env("SENTRY_DSN"),
+  release: System.get_env("SENTRY_RELEASE")
