@@ -27,6 +27,13 @@ footer {
   margin-right: auto;
 }
 
+.button-icon {
+  padding: 0 3.0rem 0 2.0rem;
+  i {
+    vertical-align: middle;
+  }
+}
+
 .button-warning {
   color: darken($color-warning, 40%);
   background-color: $color-warning;
