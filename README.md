@@ -118,8 +118,8 @@ docker exec -it <container-id> sh
 
 ### Send Test Error
 
-```shell
-mix sentry.send_test_event
+```shellm
+SENTRY_DSN=https://12345@sentry.io/123 MIX_ENV=prod mix sentry.send_test_event
 ```
 
 ## Semaphore
