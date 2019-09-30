@@ -5,13 +5,8 @@
 
 <section class="row">
   <article class="column">
-    Where to go:
+    <p>Live View examples:</p>
     <ul>
-      <li>
-        <%= link to: Routes.user_path(@conn, :index) do %>
-          <i class="la la-user"></i> Users
-        <% end %>
-      </li>
       <li>
         <%= link to: Routes.live_path(@conn, ThundermoonWeb.ChatLive) do %>
           <i class="la la-comments"></i> Chat
@@ -27,6 +22,14 @@
           <i class="la la-th"></i> Game Of Life
         <% end %>
         </li>
+    </ul>
+    Other stuff:
+    <ul>
+      <li>
+        <%= link to: Routes.user_path(@conn, :index) do %>
+          <i class="la la-user"></i> Users
+        <% end %>
+      </li>
     </ul>
   </article>
 </section>
