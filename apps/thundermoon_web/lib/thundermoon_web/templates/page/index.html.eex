@@ -1,10 +1,19 @@
 <section class="phx-hero">
   <h1><%= gettext "Welcome to %{name}!", name: "Thundermoon" %></h1>
-  <p>some sim examples</p>
+  <p>some simulation examples using phoenix live view.</p>
 </section>
 
 <section class="row">
   <article class="column">
-
+    <p>This is a collection of examples using <a href="https://github.com/phoenixframework/phoenix_live_view" target="_blank">phoenix live view</a>. The state is hold in memory and broadcasted to all clients. The examples include a simple chat, a counter and <a href="https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life" target="_blank">Conways Game of Life</a>.</p>
+    <p>The source can be found at <a href="https://github.com/grrrisu/thundermoon-umbrella" target="_blank">Github.</a></p>
+    <p>To keep the usual bots away a login is required.</p>
+    <%= unless signed_in?(@conn) do %>
+      <p>
+        <%= link to: Routes.auth_path(@conn, :request), class: "button button-icon" do %>
+          Login <i class="la la-3x la-github-square vertical-align-middle"></i>
+        <% end %>
+      </p>
+    <% end %>
   </article>
 </section>

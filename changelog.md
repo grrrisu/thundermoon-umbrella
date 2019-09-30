@@ -14,6 +14,8 @@
 
 * Add Line-Awesome font
 
+* extract common view logic to ```view_helper.ex```
+
 ## 0.2.1
 
 * Use Nginx as server service (not as docker container)
