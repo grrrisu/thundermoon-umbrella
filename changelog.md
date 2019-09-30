@@ -12,6 +12,8 @@
 
 * Game of Life live view
 
+* Add Line-Awesome font
+
 ## 0.2.1
 
 * Use Nginx as server service (not as docker container)
