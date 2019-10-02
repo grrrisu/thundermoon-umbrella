@@ -3,6 +3,7 @@ defmodule Thundermoon.GameOfLife do
   Context for game of life.
   It acts as a single point of entry to the game.
   """
+  require Logger
 
   alias Thundermoon.GameOfLife.{Realm, Grid, SimulationLoop}
   alias Thundermoon.GameOfLife.Simulation
@@ -31,6 +32,7 @@ defmodule Thundermoon.GameOfLife do
 
   def clear() do
     stop()
+    Logger.info("clear grid")
     get_root() |> GenServer.call(:clear)
   end
 
@@ -41,15 +43,12 @@ defmodule Thundermoon.GameOfLife do
 
   def toggle(x, y) do
     case started?() do
-      true -> {:error, "no write operations while simulating allowed"}
-      false -> get_root() |> GenServer.call({:toggle, x, y})
-    end
-  end
+      true ->
+        {:error, "no write operations while simulating allowed"}
 
-  def sim() do
-    case get_root() do
-      nil -> nil
-      pid -> GenServer.cast(pid, :sim)
+      false ->
+        Logger.debug("toggle cell #{x}, #{y}")
+        get_root() |> GenServer.call({:toggle, x, y})
     end
   end
 

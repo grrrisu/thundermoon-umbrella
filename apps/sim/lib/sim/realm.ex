@@ -5,6 +5,8 @@ defmodule Sim.Realm do
   """
   use GenServer
 
+  require Logger
+
   def start_link(opts) do
     GenServer.start_link(__MODULE__, {opts[:supervisor_module]}, name: opts[:name])
   end
@@ -38,6 +40,7 @@ defmodule Sim.Realm do
   end
 
   def handle_call(:restart_root, _from, state) do
+    Logger.info("terminate root #{state.root_module}")
     :ok = DynamicSupervisor.terminate_child(state.supervisor_module, state.root.pid)
     {:reply, :ok, state}
   end
@@ -54,6 +57,8 @@ defmodule Sim.Realm do
   end
 
   defp create_root(state) do
+    Logger.info("create root module #{state.root_module}")
+
     child_spec = %{
       id: state.root_module,
       start: {state.root_module, :start_link, [state.create_args]}

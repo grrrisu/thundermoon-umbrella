@@ -1,6 +1,8 @@
 defmodule Sim.SimulationLoop do
   use GenServer
 
+  require Logger
+
   def start_link(broadcaster, topic, name) do
     GenServer.start_link(__MODULE__, {broadcaster, topic}, name: name)
   end
@@ -14,6 +16,7 @@ defmodule Sim.SimulationLoop do
   end
 
   def handle_cast({:start, func}, %{sim: nil} = state) do
+    Logger.info("start sim loop")
     state = Map.put(state, :func, func)
     send(self(), :tick)
     state.broadcaster.broadcast(state.topic, "sim", %{started: true})
@@ -31,6 +34,7 @@ defmodule Sim.SimulationLoop do
   end
 
   def handle_cast(:stop, %{sim: sim} = state) do
+    Logger.info("stop sim loop")
     Process.cancel_timer(sim)
     state.broadcaster.broadcast(state.topic, "sim", %{started: false})
     {:noreply, %{state | sim: nil}}
