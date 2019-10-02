@@ -38,7 +38,7 @@ defmodule ThundermoonWeb.GameOfLifeLiveTest do
       {:ok, view, html} = live(conn, "/game_of_life")
       assert html =~ "no simulation available"
 
-      data = %{"grid" => %{"size" => "5"}}
+      data = %{"grid_data" => %{"size" => "5"}}
 
       assert_redirect(view, "/", fn ->
         render_submit(view, :create, data)
@@ -104,10 +104,19 @@ defmodule ThundermoonWeb.GameOfLifeLiveTest do
       @endpoint.subscribe("Thundermoon.GameOfLife")
       {:ok, view, _html} = live(conn, "/game_of_life")
 
-      data = %{"grid" => %{"size" => "5"}}
+      data = %{"grid_data" => %{"size" => "5"}}
       render_submit(view, :create, data)
       assert_receive(%{event: "update", payload: %{grid: %{}}})
       GameOfLife.recreate()
+    end
+
+    test "see an error when size submitted is too big", %{conn: conn} do
+      {:ok, view, html} = live(conn, "/game_of_life")
+      refute html =~ "class=\"help-block\""
+
+      data = %{"grid_data" => %{"size" => "100"}}
+
+      assert render_submit(view, :create, data) =~ "must be less than 51"
     end
 
     test "can recreate a grid", %{conn: conn} do

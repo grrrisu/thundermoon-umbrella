@@ -3,20 +3,28 @@ defmodule ThundermoonWeb.GameOfLifeLive do
 
   import Canada.Can
 
+  alias Ecto.Changeset
+
   alias Thundermoon.Repo
   alias Thundermoon.Accounts.User
   alias Thundermoon.GameOfLife
+  alias Thundermoon.GridData
 
   alias ThundermoonWeb.GameOfLifeView
   alias ThundermoonWeb.Endpoint
   alias ThundermoonWeb.Router.Helpers, as: Routes
 
   def mount(session, socket) do
-    current_user = Repo.get!(User, session[:current_user_id])
     if connected?(socket), do: Endpoint.subscribe("Thundermoon.GameOfLife")
     grid = GameOfLife.get_grid()
-    socket = set_label_sim_start(socket, GameOfLife.started?())
-    {:ok, assign(socket, current_user: current_user, grid: grid)}
+
+    socket =
+      socket
+      |> set_current_user(session)
+      |> set_label_sim_start(GameOfLife.started?())
+      |> set_empty_changeset()
+
+    {:ok, assign(socket, grid: grid)}
   end
 
   def render(assigns) do
@@ -24,9 +32,20 @@ defmodule ThundermoonWeb.GameOfLifeLive do
   end
 
   # this is triggered by live_view events
-  def handle_event("create", %{"grid" => %{"size" => size}}, socket) do
+  def handle_event("create", %{"grid_data" => params}, socket) do
     can_execute!(socket, :create, GameOfLife, fn socket ->
-      GameOfLife.create(String.to_integer(size))
+      new_changeset = GridData.changeset(%GridData{}, params)
+
+      socket =
+        case Changeset.apply_action(new_changeset, :insert) do
+          {:ok, data} ->
+            GameOfLife.create(data.size)
+            socket
+
+          {:error, changeset} ->
+            assign(socket, changeset: changeset)
+        end
+
       {:noreply, socket}
     end)
   end
@@ -59,7 +78,12 @@ defmodule ThundermoonWeb.GameOfLifeLive do
   def handle_event("recreate", _value, socket) do
     can_execute!(socket, :create, GameOfLife, fn socket ->
       GameOfLife.recreate()
-      socket = set_label_sim_start(socket, false)
+
+      socket =
+        socket
+        |> set_label_sim_start(false)
+        |> set_empty_changeset()
+
       {:noreply, assign(socket, %{grid: nil})}
     end)
   end
@@ -86,6 +110,16 @@ defmodule ThundermoonWeb.GameOfLifeLive do
       true ->
         {:stop, not_authorized(socket)}
     end
+  end
+
+  defp set_current_user(socket, session) do
+    current_user = Repo.get!(User, session[:current_user_id])
+    assign(socket, %{current_user: current_user})
+  end
+
+  defp set_empty_changeset(socket) do
+    changeset = GridData.changeset(%GridData{})
+    assign(socket, %{changeset: changeset})
   end
 
   defp not_authorized(socket) do
