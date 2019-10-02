@@ -16,6 +16,8 @@
 
 * extract common view logic to ```view_helper.ex```
 
+* Add Logger to context, simulation loop and realm
+
 ## 0.2.1
 
 * Use Nginx as server service (not as docker container)
