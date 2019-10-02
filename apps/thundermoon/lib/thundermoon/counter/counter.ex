@@ -3,6 +3,7 @@ defmodule Thundermoon.Counter do
   Context for counter.
   It acts as a single point of entry to the counter.
   """
+  require Logger
 
   alias Thundermoon.CounterRealm
   alias Thundermoon.CounterSimulation
@@ -12,10 +13,12 @@ defmodule Thundermoon.Counter do
   end
 
   def start() do
+    Logger.info("start counter")
     GenServer.cast(CounterSimulation, :start)
   end
 
   def stop() do
+    Logger.info("stop counter")
     GenServer.cast(CounterSimulation, :stop)
   end
 
@@ -32,14 +35,17 @@ defmodule Thundermoon.Counter do
   end
 
   def inc(digit) do
+    Logger.info("inc #{digit} counter")
     get_root() |> GenServer.cast({:inc, digit})
   end
 
   def dec(digit) do
+    Logger.info("dec #{digit} counter")
     get_root() |> GenServer.cast({:dec, digit})
   end
 
   def reset() do
+    Logger.info("reset counter")
     get_root() |> GenServer.call(:reset)
   end
 end

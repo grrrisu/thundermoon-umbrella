@@ -5,6 +5,8 @@ defmodule Thundermoon.CounterRealm do
   """
   use GenServer
 
+  require Logger
+
   alias Thundermoon.CounterRoot
   alias Thundermoon.CounterSupervisor
 
@@ -43,6 +45,7 @@ defmodule Thundermoon.CounterRealm do
   end
 
   defp create_counter do
+    Logger.info("create CounterRoot")
     {:ok, pid} = DynamicSupervisor.start_child(CounterSupervisor, CounterRoot)
 
     ref = Process.monitor(pid)
