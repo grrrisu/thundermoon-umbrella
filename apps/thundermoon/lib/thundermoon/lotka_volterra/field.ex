@@ -16,10 +16,9 @@ defmodule Thundermoon.Field do
 
   def tick(field) do
     Agent.get_and_update(field, fn state ->
-      new_size = state.vegetation.size + Vegetation.delta(state.vegetation)
-      new_vegetation = %Vegetation{state.vegetation | size: new_size}
-      broadcast(new_size)
-      {new_size, %{state | vegetation: new_vegetation}}
+      new_vegetation = Vegetation.sim(state.vegetation)
+      broadcast(new_vegetation.size)
+      {new_vegetation.size, %{state | vegetation: new_vegetation}}
     end)
   end
 
