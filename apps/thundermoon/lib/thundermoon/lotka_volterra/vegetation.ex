@@ -27,4 +27,9 @@ defmodule Thundermoon.Vegetation do
       }) do
     size * (birth_rate - death_rate) * (capacity - size) / capacity
   end
+
+  def sim(%Vegetation{size: size} = vegetation, step \\ 1) do
+    new_size = size + delta(vegetation) * step
+    %Vegetation{vegetation | size: new_size}
+  end
 end
