@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.4.0
+
+* Lotka Volterra simulation
+
 ## 0.3.0
 
 * new application ```sim```
