@@ -102,7 +102,7 @@ defmodule ThundermoonWeb.GameOfLifeLive do
     assign(socket, label_sim_start: label)
   end
 
-  def can_execute!(socket, action, subject, func) do
+  defp can_execute!(socket, action, subject, func) do
     cond do
       socket.assigns.current_user |> can?(action, subject) ->
         func.(socket)
