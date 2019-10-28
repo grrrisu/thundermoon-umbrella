@@ -9,7 +9,6 @@ defmodule Thundermoon.Field do
   def start_link(_args \\ nil) do
     Agent.start_link(fn ->
       vegetation = %Vegetation{}
-      broadcast(vegetation.size)
       %{vegetation: vegetation}
     end)
   end
@@ -17,7 +16,6 @@ defmodule Thundermoon.Field do
   def tick(field) do
     Agent.get_and_update(field, fn state ->
       new_vegetation = Vegetation.sim(state.vegetation)
-      broadcast(new_vegetation.size)
       {new_vegetation.size, %{state | vegetation: new_vegetation}}
     end)
   end
