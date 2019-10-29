@@ -1,5 +1,5 @@
 defmodule Thundermoon.SimContainer do
-  use GenServer, restart: :temporary
+  use GenServer
 
   alias Thundermoon.Session
 
@@ -43,5 +43,7 @@ defmodule Thundermoon.SimContainer do
         func.(session)
       end
     end)
+
+    {:reply, :ok, state}
   end
 end
