@@ -1,4 +1,6 @@
 defmodule Thundermoon.LotkaVolterra do
+  require Logger
+
   alias Thundermoon.{SimContainer, Field}
   alias Thundermoon.LotkaVolterra.{Realm, SimulationLoop}
 
@@ -11,7 +13,9 @@ defmodule Thundermoon.LotkaVolterra do
 
   def start() do
     func = fn ->
-      SimContainer.sim(fn session ->
+      sessions = SimContainer.get_sessions()
+
+      Enum.each(sessions, fn session ->
         new_size = Field.tick(session.pid)
         broadcast(session, new_size)
       end)

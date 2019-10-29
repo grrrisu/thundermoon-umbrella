@@ -19,8 +19,8 @@ defmodule Thundermoon.SimContainer do
     GenServer.call(__MODULE__, {:remove, session_id})
   end
 
-  def sim(func) do
-    GenServer.call(__MODULE__, {:sim, func})
+  def get_sessions() do
+    GenServer.call(__MODULE__, :get_sessions)
   end
 
   def handle_call({:add, %{object_module: object_module}}, _from, state) do
@@ -36,14 +36,7 @@ defmodule Thundermoon.SimContainer do
     {:reply, session_ref, %{state | sessions: new_sessions}}
   end
 
-  def handle_call({:sim, func}, _from, state) do
-    Enum.each(state.sessions, fn {_ref, session} ->
-      if session.running do
-        # TODO use Task
-        func.(session)
-      end
-    end)
-
-    {:reply, :ok, state}
+  def handle_call(:get_sessions, _from, state) do
+    {:reply, Map.values(state.sessions), state}
   end
 end
