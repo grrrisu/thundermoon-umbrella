@@ -37,7 +37,7 @@ defmodule Thundermoon.SimContainer do
   end
 
   def handle_call({:sim, func}, _from, state) do
-    Enum.each(state.sessions, fn session ->
+    Enum.each(state.sessions, fn {_ref, session} ->
       if session.running do
         # TODO use Task
         func.(session)
