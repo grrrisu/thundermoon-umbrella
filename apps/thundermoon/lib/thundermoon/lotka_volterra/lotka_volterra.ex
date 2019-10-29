@@ -31,7 +31,7 @@ defmodule Thundermoon.LotkaVolterra do
   defp broadcast(session, new_size) do
     Endpoint.broadcast(
       "Thundermoon.LotkaVolterra",
-      session.id,
+      session.pid,
       %{vegetation: new_size}
     )
   end
