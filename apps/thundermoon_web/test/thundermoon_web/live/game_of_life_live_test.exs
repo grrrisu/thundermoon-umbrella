@@ -86,6 +86,7 @@ defmodule ThundermoonWeb.GameOfLifeLiveTest do
       render_click(view, "toggle-cell", %{"x" => "0", "y" => "0"})
       changed_value = not value
       assert_receive(%{event: "update", payload: %{grid: %{0 => %{0 => ^changed_value}}}})
+      GameOfLife.recreate()
     end
 
     test "can not recreate a grid", %{conn: conn} do
@@ -127,6 +128,7 @@ defmodule ThundermoonWeb.GameOfLifeLiveTest do
       render_click(view, :recreate)
       {:ok, _view, html} = live(conn, "/game_of_life")
       assert html =~ "Create a new Grid"
+      GameOfLife.recreate()
     end
   end
 end

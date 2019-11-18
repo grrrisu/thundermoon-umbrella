@@ -5,13 +5,13 @@ defmodule Thundermoon.FieldTest do
   alias ThundermoonWeb.Endpoint
 
   setup do
-    {:ok, field} = Field.start()
-    Endpoint.subscribe("Thundermoon.LotkaVolterra")
+    {:ok, field} = Field.start_link()
+    # Endpoint.subscribe("Thundermoon.LotkaVolterra")
 
-    on_exit(fn ->
-      :ok = Agent.stop(field)
-      Endpoint.unsubscribe("Thundermoon.LotkaVolterra")
-    end)
+    # on_exit(fn ->
+    #   :ok = Agent.stop(field)
+    #   Endpoint.unsubscribe("Thundermoon.LotkaVolterra")
+    # end)
 
     %{field: field}
   end
@@ -26,6 +26,6 @@ defmodule Thundermoon.FieldTest do
 
   test "size increases by delta after 1 tick", %{field: field} do
     assert 650 + 32.5 == Field.tick(field)
-    assert_broadcast_vegetation(650 + 32.5)
+    # assert_broadcast_vegetation(650 + 32.5)
   end
 end

@@ -6,8 +6,8 @@ defmodule Thundermoon.Field do
 
   alias ThundermoonWeb.Endpoint
 
-  def start() do
-    Agent.start(fn ->
+  def start_link(_args \\ nil) do
+    Agent.start_link(fn ->
       vegetation = %Vegetation{}
       broadcast(vegetation.size)
       %{vegetation: vegetation}
