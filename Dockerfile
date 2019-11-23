@@ -1,5 +1,5 @@
 # docker build -t thundermoon:builder --target=builder .
-FROM elixir:1.9.1-alpine as builder
+FROM elixir:1.9.4-alpine as builder
 RUN apk add --no-cache \
     gcc \
     git \
@@ -19,7 +19,7 @@ RUN mix do deps.get --only prod, deps.compile
 
 ########################################################
 # docker build -t thundermoon:assets --target=assets .
-FROM node:8.16.0-alpine as assets
+FROM node:8.16.2-alpine as assets
 
 WORKDIR /app
 
@@ -87,7 +87,7 @@ RUN mix release
 
 #########################################################
 # docker build -t thundermoon:app --target=app .
-FROM alpine:3.9 as app
+FROM alpine:3.10 as app
 
 RUN apk add --update bash openssl
 
