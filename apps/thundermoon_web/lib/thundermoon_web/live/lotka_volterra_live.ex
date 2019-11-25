@@ -35,6 +35,11 @@ defmodule ThundermoonWeb.LotkaVolterraLive do
     {:noreply, set_label_sim_start(socket, started)}
   end
 
+  def handle_info(%{event: "update", payload: %{vegetation: size}}, socket) do
+    IO.puts("new size: #{size}")
+    {:noreply, assign(socket, vegetation: size)}
+  end
+
   defp set_label_sim_start(socket, started) do
     label = if started, do: "stop", else: "start"
     assign(socket, label_sim_start: label)

@@ -16,7 +16,7 @@ defmodule Thundermoon.LotkaVolterra do
       sessions = SimContainer.get_sessions()
 
       Enum.each(sessions, fn session ->
-        new_size = Field.tick(session.pid)
+        new_size = Field.tick(session.subject_pid)
         broadcast(session, new_size)
       end)
     end
@@ -32,11 +32,8 @@ defmodule Thundermoon.LotkaVolterra do
     GenServer.call(SimulationLoop, :started?)
   end
 
-  defp broadcast(session, new_size) do
-    Endpoint.broadcast(
-      "Thundermoon.LotkaVolterra",
-      session.pid,
-      %{vegetation: new_size}
-    )
+  defp broadcast(session, size) do
+    session.listener_pid
+    |> send(%{event: "update", payload: %{vegetation: size}})
   end
 end
