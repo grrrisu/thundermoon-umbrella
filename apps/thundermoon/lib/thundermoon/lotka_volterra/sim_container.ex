@@ -23,10 +23,19 @@ defmodule Thundermoon.SimContainer do
     GenServer.call(__MODULE__, :get_sessions)
   end
 
-  def handle_call({:add, %{object_module: object_module}}, _from, state) do
+  def handle_call({:add, %{object_module: object_module}}, {from_id, _}, state) do
     {:ok, pid} = DynamicSupervisor.start_child(state.supervisor_module, object_module)
     ref = Process.monitor(pid)
-    session = %Session{ref: ref, pid: pid, running: true}
+    listener_ref = Process.monitor(from_id)
+
+    session = %Session{
+      subject_pid: pid,
+      subject_ref: ref,
+      listener_pid: from_id,
+      listener_ref: listener_ref,
+      running: true
+    }
+
     new_sessions = Map.put_new(state.sessions, ref, session)
     {:reply, {:ok, ref}, %{state | sessions: new_sessions}}
   end
@@ -38,5 +47,15 @@ defmodule Thundermoon.SimContainer do
 
   def handle_call(:get_sessions, _from, state) do
     {:reply, Map.values(state.sessions), state}
+  end
+
+  def handle_info({:DOWN, ref, :process, _pid, _reason}, %{sessions: sessions} = state) do
+    new_sessions =
+      case Enum.find(sessions, fn {key, session} -> session.listener_ref == ref end) do
+        {key, value} -> sessions = Map.delete(sessions, key)
+        nil -> sessions
+      end
+
+    {:noreply, %{state | sessions: new_sessions}}
   end
 end
