@@ -55,7 +55,8 @@ config :sentry,
 
 config :appsignal, :config,
   name: "thundermoon-lab",
-  env: Mix.env()
+  env: Mix.env(),
+  revision: System.get_env("APP_REVISION") || Application.spec(:thundermoon_web, :vsn)
 
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.

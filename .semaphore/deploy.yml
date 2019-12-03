@@ -32,6 +32,7 @@ blocks:
           - echo SENTRY_DSN="${SENTRY_DSN}" >> .env/app
           - echo SENTRY_RELEASE=$SEMAPHORE_GIT_SHA >> .env/app
           - echo APPSIGNAL_PUSH_API_KEY="${APPSIGNAL_PUSH_API_KEY}" >> .env/app
+          - echo APP_REVISION="${SEMAPHORE_GIT_SHA}" >> .env/app
           - touch .env/db
           - echo POSTGRES_PASSWORD="${DB_PASSWORD}" >> .env/db
       jobs:
