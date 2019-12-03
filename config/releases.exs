@@ -22,4 +22,6 @@ config :sentry,
   dsn: System.get_env("SENTRY_DSN"),
   release: System.get_env("SENTRY_RELEASE")
 
-config :appsignal, :config, push_api_key: System.get_env("APPSIGNAL_PUSH_API_KEY")
+config :appsignal, :config,
+  push_api_key: System.get_env("APPSIGNAL_PUSH_API_KEY"),
+  env: :prod

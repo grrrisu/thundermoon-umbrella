@@ -1,5 +1,6 @@
 defmodule ThundermoonWeb.Endpoint do
   use Phoenix.Endpoint, otp_app: :thundermoon_web
+  use Appsignal.Phoenix
 
   socket "/socket", ThundermoonWeb.UserSocket,
     websocket: true,

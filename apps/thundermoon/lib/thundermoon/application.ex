@@ -6,6 +6,13 @@ defmodule Thundermoon.Application do
   use Application
 
   def start(_type, _args) do
+    :telemetry.attach(
+      "appsignal-ecto",
+      [:thundermoon, :repo, :query],
+      &Appsignal.Ecto.handle_event/4,
+      nil
+    )
+
     children = [
       Thundermoon.Repo,
       Thundermoon.ChatMessages,

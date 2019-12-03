@@ -23,7 +23,8 @@ config :thundermoon_web, ThundermoonWeb.Endpoint,
   secret_key_base: "tppRzffplbnK5cQm15uBQNUPGcM66dQyDYmPmDv+hUPWYmc9DL1ypKuJQr9J2Ect",
   render_errors: [view: ThundermoonWeb.ErrorView, accepts: ~w(html json)],
   pubsub: [name: ThundermoonWeb.PubSub, adapter: Phoenix.PubSub.PG2],
-  live_view: [signing_salt: "3xuIiywqogg7Ar9EFVpbQGP6lEfmoLzY"]
+  live_view: [signing_salt: "3xuIiywqogg7Ar9EFVpbQGP6lEfmoLzY"],
+  instrumenters: [Appsignal.Phoenix.Instrumenter]
 
 # Configures Elixir's Logger
 config :logger, :console,
@@ -32,6 +33,10 @@ config :logger, :console,
 
 # Use Jason for JSON parsing in Phoenix
 config :phoenix, :json_library, Jason
+
+config :phoenix, :template_engines,
+  eex: Appsignal.Phoenix.Template.EExEngine,
+  exs: Appsignal.Phoenix.Template.ExsEngine
 
 config :ueberauth, Ueberauth,
   providers: [
