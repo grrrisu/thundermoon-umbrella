@@ -1,7 +1,7 @@
 version: '3.7'
 services:
   app:
-    image: thundermoon:test
+    image: $IMAGE
     environment:
       DB_HOST: db
       DB_USER: postgres

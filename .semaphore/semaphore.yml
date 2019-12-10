@@ -8,7 +8,7 @@ agent:
     os_image: ubuntu1804
 
 blocks:
-  - name: "Builder"
+  - name: "Prepare Containers"
     task:
       secrets:
         - name: dockerhub-secrets
@@ -19,25 +19,6 @@ blocks:
         commands:
           # Authenticate to the registry for all jobs in the block
           - echo "${DOCKER_PASSWORD}" | docker login -u "${DOCKER_USERNAME}" --password-stdin
-      jobs:
-        - name: build container
-          commands:
-            - checkout
-            - docker build -t thundermoon:builder --target=builder .
-            - docker tag thundermoon:builder "$DOCKER_REPOSITORY:builder_$SEMAPHORE_GIT_BRANCH"
-            - docker push "$DOCKER_REPOSITORY:builder_$SEMAPHORE_GIT_BRANCH"
-  - name: "Tester"
-    task:
-      secrets:
-        - name: dockerhub-secrets
-      env_vars:
-        - name: DOCKER_REPOSITORY
-          value: grrrocker/thundermoon-umbrella
-      prologue:
-        commands:
-          # Authenticate to the registry for all jobs in the block
-          - echo "${DOCKER_PASSWORD}" | docker login -u "${DOCKER_USERNAME}" --password-stdin
-          - docker pull "$DOCKER_REPOSITORY:builder_$SEMAPHORE_GIT_BRANCH"
       jobs:
         - name: build container
           commands:
@@ -45,6 +26,10 @@ blocks:
             - docker build -t thundermoon:test --target=test .
             - docker tag thundermoon:test "$DOCKER_REPOSITORY:test_$SEMAPHORE_GIT_BRANCH"
             - docker push "$DOCKER_REPOSITORY:test_$SEMAPHORE_GIT_BRANCH"
+            - mv config/dev.secret.example.exs config/dev.secret.exs
+            - docker build -t thundermoon:integration --target=integration .
+            - docker tag thundermoon:integration "$DOCKER_REPOSITORY:integration_$SEMAPHORE_GIT_BRANCH"
+            - docker push "$DOCKER_REPOSITORY:integration_$SEMAPHORE_GIT_BRANCH"
   - name: "Test"
     task:
       secrets:
@@ -70,14 +55,11 @@ blocks:
         - name: mix test
           commands:
             - docker pull "$DOCKER_REPOSITORY:test_$SEMAPHORE_GIT_BRANCH"
-            - docker build --cache-from "$DOCKER_USERNAME:thundermoon-umbrella:test_$SEMAPHORE_GIT_BRANCH" -t thundermoon:test --target=test .
-            - docker-compose -f .semaphore/docker-compose.yml up --abort-on-container-exit --exit-code-from app
+            - IMAGE="$DOCKER_REPOSITORY:test_$SEMAPHORE_GIT_BRANCH" docker-compose -f .semaphore/docker-compose.yml up --abort-on-container-exit --exit-code-from app
         - name: cypress
           commands:
-            - docker pull "$DOCKER_REPOSITORY:builder_$SEMAPHORE_GIT_BRANCH"
-            - mv config/dev.secret.example.exs config/dev.secret.exs
-            - docker build --cache-from "$DOCKER_USERNAME:thundermoon-umbrella:builder_$SEMAPHORE_GIT_BRANCH" -t thundermoon:integration --target=integration .
-            - docker-compose -f .semaphore/docker-compose.integration.yml up --abort-on-container-exit --exit-code-from browser
+            - docker pull "$DOCKER_REPOSITORY:integration_$SEMAPHORE_GIT_BRANCH"
+            - IMAGE="$DOCKER_REPOSITORY:integration_$SEMAPHORE_GIT_BRANCH" docker-compose -f .semaphore/docker-compose.integration.yml up --abort-on-container-exit --exit-code-from browser
   - name: build container
     task:
       secrets:
@@ -90,7 +72,6 @@ blocks:
         commands:
           # Authenticate to the registry for all jobs in the block
           - echo "${DOCKER_PASSWORD}" | docker login -u "${DOCKER_USERNAME}" --password-stdin
-          - docker pull "$DOCKER_REPOSITORY:builder_$SEMAPHORE_GIT_BRANCH"
           - export IMAGE_TAG=$DOCKER_REPOSITORY:$SEMAPHORE_GIT_BRANCH
       jobs:
         - name: push build
@@ -104,7 +85,7 @@ blocks:
             - touch .env/db
             - echo POSTGRES_PASSWORD="${DB_PASSWORD}" >> .env/db
             - mv config/dev.secret.example.exs config/dev.secret.exs
-            - docker build --cache-from "$DOCKER_USERNAME:thundermoon-umbrella:builder_$SEMAPHORE_GIT_BRANCH" -t $IMAGE_TAG --target=app .
+            - docker build -t $IMAGE_TAG --target=app .
             - docker push $IMAGE_TAG
 promotions:
   - name: Deploy
