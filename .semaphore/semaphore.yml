@@ -26,7 +26,7 @@ blocks:
             - docker build -t thundermoon:builder --target=builder .
             - docker tag thundermoon:builder "$DOCKER_REPOSITORY:builder_$SEMAPHORE_GIT_BRANCH"
             - docker push "$DOCKER_REPOSITORY:builder_$SEMAPHORE_GIT_BRANCH"
-  - name: "Test"
+  - name: "Tester"
     task:
       secrets:
         - name: dockerhub-secrets
@@ -38,23 +38,43 @@ blocks:
           # Authenticate to the registry for all jobs in the block
           - echo "${DOCKER_PASSWORD}" | docker login -u "${DOCKER_USERNAME}" --password-stdin
           - docker pull "$DOCKER_REPOSITORY:builder_$SEMAPHORE_GIT_BRANCH"
+      jobs:
+        - name: build container
+          commands:
+            - checkout
+            - docker build -t thundermoon:test --target=test .
+            - docker tag thundermoon:test "$DOCKER_REPOSITORY:test_$SEMAPHORE_GIT_BRANCH"
+            - docker push "$DOCKER_REPOSITORY:test_$SEMAPHORE_GIT_BRANCH"
+  - name: "Test"
+    task:
+      secrets:
+        - name: dockerhub-secrets
+      env_vars:
+        - name: DOCKER_REPOSITORY
+          value: grrrocker/thundermoon-umbrella
+      prologue:
+        commands:
+          # Authenticate to the registry for all jobs in the block
+          - echo "${DOCKER_PASSWORD}" | docker login -u "${DOCKER_USERNAME}" --password-stdin
           - checkout
       jobs:
         - name: check credo
           commands:
             # check credo with priority medium = 10
-            - docker build --cache-from "$DOCKER_USERNAME:thundermoon-umbrella:builder_$SEMAPHORE_GIT_BRANCH" -t thundermoon:test --target=test .
-            - docker run thundermoon:test mix credo suggest --min-priority 10
+            - docker pull "$DOCKER_REPOSITORY:test_$SEMAPHORE_GIT_BRANCH"
+            - docker run "$DOCKER_REPOSITORY:test_$SEMAPHORE_GIT_BRANCH" mix credo suggest --min-priority 10
         - name: check formatted
           commands:
-            - docker build --cache-from "$DOCKER_USERNAME:thundermoon-umbrella:builder_$SEMAPHORE_GIT_BRANCH" -t thundermoon:test --target=test .
-            - docker run thundermoon:test mix format --check-formatted
+            - docker pull "$DOCKER_REPOSITORY:test_$SEMAPHORE_GIT_BRANCH"
+            - docker run "$DOCKER_REPOSITORY:test_$SEMAPHORE_GIT_BRANCH" mix format --check-formatted
         - name: mix test
           commands:
-            - docker build --cache-from "$DOCKER_USERNAME:thundermoon-umbrella:builder_$SEMAPHORE_GIT_BRANCH" -t thundermoon:test --target=test .
+            - docker pull "$DOCKER_REPOSITORY:test_$SEMAPHORE_GIT_BRANCH"
+            - docker build --cache-from "$DOCKER_USERNAME:thundermoon-umbrella:test_$SEMAPHORE_GIT_BRANCH" -t thundermoon:test --target=test .
             - docker-compose -f .semaphore/docker-compose.yml up --abort-on-container-exit --exit-code-from app
         - name: cypress
           commands:
+            - docker pull "$DOCKER_REPOSITORY:builder_$SEMAPHORE_GIT_BRANCH"
             - mv config/dev.secret.example.exs config/dev.secret.exs
             - docker build --cache-from "$DOCKER_USERNAME:thundermoon-umbrella:builder_$SEMAPHORE_GIT_BRANCH" -t thundermoon:integration --target=integration .
             - docker-compose -f .semaphore/docker-compose.integration.yml up --abort-on-container-exit --exit-code-from browser
