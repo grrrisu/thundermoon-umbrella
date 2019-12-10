@@ -14,6 +14,11 @@ blocks:
         commands:
           - checkout
       jobs:
+        - name: check credo
+          commands:
+            # check credo with priority medium = 10
+            - docker build -t thundermoon:test --target=test .
+            - docker run thundermoon:test mix credo suggest --min-priority 10
         - name: check formatted
           commands:
             - docker build -t thundermoon:test --target=test .
