@@ -30,7 +30,7 @@ defmodule ThundermoonWeb.AuthService do
         |> Enum.filter(&(&1 != nil and &1 != ""))
 
       cond do
-        length(name) == 0 -> auth.info.nickname
+        String.length(name) == 0 -> auth.info.nickname
         true -> Enum.join(name, " ")
       end
     end
