@@ -55,7 +55,8 @@ defmodule ThundermoonWeb.MixProject do
       {:sentry, "~> 7.0"},
       {:observer_cli, "~> 1.5"},
       {:phoenix_live_reload, "~> 1.2", only: :dev},
-      {:floki, "~> 0.23.0", only: :test}
+      {:floki, "~> 0.23.0", only: :test},
+      {:credo, "~> 1.1.0", only: [:dev, :test], runtime: false}
     ]
   end
 
