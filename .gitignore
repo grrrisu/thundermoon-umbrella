@@ -30,5 +30,5 @@ erl_crash.dump
 # Logs
 /log/*.log
 
-# Database 
+# Database
 /data/

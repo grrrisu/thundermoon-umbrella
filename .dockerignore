@@ -49,6 +49,9 @@ npm-debug.log
 # /config/*.secret.exs
 /.env/
 
+# asdf versions
+.tool-versions
+
 # Database
 /data/
 
