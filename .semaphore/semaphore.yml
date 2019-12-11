@@ -20,13 +20,18 @@ blocks:
           # Authenticate to the registry for all jobs in the block
           - echo "${DOCKER_PASSWORD}" | docker login -u "${DOCKER_USERNAME}" --password-stdin
           - checkout
-          - cache restore deps-$SEMAPHORE_GIT_BRANCH
       jobs:
         - name: build test containers
           commands:
+            # builder
+            - docker build -t thundermoon:builder --target=builder .
+            - docker tag thundermoon:builder "$DOCKER_REPOSITORY:builder_$SEMAPHORE_GIT_BRANCH"
+            - docker push "$DOCKER_REPOSITORY:builder_$SEMAPHORE_GIT_BRANCH"
+            # test
             - docker build -t thundermoon:test --target=test .
             - docker tag thundermoon:test "$DOCKER_REPOSITORY:test_$SEMAPHORE_GIT_BRANCH"
             - docker push "$DOCKER_REPOSITORY:test_$SEMAPHORE_GIT_BRANCH"
+            # integration
             - mv config/dev.secret.example.exs config/dev.secret.exs
             - docker build -t thundermoon:integration --target=integration .
             - docker tag thundermoon:integration "$DOCKER_REPOSITORY:integration_$SEMAPHORE_GIT_BRANCH"
@@ -34,7 +39,6 @@ blocks:
       epilogue:
         commands:
           - mkdir -p deps
-          - cache store deps-$SEMAPHORE_GIT_BRANCH deps
   - name: "Test"
     task:
       secrets:
@@ -79,7 +83,6 @@ blocks:
           - echo "${DOCKER_PASSWORD}" | docker login -u "${DOCKER_USERNAME}" --password-stdin
           - export IMAGE_TAG=$DOCKER_REPOSITORY:$SEMAPHORE_GIT_BRANCH
           - checkout
-          - cache restore deps-$SEMAPHORE_GIT_BRANCH
       jobs:
         - name: push build
           commands:
@@ -91,7 +94,8 @@ blocks:
             - touch .env/db
             - echo POSTGRES_PASSWORD="${DB_PASSWORD}" >> .env/db
             - mv config/dev.secret.example.exs config/dev.secret.exs
-            - docker build -t $IMAGE_TAG --target=app .
+            - docker pull "$DOCKER_REPOSITORY:builder_$SEMAPHORE_GIT_BRANCH"
+            - docker build -t $IMAGE_TAG --target=app --build-arg="$DOCKER_REPOSITORY:builder_$SEMAPHORE_GIT_BRANCH" .
             - docker push $IMAGE_TAG
 promotions:
   - name: Deploy

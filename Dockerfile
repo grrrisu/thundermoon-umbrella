@@ -1,5 +1,8 @@
-# docker build -t thundermoon:builder --target=builder .
-FROM elixir:1.9.4-alpine as builder
+#######################################################
+ARG BUILDER_IMAGE=builder
+
+# docker build -t thundermoon:dependencies --target=dependencies .
+FROM elixir:1.9.4-alpine as dependencies
 RUN apk add --no-cache \
     gcc \
     git \
@@ -24,9 +27,9 @@ FROM node:8.16.2-alpine as assets
 WORKDIR /app
 
 COPY apps/thundermoon_web/assets/package*.json /app/apps/thundermoon_web/assets/
-COPY --from=builder /app/deps/phoenix/ /app/deps/phoenix
-COPY --from=builder /app/deps/phoenix_html/ /app/deps/phoenix_html
-COPY --from=builder /app/deps/phoenix_live_view/ /app/deps/phoenix_live_view
+COPY --from=dependencies /app/deps/phoenix/ /app/deps/phoenix
+COPY --from=dependencies /app/deps/phoenix_html/ /app/deps/phoenix_html
+COPY --from=dependencies /app/deps/phoenix_live_view/ /app/deps/phoenix_live_view
 
 WORKDIR /app/apps/thundermoon_web/assets
 RUN npm ci
@@ -34,16 +37,20 @@ COPY apps/thundermoon_web/assets /app/apps/thundermoon_web/assets
 RUN npm run deploy
 
 ########################################################
-# docker build -t thundermoon:test --target=test .
-FROM builder as test
-
-COPY --from=assets /app/apps/thundermoon_web/priv/static/ /app/apps/thundermoon_web/priv/static/
-#WORKDIR /app/apps/thundermoon_web/
-#RUN mix phx.digest
+# docker build -t thundermoon:builder --target=builder .
+FROM dependencies AS builder
 
 WORKDIR /app
-COPY config/ /app/config
+COPY --from=assets /app/apps/thundermoon_web/priv/static/ /app/apps/thundermoon_web/priv/static/
 COPY apps/ /app/apps
+COPY config/ /app/config
+
+########################################################
+# docker build -t thundermoon:test --target=test .
+FROM $BUILDER_IMAGE as test
+
+WORKDIR /app
+
 COPY .formatter.exs /app/
 COPY mix.* /app/
 
@@ -53,15 +60,12 @@ RUN mix do deps.get deps.compile compile
 
 ########################################################
 # docker build -t thundermoon:integration --target=integration .
-FROM builder as integration
+FROM $BUILDER_IMAGE as integration
 
-COPY --from=assets /app/apps/thundermoon_web/priv/static/ /app/apps/thundermoon_web/priv/static/
 WORKDIR /app/apps/thundermoon_web/
 RUN mix phx.digest
 
 WORKDIR /app
-COPY config/ /app/config
-COPY apps/ /app/apps
 
 ENV SECRET_KEY_BASE set_later
 ENV MIX_ENV=integration
@@ -72,15 +76,13 @@ CMD ["/app/run_integration.sh"]
 
 #########################################################
 # docker build -t thundermoon:releaser --target=releaser .
-FROM builder as releaser
+FROM $BUILDER_IMAGE as releaser
 
-COPY --from=assets /app/apps/thundermoon_web/priv/static/ /app/apps/thundermoon_web/priv/static/
 WORKDIR /app/apps/thundermoon_web/
 RUN mix phx.digest
 
 WORKDIR /app
 COPY config/ /app/config
-COPY apps/ /app/apps
 
 RUN mix compile
 RUN mix release
