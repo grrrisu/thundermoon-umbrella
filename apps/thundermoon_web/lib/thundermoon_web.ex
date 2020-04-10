@@ -22,7 +22,7 @@ defmodule ThundermoonWeb do
       use Phoenix.Controller, namespace: ThundermoonWeb
       import Plug.Conn
       import ThundermoonWeb.Gettext
-      import Phoenix.LiveView.Controller, only: [live_render: 3]
+      import Phoenix.LiveView.Controller
       import Canary.Plugs
       import Canada.Can
       alias ThundermoonWeb.Router.Helpers, as: Routes
@@ -43,7 +43,7 @@ defmodule ThundermoonWeb do
 
       import ThundermoonWeb.ErrorHelpers
       import ThundermoonWeb.Gettext
-      import Phoenix.LiveView, only: [live_render: 2, live_render: 3, live_link: 1, live_link: 2]
+      import Phoenix.LiveView.Helpers
       import Canada.Can
       alias ThundermoonWeb.Router.Helpers, as: Routes
     end
