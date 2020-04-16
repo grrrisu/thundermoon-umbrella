@@ -40,9 +40,8 @@ defmodule ThundermoonWeb.GameOfLifeLiveTest do
 
       data = %{"grid_data" => %{"size" => "5"}}
 
-      assert_redirect(view, "/", fn ->
-        render_submit(view, :create, data)
-      end)
+      render_submit(view, :create, data)
+      assert_redirect(view, "/")
     end
 
     test "can start and stop sim", %{conn: conn} do
@@ -92,9 +91,8 @@ defmodule ThundermoonWeb.GameOfLifeLiveTest do
     test "can not recreate a grid", %{conn: conn} do
       {:ok, view, _html} = live(conn, "/game_of_life")
 
-      assert_redirect(view, "/", fn ->
-        render_click(view, :recreate)
-      end)
+      render_click(view, :recreate)
+      assert_redirect(view, "/")
     end
   end
 

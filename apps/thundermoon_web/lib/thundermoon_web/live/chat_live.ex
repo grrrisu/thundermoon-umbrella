@@ -11,8 +11,8 @@ defmodule ThundermoonWeb.ChatLive do
   alias ThundermoonWeb.ChatView
   alias ThundermoonWeb.Presence
 
-  def mount(session, socket) do
-    user = Repo.get!(User, session[:current_user_id])
+  def mount(_params, session, socket) do
+    user = Repo.get!(User, session["current_user_id"])
     if connected?(socket), do: subscribe(user)
     messages = ChatMessages.list()
     users = extract_users(Presence.list("chat"))
