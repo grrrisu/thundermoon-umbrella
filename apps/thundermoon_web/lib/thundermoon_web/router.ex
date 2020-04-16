@@ -8,6 +8,7 @@ defmodule ThundermoonWeb.Router do
     plug :protect_from_forgery
     plug :put_secure_browser_headers
     plug ThundermoonWeb.AuthPlug
+    plug :put_root_layout, {ThundermoonWeb.LayoutView, :root}
   end
 
   pipeline :api do
@@ -39,8 +40,8 @@ defmodule ThundermoonWeb.Router do
 
     get "/dashboard", PageController, :dashboard
     resources "/users", UserController, only: [:index, :edit, :update, :delete]
-    live "/chat", ChatLive, session: [:current_user_id]
-    live "/counter", CounterLive, session: [:current_user_id]
-    live "/game_of_life", GameOfLifeLive, session: [:current_user_id]
+    live "/chat", ChatLive
+    live "/counter", CounterLive
+    live "/game_of_life", GameOfLifeLive
   end
 end

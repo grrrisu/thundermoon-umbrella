@@ -14,7 +14,7 @@ defmodule ThundermoonWeb.GameOfLifeLive do
   alias ThundermoonWeb.Endpoint
   alias ThundermoonWeb.Router.Helpers, as: Routes
 
-  def mount(session, socket) do
+  def mount(_params, session, socket) do
     if connected?(socket), do: Endpoint.subscribe("Thundermoon.GameOfLife")
     grid = GameOfLife.get_grid()
 
@@ -108,12 +108,12 @@ defmodule ThundermoonWeb.GameOfLifeLive do
         func.(socket)
 
       true ->
-        {:stop, not_authorized(socket)}
+        {:noreply, not_authorized(socket)}
     end
   end
 
   defp set_current_user(socket, session) do
-    current_user = Repo.get!(User, session[:current_user_id])
+    current_user = Repo.get!(User, session["current_user_id"])
     assign(socket, %{current_user: current_user})
   end
 

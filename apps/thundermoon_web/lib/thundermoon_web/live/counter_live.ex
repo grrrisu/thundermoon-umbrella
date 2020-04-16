@@ -11,8 +11,8 @@ defmodule ThundermoonWeb.CounterLive do
   alias ThundermoonWeb.Endpoint
   alias ThundermoonWeb.Router.Helpers, as: Routes
 
-  def mount(session, socket) do
-    user = Repo.get!(User, session[:current_user_id])
+  def mount(_params, session, socket) do
+    user = Repo.get!(User, session["current_user_id"])
     if connected?(socket), do: Endpoint.subscribe("counter")
     {:ok, _} = Counter.create()
     digits = Counter.get_digits()
@@ -52,7 +52,7 @@ defmodule ThundermoonWeb.CounterLive do
         {:noreply, socket}
 
       true ->
-        {:stop, not_authorized(socket)}
+        {:noreply, not_authorized(socket)}
     end
   end
 

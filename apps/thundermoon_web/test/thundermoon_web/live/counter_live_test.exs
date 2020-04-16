@@ -57,9 +57,8 @@ defmodule ThundermoonWeb.CounterLiveTest do
       {:ok, view, html} = live(conn, "/counter")
       refute html =~ "reset"
 
-      assert_redirect(view, "/", fn ->
-        render_click(view, :reset)
-      end)
+      render_click(view, :reset)
+      assert_redirect(view, "/")
     end
 
     test "can start and stop sim", %{conn: conn} do

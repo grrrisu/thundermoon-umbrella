@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Thundermoon</title>
+    <link rel="stylesheet" href="<%= Routes.static_path(@conn, "/app.css") %>"/>
+    <%= csrf_meta_tag() %>
+  </head>
+  <body>
+    <header>
+      <section class="container">
+        <nav role="navigation">
+          <%= if signed_in?(@conn) do %>
+          <ul>
+            <li><%= link "Dashboard", to: "/dashboard" %></li>
+            <li><%= link "Users", to: Routes.user_path(@conn, :index) %></li>
+          </ul>
+          <% end %>
+          <ul>
+            <%= if signed_in?(@conn) do %>
+              <li>
+                <%= link to: Routes.auth_path(@conn, :delete), method: :delete  do %>
+                  Logout <i class="la la-sign-out"></i>
+                <% end %>
+              </li>
+            <% else %>
+              <li>
+                <%= link to: Routes.auth_path(@conn, :request) do %>
+                  <span>Login</span>
+                  <i class="la la-2x la-github-square vertical-align-middle"></i>
+                <% end %>
+              </li>
+            <% end %>
+          </ul>
+        </nav>
+        <%= link to: "/", class: "logo" do %>
+          <%= img_tag Routes.static_path(@conn, "/images/thunderbirdmoon.jpg"), alt: "Thundermoon"%>
+        <% end %>
+      </section>
+    </header>
+    <main role="main" class="container">
+      <p class="alert alert-info" role="alert"><%= get_flash(@conn, :info) %></p>
+      <p class="alert alert-danger" role="alert"><%= get_flash(@conn, :error) %></p>
+      <%= @inner_content %>
+    </main>
+    <footer>
+      <section class="container">
+        <%= link to: "https://github.com/grrrisu/thundermoon-umbrella" do %>
+          <%= img_tag Routes.static_path(@conn, "/images/github-logo.svg"), class: "github-logo", alt: "github"%>
+          Github
+        <% end %>
+      </section>
+    </footer>
+    <script type="text/javascript" src="<%= Routes.static_path(@conn, "/app.js") %>"></script>
+  </body>
+</html>
