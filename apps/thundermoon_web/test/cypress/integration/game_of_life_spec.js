@@ -2,6 +2,10 @@
 
 describe("game of life page", function() {
 
+  beforeEach(function() {
+    cy.request("PATCH", "/api/game_of_life/restart");
+  })
+
   afterEach(function() {
     cy.contains("Logout").click();
   });
@@ -22,19 +26,19 @@ describe("game of life page", function() {
   describe("as a member with a grid", function() {
 
     beforeEach(function() {
-      cy.visit("/auth/integration?external_user_id=456");
-      cy.visit("/game_of_life");
-      cy.get("input#grid_data_size").type("5");
-      cy.get("form").submit();
-
-      cy.visit("/auth/integration?external_user_id=123");
-      cy.visit("/game_of_life");
-    });
-
-    afterEach(function() {
-      cy.visit("/auth/integration?external_user_id=456");
-      cy.visit("/game_of_life");
-      cy.contains("recreate").click();
+      cy
+        .request({
+          method: 'POST',
+          url: "/api/game_of_life/create",
+          form: true,
+          body: {
+            size: "5"
+          }
+        })
+        .then((_resp) => {
+          cy.visit("/auth/integration?external_user_id=123");
+          cy.visit("/game_of_life");
+        });
     });
 
     it("I see a grid and can run it", function() {
@@ -76,10 +80,6 @@ describe("game of life page", function() {
     beforeEach(function() {
       cy.visit("/auth/integration?external_user_id=456");
       cy.visit("/game_of_life");
-    });
-
-    afterEach(function() {
-      cy.contains("recreate").click();
     });
 
     it("create a grid an run it", function() {
