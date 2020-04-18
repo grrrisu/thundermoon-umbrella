@@ -42,7 +42,7 @@ defmodule Sim.Realm do
   def handle_call(:restart_root, _from, state) do
     Logger.info("terminate root #{state.root_module}")
     :ok = DynamicSupervisor.terminate_child(state.supervisor_module, state.root.pid)
-    {:reply, :ok, state}
+    {:reply, :ok, %{state | root: nil}}
   end
 
   def handle_info({:DOWN, ref, :process, _pid, _reason}, state) do

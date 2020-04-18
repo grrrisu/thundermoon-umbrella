@@ -44,4 +44,14 @@ defmodule ThundermoonWeb.Router do
     live "/counter", CounterLive
     live "/game_of_life", GameOfLifeLive
   end
+
+  if Mix.env() == :integration do
+    scope "/api", ThundermoonWeb do
+      pipe_through :api
+
+      patch "/authorize/", Api.IntegrationController, :authorize
+      patch "/game_of_life/restart", Api.IntegrationController, :restart_game_of_life
+      post "/game_of_life/create", Api.IntegrationController, :create_game_of_life
+    end
+  end
 end
