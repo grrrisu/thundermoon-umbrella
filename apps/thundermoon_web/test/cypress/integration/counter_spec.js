@@ -3,13 +3,13 @@
 describe("counter page", function() {
 
   beforeEach(function() {
-    cy.visit("/auth/integration?external_user_id=456");
+    cy.login(456);
     cy.visit("/counter");
     cy.contains("reset").click();
   });
 
   afterEach(function() {
-    cy.contains("Logout").click();
+    cy.logout();
   });
 
   it("inc and dec all digits", function() {

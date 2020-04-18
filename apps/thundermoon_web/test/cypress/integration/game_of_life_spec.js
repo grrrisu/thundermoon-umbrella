@@ -4,16 +4,16 @@ describe("game of life page", function() {
 
   beforeEach(function() {
     cy.request("PATCH", "/api/game_of_life/restart");
-  })
+  });
 
   afterEach(function() {
-    cy.contains("Logout").click();
+    cy.logout();
   });
 
   describe("as a member without a grid", function() {
 
     beforeEach(function() {
-      cy.visit("/auth/integration?external_user_id=123");
+      cy.login(123);
       cy.visit("/game_of_life");
     });
 
@@ -28,7 +28,7 @@ describe("game of life page", function() {
     beforeEach(function() {
       cy
         .request({
-          method: 'POST',
+          method: "POST",
           url: "/api/game_of_life/create",
           form: true,
           body: {
@@ -36,7 +36,7 @@ describe("game of life page", function() {
           }
         })
         .then((_resp) => {
-          cy.visit("/auth/integration?external_user_id=123");
+          cy.login(123);
           cy.visit("/game_of_life");
         });
     });
@@ -78,7 +78,7 @@ describe("game of life page", function() {
   describe("as an admin", function() {
 
     beforeEach(function() {
-      cy.visit("/auth/integration?external_user_id=456");
+      cy.login(456);
       cy.visit("/game_of_life");
     });
 

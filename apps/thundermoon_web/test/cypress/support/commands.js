@@ -12,6 +12,33 @@
 // -- This is a parent command --
 // Cypress.Commands.add("login", (email, password) => { ... })
 //
+Cypress.Commands.add("login", (external_user_id) => {
+  cy
+    .request({
+      method: "POST",
+      url: "/api/login/",
+      form: true,
+      body: {
+        external_user_id: external_user_id
+      }
+    })
+    .then((_resp) => {
+      cy.visit("/dashboard");
+    });
+});
+
+Cypress.Commands.add("logout", () => {
+  cy
+    .request({
+      method: "DELETE",
+      url: "/api/logout/"
+    })
+    .then((_resp) => {
+      cy.visit("/");
+    });
+});
+
+
 //
 // -- This is a child command --
 // Cypress.Commands.add("drag", { prevSubject: 'element'}, (subject, options) => { ... })

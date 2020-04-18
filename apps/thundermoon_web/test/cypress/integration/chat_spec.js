@@ -3,12 +3,12 @@
 describe("chat page", function() {
 
   beforeEach(function() {
-    cy.visit("/auth/integration?external_user_id=456");
+    cy.login(456);
   });
 
   afterEach(function() {
     cy.contains("Clear all messages").click();
-    cy.contains("Logout").click();
+    cy.logout();
   });
 
   it("send a chat message", function() {

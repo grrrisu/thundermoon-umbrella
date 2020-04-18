@@ -10,11 +10,11 @@ describe("root page", function() {
 describe("dashboard page", function() {
 
   beforeEach(function() {
-    cy.visit("/auth/integration?external_user_id=123");
+    cy.login(123);
   });
 
   afterEach(function() {
-    cy.contains("Logout").click();
+    cy.logout();
   });
 
   it("should see the title", function() {
