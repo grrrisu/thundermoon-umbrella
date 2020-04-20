@@ -12,8 +12,6 @@ services:
       GITHUB_CLIENT_SECRET: abcdefg
     ports:
       - 4000:4000
-    volumes:
-      - test-e2e:/app/apps/thundermoon_web/test
     depends_on:
       - db
     command: sh ./run_integration.sh
@@ -29,11 +27,9 @@ services:
     image: cypress/included:4.4.0
     environment:
       CYPRESS_baseUrl: 'http://app:4000'
-    working_dir: /e2e
     volumes:
-      - test-e2e:/e2e
+      - ../apps/thundermoon_web/test/cypress:/cypress
+      - ../apps/thundermoon_web/test/cypress.json:/cypress.json
     depends_on:
       - app
-
-volumes:
-  test-e2e:
+    command: "--browser chrome"

@@ -77,6 +77,14 @@ start the cypress Test Runner
 
 start testing ....
 
+##### Docker
+
+Run cypress with docker
+
+`docker build -t thundermoon:integration --target=integration .`
+
+`IMAGE="thundermoon:integration" docker-compose -f .semaphore/docker-compose.integration.yml up --abort-on-container-exit --exit-code-from browser`
+
 ### Release
 
 manually test release can be built
