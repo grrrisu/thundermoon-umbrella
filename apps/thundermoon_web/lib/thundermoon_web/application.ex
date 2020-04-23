@@ -8,6 +8,8 @@ defmodule ThundermoonWeb.Application do
   def start(_type, _args) do
     # List all child processes to be supervised
     children = [
+      # Start the PubSub system
+      {Phoenix.PubSub, name: ThundermoonWeb.PubSub},
       # Start the endpoint when the application starts
       ThundermoonWeb.Endpoint,
       ThundermoonWeb.Presence
