@@ -1,9 +1,10 @@
 defmodule ThundermoonWeb.CounterLiveTest do
   use ThundermoonWeb.ConnCase
   import Phoenix.LiveViewTest
-  @endpoint ThundermoonWeb.Endpoint
 
   import ThundermoonWeb.AuthSupport
+
+  alias Phoenix.PubSub
 
   alias Thundermoon.Counter
 
@@ -36,7 +37,7 @@ defmodule ThundermoonWeb.CounterLiveTest do
     end
 
     test "inc digit 10", %{conn: conn} do
-      @endpoint.subscribe("counter")
+      PubSub.subscribe(ThundermoonWeb.PubSub, "counter")
       {:ok, view, _html} = live(conn, "/counter")
       render_click(view, :inc, %{"number" => "10"})
       assert_receive(%{event: "update", payload: %{digit_10: 1}})
@@ -44,7 +45,7 @@ defmodule ThundermoonWeb.CounterLiveTest do
     end
 
     test "dec digit 10", %{conn: conn} do
-      @endpoint.subscribe("counter")
+      PubSub.subscribe(ThundermoonWeb.PubSub, "counter")
       {:ok, view, _html} = live(conn, "/counter")
       render_click(view, :inc, %{"number" => "10"})
       assert_receive(%{event: "update", payload: %{digit_10: 1}})
@@ -62,7 +63,7 @@ defmodule ThundermoonWeb.CounterLiveTest do
     end
 
     test "can start and stop sim", %{conn: conn} do
-      @endpoint.subscribe("counter")
+      PubSub.subscribe(ThundermoonWeb.PubSub, "counter")
       {:ok, view, _html} = live(conn, "/counter")
       render_click(view, "toggle-sim-start", %{"action" => "start"})
       assert_receive(%{event: "sim", payload: %{started: true}})
@@ -75,7 +76,7 @@ defmodule ThundermoonWeb.CounterLiveTest do
     setup [:login_as_admin]
 
     test "can reset the counter", %{conn: conn} do
-      @endpoint.subscribe("counter")
+      PubSub.subscribe(ThundermoonWeb.PubSub, "counter")
       {:ok, view, html} = live(conn, "/counter")
       assert html =~ "reset"
       render_click(view, :reset)

@@ -3,6 +3,8 @@ defmodule ThundermoonWeb.CounterLive do
 
   import Canada.Can
 
+  alias Phoenix.PubSub
+
   alias Thundermoon.Counter
   alias Thundermoon.Repo
   alias Thundermoon.Accounts.User
@@ -13,7 +15,7 @@ defmodule ThundermoonWeb.CounterLive do
 
   def mount(_params, session, socket) do
     user = Repo.get!(User, session["current_user_id"])
-    if connected?(socket), do: Endpoint.subscribe("counter")
+    if connected?(socket), do: PubSub.subscribe(ThundermoonWeb.PubSub, "counter")
     {:ok, _} = Counter.create()
     digits = Counter.get_digits()
 

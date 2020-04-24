@@ -1,7 +1,8 @@
 defmodule ThundermoonWeb.ChatLiveTest do
   use ThundermoonWeb.ConnCase
   import Phoenix.LiveViewTest
-  @endpoint ThundermoonWeb.Endpoint
+
+  alias Phoenix.PubSub
 
   import ThundermoonWeb.AuthSupport
 
@@ -35,7 +36,7 @@ defmodule ThundermoonWeb.ChatLiveTest do
     end
 
     test "sends a message", %{conn: conn} do
-      @endpoint.subscribe("chat")
+      PubSub.subscribe(ThundermoonWeb.PubSub, "chat")
       {:ok, view, _html} = live(conn, "/chat")
       data = %{"message" => %{"text" => "hello there"}}
       render_submit(view, :send, data)

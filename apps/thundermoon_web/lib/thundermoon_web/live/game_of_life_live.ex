@@ -5,6 +5,8 @@ defmodule ThundermoonWeb.GameOfLifeLive do
 
   alias Ecto.Changeset
 
+  alias Phoenix.PubSub
+
   alias Thundermoon.Repo
   alias Thundermoon.Accounts.User
   alias Thundermoon.GameOfLife
@@ -15,7 +17,7 @@ defmodule ThundermoonWeb.GameOfLifeLive do
   alias ThundermoonWeb.Router.Helpers, as: Routes
 
   def mount(_params, session, socket) do
-    if connected?(socket), do: Endpoint.subscribe("Thundermoon.GameOfLife")
+    if connected?(socket), do: PubSub.subscribe(ThundermoonWeb.PubSub, "Thundermoon.GameOfLife")
     grid = GameOfLife.get_grid()
 
     socket =

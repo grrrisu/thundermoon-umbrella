@@ -3,13 +3,15 @@ defmodule ThundermoonWeb.ChatLive do
 
   import Canada.Can
 
+  alias Phoenix.PubSub
+
   alias Thundermoon.Repo
   alias Thundermoon.Accounts.User
   alias Thundermoon.ChatMessages
 
-  alias ThundermoonWeb.Endpoint
   alias ThundermoonWeb.ChatView
   alias ThundermoonWeb.Presence
+  alias ThundermoonWeb.Endpoint
 
   def mount(_params, session, socket) do
     user = Repo.get!(User, session["current_user_id"])
@@ -66,7 +68,7 @@ defmodule ThundermoonWeb.ChatLive do
   end
 
   defp subscribe(user) do
-    Endpoint.subscribe("chat")
+    PubSub.subscribe(ThundermoonWeb.PubSub, "chat")
     Presence.track(self(), "chat", user.id, %{user: user})
   end
 
