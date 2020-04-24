@@ -1,18 +1,19 @@
 defmodule Thundermoon.DigitTest do
   use ExUnit.Case, async: true
 
+  alias Phoenix.PubSub
+
   alias Thundermoon.Digit
-  alias ThundermoonWeb.Endpoint
 
   setup do
     {:ok, digit_0} = Digit.start(self(), :digit_10, 0)
     {:ok, digit_9} = Digit.start(self(), :digit_10, 9)
-    Endpoint.subscribe("counter")
+    PubSub.subscribe(ThundermoonWeb.PubSub, "counter")
 
     on_exit(fn ->
       :ok = Agent.stop(digit_0)
       :ok = Agent.stop(digit_9)
-      Endpoint.unsubscribe("counter")
+      PubSub.unsubscribe(ThundermoonWeb.PubSub, "counter")
     end)
 
     %{digit_0: digit_0, digit_9: digit_9}

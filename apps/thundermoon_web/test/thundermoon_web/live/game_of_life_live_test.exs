@@ -1,9 +1,10 @@
 defmodule ThundermoonWeb.GameOfLifeLiveTest do
   use ThundermoonWeb.ConnCase
   import Phoenix.LiveViewTest
-  @endpoint ThundermoonWeb.Endpoint
 
   import ThundermoonWeb.AuthSupport
+
+  alias Phoenix.PubSub
 
   alias Thundermoon.GameOfLife
 
@@ -46,7 +47,7 @@ defmodule ThundermoonWeb.GameOfLifeLiveTest do
 
     test "can start and stop sim", %{conn: conn} do
       GameOfLife.create(3)
-      @endpoint.subscribe("Thundermoon.GameOfLife")
+      PubSub.subscribe(ThundermoonWeb.PubSub, "Thundermoon.GameOfLife")
       {:ok, view, _html} = live(conn, "/game_of_life")
       render_click(view, "toggle-sim-start", %{"action" => "start"})
       assert_receive(%{event: "sim", payload: %{started: true}})
@@ -57,7 +58,7 @@ defmodule ThundermoonWeb.GameOfLifeLiveTest do
 
     test "can reset the grid", %{conn: conn} do
       GameOfLife.create(3)
-      @endpoint.subscribe("Thundermoon.GameOfLife")
+      PubSub.subscribe(ThundermoonWeb.PubSub, "Thundermoon.GameOfLife")
       {:ok, view, _html} = live(conn, "/game_of_life")
       render_click(view, "toggle-sim-start", %{"action" => "start"})
       assert_receive(%{event: "sim", payload: %{started: true}})
@@ -69,7 +70,7 @@ defmodule ThundermoonWeb.GameOfLifeLiveTest do
 
     test "can clear the grid", %{conn: conn} do
       GameOfLife.create(3)
-      @endpoint.subscribe("Thundermoon.GameOfLife")
+      PubSub.subscribe(ThundermoonWeb.PubSub, "Thundermoon.GameOfLife")
       {:ok, view, _html} = live(conn, "/game_of_life")
       render_click(view, :clear)
       assert_receive(%{event: "update", payload: %{grid: %{0 => %{0 => false}}}})
@@ -78,7 +79,7 @@ defmodule ThundermoonWeb.GameOfLifeLiveTest do
 
     test "can change the value of a cell", %{conn: conn} do
       GameOfLife.create(3)
-      @endpoint.subscribe("Thundermoon.GameOfLife")
+      PubSub.subscribe(ThundermoonWeb.PubSub, "Thundermoon.GameOfLife")
       {:ok, view, _html} = live(conn, "/game_of_life")
       grid = GameOfLife.get_grid()
       value = get_in(grid, [0, 0])
@@ -100,7 +101,7 @@ defmodule ThundermoonWeb.GameOfLifeLiveTest do
     setup [:login_as_admin]
 
     test "can create a grid", %{conn: conn} do
-      @endpoint.subscribe("Thundermoon.GameOfLife")
+      PubSub.subscribe(ThundermoonWeb.PubSub, "Thundermoon.GameOfLife")
       {:ok, view, _html} = live(conn, "/game_of_life")
 
       data = %{"grid_data" => %{"size" => "5"}}
