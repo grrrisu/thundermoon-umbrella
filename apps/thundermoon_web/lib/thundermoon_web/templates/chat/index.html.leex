@@ -12,10 +12,10 @@
   </div>
   <% end %>
 </div>
-<%= form_for :message, "#", [phx_submit: :send], fn _f -> %>
-  <%= text_input :message, :text, value: @text, "phx-hook": "ChatText", placeholder: "write a message" %>
+<%= f = form_for :message, "#", [phx_submit: :send] %>
+  <%= text_input f, :text, "data-version": @version, value: "", placeholder: "write a message" %>
   <%= submit "Send" %>
-<% end %>
+</form>
 
 <h3>Users online</h3>
 <div class="users">
