@@ -33,6 +33,11 @@ defmodule ThundermoonWeb.Endpoint do
   end
 
   plug Plug.RequestId
+
+  plug Phoenix.LiveDashboard.RequestLogger,
+    param_key: "request_logger",
+    cookie_key: "request_logger"
+
   plug Plug.Logger
 
   plug Plug.Parsers,

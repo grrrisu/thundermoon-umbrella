@@ -42,6 +42,8 @@ defmodule ThundermoonWeb.MixProject do
       {:phoenix_ecto, "~> 4.0"},
       {:phoenix_html, "~> 2.11"},
       {:phoenix_live_view, "~> 0.12.1"},
+      {:phoenix_live_dashboard, "~> 0.1"},
+      {:telemetry_poller, "~> 0.4"},
       {:gettext, "~> 0.11"},
       {:thundermoon, in_umbrella: true},
       {:sim, in_umbrella: true},

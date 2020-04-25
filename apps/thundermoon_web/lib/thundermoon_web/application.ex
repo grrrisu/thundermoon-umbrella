@@ -10,6 +10,8 @@ defmodule ThundermoonWeb.Application do
     children = [
       # Start the PubSub system
       {Phoenix.PubSub, name: ThundermoonWeb.PubSub},
+      # metrics for live dashboard
+      ThundermoonWeb.Telemetry,
       # Start the endpoint when the application starts
       ThundermoonWeb.Endpoint,
       ThundermoonWeb.Presence
