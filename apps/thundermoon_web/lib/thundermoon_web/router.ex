@@ -1,6 +1,8 @@
 defmodule ThundermoonWeb.Router do
   use ThundermoonWeb, :router
 
+  import Phoenix.LiveDashboard.Router
+
   pipeline :browser do
     plug :accepts, ["html"]
     plug :fetch_session
@@ -42,6 +44,13 @@ defmodule ThundermoonWeb.Router do
     live "/chat", ChatLive
     live "/counter", CounterLive
     live "/game_of_life", GameOfLifeLive
+  end
+
+  if Mix.env() == :dev do
+    scope "/" do
+      pipe_through :private
+      live_dashboard "/live_dashboard", metrics: ThundermoonWeb.Telemetry
+    end
   end
 
   if Mix.env() == :integration do
