@@ -15,11 +15,7 @@ import {Socket} from "phoenix";
 import LiveSocket from "phoenix_live_view";
 
 let Hooks = {};
-Hooks.ChatText = {
-  updated() {
-    this.el.value = "";
-  }
-};
+// define hooks for live view
 
 let csrfToken = document.querySelector("meta[name='csrf-token']").getAttribute("content");
 let liveSocket = new LiveSocket("/live", Socket, {hooks: Hooks, params: {_csrf_token: csrfToken}});
