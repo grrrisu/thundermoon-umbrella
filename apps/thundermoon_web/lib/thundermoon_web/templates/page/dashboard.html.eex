@@ -25,7 +25,7 @@
     </ul>
     Other stuff:
     <ul>
-      <%= if Mix.env == :dev do %>
+      <%= if local? do %>
       <li>
         <%= link to: Routes.live_dashboard_path(@conn, :home) do %>
           <i class="las la-tachometer-alt"></i> Live Dashboard
