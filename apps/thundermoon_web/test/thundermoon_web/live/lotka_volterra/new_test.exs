@@ -44,7 +44,7 @@ defmodule ThundermoonWeb.LotkaVolterraLive.NewTest do
     test "create a herbivore", %{conn: conn} do
       conn = get(conn, "/lotka-volterra/new")
       assert html_response(conn, 200) =~ "<h3>Vegetation</h3>"
-      {:ok, view, html} = live(conn)
+      {:ok, view, _html} = live(conn)
 
       assert view
              |> element("#button-add-herbivore")
