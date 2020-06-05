@@ -32,10 +32,10 @@ blocks:
             - docker tag thundermoon:test "$DOCKER_REPOSITORY:test_$SEMAPHORE_GIT_BRANCH"
             - docker push "$DOCKER_REPOSITORY:test_$SEMAPHORE_GIT_BRANCH"
             # integration
-            # - mv config/dev.secret.example.exs config/dev.secret.exs
-            # - docker build -t thundermoon:integration --target=integration .
-            # - docker tag thundermoon:integration "$DOCKER_REPOSITORY:integration_$SEMAPHORE_GIT_BRANCH"
-            # - docker push "$DOCKER_REPOSITORY:integration_$SEMAPHORE_GIT_BRANCH"
+            - mv config/dev.secret.example.exs config/dev.secret.exs
+            - docker build -t thundermoon:integration --target=integration .
+            - docker tag thundermoon:integration "$DOCKER_REPOSITORY:integration_$SEMAPHORE_GIT_BRANCH"
+            - docker push "$DOCKER_REPOSITORY:integration_$SEMAPHORE_GIT_BRANCH"
       epilogue:
         commands:
           - mkdir -p deps
@@ -65,10 +65,10 @@ blocks:
           commands:
             - docker pull "$DOCKER_REPOSITORY:test_$SEMAPHORE_GIT_BRANCH"
             - IMAGE="$DOCKER_REPOSITORY:test_$SEMAPHORE_GIT_BRANCH" docker-compose -f .semaphore/docker-compose.yml up --abort-on-container-exit --exit-code-from app
-        # - name: cypress
-        #   commands:
-        #     - docker pull "$DOCKER_REPOSITORY:integration_$SEMAPHORE_GIT_BRANCH"
-        #     - IMAGE="$DOCKER_REPOSITORY:integration_$SEMAPHORE_GIT_BRANCH" docker-compose -f .semaphore/docker-compose.integration.yml up --abort-on-container-exit --exit-code-from browser
+        - name: cypress
+          commands:
+            - docker pull "$DOCKER_REPOSITORY:integration_$SEMAPHORE_GIT_BRANCH"
+            - IMAGE="$DOCKER_REPOSITORY:integration_$SEMAPHORE_GIT_BRANCH" docker-compose -f .semaphore/docker-compose.integration.yml up --abort-on-container-exit --exit-code-from browser
   - name: Publish Container
     task:
       secrets:
