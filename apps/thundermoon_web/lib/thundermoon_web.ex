@@ -38,14 +38,25 @@ defmodule ThundermoonWeb do
       # Import convenience functions from controllers
       import Phoenix.Controller, only: [get_flash: 1, get_flash: 2, view_module: 1]
 
-      # Use all HTML functionality (forms, tags, etc)
-      use Phoenix.HTML
+      # Include shared imports and aliases for views
+      unquote(view_helpers())
+    end
+  end
 
-      import ThundermoonWeb.ErrorHelpers
-      import ThundermoonWeb.Gettext
-      import Phoenix.LiveView.Helpers
-      import Canada.Can
-      alias ThundermoonWeb.Router.Helpers, as: Routes
+  def live_view do
+    quote do
+      use Phoenix.LiveView,
+        layout: {ThundermoonWeb.LayoutView, "live.html"}
+
+      unquote(view_helpers())
+    end
+  end
+
+  def live_component do
+    quote do
+      use Phoenix.LiveComponent
+
+      unquote(view_helpers())
     end
   end
 
@@ -64,6 +75,26 @@ defmodule ThundermoonWeb do
     quote do
       use Phoenix.Channel
       import ThundermoonWeb.Gettext
+    end
+  end
+
+  defp view_helpers do
+    quote do
+      # Use all HTML functionality (forms, tags, etc)
+      use Phoenix.HTML
+
+      # Import LiveView helpers (live_render, live_component, live_patch, etc)
+      import Phoenix.LiveView.Helpers
+
+      # import ThundermoonWeb.LiveHelpers
+
+      # Import basic rendering functionality (render, render_layout, etc)
+      import Phoenix.View
+
+      import ThundermoonWeb.ErrorHelpers
+      import ThundermoonWeb.Gettext
+      import Canada.Can
+      alias ThundermoonWeb.Router.Helpers, as: Routes
     end
   end
 

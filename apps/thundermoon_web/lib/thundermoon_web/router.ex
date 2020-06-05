@@ -46,7 +46,7 @@ defmodule ThundermoonWeb.Router do
     live "/game_of_life", GameOfLifeLive
   end
 
-  if Mix.env() == :dev do
+  if Mix.env() != :prod do
     scope "/" do
       pipe_through :private
       live_dashboard "/live_dashboard", metrics: ThundermoonWeb.Telemetry
