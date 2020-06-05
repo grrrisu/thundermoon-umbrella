@@ -40,7 +40,11 @@ defmodule Thundermoon.MixProject do
       {:postgrex, ">= 0.0.0"},
       {:jason, "~> 1.1"},
       {:lotka_volterra, in_umbrella: true},
-      {:credo, "~> 1.1.0", only: [:dev, :test], runtime: false}
+      {:credo, "~> 1.5.0-rc.2",
+       git: "git://github.com/grrrisu/credo.git",
+       branch: "fix-option-min-priority",
+       only: [:dev, :test],
+       runtime: false}
     ]
   end
 

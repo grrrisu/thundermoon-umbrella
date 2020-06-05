@@ -49,7 +49,7 @@ defmodule ThundermoonWeb.MixProject do
       {:sim, in_umbrella: true},
       {:game_of_life, in_umbrella: true},
       {:jason, "~> 1.1"},
-      {:poison, "~> 3.1"},
+      {:poison, "~> 4.0.1"},
       {:plug_cowboy, "~> 2.3"},
       {:ueberauth, "~> 0.6"},
       {:ueberauth_github, "~> 0.8.0"},
@@ -60,7 +60,11 @@ defmodule ThundermoonWeb.MixProject do
       {:observer_cli, "~> 1.5"},
       {:phoenix_live_reload, "~> 1.2", only: :dev},
       {:floki, "~> 0.27", only: :test},
-      {:credo, "~> 1.1.0", only: [:dev, :test], runtime: false}
+      {:credo, "~> 1.5.0-rc.2",
+       git: "git://github.com/grrrisu/credo.git",
+       branch: "fix-option-min-priority",
+       only: [:dev, :test],
+       runtime: false}
     ]
   end
 
