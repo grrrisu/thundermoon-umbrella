@@ -2,10 +2,12 @@ defmodule Thundermoon.FieldTest do
   use ExUnit.Case, async: true
 
   alias Thundermoon.Field
-  alias ThundermoonWeb.Endpoint
+
+  # alias ThundermoonWeb.Endpoint
 
   setup do
     {:ok, field} = Field.start_link()
+
     # Endpoint.subscribe("Thundermoon.LotkaVolterra")
 
     # on_exit(fn ->
