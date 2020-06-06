@@ -1,8 +1,33 @@
 # Changelog
 
-## 0.4.0
+## 0.4.0 (dev)
 
 * Lotka Volterra simulation
+
+## 0.3.1
+
+* various upgrades
+
+  * Elixir 1.10.3
+
+  * Phoenix 1.5.1
+
+  * Phoenix Live View 0.13.3 (including new adaptions)
+
+  * Phoenix PubSub 2.0
+
+  * cypress 4.5.0
+
+* include Phoenix Live Dashboard (dev only)
+
+* improve pipeline by storing test containers for further steps
+
+* split Dockerfile for pipline into test and release
+
+* add credo to pipeline
+
+* remove cypress from devDependencies
+
 
 ## 0.3.0
 
