@@ -1,5 +1,5 @@
 defmodule ThundermoonWeb.ChatLive do
-  use Phoenix.LiveView
+  use ThundermoonWeb, :live_view
 
   import Canada.Can
 

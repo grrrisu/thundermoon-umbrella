@@ -1,5 +1,5 @@
 defmodule ThundermoonWeb.GameOfLifeLive do
-  use Phoenix.LiveView
+  use ThundermoonWeb, :live_view
 
   import Canada.Can
 
