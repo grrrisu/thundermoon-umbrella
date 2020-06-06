@@ -4,7 +4,6 @@ defmodule ThundermoonWeb.AuthController do
   plug Ueberauth
 
   alias ThundermoonWeb.AuthService
-  alias Thundermoon.Accounts
 
   def callback(%{assigns: %{ueberauth_failure: _fails}} = conn, _params) do
     conn
