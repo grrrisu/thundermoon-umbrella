@@ -25,7 +25,7 @@ defmodule ThundermoonWeb.Api.IntegrationController do
   end
 
   def restart_game_of_life(conn, _params) do
-    :ok = GameOfLife.restart()
+    :ok = GameOfLife.recreate()
     send_resp(conn, 205, "game of life has been restarted")
   end
 
