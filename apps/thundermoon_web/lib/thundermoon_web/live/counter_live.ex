@@ -7,14 +7,13 @@ defmodule ThundermoonWeb.CounterLive do
 
   alias Thundermoon.Counter
   alias Thundermoon.Repo
-  alias Thundermoon.Accounts.User
+  alias Thundermoon.Accounts
 
   alias ThundermoonWeb.CounterView
-  alias ThundermoonWeb.Endpoint
   alias ThundermoonWeb.Router.Helpers, as: Routes
 
   def mount(_params, session, socket) do
-    user = Repo.get!(User, session["current_user_id"])
+    user = Accounts.get_user(session["current_user_id"])
     if connected?(socket), do: PubSub.subscribe(ThundermoonWeb.PubSub, "counter")
     {:ok, _} = Counter.create()
     digits = Counter.get_digits()
@@ -75,6 +74,6 @@ defmodule ThundermoonWeb.CounterLive do
   defp not_authorized(socket) do
     socket
     |> put_flash(:error, "You are not authorized for this action")
-    |> redirect(to: Routes.page_path(Endpoint, :index))
+    |> redirect(to: Routes.page_path(socket, :index))
   end
 end
