@@ -1,6 +1,13 @@
 defmodule Sim.RealmSupervisor do
   use Supervisor
 
+  def supervise_realm(realm_module, pubsub) do
+    %{
+      id: realm_module,
+      start: {Sim.RealmSupervisor, :start_link, [realm_module, pubsub]}
+    }
+  end
+
   def start_link(name, broadcaster) do
     Supervisor.start_link(__MODULE__, {name, broadcaster}, name: name)
   end

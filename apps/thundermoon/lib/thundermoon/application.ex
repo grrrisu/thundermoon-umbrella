@@ -10,11 +10,7 @@ defmodule Thundermoon.Application do
       Thundermoon.Repo,
       Thundermoon.ChatMessages,
       Thundermoon.CounterRealmSupervisor,
-      %{
-        id: Thundermoon.GameOfLife,
-        start:
-          {Sim.RealmSupervisor, :start_link, [Thundermoon.GameOfLife, ThundermoonWeb.Endpoint]}
-      }
+      Sim.RealmSupervisor.supervise_realm(Thundermoon.GameOfLife, ThundermoonWeb.PubSub)
     ]
 
     Supervisor.start_link(children, strategy: :one_for_one, name: Thundermoon.Supervisor)
