@@ -40,7 +40,7 @@ defmodule ThundermoonWeb.ChatLiveTest do
       {:ok, view, _html} = live(conn, "/chat")
       data = %{"message" => %{"text" => "hello there"}}
       render_submit(view, :send, data)
-      assert_receive(%{event: "send", payload: %{user: "crumb", text: "hello there"}})
+      assert_receive({:send, %{user: "crumb", text: "hello there"}})
     end
 
     test "sees users", %{conn: conn} do

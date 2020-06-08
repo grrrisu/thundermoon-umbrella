@@ -11,7 +11,6 @@ defmodule ThundermoonWeb.ChatLive do
 
   alias ThundermoonWeb.ChatView
   alias ThundermoonWeb.Presence
-  alias ThundermoonWeb.Endpoint
 
   def mount(_params, session, socket) do
     user = Repo.get!(User, session["current_user_id"])
@@ -30,26 +29,26 @@ defmodule ThundermoonWeb.ChatLive do
     username = socket.assigns.current_user.username
     message = %{user: username, text: text}
     ChatMessages.add(message)
-    Endpoint.broadcast("chat", "send", message)
+    PubSub.broadcast(ThundermoonWeb.PubSub, "chat", {:send, message})
     {:noreply, assign(socket, %{version: System.unique_integer()})}
   end
 
   def handle_event("clear", _value, socket) do
     if socket.assigns.current_user |> can?(:delete, ChatMessages) do
       ChatMessages.clear()
-      Endpoint.broadcast("chat", "clear", %{})
+      PubSub.broadcast(ThundermoonWeb.PubSub, "chat", :clear)
     end
 
     {:noreply, socket}
   end
 
   # this is triggered by the pubsub broadcast event
-  def handle_info(%{event: "send", payload: message}, socket) do
+  def handle_info({:send, message}, socket) do
     messages = [message | socket.assigns.messages]
     {:noreply, assign(socket, %{messages: messages})}
   end
 
-  def handle_info(%{event: "clear", payload: _}, socket) do
+  def handle_info(:clear, socket) do
     {:noreply, assign(socket, %{messages: []})}
   end
 
