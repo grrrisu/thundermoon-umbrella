@@ -79,7 +79,6 @@ defmodule Thundermoon.CounterRoot do
   end
 
   def handle_info(_msg, state) do
-    IO.puts("info")
     {:noreply, state}
   end
 
