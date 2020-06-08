@@ -6,17 +6,17 @@ defmodule ThundermoonWeb.ChatLive do
   alias Phoenix.PubSub
 
   alias Thundermoon.Repo
-  alias Thundermoon.Accounts.User
+  alias Thundermoon.Accounts
   alias Thundermoon.ChatMessages
 
   alias ThundermoonWeb.ChatView
   alias ThundermoonWeb.Presence
 
   def mount(_params, session, socket) do
-    user = Repo.get!(User, session["current_user_id"])
+    user = Accounts.get_user(session["current_user_id"])
     if connected?(socket), do: subscribe(user)
     messages = ChatMessages.list()
-    users = extract_users(Presence.list("chat"))
+    users = get_users(Presence.list("chat"))
     {:ok, assign(socket, %{current_user: user, version: 0, messages: messages, users: users})}
   end
 
@@ -61,7 +61,7 @@ defmodule ThundermoonWeb.ChatLive do
         },
         socket
       ) do
-    users = extract_users(Presence.list("chat"))
+    users = get_users(Presence.list("chat"))
 
     {:noreply, assign(socket, %{users: users})}
   end
@@ -71,7 +71,7 @@ defmodule ThundermoonWeb.ChatLive do
     Presence.track(self(), "chat", user.id, %{user: user})
   end
 
-  defp extract_users(list) do
+  defp get_users(list) do
     list
     |> Map.values()
     |> Enum.map(&Map.get(&1, :metas))
