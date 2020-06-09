@@ -2,7 +2,7 @@ defmodule Thundermoon.Digit do
   # agent is temporary as it will be restarted by the counter
   use Agent, restart: :temporary
 
-  alias ThundermoonWeb.Endpoint
+  alias ThundermoonWeb.PubSub
 
   def start(counter, key, value \\ 0) do
     Agent.start(fn ->
@@ -52,6 +52,6 @@ defmodule Thundermoon.Digit do
   end
 
   defp broadcast(key, value) do
-    Endpoint.broadcast("counter", "update", %{key => value})
+    Phoenix.PubSub.broadcast(PubSub, "counter", {:update, %{key => value}})
   end
 end
