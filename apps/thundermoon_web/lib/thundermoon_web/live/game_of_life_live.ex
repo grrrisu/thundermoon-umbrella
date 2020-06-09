@@ -13,7 +13,6 @@ defmodule ThundermoonWeb.GameOfLifeLive do
   alias Thundermoon.GridData
 
   alias ThundermoonWeb.GameOfLifeView
-  alias ThundermoonWeb.Endpoint
   alias ThundermoonWeb.Router.Helpers, as: Routes
 
   def mount(_params, session, socket) do
@@ -90,12 +89,12 @@ defmodule ThundermoonWeb.GameOfLifeLive do
     end)
   end
 
-  def handle_info(%{event: "sim", payload: %{started: started}}, socket) do
+  def handle_info({:sim, started: started}, socket) do
     {:noreply, set_label_sim_start(socket, started)}
   end
 
   # this is triggered by the pubsub broadcast event
-  def handle_info(%{event: "update", payload: %{grid: grid}}, socket) do
+  def handle_info({:update, grid: grid}, socket) do
     {:noreply, assign(socket, grid: grid)}
   end
 
@@ -127,6 +126,6 @@ defmodule ThundermoonWeb.GameOfLifeLive do
   defp not_authorized(socket) do
     socket
     |> put_flash(:error, "You are not authorized for this action")
-    |> redirect(to: Routes.page_path(Endpoint, :index))
+    |> redirect(to: Routes.page_path(socket, :index))
   end
 end

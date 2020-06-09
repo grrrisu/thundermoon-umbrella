@@ -57,12 +57,12 @@ defmodule ThundermoonWeb.CounterLive do
     end
   end
 
-  def handle_info(%{event: "update", topic: "counter", payload: new_digit}, socket) do
+  def handle_info({:update, new_digit}, socket) do
     new_digits = Map.merge(socket.assigns.digits, new_digit)
     {:noreply, assign(socket, %{digits: new_digits})}
   end
 
-  def handle_info(%{event: "sim", topic: "counter", payload: %{started: started}}, socket) do
+  def handle_info({:sim, started: started}, socket) do
     {:noreply, set_label_sim_start(socket, started)}
   end
 

@@ -50,9 +50,9 @@ defmodule ThundermoonWeb.GameOfLifeLiveTest do
       PubSub.subscribe(ThundermoonWeb.PubSub, "Thundermoon.GameOfLife")
       {:ok, view, _html} = live(conn, "/game_of_life")
       render_click(view, "toggle-sim-start", %{"action" => "start"})
-      assert_receive(%{event: "sim", payload: %{started: true}})
+      assert_receive({:sim, started: true})
       render_click(view, "toggle-sim-start", %{"action" => "stop"})
-      assert_receive(%{event: "sim", payload: %{started: false}})
+      assert_receive({:sim, started: false})
       GameOfLife.recreate()
     end
 
@@ -61,10 +61,10 @@ defmodule ThundermoonWeb.GameOfLifeLiveTest do
       PubSub.subscribe(ThundermoonWeb.PubSub, "Thundermoon.GameOfLife")
       {:ok, view, _html} = live(conn, "/game_of_life")
       render_click(view, "toggle-sim-start", %{"action" => "start"})
-      assert_receive(%{event: "sim", payload: %{started: true}})
+      assert_receive({:sim, started: true})
       render_click(view, :restart)
-      assert_receive(%{event: "sim", payload: %{started: false}})
-      assert_receive(%{event: "update", payload: %{grid: %{}}})
+      assert_receive({:sim, started: false})
+      assert_receive({:update, grid: %{}})
       GameOfLife.recreate()
     end
 
@@ -73,7 +73,7 @@ defmodule ThundermoonWeb.GameOfLifeLiveTest do
       PubSub.subscribe(ThundermoonWeb.PubSub, "Thundermoon.GameOfLife")
       {:ok, view, _html} = live(conn, "/game_of_life")
       render_click(view, :clear)
-      assert_receive(%{event: "update", payload: %{grid: %{0 => %{0 => false}}}})
+      assert_receive({:update, grid: %{0 => %{0 => false}}})
       GameOfLife.recreate()
     end
 
@@ -85,7 +85,7 @@ defmodule ThundermoonWeb.GameOfLifeLiveTest do
       value = get_in(grid, [0, 0])
       render_click(view, "toggle-cell", %{"x" => "0", "y" => "0"})
       changed_value = not value
-      assert_receive(%{event: "update", payload: %{grid: %{0 => %{0 => ^changed_value}}}})
+      assert_receive({:update, grid: %{0 => %{0 => ^changed_value}}})
       GameOfLife.recreate()
     end
 
@@ -106,7 +106,7 @@ defmodule ThundermoonWeb.GameOfLifeLiveTest do
 
       data = %{"grid_data" => %{"size" => "5"}}
       render_submit(view, :create, data)
-      assert_receive(%{event: "update", payload: %{grid: %{}}})
+      assert_receive({:update, grid: %{}})
       GameOfLife.recreate()
     end
 

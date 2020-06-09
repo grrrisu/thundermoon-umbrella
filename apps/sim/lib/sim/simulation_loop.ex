@@ -1,6 +1,8 @@
 defmodule Sim.SimulationLoop do
   use GenServer
 
+  alias Phoenix.PubSub
+
   require Logger
 
   def start_link(broadcaster, topic, name) do
@@ -19,7 +21,7 @@ defmodule Sim.SimulationLoop do
     Logger.info("start sim loop")
     state = Map.put(state, :func, func)
     send(self(), :tick)
-    state.broadcaster.broadcast(state.topic, "sim", %{started: true})
+    PubSub.broadcast(state.broadcaster, state.topic, {:sim, started: true})
     {:noreply, state}
   end
 
@@ -36,7 +38,7 @@ defmodule Sim.SimulationLoop do
   def handle_cast(:stop, %{sim: sim} = state) do
     Logger.info("stop sim loop")
     Process.cancel_timer(sim)
-    state.broadcaster.broadcast(state.topic, "sim", %{started: false})
+    PubSub.broadcast(state.broadcaster, state.topic, {:sim, started: false})
     {:noreply, %{state | sim: nil}}
   end
 

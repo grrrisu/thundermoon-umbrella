@@ -4,7 +4,7 @@ defmodule Thundermoon.Field do
 
   alias Thundermoon.Vegetation
 
-  alias ThundermoonWeb.Endpoint
+  alias ThundermoonWeb.PubSub
 
   def start_link(_args \\ nil) do
     Agent.start_link(fn ->
@@ -23,6 +23,6 @@ defmodule Thundermoon.Field do
   end
 
   defp broadcast(size) do
-    Endpoint.broadcast("Thundermoon.LotkaVolterra", "update", %{vegetation: size})
+    Phoenix.PubSub.broadcast(PubSub, "Thundermoon.LotkaVolterra", {:update, vegetation: size})
   end
 end

@@ -20,11 +20,7 @@ defmodule Thundermoon.DigitTest do
   end
 
   defp assert_broadcast_value(value) do
-    assert_received %Phoenix.Socket.Broadcast{
-      event: "update",
-      payload: %{digit_10: ^value},
-      topic: "counter"
-    }
+    assert_received {:update, %{digit_10: ^value}}
   end
 
   test "start with value 5" do

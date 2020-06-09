@@ -2,7 +2,7 @@ defmodule Thundermoon.CounterSimulation do
   use GenServer
 
   alias Thundermoon.Counter
-  alias ThundermoonWeb.Endpoint
+  alias ThundermoonWeb.PubSub
 
   def start_link(opts) do
     GenServer.start_link(__MODULE__, :ok, opts)
@@ -18,7 +18,7 @@ defmodule Thundermoon.CounterSimulation do
 
   def handle_cast(:start, %{sim: nil} = state) do
     send(self(), :tick)
-    Endpoint.broadcast("counter", "sim", %{started: true})
+    Phoenix.PubSub.broadcast(PubSub, "counter", {:sim, started: true})
     {:noreply, state}
   end
 
@@ -34,7 +34,7 @@ defmodule Thundermoon.CounterSimulation do
 
   def handle_cast(:stop, %{sim: sim} = state) do
     Process.cancel_timer(sim)
-    Endpoint.broadcast("counter", "sim", %{started: false})
+    Phoenix.PubSub.broadcast(PubSub, "counter", {:sim, started: false})
     {:noreply, %{state | sim: nil}}
   end
 

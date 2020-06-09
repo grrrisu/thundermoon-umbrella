@@ -3,7 +3,7 @@ defmodule Thundermoon.GameOfLife.Grid do
 
   alias Sim.Torus, as: Grid
 
-  alias ThundermoonWeb.Endpoint
+  alias ThundermoonWeb.PubSub
 
   def start_link(size) do
     GenServer.start_link(__MODULE__, size, name: __MODULE__)
@@ -46,6 +46,6 @@ defmodule Thundermoon.GameOfLife.Grid do
   end
 
   defp broadcast(grid) do
-    Endpoint.broadcast("Thundermoon.GameOfLife", "update", %{grid: grid})
+    Phoenix.PubSub.broadcast(PubSub, "Thundermoon.GameOfLife", {:update, grid: grid})
   end
 end

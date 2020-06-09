@@ -40,7 +40,7 @@ defmodule ThundermoonWeb.CounterLiveTest do
       PubSub.subscribe(ThundermoonWeb.PubSub, "counter")
       {:ok, view, _html} = live(conn, "/counter")
       render_click(view, :inc, %{"number" => "10"})
-      assert_receive(%{event: "update", payload: %{digit_10: 1}})
+      assert_receive({:update, %{digit_10: 1}})
       Counter.reset()
     end
 
@@ -48,9 +48,9 @@ defmodule ThundermoonWeb.CounterLiveTest do
       PubSub.subscribe(ThundermoonWeb.PubSub, "counter")
       {:ok, view, _html} = live(conn, "/counter")
       render_click(view, :inc, %{"number" => "10"})
-      assert_receive(%{event: "update", payload: %{digit_10: 1}})
+      assert_receive({:update, %{digit_10: 1}})
       render_click(view, :dec, %{"number" => "10"})
-      assert_receive(%{event: "update", payload: %{digit_10: 0}})
+      assert_receive({:update, %{digit_10: 0}})
       Counter.reset()
     end
 
@@ -66,9 +66,9 @@ defmodule ThundermoonWeb.CounterLiveTest do
       PubSub.subscribe(ThundermoonWeb.PubSub, "counter")
       {:ok, view, _html} = live(conn, "/counter")
       render_click(view, "toggle-sim-start", %{"action" => "start"})
-      assert_receive(%{event: "sim", payload: %{started: true}})
+      assert_receive({:sim, started: true})
       render_click(view, "toggle-sim-start", %{"action" => "stop"})
-      assert_receive(%{event: "sim", payload: %{started: false}})
+      assert_receive({:sim, started: false})
     end
   end
 
@@ -80,9 +80,9 @@ defmodule ThundermoonWeb.CounterLiveTest do
       {:ok, view, html} = live(conn, "/counter")
       assert html =~ "reset"
       render_click(view, :reset)
-      assert_receive(%{event: "update", payload: %{digit_1: 0}})
-      assert_receive(%{event: "update", payload: %{digit_10: 0}})
-      assert_receive(%{event: "update", payload: %{digit_100: 0}})
+      assert_receive({:update, %{digit_1: 0}})
+      assert_receive({:update, %{digit_10: 0}})
+      assert_receive({:update, %{digit_100: 0}})
     end
   end
 end
