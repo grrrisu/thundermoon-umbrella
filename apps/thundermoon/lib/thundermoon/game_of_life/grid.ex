@@ -4,6 +4,7 @@ defmodule Thundermoon.GameOfLife.Grid do
   alias Sim.Torus, as: Grid
 
   alias ThundermoonWeb.PubSub
+  alias Thundermoon.GameOfLife.Simulation
 
   def start_link(size) do
     GenServer.start_link(__MODULE__, size, name: __MODULE__)
@@ -33,6 +34,13 @@ defmodule Thundermoon.GameOfLife.Grid do
     new_grid = Grid.create(Grid.width(state.grid), Grid.height(state.grid), false)
     broadcast(new_grid)
     {:reply, new_grid, %{state | grid: new_grid}}
+  end
+
+  def handle_call(:sim, _from, %{grid: grid} = state) do
+    # TODO wrap in a task. how do we reply with :ok or :error ???
+    grid = Simulation.sim(grid)
+    :ok = broadcast(grid)
+    {:reply, :ok, %{state | grid: grid}}
   end
 
   defp create(size) do
