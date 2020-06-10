@@ -31,7 +31,8 @@ defmodule Sim.RealmSupervisor do
         start:
           {Sim.SimulationLoop, :start_link,
            [broadcaster, topic(name), simulation_loop_module(name)]}
-      }
+      },
+      {Task.Supervisor, name: Sim.TaskSupervisor}
       # {DynamicSupervisor, name: Thundermoon.DigitSupervisor, strategy: :one_for_one},
     ]
 

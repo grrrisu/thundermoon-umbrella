@@ -37,10 +37,21 @@ defmodule Thundermoon.GameOfLife.Grid do
   end
 
   def handle_call(:sim, _from, %{grid: grid} = state) do
-    # TODO wrap in a task. how do we reply with :ok or :error ???
-    grid = Simulation.sim(grid)
-    :ok = broadcast(grid)
-    {:reply, :ok, %{state | grid: grid}}
+    case execute_task(grid) do
+      {:exit, reason} ->
+        {:reply, {:error, reason}, state}
+
+      {:ok, grid} ->
+        :ok = broadcast(grid)
+        {:reply, :ok, %{state | grid: grid}}
+    end
+  end
+
+  defp execute_task(grid) do
+    Task.Supervisor.async_nolink(Sim.TaskSupervisor, fn ->
+      Simulation.sim(grid)
+    end)
+    |> Task.yield()
   end
 
   defp create(size) do
