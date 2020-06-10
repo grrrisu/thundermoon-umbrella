@@ -44,7 +44,8 @@ defmodule Sim.SimulationLoop do
 
   def handle_info(:tick, state) do
     # TODO run in a Task
-    state.func.()
+    # GenServer.call(Grid, :sim)
+    :ok = state.func.()
     next_tick = Process.send_after(self(), :tick, 100)
     {:noreply, %{state | sim: next_tick}}
   end

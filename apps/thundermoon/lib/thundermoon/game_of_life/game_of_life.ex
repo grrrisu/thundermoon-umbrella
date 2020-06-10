@@ -6,7 +6,6 @@ defmodule Thundermoon.GameOfLife do
   require Logger
 
   alias Thundermoon.GameOfLife.{Realm, Grid, SimulationLoop}
-  alias Thundermoon.GameOfLife.Simulation
 
   def create(size) do
     GenServer.call(Realm, {:create, Grid, size})
@@ -57,13 +56,7 @@ defmodule Thundermoon.GameOfLife do
   end
 
   def start() do
-    func = fn ->
-      get_grid()
-      |> Simulation.sim()
-      |> set_grid()
-    end
-
-    GenServer.cast(SimulationLoop, {:start, func})
+    GenServer.cast(SimulationLoop, {:start, fn -> GenServer.call(Grid, :sim) end})
   end
 
   def stop() do
