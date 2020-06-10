@@ -36,17 +36,25 @@ defmodule Sim.SimulationLoop do
   end
 
   def handle_cast(:stop, %{sim: sim} = state) do
-    Logger.info("stop sim loop")
     Process.cancel_timer(sim)
-    PubSub.broadcast(state.broadcaster, state.topic, {:sim, started: false})
-    {:noreply, %{state | sim: nil}}
+    {:noreply, stop(state)}
   end
 
   def handle_info(:tick, state) do
-    # TODO run in a Task
-    # GenServer.call(Grid, :sim)
-    :ok = state.func.()
-    next_tick = Process.send_after(self(), :tick, 100)
-    {:noreply, %{state | sim: next_tick}}
+    case state.func.() do
+      :ok ->
+        next_tick = Process.send_after(self(), :tick, 100)
+        {:noreply, %{state | sim: next_tick}}
+
+      {:error, {reason, _}} ->
+        Logger.warn(Exception.message(reason))
+        {:noreply, stop(state)}
+    end
+  end
+
+  defp stop(state) do
+    Logger.info("stop sim loop")
+    PubSub.broadcast(state.broadcaster, state.topic, {:sim, started: false})
+    %{state | sim: nil}
   end
 end
