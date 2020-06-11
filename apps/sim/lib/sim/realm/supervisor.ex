@@ -8,7 +8,7 @@ defmodule Sim.Realm.Supervisor do
   def init(:ok) do
     children = [
       {Task.Supervisor, name: Sim.TaskSupervisor},
-      Sim.Realm.Data,
+      {Sim.Realm.Data, pubsub: ThundermoonWeb.PubSub, topic: "Thundermoon.GameOfLife"},
       Sim.Realm.SimulationLoop,
       Sim.Realm.Server
     ]
