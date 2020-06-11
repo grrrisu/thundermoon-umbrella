@@ -16,6 +16,12 @@ defmodule Sim.Realm.Supervisor do
     Supervisor.init(children, strategy: :rest_for_one)
   end
 
+  def restart_realm() do
+    Enum.all?([Sim.Realm.Server, Sim.Realm.SimulationLoop, Sim.Realm.Data], fn child ->
+      :ok == Supervisor.restart_child(__MODULE__, child)
+    end)
+  end
+
   # def supervise_realm(realm_module, pubsub) do
   #   %{
   #     id: realm_module,
