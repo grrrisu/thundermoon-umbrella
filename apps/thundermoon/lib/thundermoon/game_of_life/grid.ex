@@ -54,14 +54,10 @@ defmodule Thundermoon.GameOfLife.Grid do
     |> Task.yield()
   end
 
-  defp create(size) do
-    grid =
-      Grid.create(size, size, fn _x, _y ->
-        :rand.uniform(3) == 1
-      end)
-
-    broadcast(grid)
-    grid
+  def create(%{size: size}) do
+    Grid.create(size, size, fn _x, _y ->
+      :rand.uniform(3) == 1
+    end)
   end
 
   defp broadcast(grid) do
