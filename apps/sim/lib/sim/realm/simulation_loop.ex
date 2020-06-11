@@ -34,15 +34,33 @@ defmodule Sim.Realm.SimulationLoop do
   end
 
   def handle_info(:tick, state) do
-    case Sim.Realm.sim(state.sim_func) do
-      :ok ->
-        next_tick = Process.send_after(self(), :tick, 100)
-        {:noreply, %{state | sim: next_tick}}
+    case execute_task(state.sim_func) do
+      {:ok, :ok} ->
+        {:noreply, %{state | sim: create_next_tick(100)}}
 
-      {:error, {reason, _}} ->
+      {:ok, {:error, {reason, _}}} ->
         Logger.warn(Exception.message(reason))
         {:noreply, stop(state)}
+
+      {:exit, {:noproc, _}} ->
+        Logger.warn("sim server not available -> retry")
+        {:noreply, %{state | sim: create_next_tick(1)}}
+
+      {exit_status, {reason, _}} ->
+        Logger.warn("task crashed with #{exit_status} and reason #{reason} -> retry")
+        {:noreply, %{state | sim: create_next_tick(1)}}
     end
+  end
+
+  defp execute_task(sim_func) when is_function(sim_func) do
+    Task.Supervisor.async_nolink(Sim.TaskSupervisor, fn ->
+      Sim.Realm.sim(sim_func)
+    end)
+    |> Task.yield()
+  end
+
+  defp create_next_tick(delay) do
+    Process.send_after(self(), :tick, delay)
   end
 
   def terminate(_reason, _state) do
