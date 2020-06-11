@@ -23,12 +23,11 @@ defmodule Sim.Realm do
   end
 
   def restart() do
-    # :ok = Supervisor.restart_child(Sim.Realm.Supervisor, Sim.Realm.Data)
-    # broadcast new data
+    :ok = Sim.Realm.Supervisor.restart_realm()
   end
 
-  def start_sim() do
-    GenServer.call(Server, :start_sim)
+  def start_sim(func) do
+    GenServer.call(Server, {:start_sim, func})
   end
 
   def stop_sim() do
@@ -39,11 +38,15 @@ defmodule Sim.Realm do
     GenServer.call(Server, :started?)
   end
 
-  def sim() do
-    GenServer.call(Server, :sim)
+  def sim(func) do
+    GenServer.call(Server, {:sim, func})
   end
 
   # game of life specific
+
+  def start_sim() do
+    start_sim(fn data -> Thundermoon.GameOfLife.Simulation.sim(data) end)
+  end
 
   def create(size) do
     create(Grid, %{size: size})

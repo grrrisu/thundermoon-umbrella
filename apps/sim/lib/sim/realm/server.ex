@@ -16,6 +16,7 @@ defmodule Sim.Realm.Server do
 
   def init(pubsub: pubsub) do
     # FIXME replace ThundermoonWeb.PubSub with :sim, replace topic with :realm
+    Logger.info("realm server started")
     {:ok, %{pubsub: pubsub || ThundermoonWeb.PubSub, topic: "Thundermoon.GameOfLife"}}
   end
 
@@ -36,8 +37,8 @@ defmodule Sim.Realm.Server do
     end
   end
 
-  def handle_call(:start_sim, _from, state) do
-    with :ok <- GenServer.cast(SimulationLoop, {:start, &Sim.Realm.sim/0}),
+  def handle_call({:start_sim, func}, _from, state) do
+    with :ok <- GenServer.cast(SimulationLoop, {:start, func}),
          :ok <- Data.set_running(true),
          :ok <- set_running(true, state) do
       {:reply, :ok, state}
@@ -60,8 +61,23 @@ defmodule Sim.Realm.Server do
     {:reply, Data.running?(), state}
   end
 
-  def handle_call(:sim, _from, state) do
-    {:reply, :ok, state}
+  def handle_call({:sim, func}, _from, state) do
+    case execute_task(func, state) do
+      {:exit, reason} ->
+        {:reply, {:error, reason}, state}
+
+      {:ok, data} ->
+        {:reply, :ok, state}
+    end
+  end
+
+  defp execute_task(sim_func, state) when is_function(sim_func) do
+    Task.Supervisor.async_nolink(Sim.TaskSupervisor, fn ->
+      Data.get_data()
+      |> sim_func.()
+      |> set_data(state)
+    end)
+    |> Task.yield()
   end
 
   defp set_running(value, state) do
