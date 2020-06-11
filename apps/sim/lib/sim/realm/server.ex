@@ -1,23 +1,20 @@
 defmodule Sim.Realm.Server do
   @moduledoc """
-  This is the static part of the realm.
-  It creates the root
+  This acts as a global lock against the data
   """
   use GenServer
 
-  alias Phoenix.PubSub
   alias Sim.Realm.{Data, SimulationLoop}
 
   require Logger
 
   def start_link(opts \\ %{}) do
-    GenServer.start_link(__MODULE__, [pubsub: opts[:pubsub]], name: opts[:name] || __MODULE__)
+    GenServer.start_link(__MODULE__, :ok, name: opts[:name] || __MODULE__)
   end
 
-  def init(pubsub: pubsub) do
-    # FIXME replace ThundermoonWeb.PubSub with :sim, replace topic with :realm
+  def init(:ok) do
     Logger.info("realm server started")
-    {:ok, %{pubsub: pubsub || ThundermoonWeb.PubSub, topic: "Thundermoon.GameOfLife"}}
+    {:ok, %{}}
   end
 
   def handle_call(:get_root, _from, state) do
@@ -25,12 +22,12 @@ defmodule Sim.Realm.Server do
   end
 
   def handle_call({:set_root, data}, _from, state) do
-    {:reply, set_data(data, state), state}
+    {:reply, Data.set_data(data), state}
   end
 
   def handle_call({:create, factory, config}, _from, state) do
     with data <- factory.create(config),
-         :ok <- set_data(data, state) do
+         :ok <- Data.set_data(data) do
       {:reply, :ok, state}
     else
       error -> {:reply, error, state}
@@ -39,8 +36,7 @@ defmodule Sim.Realm.Server do
 
   def handle_call({:start_sim, func}, _from, state) do
     with :ok <- GenServer.cast(SimulationLoop, {:start, func}),
-         :ok <- Data.set_running(true),
-         :ok <- set_running(true, state) do
+         :ok <- Data.set_running(true) do
       {:reply, :ok, state}
     else
       error -> {:reply, error, state}
@@ -49,8 +45,7 @@ defmodule Sim.Realm.Server do
 
   def handle_call(:stop_sim, _from, state) do
     with :ok <- GenServer.cast(SimulationLoop, :stop),
-         :ok <- Data.set_running(false),
-         :ok <- set_running(false, state) do
+         :ok <- Data.set_running(false) do
       {:reply, :ok, state}
     else
       error -> {:reply, error, state}
@@ -62,44 +57,22 @@ defmodule Sim.Realm.Server do
   end
 
   def handle_call({:sim, func}, _from, state) do
-    case execute_task(func, state) do
+    case execute_task(func) do
       {:exit, reason} ->
         {:reply, {:error, reason}, state}
 
-      {:ok, data} ->
+      {:ok, _data} ->
         {:reply, :ok, state}
     end
   end
 
-  defp execute_task(sim_func, state) when is_function(sim_func) do
+  defp execute_task(sim_func) when is_function(sim_func) do
     Task.Supervisor.async_nolink(Sim.TaskSupervisor, fn ->
       Data.get_data()
       |> sim_func.()
-      |> set_data(state)
+      |> Data.set_data()
     end)
     |> Task.yield()
-  end
-
-  defp set_running(value, state) do
-    with :ok <- Data.set_running(value),
-         :ok <- broadcast(state, {:sim, started: value}) do
-      :ok
-    else
-      error -> error
-    end
-  end
-
-  defp set_data(data, state) do
-    with :ok <- Data.set_data(data),
-         :ok <- broadcast(state, {:update, data: data}) do
-      :ok
-    else
-      error -> error
-    end
-  end
-
-  defp broadcast(state, payload) do
-    PubSub.broadcast(state.pubsub, state.topic, payload)
   end
 
   # def start_link(opts) do
