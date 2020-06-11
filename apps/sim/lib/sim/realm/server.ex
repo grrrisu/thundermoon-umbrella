@@ -1,4 +1,4 @@
-defmodule Sim.Realm do
+defmodule Sim.Server do
   @moduledoc """
   This is the static part of the realm.
   It creates the root
