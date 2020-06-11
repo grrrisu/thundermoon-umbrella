@@ -65,4 +65,24 @@ defmodule Sim.GridTest do
       assert false == Realm.started?()
     end
   end
+
+  describe "recover" do
+    test "server crash" do
+      Realm.set_root(:before_server_crash)
+      Realm.start_sim(fn data -> data end)
+      Sim.Realm.Server |> GenServer.stop(:shutdown)
+      Process.sleep(1)
+      assert :before_server_crash == Sim.Realm.get_root()
+      assert true == Sim.Realm.started?()
+    end
+
+    test "simulation loop crash" do
+      Realm.set_root(:before_server_crash)
+      Realm.start_sim(fn data -> data end)
+      Sim.Realm.SimulationLoop |> GenServer.stop(:shutdown)
+      Process.sleep(1)
+      assert :before_server_crash == Sim.Realm.get_root()
+      assert false == Sim.Realm.started?()
+    end
+  end
 end
