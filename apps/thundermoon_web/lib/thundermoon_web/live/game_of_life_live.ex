@@ -94,7 +94,7 @@ defmodule ThundermoonWeb.GameOfLifeLive do
   end
 
   # this is triggered by the pubsub broadcast event
-  def handle_info({:update, grid: grid}, socket) do
+  def handle_info({:update, data: grid}, socket) do
     {:noreply, assign(socket, grid: grid)}
   end
 

@@ -1,27 +1,20 @@
-defmodule Sim.SimulationLoop do
+defmodule Sim.Realm.SimulationLoop do
   use GenServer
-
-  alias Phoenix.PubSub
 
   require Logger
 
-  def start_link(broadcaster, topic, name) do
-    GenServer.start_link(__MODULE__, {broadcaster, topic}, name: name)
+  def start_link(opts \\ []) do
+    GenServer.start_link(__MODULE__, :ok, name: opts[:name] || __MODULE__)
   end
 
-  def init({broadcaster, topic}) do
-    {:ok, %{sim: nil, topic: topic, broadcaster: broadcaster}}
-  end
-
-  def handle_call(:started?, _from, %{sim: sim} = state) do
-    {:reply, not is_nil(sim), state}
+  def init(:ok) do
+    {:ok, %{sim: nil, sim_func: nil}}
   end
 
   def handle_cast({:start, func}, %{sim: nil} = state) do
     Logger.info("start sim loop")
-    state = Map.put(state, :func, func)
+    state = Map.put(state, :sim_func, func)
     send(self(), :tick)
-    PubSub.broadcast(state.broadcaster, state.topic, {:sim, started: true})
     {:noreply, state}
   end
 
@@ -41,7 +34,7 @@ defmodule Sim.SimulationLoop do
   end
 
   def handle_info(:tick, state) do
-    case state.func.() do
+    case state.sim_func.() do
       :ok ->
         next_tick = Process.send_after(self(), :tick, 100)
         {:noreply, %{state | sim: next_tick}}
@@ -54,7 +47,6 @@ defmodule Sim.SimulationLoop do
 
   defp stop(state) do
     Logger.info("stop sim loop")
-    PubSub.broadcast(state.broadcaster, state.topic, {:sim, started: false})
     %{state | sim: nil}
   end
 end
