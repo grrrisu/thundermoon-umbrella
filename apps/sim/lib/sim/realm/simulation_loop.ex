@@ -34,7 +34,7 @@ defmodule Sim.Realm.SimulationLoop do
   end
 
   def handle_info(:tick, state) do
-    case state.sim_func.() do
+    case Sim.Realm.sim(state.sim_func) do
       :ok ->
         next_tick = Process.send_after(self(), :tick, 100)
         {:noreply, %{state | sim: next_tick}}
@@ -43,6 +43,10 @@ defmodule Sim.Realm.SimulationLoop do
         Logger.warn(Exception.message(reason))
         {:noreply, stop(state)}
     end
+  end
+
+  def terminate(_reason, state) do
+    Sim.Realm.Data.set_running(false)
   end
 
   defp stop(state) do

@@ -5,7 +5,7 @@ defmodule Sim.GridTest do
 
   setup do
     Sim.Realm.Data.reset()
-    GenServer.cast(Realm.SimulationLoop, :stop)
+    Sim.Realm.stop_sim()
     Phoenix.PubSub.subscribe(ThundermoonWeb.PubSub, "Thundermoon.GameOfLife")
 
     on_exit(fn ->
@@ -16,6 +16,10 @@ defmodule Sim.GridTest do
   describe "init" do
     test "root" do
       assert nil == Realm.get_root()
+    end
+
+    test "started" do
+      assert false == Realm.started?()
     end
   end
 
@@ -44,18 +48,18 @@ defmodule Sim.GridTest do
 
   describe "simulation loop" do
     test "start" do
-      Realm.start_sim()
+      Realm.start_sim(fn data -> data end)
       assert_receive({:sim, started: true})
     end
 
     test "stop" do
-      Realm.start_sim()
+      Realm.start_sim(fn data -> data end)
       Realm.stop_sim()
       assert_receive({:sim, started: false})
     end
 
     test "started?" do
-      Realm.start_sim()
+      Realm.start_sim(fn data -> data end)
       assert true == Realm.started?()
       Realm.stop_sim()
       assert false == Realm.started?()
