@@ -45,7 +45,7 @@ defmodule Sim.Realm.SimulationLoop do
     end
   end
 
-  def terminate(_reason, state) do
+  def terminate(_reason, _state) do
     Sim.Realm.Data.set_running(false)
   end
 
