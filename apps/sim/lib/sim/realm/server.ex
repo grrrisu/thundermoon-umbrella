@@ -13,7 +13,8 @@ defmodule Sim.Realm.Server do
   end
 
   def init(:ok) do
-    Logger.info("realm server started")
+    Logger.debug("start realm server")
+    Process.send_after(self(), :register_to_simulation_loop, 100)
     {:ok, %{}}
   end
 
@@ -64,6 +65,11 @@ defmodule Sim.Realm.Server do
       {:ok, _data} ->
         {:reply, :ok, state}
     end
+  end
+
+  def handle_info(:register_to_simulation_loop, state) do
+    :ok = GenServer.call(Sim.Realm.SimulationLoop, :register_realm_server)
+    {:noreply, state}
   end
 
   defp execute_task(sim_func) when is_function(sim_func) do

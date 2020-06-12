@@ -3,11 +3,15 @@ defmodule Sim.Realm.Data do
 
   alias Phoenix.PubSub
 
+  require Logger
+
   @init_data %{data: nil, sim_running: false}
 
   def start_link(opts) do
     Agent.start_link(
       fn ->
+        Logger.debug("start realm data")
+
         @init_data
         |> Map.put_new(:pubsub, opts[:pubsub])
         |> Map.put_new(:topic, opts[:topic])
