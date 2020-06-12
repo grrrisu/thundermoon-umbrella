@@ -8,7 +8,12 @@ defmodule Sim.Realm.SimulationLoop do
   end
 
   def init(:ok) do
-    {:ok, %{sim: nil, sim_func: nil}}
+    Logger.debug("start simulation loop")
+    {:ok, %{sim: nil, sim_func: nil, server_ref: nil}}
+  end
+
+  def handle_call(:register_realm_server, {pid, _ref}, state) do
+    {:reply, :ok, %{state | server_ref: Process.monitor(pid)}}
   end
 
   def handle_cast({:start, func}, %{sim: nil} = state) do
@@ -33,30 +38,29 @@ defmodule Sim.Realm.SimulationLoop do
     {:noreply, stop(state)}
   end
 
+  def handle_info(:tick, %{server_ref: nil} = state) do
+    Logger.warn("realm server not available -> retry")
+    {:noreply, %{state | sim: create_next_tick(10)}}
+  end
+
   def handle_info(:tick, state) do
-    case execute_task(state.sim_func) do
-      {:ok, :ok} ->
+    case Sim.Realm.sim(state.sim_func) do
+      :ok ->
         {:noreply, %{state | sim: create_next_tick(100)}}
 
-      {:ok, {:error, {reason, _}}} ->
+      {:error, {reason, _}} ->
         Logger.warn(Exception.message(reason))
         {:noreply, stop(state)}
-
-      {:exit, {:noproc, _}} ->
-        Logger.warn("sim server not available -> retry")
-        {:noreply, %{state | sim: create_next_tick(1)}}
-
-      {exit_status, {reason, _}} ->
-        Logger.warn("task crashed with #{exit_status} and reason #{reason} -> retry")
-        {:noreply, %{state | sim: create_next_tick(1)}}
     end
   end
 
-  defp execute_task(sim_func) when is_function(sim_func) do
-    Task.Supervisor.async_nolink(Sim.TaskSupervisor, fn ->
-      Sim.Realm.sim(sim_func)
-    end)
-    |> Task.yield()
+  def handle_info({:DOWN, ref, :process, _object, reason}, %{server_ref: ref} = state) do
+    Logger.warn("realm server ref removed from simulation loop")
+    {:noreply, %{state | server_ref: nil}}
+  end
+
+  def handle_info({:DOWN, _ref, :process, _object, reason}, state) do
+    {:noreply, state}
   end
 
   defp create_next_tick(delay) do
@@ -69,6 +73,7 @@ defmodule Sim.Realm.SimulationLoop do
 
   defp stop(state) do
     Logger.info("stop sim loop")
+    :ok = Sim.Realm.Data.set_running(false)
     %{state | sim: nil}
   end
 end
