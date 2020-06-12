@@ -14,7 +14,8 @@ defmodule Sim.Realm.Server do
 
   def init(:ok) do
     Logger.debug("start realm server")
-    Process.send_after(self(), :register_to_simulation_loop, 100)
+    # FIXME use {:ok, state, continue: :register_to_simulation_loop}
+    Process.send_after(self(), :register_to_simulation_loop, 1)
     {:ok, %{}}
   end
 

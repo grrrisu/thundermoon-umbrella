@@ -1,11 +1,14 @@
-defmodule Sim.GridTest do
-  use ExUnit.Case
+defmodule Sim.RealmTest do
+  use ExUnit.Case, async: false
 
   alias Sim.Realm
 
+  require Logger
+
   setup do
-    Sim.Realm.Data.reset()
-    Sim.Realm.stop_sim()
+    # wait_for(Sim.Realm.Server)
+    # Sim.Realm.Data.reset()
+    # Sim.Realm.stop_sim()
     Phoenix.PubSub.subscribe(ThundermoonWeb.PubSub, "Thundermoon.GameOfLife")
 
     on_exit(fn ->
@@ -67,22 +70,81 @@ defmodule Sim.GridTest do
   end
 
   describe "recover" do
+    setup do
+      Logger.info("-- test setup --")
+      Sim.Realm.Supervisor.restart_realm()
+      wait_for_all()
+      :ok
+    end
+
     test "server crash" do
+      Logger.info("test: server crash")
       Realm.set_root(:before_server_crash)
       Realm.start_sim(fn data -> data end)
       Sim.Realm.Server |> GenServer.stop(:shutdown)
-      Process.sleep(1)
+      wait_for_all()
       assert :before_server_crash == Sim.Realm.get_root()
       assert true == Sim.Realm.started?()
     end
 
     test "simulation loop crash" do
-      Realm.set_root(:before_server_crash)
+      Logger.info("test: simulation loop crash")
+      Realm.set_root(:before_loop_crash)
       Realm.start_sim(fn data -> data end)
       Sim.Realm.SimulationLoop |> GenServer.stop(:shutdown)
-      Process.sleep(1)
-      assert :before_server_crash == Sim.Realm.get_root()
+      assert_receive({:sim, started: false})
+      wait_for_all()
+      assert :before_loop_crash == Sim.Realm.get_root()
       assert false == Sim.Realm.started?()
+    end
+
+    test "data crash" do
+      Logger.info("test: data crash")
+      Realm.set_root(:before_data_crash)
+      Realm.start_sim(fn data -> data end)
+      Sim.Realm.Data |> Agent.stop(:shutdown)
+      wait_for_all()
+      refute_receive({:sim, started: false})
+      assert nil == Sim.Realm.get_root()
+      assert false == Sim.Realm.started?()
+    end
+
+    test "sim task crash" do
+      Logger.info("test: sim task crash")
+      Realm.set_root(:before_sim_crash)
+      Realm.start_sim(fn _ -> raise "sim task crashed" end)
+      assert_receive({:sim, started: false})
+      wait_for_all()
+      assert :before_sim_crash == Sim.Realm.get_root()
+      assert false == Sim.Realm.started?()
+    end
+
+    test "create crash" do
+      Logger.info("test: create crash")
+      Realm.set_root(:before_create_crash)
+      Logger.error("before crash")
+      assert catch_exit(Realm.create(Sim.Grid, nil))
+      Logger.error("after crash")
+      wait_for_all()
+      assert :before_create_crash == Sim.Realm.get_root()
+    end
+  end
+
+  def wait_for_all() do
+    Enum.all?([Sim.Realm.Server, Sim.Realm.SimulationLoop, Sim.Realm.Data], fn process ->
+      wait_for(process)
+    end)
+  end
+
+  def wait_for(process) do
+    Process.sleep(1)
+
+    with pid when is_pid(pid) <- Process.whereis(process),
+         true <- Process.alive?(pid) do
+      true
+    else
+      _any ->
+        wait_for(process)
     end
   end
 end
