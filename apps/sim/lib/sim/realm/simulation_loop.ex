@@ -9,11 +9,11 @@ defmodule Sim.Realm.SimulationLoop do
 
   def init(:ok) do
     Logger.debug("start simulation loop")
-    {:ok, %{sim: nil, sim_func: nil, server_ref: nil}}
+    {:ok, %{sim: nil, sim_func: nil, realm_server: nil}}
   end
 
   def handle_call(:register_realm_server, {pid, _ref}, state) do
-    {:reply, :ok, %{state | server_ref: Process.monitor(pid)}}
+    {:reply, :ok, %{state | realm_server: Process.monitor(pid)}}
   end
 
   def handle_cast({:start, func}, %{sim: nil} = state) do
@@ -38,15 +38,10 @@ defmodule Sim.Realm.SimulationLoop do
     {:noreply, stop(state)}
   end
 
-  def handle_info(:tick, %{server_ref: nil} = state) do
-    Logger.warn("realm server not available -> retry")
-    {:noreply, %{state | sim: create_next_tick(10)}}
-  end
-
-  def handle_info(:tick, state) do
-    case Sim.Realm.sim(state.sim_func) do
+  def handle_cast({:sim_result, result}, state) do
+    case result do
       :ok ->
-        {:noreply, %{state | sim: create_next_tick(100)}}
+        {:noreply, state}
 
       {:error, {reason, _}} ->
         Logger.warn(Exception.message(reason))
@@ -54,9 +49,20 @@ defmodule Sim.Realm.SimulationLoop do
     end
   end
 
-  def handle_info({:DOWN, ref, :process, _object, reason}, %{server_ref: ref} = state) do
+  def handle_info(:tick, %{realm_server: nil} = state) do
+    Logger.warn("realm server not available -> retry")
+    {:noreply, %{state | sim: create_next_tick(10)}}
+  end
+
+  def handle_info(:tick, state) do
+    :ok = Sim.Realm.sim(state.sim_func)
+    # TODO use another send_after to catch a timeout of sim
+    {:noreply, %{state | sim: create_next_tick(100)}}
+  end
+
+  def handle_info({:DOWN, ref, :process, _object, reason}, %{realm_server: ref} = state) do
     Logger.warn("realm server ref removed from simulation loop")
-    {:noreply, %{state | server_ref: nil}}
+    {:noreply, %{state | realm_server: nil}}
   end
 
   def handle_info({:DOWN, _ref, :process, _object, reason}, state) do
