@@ -39,7 +39,7 @@ defmodule Sim.Realm do
   end
 
   def sim(func) do
-    GenServer.call(Server, {:sim, func})
+    GenServer.cast(Server, {:sim, func})
   end
 
   # game of life specific

@@ -58,14 +58,16 @@ defmodule Sim.Realm.Server do
     {:reply, Data.running?(), state}
   end
 
-  def handle_call({:sim, func}, _from, state) do
-    case execute_task(func) do
-      {:exit, reason} ->
-        {:reply, {:error, reason}, state}
+  def handle_cast({:sim, func}, state) do
+    result =
+      case execute_task(func) do
+        {:exit, reason} -> {:error, reason}
+        {:ok, _} -> :ok
+        nil -> {:error, "task exceeded timeout"}
+      end
 
-      {:ok, _data} ->
-        {:reply, :ok, state}
-    end
+    GenServer.cast(Sim.Realm.SimulationLoop, {:sim_result, result})
+    {:noreply, state}
   end
 
   def handle_info(:register_to_simulation_loop, state) do
