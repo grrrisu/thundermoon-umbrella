@@ -9,8 +9,7 @@ defmodule ThundermoonWeb.GameOfLifeLive do
 
   alias Thundermoon.Repo
   alias Thundermoon.Accounts.User
-  alias Thundermoon.GameOfLife
-  alias Thundermoon.GridData
+  alias GameOfLife.GridData
 
   alias ThundermoonWeb.GameOfLifeView
   alias ThundermoonWeb.Router.Helpers, as: Routes

@@ -45,7 +45,7 @@ defmodule Sim.Realm do
   # game of life specific
 
   def start_sim() do
-    start_sim(fn data -> Thundermoon.GameOfLife.Simulation.sim(data) end)
+    start_sim(fn data -> GameOfLife.Simulation.sim(data) end)
   end
 
   def create(size) do
