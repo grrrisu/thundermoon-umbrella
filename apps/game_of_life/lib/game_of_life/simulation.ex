@@ -1,4 +1,4 @@
-defmodule Thundermoon.GameOfLife.Simulation do
+defmodule GameOfLife.Simulation do
   alias Sim.Torus, as: Grid
 
   def sim(grid) do
