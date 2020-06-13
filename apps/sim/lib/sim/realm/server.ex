@@ -61,8 +61,8 @@ defmodule Sim.Realm.Server do
   def handle_cast({:sim, func}, state) do
     result =
       case execute_task(func) do
-        {:exit, reason} -> {:error, reason}
         {:ok, _} -> :ok
+        {:exit, reason} -> {:error, reason}
         nil -> {:error, "task exceeded timeout"}
       end
 
