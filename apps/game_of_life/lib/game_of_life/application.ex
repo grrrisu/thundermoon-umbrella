@@ -7,7 +7,7 @@ defmodule GameOfLife.Application do
 
   def start(_type, _args) do
     children = [
-      Sim.Realm.Supervisor
+      {Sim.Realm.Supervisor, name: GameOfLife}
     ]
 
     opts = [strategy: :one_for_one, name: GameOfLife.Supervisor]
