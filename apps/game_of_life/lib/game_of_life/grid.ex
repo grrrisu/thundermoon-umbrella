@@ -1,10 +1,10 @@
-defmodule Thundermoon.GameOfLife.Grid do
+defmodule GameOfLife.Grid do
   use GenServer, restart: :temporary
 
   alias Sim.Torus, as: Grid
 
   alias ThundermoonWeb.PubSub
-  alias Thundermoon.GameOfLife.Simulation
+  alias GameOfLife.Simulation
 
   def start_link(size) do
     GenServer.start_link(__MODULE__, size, name: __MODULE__)

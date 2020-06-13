@@ -1,9 +1,9 @@
-defmodule Thundermoon.GridData do
+defmodule GameOfLife.GridData do
   import Ecto.Changeset
   use Ecto.Schema
 
   schema("") do
-    field :size, :integer, virtual: true
+    field(:size, :integer, virtual: true)
   end
 
   def changeset(model, params \\ %{}) do
