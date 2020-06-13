@@ -6,9 +6,8 @@ defmodule Sim.RealmTest do
   require Logger
 
   setup do
-    # wait_for(Sim.Realm.Server)
-    # Sim.Realm.Data.reset()
-    # Sim.Realm.stop_sim()
+    Sim.Realm.Supervisor.restart_realm()
+    wait_for_all()
     Phoenix.PubSub.subscribe(ThundermoonWeb.PubSub, "Thundermoon.GameOfLife")
 
     on_exit(fn ->
@@ -62,6 +61,7 @@ defmodule Sim.RealmTest do
     end
 
     test "started?" do
+      assert false == Realm.started?()
       Realm.start_sim(fn data -> data end)
       assert true == Realm.started?()
       Realm.stop_sim()
@@ -70,15 +70,7 @@ defmodule Sim.RealmTest do
   end
 
   describe "recover" do
-    setup do
-      Logger.info("-- test setup --")
-      Sim.Realm.Supervisor.restart_realm()
-      wait_for_all()
-      :ok
-    end
-
     test "server crash" do
-      Logger.info("test: server crash")
       Realm.set_root(:before_server_crash)
       Realm.start_sim(fn data -> data end)
       Sim.Realm.Server |> GenServer.stop(:shutdown)
@@ -88,7 +80,6 @@ defmodule Sim.RealmTest do
     end
 
     test "simulation loop crash" do
-      Logger.info("test: simulation loop crash")
       Realm.set_root(:before_loop_crash)
       Realm.start_sim(fn data -> data end)
       Sim.Realm.SimulationLoop |> GenServer.stop(:shutdown)
@@ -99,7 +90,6 @@ defmodule Sim.RealmTest do
     end
 
     test "data crash" do
-      Logger.info("test: data crash")
       Realm.set_root(:before_data_crash)
       Realm.start_sim(fn data -> data end)
       Sim.Realm.Data |> Agent.stop(:shutdown)
@@ -110,7 +100,6 @@ defmodule Sim.RealmTest do
     end
 
     test "sim task crash" do
-      Logger.info("test: sim task crash")
       Realm.set_root(:before_sim_crash)
       Realm.start_sim(fn _ -> raise "sim task crashed" end)
       assert_receive({:sim, started: false})
@@ -120,11 +109,8 @@ defmodule Sim.RealmTest do
     end
 
     test "create crash" do
-      Logger.info("test: create crash")
       Realm.set_root(:before_create_crash)
-      Logger.error("before crash")
       assert catch_exit(Realm.create(Sim.Grid, nil))
-      Logger.error("after crash")
       wait_for_all()
       assert :before_create_crash == Sim.Realm.get_root()
     end
