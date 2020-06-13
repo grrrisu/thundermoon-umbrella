@@ -9,8 +9,7 @@ defmodule Sim.Realm.Supervisor do
     children = [
       {Sim.Realm.Data, pubsub: ThundermoonWeb.PubSub, topic: "Thundermoon.GameOfLife"},
       Sim.Realm.SimulationLoop,
-      Sim.Realm.Server,
-      {Task.Supervisor, name: Sim.TaskSupervisor}
+      Sim.Realm.ServerSupervisor
     ]
 
     Supervisor.init(children, strategy: :rest_for_one)
