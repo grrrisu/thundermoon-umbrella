@@ -78,11 +78,11 @@ defmodule Sim.Realm.Server do
     |> Task.yield()
   end
 
-  defp server_name(name) do
+  def server_name(name) do
     Module.concat(name, "RealmServer")
   end
 
-  defp realm_task_supervisor(state) do
+  def realm_task_supervisor(state) do
     Module.concat(state.name, "TaskSupervisor")
   end
 end

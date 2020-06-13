@@ -1,69 +1,56 @@
 defmodule GameOfLife do
+  use Sim.Realm, name: __MODULE__
+
   @moduledoc """
   Context for game of life.
   It acts as a single point of entry to the game.
   """
-  require Logger
 
-  # alias Thundermoon.GameOfLife.{Realm, Grid, SimulationLoop}
+  # game of life specific
+
+  alias GameOfLife.{Grid, Simulation}
+
+  def start_sim() do
+    start_sim(fn data -> Simulation.sim(data) end)
+  end
 
   def create(size) do
-    GenServer.call(Realm, {:create, Grid, size})
+    create(Grid, %{size: size})
   end
 
-  def get_grid() do
-    case get_root() do
-      nil -> nil
-      pid -> GenServer.call(pid, :get_grid)
-    end
-  end
-
-  def set_grid(grid) do
-    case get_root() do
-      nil -> nil
-      pid -> GenServer.call(pid, {:set_grid, grid})
-    end
-  end
-
-  def recreate() do
-    :ok = GenServer.stop(Realm)
+  def recreate(size) do
+    recreate(Grid, %{size: size})
   end
 
   def clear() do
-    stop()
-    Logger.info("clear grid")
-    get_root() |> GenServer.call(:clear)
   end
 
-  def restart() do
-    stop()
-    GenServer.call(Realm, :restart_root)
+  def toggle() do
   end
 
-  def toggle(x, y) do
-    case started?() do
-      true ->
-        {:error, "no write operations while simulating allowed"}
+  # def recreate() do
+  #   :ok = GenServer.stop(Realm)
+  # end
 
-      false ->
-        Logger.debug("toggle cell #{x}, #{y}")
-        get_root() |> GenServer.call({:toggle, x, y})
-    end
-  end
+  # def clear() do
+  #   stop()
+  #   Logger.info("clear grid")
+  #   get_root() |> GenServer.call(:clear)
+  # end
 
-  def get_root() do
-    GenServer.call(Realm, :get_root)
-  end
+  # def restart() do
+  #   stop()
+  #   GenServer.call(Realm, :restart_root)
+  # end
 
-  def start() do
-    GenServer.cast(SimulationLoop, {:start, fn -> GenServer.call(Grid, :sim) end})
-  end
+  # def toggle(x, y) do
+  #   case started?() do
+  #     true ->
+  #       {:error, "no write operations while simulating allowed"}
 
-  def stop() do
-    GenServer.cast(SimulationLoop, :stop)
-  end
-
-  def started?() do
-    GenServer.call(SimulationLoop, :started?)
-  end
+  #     false ->
+  #       Logger.debug("toggle cell #{x}, #{y}")
+  #       get_root() |> GenServer.call({:toggle, x, y})
+  #   end
+  # end
 end
