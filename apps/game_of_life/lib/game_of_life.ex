@@ -18,6 +18,7 @@ defmodule GameOfLife do
   end
 
   def clear() do
+    stop_sim()
     call_server(:clear)
   end
 

@@ -70,12 +70,12 @@ defmodule ThundermoonWeb.GameOfLifeLive do
     {:noreply, socket}
   end
 
-  def handle_event("restart", _value, socket) do
+  def handle_event("recreate", _value, socket) do
     GameOfLife.recreate()
     {:noreply, socket}
   end
 
-  def handle_event("recreate", _value, socket) do
+  def handle_event("restart", _value, socket) do
     can_execute!(socket, :create, GameOfLife, fn socket ->
       GameOfLife.restart()
 
