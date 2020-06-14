@@ -64,7 +64,7 @@ defmodule ThundermoonWeb.GameOfLifeLiveTest do
       {:ok, view, _html} = live(conn, "/game_of_life")
       render_click(view, "toggle-sim-start", %{"action" => "start"})
       assert_receive({:sim, started: true})
-      render_click(view, :restart)
+      render_click(view, :recreate)
       assert_receive({:sim, started: false})
       assert_receive({:update, data: %{}})
     end
@@ -91,7 +91,7 @@ defmodule ThundermoonWeb.GameOfLifeLiveTest do
     test "can not recreate a grid", %{conn: conn} do
       {:ok, view, _html} = live(conn, "/game_of_life")
 
-      render_click(view, :recreate)
+      render_click(view, :restart)
       assert_redirect(view, "/")
     end
   end
@@ -122,7 +122,7 @@ defmodule ThundermoonWeb.GameOfLifeLiveTest do
       {:ok, view, html} = live(conn, "/game_of_life")
       assert html =~ "id=\"grid\""
       render_click(view, "toggle-sim-start", %{"action" => "start"})
-      render_click(view, :recreate)
+      render_click(view, :restart)
       {:ok, _view, html} = live(conn, "/game_of_life")
       assert html =~ "Create a new Grid"
     end
