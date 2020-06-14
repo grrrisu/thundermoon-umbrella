@@ -1,6 +1,8 @@
 defmodule GameOfLife.Grid do
   alias Sim.Torus, as: Grid
 
+  defdelegate height(grid), to: Sim.Torus
+
   def toggle(grid, x, y) do
     current = Grid.get(grid, x, y)
     Grid.put(grid, x, y, not current)
