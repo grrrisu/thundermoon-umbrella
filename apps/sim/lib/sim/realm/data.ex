@@ -62,7 +62,7 @@ defmodule Sim.Realm.Data do
     Agent.get(agent, & &1.sim_running)
   end
 
-  defp agent_name(name) do
+  def agent_name(name) do
     Module.concat(name, "Data")
   end
 

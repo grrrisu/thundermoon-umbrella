@@ -7,23 +7,23 @@ defmodule Sim.Realm.SimulationLoop do
 
   # --- client ---
 
-  def register_realm_server(%{name: name}) do
-    server_name(name) |> GenServer.call(:register_realm_server)
+  def register_realm_server(server) do
+    GenServer.call(server, :register_realm_server)
   end
 
-  def send_start(%{name: name}, func) do
-    :ok = server_name(name) |> GenServer.cast({:start, func})
+  def start(server, func) do
+    GenServer.cast(server, {:start, func})
   end
 
-  def send_stop(%{name: name}) do
-    :ok = server_name(name) |> GenServer.cast(:stop)
+  def stop(server) do
+    :ok = GenServer.cast(server, :stop)
   end
 
-  def send_sim_result(%{name: name}, result) do
-    :ok = server_name(name) |> GenServer.cast({:sim_result, result})
+  def send_sim_result(server, result) do
+    :ok = GenServer.cast(server, {:sim_result, result})
   end
 
-  defp server_name(name) do
+  def server_name(name) do
     Module.concat(name, "SimulationLoop")
   end
 
@@ -37,6 +37,7 @@ defmodule Sim.Realm.SimulationLoop do
 
   def init(name) do
     Logger.debug("start simulation loop")
+    # TODO continue start if Data.running?
     {:ok, %{sim: nil, realm_server: nil, name: name}}
   end
 
@@ -63,7 +64,7 @@ defmodule Sim.Realm.SimulationLoop do
 
   def handle_cast(:stop, %{sim: sim} = state) do
     Process.cancel_timer(sim)
-    {:noreply, stop(state)}
+    {:noreply, set_stop(state)}
   end
 
   def handle_cast({:sim_result, result}, state) do
@@ -77,7 +78,7 @@ defmodule Sim.Realm.SimulationLoop do
 
       {:error, {reason, _}} ->
         Logger.warn(Exception.message(reason))
-        {:noreply, stop(state)}
+        {:noreply, set_stop(state)}
     end
   end
 
@@ -87,16 +88,16 @@ defmodule Sim.Realm.SimulationLoop do
   end
 
   def handle_info({:tick, func}, state) do
-    :ok = Sim.Realm.sim(func)
+    :ok = state[:name].sim(func)
     {:noreply, %{state | sim: create_next_tick(100)}}
   end
 
-  def handle_info({:DOWN, ref, :process, _object, reason}, %{realm_server: ref} = state) do
+  def handle_info({:DOWN, ref, :process, _pid, _reason}, %{realm_server: ref} = state) do
     Logger.warn("realm server ref removed from simulation loop")
     {:noreply, %{state | realm_server: nil}}
   end
 
-  def handle_info({:DOWN, _ref, :process, _object, reason}, state) do
+  def handle_info({:DOWN, _ref, :process, _pid, _reason}, state) do
     {:noreply, state}
   end
 
@@ -108,7 +109,7 @@ defmodule Sim.Realm.SimulationLoop do
     Data.set_running(state, false)
   end
 
-  defp stop(state) do
+  defp set_stop(state) do
     Logger.info("stop sim loop")
     :ok = Data.set_running(state, false)
     %{state | sim: nil}

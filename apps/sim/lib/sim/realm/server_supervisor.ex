@@ -9,7 +9,7 @@ defmodule Sim.Realm.ServerSupervisor do
 
   def init(name) do
     children = [
-      {Sim.Realm.Server, name: name},
+      {Sim.Realm.Server.server_name(name), name: name},
       {Task.Supervisor, name: task_supervisor_name(name)}
     ]
 
