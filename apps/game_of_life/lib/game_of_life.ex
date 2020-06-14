@@ -1,12 +1,10 @@
 defmodule GameOfLife do
-  use Sim.Realm, name: __MODULE__
+  use Sim.Realm, app_module: __MODULE__
 
   @moduledoc """
   Context for game of life.
   It acts as a single point of entry to the game.
   """
-
-  # game of life specific
 
   alias GameOfLife.{Grid, Simulation}
 
@@ -23,34 +21,10 @@ defmodule GameOfLife do
   end
 
   def clear() do
+    call_server(:clear)
   end
 
-  def toggle() do
+  def toggle(x, y) do
+    call_server({:toggle, x, y})
   end
-
-  # def recreate() do
-  #   :ok = GenServer.stop(Realm)
-  # end
-
-  # def clear() do
-  #   stop()
-  #   Logger.info("clear grid")
-  #   get_root() |> GenServer.call(:clear)
-  # end
-
-  # def restart() do
-  #   stop()
-  #   GenServer.call(Realm, :restart_root)
-  # end
-
-  # def toggle(x, y) do
-  #   case started?() do
-  #     true ->
-  #       {:error, "no write operations while simulating allowed"}
-
-  #     false ->
-  #       Logger.debug("toggle cell #{x}, #{y}")
-  #       get_root() |> GenServer.call({:toggle, x, y})
-  #   end
-  # end
 end

@@ -15,16 +15,16 @@ defmodule Sim.Realm.Supervisor do
     Supervisor.init(children, strategy: :rest_for_one)
   end
 
-  def restart_realm() do
-    Supervisor.which_children(__MODULE__)
+  def restart_realm(supervisor) do
+    Supervisor.which_children(supervisor)
     |> Enum.map(fn child -> child |> Tuple.to_list() |> List.first() end)
     |> Enum.map(fn child ->
-      :ok = Supervisor.terminate_child(__MODULE__, child)
+      :ok = Supervisor.terminate_child(supervisor, child)
       child
     end)
     |> Enum.reverse()
     |> Enum.each(fn child ->
-      {:ok, _pid} = Supervisor.restart_child(__MODULE__, child)
+      {:ok, _pid} = Supervisor.restart_child(supervisor, child)
     end)
   end
 

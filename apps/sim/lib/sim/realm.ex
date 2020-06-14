@@ -5,11 +5,19 @@ defmodule Sim.Realm do
   alias Sim.Realm.Server
 
   defmacro __using__(opts) do
-    app_name = opts[:name]
+    app_module = opts[:app_module]
 
     quote do
-      @supervisor unquote(app_name)
-      @server Server.server_name(unquote(app_name))
+      @supervisor unquote(app_module)
+      @server Server.server_name(unquote(app_module))
+
+      def call_server(arg) do
+        GenServer.call(@server, arg)
+      end
+
+      def cast_server(arg) do
+        GenServer.cast(@server, arg)
+      end
 
       def get_root() do
         GenServer.call(@server, :get_root)
@@ -29,7 +37,7 @@ defmodule Sim.Realm do
       end
 
       def restart() do
-        :ok = @supervisor.restart_realm()
+        :ok = Sim.Realm.Supervisor.restart_realm(@supervisor)
       end
 
       def start_sim(func) do
