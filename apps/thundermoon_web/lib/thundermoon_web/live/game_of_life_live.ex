@@ -15,8 +15,8 @@ defmodule ThundermoonWeb.GameOfLifeLive do
   alias ThundermoonWeb.Router.Helpers, as: Routes
 
   def mount(_params, session, socket) do
-    if connected?(socket), do: PubSub.subscribe(ThundermoonWeb.PubSub, "Thundermoon.GameOfLife")
-    grid = GameOfLife.get_grid()
+    if connected?(socket), do: PubSub.subscribe(ThundermoonWeb.PubSub, "GameOfLife")
+    grid = GameOfLife.get_root()
 
     socket =
       socket
@@ -32,7 +32,7 @@ defmodule ThundermoonWeb.GameOfLifeLive do
   end
 
   # this is triggered by live_view events
-  def handle_event("create", %{"grid_data" => params}, socket) do
+  def handle_event("create", %{"form_data" => params}, socket) do
     can_execute!(socket, :create, GameOfLife, fn socket ->
       new_changeset = FormData.changeset(%FormData{}, params)
 
@@ -51,12 +51,12 @@ defmodule ThundermoonWeb.GameOfLifeLive do
   end
 
   def handle_event("toggle-sim-start", %{"action" => "start"}, socket) do
-    GameOfLife.start()
+    GameOfLife.start_sim()
     {:noreply, socket}
   end
 
   def handle_event("toggle-sim-start", %{"action" => "stop"}, socket) do
-    GameOfLife.stop()
+    GameOfLife.stop_sim()
     {:noreply, socket}
   end
 
@@ -71,13 +71,13 @@ defmodule ThundermoonWeb.GameOfLifeLive do
   end
 
   def handle_event("restart", _value, socket) do
-    GameOfLife.restart()
+    GameOfLife.recreate()
     {:noreply, socket}
   end
 
   def handle_event("recreate", _value, socket) do
     can_execute!(socket, :create, GameOfLife, fn socket ->
-      GameOfLife.recreate()
+      GameOfLife.restart()
 
       socket =
         socket
