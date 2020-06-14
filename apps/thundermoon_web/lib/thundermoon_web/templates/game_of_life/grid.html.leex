@@ -7,14 +7,14 @@
 </div>
 <div style="margin-top: 2rem">
   <%= start_button(@label_sim_start) %>
-  <a href="#" phx-click="restart" class="button button-icon button-warning">
+  <a href="#" phx-click="recreate" class="button button-icon button-warning">
     <i class="la la-2x la-reply"></i> reset
   </a>
   <a href="#" phx-click="clear" class="button button-icon button-warning">
     <i class="la la-2x la-eraser"></i> clear
   </a>
   <%= if can?(@current_user, :create, GameOfLife) do %>
-    <a href="#" phx-click="recreate" class="button button-icon button-warning">
+    <a href="#" phx-click="restart" class="button button-icon button-warning">
       <i class="la la-2x la-reply-all"></i> recreate
     </a>
   <% end %>
