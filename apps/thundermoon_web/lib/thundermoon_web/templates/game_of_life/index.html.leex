@@ -1,7 +1,7 @@
 <h1>Game of Life</h1>
 
 <%= unless @grid do %>
-  <%= if can?(@current_user, :create, Thundermoon.GameOfLife) do %>
+  <%= if can?(@current_user, :create, GameOfLife) do %>
     <%= render "form.html", changeset: @changeset %>
   <% else %>
     <p>There's currently no simulation available.</p>

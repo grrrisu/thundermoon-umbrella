@@ -12,8 +12,9 @@ defmodule GameOfLife do
     create(Grid, %{size: size})
   end
 
-  def recreate(size) do
-    recreate(Grid, %{size: size})
+  def recreate() do
+    stop_sim()
+    call_server(:recreate)
   end
 
   def clear() do

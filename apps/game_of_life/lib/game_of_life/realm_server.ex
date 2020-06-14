@@ -12,6 +12,16 @@ defmodule GameOfLife.RealmServer do
     end
   end
 
+  def handle_call(:recreate, _from, state) do
+    current = get_data()
+
+    data =
+      Grid.create(%{size: Grid.height(current)})
+      |> set_data()
+
+    {:reply, data, state}
+  end
+
   def handle_call({:toggle, x, y}, _from, state) do
     data =
       get_data()
