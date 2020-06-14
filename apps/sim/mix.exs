@@ -10,6 +10,7 @@ defmodule Sim.MixProject do
       deps_path: "../../deps",
       lockfile: "../../mix.lock",
       elixir: "~> 1.10",
+      elixirc_paths: elixirc_paths(Mix.env()),
       start_permanent: Mix.env() == :prod,
       deps: deps()
     ]
@@ -21,6 +22,10 @@ defmodule Sim.MixProject do
       extra_applications: [:logger]
     ]
   end
+
+  # Specifies which paths to compile per environment.
+  defp elixirc_paths(env) when env in [:test, :integration], do: ["lib", "test/support"]
+  defp elixirc_paths(_), do: ["lib"]
 
   # Run "mix help deps" to learn about dependencies.
   defp deps do
