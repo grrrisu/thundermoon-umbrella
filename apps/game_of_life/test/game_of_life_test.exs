@@ -12,6 +12,7 @@ defmodule GameOfLifeTest do
     grid = GameOfLife.create(3)
     assert 3 == Grid.height(grid)
     assert 3 == Grid.width(grid)
+    assert is_boolean(Grid.get(grid, 1, 1))
   end
 
   test "start_sim" do
