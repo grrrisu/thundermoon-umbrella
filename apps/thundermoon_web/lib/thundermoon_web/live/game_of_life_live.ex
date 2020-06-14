@@ -9,7 +9,7 @@ defmodule ThundermoonWeb.GameOfLifeLive do
 
   alias Thundermoon.Repo
   alias Thundermoon.Accounts.User
-  alias GameOfLife.GridData
+  alias GameOfLife.FormData
 
   alias ThundermoonWeb.GameOfLifeView
   alias ThundermoonWeb.Router.Helpers, as: Routes
@@ -34,7 +34,7 @@ defmodule ThundermoonWeb.GameOfLifeLive do
   # this is triggered by live_view events
   def handle_event("create", %{"grid_data" => params}, socket) do
     can_execute!(socket, :create, GameOfLife, fn socket ->
-      new_changeset = GridData.changeset(%GridData{}, params)
+      new_changeset = FormData.changeset(%FormData{}, params)
 
       socket =
         case Changeset.apply_action(new_changeset, :insert) do
@@ -118,7 +118,7 @@ defmodule ThundermoonWeb.GameOfLifeLive do
   end
 
   defp set_empty_changeset(socket) do
-    changeset = GridData.changeset(%GridData{})
+    changeset = FormData.changeset(%FormData{})
     assign(socket, %{changeset: changeset})
   end
 

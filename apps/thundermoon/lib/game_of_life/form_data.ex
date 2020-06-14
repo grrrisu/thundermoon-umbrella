@@ -1,4 +1,4 @@
-defmodule GameOfLife.GridData do
+defmodule GameOfLife.FormData do
   import Ecto.Changeset
   use Ecto.Schema
 
