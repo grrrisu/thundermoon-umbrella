@@ -6,11 +6,7 @@ defmodule GameOfLife do
   It acts as a single point of entry to the game.
   """
 
-  alias GameOfLife.{Grid, Simulation}
-
-  def start_sim() do
-    start_sim(fn data -> Simulation.sim(data) end)
-  end
+  alias GameOfLife.Grid
 
   def create(size) do
     create(Grid, %{size: size})
