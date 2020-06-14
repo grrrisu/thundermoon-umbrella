@@ -2,7 +2,6 @@ defmodule ThundermoonWeb.Api.IntegrationController do
   use ThundermoonWeb, :controller
 
   alias Thundermoon.Accounts
-  alias Thundermoon.GameOfLife
 
   def authorize(conn, %{"external_user_id" => id}) do
     case Accounts.find_by_external_id(id) do
@@ -25,12 +24,12 @@ defmodule ThundermoonWeb.Api.IntegrationController do
   end
 
   def restart_game_of_life(conn, _params) do
-    :ok = GameOfLife.recreate()
+    :ok = GameOfLife.restart()
     send_resp(conn, 205, "game of life has been restarted")
   end
 
   def create_game_of_life(conn, %{"size" => size}) do
-    {:ok, _pid} = GameOfLife.create(String.to_integer(size))
+    GameOfLife.create(String.to_integer(size))
     send_resp(conn, 201, "grid created")
   end
 end

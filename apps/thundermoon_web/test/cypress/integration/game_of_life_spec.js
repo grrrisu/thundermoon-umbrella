@@ -84,7 +84,7 @@ describe("game of life page", function() {
 
     it("create a grid an run it", function() {
       cy.get("h3").contains("Create a new Grid");
-      cy.get("input#grid_data_size").type("5");
+      cy.get("input#form_data_size").type("5");
       cy.get("form").submit();
       cy.get("#grid").children(".cell").should("have.length", 25);
       cy.contains("start").click();
@@ -93,7 +93,7 @@ describe("game of life page", function() {
 
     it("create a grid and reset it", function() {
       cy.get("h3").contains("Create a new Grid");
-      cy.get("input#grid_data_size").type("5");
+      cy.get("input#form_data_size").type("5");
       cy.get("form").submit();
       cy.contains("start").click();
       cy.contains("reset").click();
@@ -103,12 +103,12 @@ describe("game of life page", function() {
 
     it("recreate a grid and run it", function() {
       cy.get("h3").contains("Create a new Grid");
-      cy.get("input#grid_data_size").type("5");
+      cy.get("input#form_data_size").type("5");
       cy.get("form").submit();
       cy.get("#grid").children(".cell").should("have.length", 25);
       cy.contains("recreate").click();
       cy.get("h3").contains("Create a new Grid");
-      cy.get("input#grid_data_size").type("4");
+      cy.get("input#form_data_size").type("4");
       cy.get("form").submit();
       cy.get("#grid").children(".cell").should("have.length", 16);
       cy.contains("start").click();
