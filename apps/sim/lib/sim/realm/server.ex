@@ -29,9 +29,12 @@ defmodule Sim.Realm.Server do
 
       def init(:ok) do
         Logger.debug("start realm server")
-        # FIXME use {:ok, state, continue: :register_to_simulation_loop}
-        Process.send_after(self(), :register_to_simulation_loop, 1)
-        {:ok, %{}}
+        {:ok, %{}, {:continue, :register_to_simulation_loop}}
+      end
+
+      def handle_continue(:register_to_simulation_loop, state) do
+        register_realm_server()
+        {:noreply, state}
       end
 
       def handle_call(:get_root, _from, state) do
@@ -74,11 +77,6 @@ defmodule Sim.Realm.Server do
           end
 
         send_sim_result(result)
-        {:noreply, state}
-      end
-
-      def handle_info(:register_to_simulation_loop, state) do
-        register_realm_server()
         {:noreply, state}
       end
 
