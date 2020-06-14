@@ -45,7 +45,7 @@ defmodule Sim.Realm.Server do
       def handle_call({:create, factory, config}, _from, state) do
         with data <- factory.create(config),
              :ok <- set_data(data) do
-          {:reply, :ok, state}
+          {:reply, data, state}
         else
           error -> {:reply, error, state}
         end
@@ -95,7 +95,8 @@ defmodule Sim.Realm.Server do
       end
 
       defp set_data(data) do
-        Data.set_data(@data_server, data)
+        :ok = Data.set_data(@data_server, data)
+        data
       end
 
       defp set_running(value) do

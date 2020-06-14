@@ -82,18 +82,18 @@ defmodule Sim.Realm.SimulationLoop do
     end
   end
 
-  def handle_info({:tick, _}, %{realm_server: nil} = state) do
+  def handle_info({:tick, func}, %{realm_server: nil} = state) do
     Logger.warn("realm server not available -> retry")
-    {:noreply, %{state | sim: create_next_tick(10)}}
+    {:noreply, %{state | sim: create_next_tick(10, func)}}
   end
 
   def handle_info({:tick, func}, state) do
     :ok = state[:name].sim(func)
-    {:noreply, %{state | sim: create_next_tick(100)}}
+    {:noreply, %{state | sim: create_next_tick(100, func)}}
   end
 
   def handle_info({:DOWN, ref, :process, _pid, _reason}, %{realm_server: ref} = state) do
-    Logger.warn("realm server ref removed from simulation loop")
+    Logger.debug("realm server ref removed from simulation loop")
     {:noreply, %{state | realm_server: nil}}
   end
 
@@ -101,8 +101,8 @@ defmodule Sim.Realm.SimulationLoop do
     {:noreply, state}
   end
 
-  defp create_next_tick(delay) do
-    Process.send_after(self(), :tick, delay)
+  defp create_next_tick(delay, func) do
+    Process.send_after(self(), {:tick, func}, delay)
   end
 
   def terminate(_reason, state) do
