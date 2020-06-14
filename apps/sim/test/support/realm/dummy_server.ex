@@ -14,6 +14,6 @@ defmodule Test.Dummy.RealmServer do
   end
 
   defp count(n) when n < 0 do
-    raise "count failed"
+    raise "sim crashed"
   end
 end

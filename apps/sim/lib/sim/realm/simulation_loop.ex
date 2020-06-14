@@ -48,8 +48,7 @@ defmodule Sim.Realm.SimulationLoop do
   def handle_cast({:start, func}, %{sim: nil} = state) do
     Logger.info("start sim loop")
     :ok = Data.set_running(state, true)
-    send(self(), {:tick, func})
-    {:noreply, state}
+    {:noreply, %{state | sim: create_next_tick(100, func)}}
   end
 
   def handle_cast({:start, _func}, state) do
