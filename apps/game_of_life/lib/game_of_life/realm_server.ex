@@ -1,7 +1,16 @@
 defmodule GameOfLife.RealmServer do
   use Sim.Realm.Server, app_module: GameOfLife
 
-  alias GameOfLife.Grid
+  alias GameOfLife.{Grid, Simulation}
+
+  # @impl true
+  def sim_func do
+    fn ->
+      get_data()
+      |> Simulation.sim()
+      |> set_data()
+    end
+  end
 
   def handle_call({:toggle, x, y}, _from, state) do
     data =

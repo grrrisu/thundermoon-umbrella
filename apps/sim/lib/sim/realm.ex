@@ -40,8 +40,8 @@ defmodule Sim.Realm do
         :ok = Sim.Realm.Supervisor.restart_realm(@supervisor)
       end
 
-      def start_sim(func) do
-        GenServer.call(@server, {:start_sim, func})
+      def start_sim() do
+        GenServer.call(@server, :start_sim)
       end
 
       def stop_sim() do

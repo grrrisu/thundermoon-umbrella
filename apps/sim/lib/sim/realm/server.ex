@@ -19,6 +19,7 @@ defmodule Sim.Realm.Server do
 
       @data_server Data.agent_name(unquote(app_module))
       @simulation_loop SimulationLoop.server_name(unquote(app_module))
+      @task_supervisor Module.concat(unquote(app_module), "TaskSupervisor")
 
       def start_link(opts \\ []) do
         GenServer.start_link(__MODULE__, :ok,
@@ -50,8 +51,8 @@ defmodule Sim.Realm.Server do
         end
       end
 
-      def handle_call({:start_sim, func}, _from, state) do
-        :ok = send_start(func)
+      def handle_call(:start_sim, _from, state) do
+        :ok = send_start(sim_func())
         {:reply, :ok, state}
       end
 
@@ -81,17 +82,12 @@ defmodule Sim.Realm.Server do
         {:noreply, state}
       end
 
-      defp execute_task(sim_func, state) when is_function(sim_func) do
-        Task.Supervisor.async_nolink(realm_task_supervisor(state), fn ->
-          get_data()
-          |> sim_func.()
-          |> set_data()
-        end)
+      defp execute_task(func, state) when is_function(func) do
+        Task.Supervisor.async_nolink(
+          @task_supervisor,
+          fn -> func.() end
+        )
         |> Task.yield()
-      end
-
-      defp realm_task_supervisor(state) do
-        Module.concat(state.name, "TaskSupervisor")
       end
 
       defp get_data() do
@@ -122,7 +118,7 @@ defmodule Sim.Realm.Server do
         SimulationLoop.register_realm_server(@simulation_loop)
       end
 
-      def send_sim_result(result) do
+      defp send_sim_result(result) do
         SimulationLoop.send_sim_result(@simulation_loop, result)
       end
     end
