@@ -1,4 +1,4 @@
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/2ab69a409d24453fa5431a92f7d9050e)](https://www.codacy.com/app/grrrisu/thundermoon-umbrella?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=grrrisu/thundermoon-umbrella&amp;utm_campaign=Badge_Grade)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/2ab69a409d24453fa5431a92f7d9050e)](https://www.codacy.com/app/grrrisu/thundermoon-umbrella?utm_source=github.com&utm_medium=referral&utm_content=grrrisu/thundermoon-umbrella&utm_campaign=Badge_Grade)
 
 # Thundermoon.Umbrella
 
@@ -8,11 +8,15 @@ The examples include a simple chat, a counter and [Conways Game of Life](https:/
 
 [Changelog](./changelog.md)
 
-## Umbrella App
+## Umbrella Apps
 
-* [Thundermoon](apps/thundermoon/README.md)
+- [Thundermoon](apps/thundermoon/README.md)
 
-* [ThundermoonWeb](apps/thundermoon_web/README.md)
+- [ThundermoonWeb](apps/thundermoon_web/README.md)
+
+- [Sim Library](apps/sim/README.md)
+
+- [Game of Life](apps/game_of_life/README.md)
 
 ## Docker
 
@@ -39,11 +43,11 @@ docker-compose down
 
 To start the application
 
-* Copy `config/dev.secret.example.exs` to `config/dev.secret.exs` and replace ueberauth `client_id` and `client_secret` with your Github App credentials
-* Install dependencies with `mix deps.get`
-* Create and migrate your database with `mix do ecto.create, ecto.migrate`
-* Install Node.js dependencies with `cd apps/thundermoon_apps/assets && npm install`
-* Start Phoenix endpoint with `mix phx.server`
+- Copy `config/dev.secret.example.exs` to `config/dev.secret.exs` and replace ueberauth `client_id` and `client_secret` with your Github App credentials
+- Install dependencies with `mix deps.get`
+- Create and migrate your database with `mix do ecto.create, ecto.migrate`
+- Install Node.js dependencies with `cd apps/thundermoon_apps/assets && npm install`
+- Start Phoenix endpoint with `mix phx.server`
 
 Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
 
@@ -59,7 +63,7 @@ to create a migration issue the command in `app/thundermoon` directory and speci
 
 ##### Install
 
-```npm install -g cypress@4.5.0```
+`npm install -g cypress@4.5.0`
 
 ```shell
 MIX_ENV=integration mix do ecto.create, ecto.migrate, run apps/thundermoon/priv/repo/seeds.exs
@@ -69,11 +73,11 @@ MIX_ENV=integration mix do ecto.create, ecto.migrate, run apps/thundermoon/priv/
 
 run the application
 
-```MIX_ENV=integration mix phx.server```
+`MIX_ENV=integration mix phx.server`
 
 start the cypress Test Runner
 
-```npm run cypress```
+`npm run cypress`
 
 start testing ....
 
