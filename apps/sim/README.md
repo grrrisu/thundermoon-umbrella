@@ -1,6 +1,6 @@
 # Sim
 
-**TODO: Add description**
+![Sim.Realm Diagram](documentation/SimRealm.png)
 
 ## Installation
 
@@ -10,7 +10,7 @@ by adding `sim` to your list of dependencies in `mix.exs`:
 ```elixir
 def deps do
   [
-    {:sim, "~> 0.2.1"}
+    {:sim, "~> 0.3.2"}
   ]
 end
 ```
