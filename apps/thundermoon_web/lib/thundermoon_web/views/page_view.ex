@@ -2,7 +2,9 @@ defmodule ThundermoonWeb.PageView do
   use ThundermoonWeb, :view
   import ThundermoonWebViewHelper
 
+  alias ThundermoonWeb.Endpoint
+
   def local? do
-    ThundermoonWeb.Endpoint.url() =~ "localhost"
+    Endpoint.url() =~ "localhost"
   end
 end

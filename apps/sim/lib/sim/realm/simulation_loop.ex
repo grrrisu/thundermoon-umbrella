@@ -37,7 +37,6 @@ defmodule Sim.Realm.SimulationLoop do
 
   def init(name) do
     Logger.debug("start simulation loop")
-    # TODO continue start if Data.running?
     {:ok, %{sim: nil, realm_server: nil, name: name}}
   end
 

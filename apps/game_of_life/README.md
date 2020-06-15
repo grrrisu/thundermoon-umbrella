@@ -2,7 +2,7 @@
 
 Conways game of Life
 
-https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life
+<https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life>
 
 ## Installation
 
@@ -17,7 +17,4 @@ def deps do
 end
 ```
 
-Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_doc)
-and published on [HexDocs](https://hexdocs.pm). Once published, the docs can
-be found at [https://hexdocs.pm/game_of_life](https://hexdocs.pm/game_of_life).
-
+Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_doc) and published on [HexDocs](https://hexdocs.pm). Once published, the docs can be found at [https://hexdocs.pm/game_of_life](https://hexdocs.pm/game_of_life).

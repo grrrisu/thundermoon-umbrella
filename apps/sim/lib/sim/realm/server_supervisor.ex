@@ -1,6 +1,8 @@
 defmodule Sim.Realm.ServerSupervisor do
   use Supervisor
 
+  alias Sim.Realm.Server
+
   def start_link(opts \\ []) do
     Supervisor.start_link(__MODULE__, opts[:name],
       name: (opts[:name] && server_supervisor_name(opts[:name])) || __MODULE__
@@ -9,7 +11,7 @@ defmodule Sim.Realm.ServerSupervisor do
 
   def init(name) do
     children = [
-      {Sim.Realm.Server.server_name(name), name: name},
+      {Server.server_name(name), name: name},
       {Task.Supervisor, name: task_supervisor_name(name)}
     ]
 
