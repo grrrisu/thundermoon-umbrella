@@ -2,7 +2,7 @@
 
 # Thundermoon.Umbrella
 
-![Sim.Realm Diagram](documentation/SimRealm.png)
+![Sim.Realm Diagram](thunderbirdmoon.png)
 
 _image: Thunderbird Moon by Joe Wilson-Sxwaset_
 
