@@ -47,6 +47,7 @@ defmodule ThundermoonWeb.MixProject do
       {:gettext, "~> 0.11"},
       {:thundermoon, in_umbrella: true},
       {:sim, in_umbrella: true},
+      {:game_of_life, in_umbrella: true},
       {:jason, "~> 1.1"},
       {:poison, "~> 3.1"},
       {:plug_cowboy, "~> 2.1"},
