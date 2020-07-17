@@ -1,5 +1,5 @@
 # docker build -t thundermoon:dependencies --target=dependencies .
-FROM elixir:1.10.3-alpine as dependencies
+FROM elixir:1.10.4-alpine as dependencies
 RUN apk add --no-cache \
     gcc \
     git \
@@ -19,7 +19,7 @@ RUN mix do deps.get --only prod, deps.compile
 
 ########################################################
 # docker build -t thundermoon:assets --target=assets .
-FROM node:14.4.0-alpine as assets
+FROM node:14.5.0-alpine as assets
 
 RUN apk add --no-cache python make g++
 
