@@ -55,7 +55,7 @@ defmodule ThundermoonWeb.MixProject do
       {:ueberauth_github, "~> 0.8.0"},
       {:canada, "~> 1.0.1"},
       {:canary, "~> 1.1.1"},
-      {:sentry, "~> 7.0"},
+      {:sentry, "~> 8.0"},
       {:observer_cli, "~> 1.5"},
       {:phoenix_live_reload, "~> 1.2", only: :dev},
       {:floki, "~> 0.27", only: :test},
