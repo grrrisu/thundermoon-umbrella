@@ -66,8 +66,6 @@ defmodule ThundermoonWeb do
       import Plug.Conn
       import Phoenix.Controller
       import Phoenix.LiveView.Router
-      use Plug.ErrorHandler
-      use Sentry.Plug
     end
   end
 
