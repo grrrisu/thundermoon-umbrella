@@ -55,7 +55,7 @@ defmodule Sim.Realm.Data do
   end
 
   def running?(%{name: name}) do
-    agent_name(name) |> Data.running?()
+    agent_name(name) |> running?()
   end
 
   def running?(agent) do
