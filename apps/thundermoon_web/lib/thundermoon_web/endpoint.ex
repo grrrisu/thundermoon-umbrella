@@ -1,4 +1,5 @@
 defmodule ThundermoonWeb.Endpoint do
+  use Sentry.PlugCapture
   use Phoenix.Endpoint, otp_app: :thundermoon_web
 
   @session_options [
@@ -45,6 +46,7 @@ defmodule ThundermoonWeb.Endpoint do
     pass: ["*/*"],
     json_decoder: Phoenix.json_library()
 
+  plug Sentry.PlugContext
   plug Plug.MethodOverride
   plug Plug.Head
 
