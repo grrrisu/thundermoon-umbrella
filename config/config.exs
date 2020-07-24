@@ -30,6 +30,16 @@ config :logger, :console,
   format: "$time $metadata[$level] $message\n",
   metadata: [:request_id]
 
+config :logger, Sentry.LoggerBackend,
+  # Send messages like `Logger.error("error")` to Sentry
+  capture_log_messages: true,
+  # Also send warn messages like `Logger.warn("warning")` to Sentry
+  level: :error,
+  # Do not exclude exceptions from Plug/Cowboy
+  excluded_domains: [],
+  # Include metadata added with `Logger.metadata([foo_bar: "value"])`
+  metadata: [:foo_bar]
+
 # Use Jason for JSON parsing in Phoenix
 config :phoenix, :json_library, Jason
 
