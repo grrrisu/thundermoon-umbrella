@@ -1,6 +1,6 @@
 defmodule Thundermoon.Memo.Registry do
   def create() do
-    %{id: generate_token()}
+    %{id: generate_token(), timestamp: DateTime.utc_now()}
   end
 
   def update(entry, key, value) do
