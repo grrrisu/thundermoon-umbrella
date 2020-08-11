@@ -8,6 +8,7 @@ defmodule Thundermoon.Application do
   def start(_type, _args) do
     children = [
       Thundermoon.Repo,
+      Thundermoon.Memo.Server,
       Thundermoon.ChatMessages,
       Thundermoon.CounterRealmSupervisor
     ]
