@@ -75,4 +75,18 @@ defmodule Thundermoon.Memo.ServerTest do
       assert {:error, :not_found} == Memo.get(entry.id, server)
     end
   end
+
+  describe "prune" do
+    test "old entries" do
+      registry = %{
+        1 => %{id: 1, timestamp: DateTime.utc_now() |> DateTime.add(-4000)},
+        2 => %{id: 2, timestamp: DateTime.utc_now() |> DateTime.add(-500)},
+        3 => %{id: 3, timestamp: DateTime.utc_now() |> DateTime.add(-7200)}
+      }
+
+      registry = Server.prune(registry)
+      assert Enum.count(registry) == 1
+      assert Map.has_key?(registry, 2)
+    end
+  end
 end

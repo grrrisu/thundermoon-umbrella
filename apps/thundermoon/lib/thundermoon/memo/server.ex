@@ -3,11 +3,18 @@ defmodule Thundermoon.Memo.Server do
 
   alias Thundermoon.Memo.Registry
 
+  # 1 min in milliseconds
+  @prune_interval 60 * 1000
+
+  # 1 hour in seconds
+  @expires_in 60 * 60
+
   def start_link(opts \\ []) do
     GenServer.start_link(__MODULE__, :ok, name: opts[:name] || __MODULE__)
   end
 
   def init(:ok) do
+    schedule_next_prune()
     {:ok, %{}}
   end
 
@@ -47,6 +54,27 @@ defmodule Thundermoon.Memo.Server do
 
   def handle_call(:clean, _from, state) do
     {:reply, :ok, %{}}
+  end
+
+  def handle_info(:prune, state) do
+    new_state = prune(state)
+    schedule_next_prune()
+    {:noreply, new_state}
+  end
+
+  def prune(registry) do
+    expire_date =
+      DateTime.utc_now()
+      |> DateTime.add(-@expires_in)
+
+    registry
+    |> Map.values()
+    |> Enum.reject(&(DateTime.compare(&1.timestamp, expire_date) == :lt))
+    |> Map.new(&{&1.id, &1})
+  end
+
+  defp schedule_next_prune do
+    Process.send_after(self(), :prune, @prune_interval)
   end
 
   defp update_state(state, entry) do
