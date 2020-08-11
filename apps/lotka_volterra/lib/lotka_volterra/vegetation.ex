@@ -1,5 +1,5 @@
-defmodule Thundermoon.Vegetation do
-  alias Thundermoon.Vegetation
+defmodule LotkaVolterra.Vegetation do
+  alias LotkaVolterra.Vegetation
 
   defstruct capacity: 1300,
             birth_rate: 0.15,
