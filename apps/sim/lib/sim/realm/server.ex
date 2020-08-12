@@ -69,18 +69,22 @@ defmodule Sim.Realm.Server do
       end
 
       def handle_cast({:sim, func}, state) do
-        result =
-          case execute_task(func, state) do
-            {:ok, _} -> :ok
-            {:exit, reason} -> {:error, reason}
-            nil -> {:error, :timeout}
-          end
+        func
+        |> get_sim_result()
+        |> send_sim_result()
 
-        send_sim_result(result)
         {:noreply, state}
       end
 
-      defp execute_task(func, state) when is_function(func) do
+      defp get_sim_result(func) do
+        case execute_task(func) do
+          {:ok, _} -> :ok
+          {:exit, reason} -> {:error, reason}
+          nil -> {:error, :timeout}
+        end
+      end
+
+      defp execute_task(func) when is_function(func) do
         Task.Supervisor.async_nolink(
           @task_supervisor,
           fn -> func.() end
