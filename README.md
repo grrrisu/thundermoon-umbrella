@@ -61,7 +61,6 @@ to create a migration issue the command in `app/thundermoon` directory and speci
 
 `mix ecto.gen.migration create_user -r Thundermoon.Repo`
 
-
 ### New Sub Application
 
 go to `./apps`and issue the mix new command like this:
