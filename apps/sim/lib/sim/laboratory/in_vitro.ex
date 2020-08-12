@@ -17,7 +17,11 @@ defmodule Sim.Laboratory.InVitro do
 
   def handle_call({:create, create_func}, _from, state) do
     object = create_func.()
-    {:reply, object, %{state | object: object}}
+    {:reply, {:ok, object}, %{state | object: object}}
+  end
+
+  def handle_call(:object, _from, state) do
+    {:reply, state.object, state}
   end
 
   def handle_call({:start, sim_func}, _from, %{sim_process: nil} = state) do
@@ -33,7 +37,7 @@ defmodule Sim.Laboratory.InVitro do
   end
 
   def handle_call(:stop, _from, state) do
-    :ok = Process.cancel_timer(state.sim_process)
+    Process.cancel_timer(state.sim_process)
     {:reply, :ok, %{state | sim_process: nil}}
   end
 
