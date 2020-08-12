@@ -8,7 +8,7 @@ defmodule Sim.Laboratory.InVitro do
   @sim_interval 60 * 1000
 
   def start_link(opts \\ []) do
-    GenServer.start_link(__MODULE__, :ok, name: __MODULE__)
+    GenServer.start_link(__MODULE__, :ok)
   end
 
   def init(:ok) do
@@ -16,7 +16,8 @@ defmodule Sim.Laboratory.InVitro do
   end
 
   def handle_call({:create, create_func}, _from, state) do
-    {:reply, object, %{state | object: create_func.()}}
+    object = create_func.()
+    {:reply, object, %{state | object: object}}
   end
 
   def handle_call({:start, sim_func}, _from, %{sim_process: nil} = state) do
@@ -27,7 +28,7 @@ defmodule Sim.Laboratory.InVitro do
     {:reply, :no_change, state}
   end
 
-  def handle_call(:stop, _from, %{sim_process: nil}) do
+  def handle_call(:stop, _from, %{sim_process: nil} = state) do
     {:reply, :no_change, state}
   end
 
