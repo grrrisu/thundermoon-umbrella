@@ -3,6 +3,7 @@ defmodule LotkaVolterra.RealmServer do
 
   # alias GameOfLife.{Grid, Simulation}
 
+  def sim_func, do: nil
   # # @impl true
   # def sim_func do
   #   fn ->

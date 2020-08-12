@@ -61,6 +61,12 @@ to create a migration issue the command in `app/thundermoon` directory and speci
 
 `mix ecto.gen.migration create_user -r Thundermoon.Repo`
 
+
+### New Sub Application
+
+go to `./apps`and issue the mix new command like this:
+ `mix new lotka_volterra --module LotkaVolterra --sup`
+
 ### Testing
 
 #### Cypress
@@ -134,7 +140,7 @@ docker exec -it <container-id> sh
 
 ### Send Test Error
 
-```shellm
+```shell
 SENTRY_DSN=https://12345@sentry.io/123 MIX_ENV=prod mix sentry.send_test_event
 ```
 
