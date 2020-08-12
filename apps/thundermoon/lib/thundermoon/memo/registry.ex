@@ -1,6 +1,8 @@
 defmodule Thundermoon.Memo.Registry do
   def create() do
-    %{id: generate_token(), timestamp: DateTime.utc_now()}
+    pid = DynamicSupervisor.start_child(InVitro, [])
+    ref = Process.monitor(pid)
+    %{pid: pid, ref: ref, timestamp: DateTime.utc_now()}
   end
 
   def update(entry, key, value) do
