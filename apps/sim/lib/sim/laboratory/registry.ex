@@ -19,6 +19,10 @@ defmodule Sim.Laboratory.Registry do
     end
   end
 
+  def find_by_ref(state, ref) do
+    Enum.find(state, fn {_key, value} -> value.ref == ref end)
+  end
+
   def update(state, id, key, value) do
     case Map.get(state, id) do
       nil ->
