@@ -1,8 +1,24 @@
 # Changelog
 
-## 0.4.0 (dev)
+## 0.4.0
 
 * Lotka Volterra simulation
+
+* Sim Laboratory:
+
+  * InVitro are session like simulation containers that can be used per live_view
+
+  * Registry will remove expired sim containers after a timeout
+
+* started using shared components
+
+  * Start button
+
+* various upgrades
+
+  * Phoenix Live View 0.14
+
+  * sentry 8.0
 
 ## 0.3.2
 
