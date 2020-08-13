@@ -5,9 +5,11 @@ defmodule Sim.Laboratory.InVitro do
   """
   use GenServer, restart: :transient
 
+  require Logger
+
   alias Phoenix.PubSub
 
-  @sim_interval 60 * 1000
+  @sim_interval 1000
 
   def start_link(opts \\ []) do
     GenServer.start_link(__MODULE__, {opts[:entry_id], opts[:pub_sub]})
@@ -18,6 +20,7 @@ defmodule Sim.Laboratory.InVitro do
   end
 
   def handle_call({:create, create_func}, _from, state) do
+    Logger.debug("create object for #{state.id}")
     object = create_func.()
     {:reply, {:ok, object}, %{state | object: object}}
   end
@@ -28,6 +31,7 @@ defmodule Sim.Laboratory.InVitro do
 
   def handle_call({:start, sim_func}, _from, %{sim_process: nil} = state) do
     broadcast(state, {:sim, started: true})
+    Logger.debug("sim started for #{state.id}")
     {:reply, :ok, %{state | sim_func: sim_func, sim_process: next_sim_call()}}
   end
 
@@ -42,6 +46,7 @@ defmodule Sim.Laboratory.InVitro do
   def handle_call(:stop, _from, state) do
     Process.cancel_timer(state.sim_process)
     broadcast(state, {:sim, started: false})
+    Logger.debug("sim stopped for #{state.id}")
     {:reply, :ok, %{state | sim_process: nil}}
   end
 

@@ -44,6 +44,7 @@ defmodule ThundermoonWeb.Router do
     live "/chat", ChatLive
     live "/counter", CounterLive
     live "/game_of_life", GameOfLifeLive
+    live "/lotka_volterra", LotkaVolterra.Index
   end
 
   if Mix.env() != :prod do
