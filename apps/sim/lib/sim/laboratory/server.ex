@@ -44,6 +44,17 @@ defmodule Sim.Laboratory.Server do
     {:noreply, new_state}
   end
 
+  def handle_info({:DOWN, ref, :process, _pid, _reason}, state) do
+    case Registry.find_by_ref(state, ref) do
+      nil -> {:noreply, state}
+      entry -> {:noreply, Map.delete(state, entry.id)}
+    end
+  end
+
+  def handle_info(msg, state) do
+    {:noreply, state}
+  end
+
   defp schedule_next_prune do
     Process.send_after(self(), :prune, @prune_interval)
   end
