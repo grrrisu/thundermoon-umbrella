@@ -1,7 +1,7 @@
 defmodule LotkaVolterra.Vegetation do
   alias LotkaVolterra.Vegetation
 
-  defstruct capacity: 1300,
+  defstruct capacity: 6000,
             birth_rate: 0.15,
             death_rate: 0.05,
             size: 650

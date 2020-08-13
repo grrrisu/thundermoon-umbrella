@@ -8,13 +8,21 @@ defmodule ThundermoonWeb.LotkaVolterra.Index do
     {:ok,
      socket
      |> assign(started: false)
+     |> assign(x_axe: 0)
      |> assign(vegetation: %{size: 0})}
   end
 
   @impl true
   def handle_event("create", _params, socket) do
     {sim_id, vegetation} = create()
-    {:noreply, assign(socket, vegetation: vegetation, sim_id: sim_id)}
+
+    {:noreply,
+     socket
+     |> assign(vegetation: vegetation, sim_id: sim_id, x_axe: 0)
+     |> push_event("update-chart", %{
+       x_axe: 0,
+       vegetation: vegetation.size
+     })}
   end
 
   @impl true
@@ -31,7 +39,13 @@ defmodule ThundermoonWeb.LotkaVolterra.Index do
 
   @impl true
   def handle_info({:update, data: vegetation}, socket) do
-    {:noreply, assign(socket, :vegetation, vegetation)}
+    {:noreply,
+     socket
+     |> assign(x_axe: socket.assigns.x_axe + 1, vegetation: vegetation)
+     |> push_event("update-chart", %{
+       x_axe: socket.assigns.x_axe + 1,
+       vegetation: vegetation.size
+     })}
   end
 
   @impl true
