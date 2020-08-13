@@ -4,9 +4,7 @@ defmodule Sim.Realm.ServerSupervisor do
   alias Sim.Realm.Server
 
   def start_link(opts \\ []) do
-    Supervisor.start_link(__MODULE__, opts[:name],
-      name: (opts[:name] && server_supervisor_name(opts[:name])) || __MODULE__
-    )
+    Supervisor.start_link(__MODULE__, opts[:name], name: server_supervisor_name(opts[:name]))
   end
 
   def init(name) do
@@ -17,6 +15,8 @@ defmodule Sim.Realm.ServerSupervisor do
 
     Supervisor.init(children, strategy: :rest_for_one)
   end
+
+  defp server_supervisor_name(nil), do: __MODULE__
 
   defp server_supervisor_name(name) do
     Module.concat(name, "ServerSupervisor")
