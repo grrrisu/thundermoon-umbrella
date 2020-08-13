@@ -1,4 +1,4 @@
-defmodule ThundermoonWeb.LotkaVolterraIndexTest do
+defmodule ThundermoonWeb.Component.StartButtonTest do
   use ThundermoonWeb.ConnCase
   import Phoenix.LiveViewTest
 
