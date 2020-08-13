@@ -1,28 +1,29 @@
 defmodule LotkaVolterra do
-  use Sim.Realm, app_module: __MODULE__
-
   @moduledoc """
   Context for Lotka Volterra Simulation.
   It acts as a single point of entry to the simulation.
   """
 
-  # alias GameOfLife.Grid
+  alias Sim.Laboratory
+  alias LotkaVolterra.Vegetation
 
-  # def create(size) do
-  #   create(Grid, %{size: size})
-  # end
+  def create(pub_sub) do
+    Laboratory.create(fn -> %Vegetation{} end, pub_sub)
+  end
 
-  # def recreate() do
-  #   stop_sim()
-  #   call_server(:recreate)
-  # end
+  def object(id) do
+    Laboratory.object(id)
+  end
 
-  # def clear() do
-  #   stop_sim()
-  #   call_server(:clear)
-  # end
+  def start(id) do
+    Laboratory.start(id, fn vegetation -> Vegetation.sim(vegetation) end)
+  end
 
-  # def toggle(x, y) do
-  #   call_server({:toggle, x, y})
-  # end
+  def stop(id) do
+    Laboratory.stop(id)
+  end
+
+  def delete(id) do
+    Laboratory.delete(id)
+  end
 end
