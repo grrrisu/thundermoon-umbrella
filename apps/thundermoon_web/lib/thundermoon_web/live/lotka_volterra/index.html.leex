@@ -1,7 +1,7 @@
 <h1>Lotka Volterra</h1>
 
-<div>
-  Vegetation: <%= @vegetation.size %>
+<div phx-update="ignore">
+  <canvas id="chart" phx-hook="LotkaVolterraChart" width="400" height="200"></canvas>
 </div>
 
 <div>
