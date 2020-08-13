@@ -5,14 +5,16 @@ defmodule Sim.Laboratory.InVitro do
   """
   use GenServer, restart: :transient
 
+  alias Phoenix.PubSub
+
   @sim_interval 60 * 1000
 
   def start_link(opts \\ []) do
-    GenServer.start_link(__MODULE__, :ok)
+    GenServer.start_link(__MODULE__, {opts[:entry_id], opts[:pub_sub]})
   end
 
-  def init(:ok) do
-    {:ok, %{object: nil, sim_func: nil, sim_process: nil}}
+  def init({id, pub_sub}) do
+    {:ok, %{id: id, pub_sub: pub_sub, object: nil, sim_func: nil, sim_process: nil}}
   end
 
   def handle_call({:create, create_func}, _from, state) do
@@ -25,6 +27,7 @@ defmodule Sim.Laboratory.InVitro do
   end
 
   def handle_call({:start, sim_func}, _from, %{sim_process: nil} = state) do
+    broadcast(state, {:sim, started: true})
     {:reply, :ok, %{state | sim_func: sim_func, sim_process: next_sim_call()}}
   end
 
@@ -38,6 +41,7 @@ defmodule Sim.Laboratory.InVitro do
 
   def handle_call(:stop, _from, state) do
     Process.cancel_timer(state.sim_process)
+    broadcast(state, {:sim, started: false})
     {:reply, :ok, %{state | sim_process: nil}}
   end
 
@@ -52,5 +56,15 @@ defmodule Sim.Laboratory.InVitro do
   defp sim(state) do
     state.object
     |> state.sim_func.()
+    |> broadcast_sim_changes(state)
+  end
+
+  defp broadcast_sim_changes(object, state) do
+    broadcast(state, {:update, data: object})
+    object
+  end
+
+  defp broadcast(state, payload) do
+    PubSub.broadcast(state.pub_sub, state.id, payload)
   end
 end
