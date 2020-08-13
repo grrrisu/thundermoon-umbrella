@@ -39,6 +39,11 @@ defmodule ThundermoonWeb.LotkaVolterra.Index do
     {:noreply, assign(socket, started: started)}
   end
 
+  @impl true
+  def terminate(_reason, socket) do
+    if Map.has_key?(socket.assigns, :sim_id), do: LotkaVolterra.delete(socket.assigns.sim_id)
+  end
+
   defp create() do
     {sim_id, object} = LotkaVolterra.create(ThundermoonWeb.PubSub)
     subscribe_to_sim(sim_id)
