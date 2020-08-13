@@ -1,8 +1,8 @@
 defmodule Sim.Laboratory do
   alias Sim.Laboratory.Server
 
-  def create(create_func, server \\ Server) do
-    {:ok, entry} = GenServer.call(server, :create)
+  def create(create_func, pub_sub, server \\ Server) do
+    {:ok, entry} = GenServer.call(server, {:create, pub_sub})
     {:ok, object} = GenServer.call(entry.pid, {:create, create_func})
     {entry.id, object}
   end

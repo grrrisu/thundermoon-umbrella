@@ -15,8 +15,8 @@ defmodule Sim.Laboratory.Server do
     {:ok, %{}}
   end
 
-  def handle_call(:create, _from, state) do
-    {response, state} = Registry.create(state)
+  def handle_call({:create, pub_sub}, _from, state) do
+    {response, state} = Registry.create(state, pub_sub)
     {:reply, response, state}
   end
 

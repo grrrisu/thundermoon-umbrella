@@ -5,7 +5,7 @@ defmodule Sim.Laboratory.RegistryTest do
 
   describe "create" do
     test "an entry" do
-      assert {{:ok, entry}, state} = Registry.create(%{})
+      assert {{:ok, entry}, state} = Registry.create(%{}, :test_pub_sub)
       assert state == %{entry.id => entry}
       assert is_pid(entry.pid)
       assert %{id: _, pid: _, ref: _, timestamp: _} = entry
@@ -14,7 +14,7 @@ defmodule Sim.Laboratory.RegistryTest do
 
   describe "get" do
     setup do
-      {{:ok, entry}, state} = Registry.create(%{})
+      {{:ok, entry}, state} = Registry.create(%{}, :test_pub_sub)
       %{state: state, entry: entry}
     end
 
@@ -29,7 +29,7 @@ defmodule Sim.Laboratory.RegistryTest do
 
   describe "update" do
     setup do
-      {{:ok, entry}, state} = Registry.create(%{})
+      {{:ok, entry}, state} = Registry.create(%{}, :test_pub_sub)
       %{state: state, entry: entry}
     end
 
@@ -51,7 +51,7 @@ defmodule Sim.Laboratory.RegistryTest do
 
   describe "delete" do
     test "an existing entry" do
-      {{:ok, entry}, state} = Registry.create(%{})
+      {{:ok, entry}, state} = Registry.create(%{}, :test_pub_sub)
       assert {:ok, state} = Registry.delete(state, entry.id)
       assert {:error, :not_found} == Registry.get(state, entry.id)
     end
@@ -71,7 +71,7 @@ defmodule Sim.Laboratory.RegistryTest do
 
       registry =
         Enum.reduce(1..3, %{}, fn item, state ->
-          {{:ok, entry}, state} = Registry.create(state)
+          {{:ok, entry}, state} = Registry.create(state, :test_pub_sub)
           put_in(state[entry.id][:timestamp], timestamps[item])
         end)
         |> Registry.prune()

@@ -4,10 +4,11 @@ defmodule Sim.Laboratory.Registry do
   # 1 hour in seconds
   @expires_in 60 * 60
 
-  def create(state) do
-    {:ok, pid} = DynamicSupervisor.start_child(InVitroSupervisor, InVitro)
+  def create(state, pub_sub) do
+    id = generate_token()
+    {:ok, pid} = create_entry(id, pub_sub)
     ref = Process.monitor(pid)
-    entry = %{id: generate_token(), pid: pid, ref: ref, timestamp: DateTime.utc_now()}
+    entry = %{id: id, pid: pid, ref: ref, timestamp: DateTime.utc_now()}
     {{:ok, entry}, update_state(state, entry)}
   end
 
@@ -59,11 +60,15 @@ defmodule Sim.Laboratory.Registry do
     end)
   end
 
+  defp create_entry(id, pub_sub) do
+    DynamicSupervisor.start_child(InVitroSupervisor, {InVitro, entry_id: id, pub_sub: pub_sub})
+  end
+
   defp update_state(state, entry) do
     Map.put(state, entry.id, entry)
   end
 
   defp generate_token do
-    :crypto.strong_rand_bytes(16) |> :crypto.bytes_to_integer()
+    :crypto.strong_rand_bytes(16) |> :crypto.bytes_to_integer() |> Integer.to_string()
   end
 end
