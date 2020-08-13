@@ -11,17 +11,22 @@
         <%= link to: Routes.live_path(@conn, ThundermoonWeb.ChatLive) do %>
           <i class="la la-comments"></i> Chat
         <% end %>
-        </li>
+      </li>
       <li>
         <%= link to: Routes.live_path(@conn, ThundermoonWeb.CounterLive) do %>
           <i class="la la-plus-square"></i> Counter
         <% end %>
-        </li>
+      </li>
       <li>
         <%= link to: Routes.live_path(@conn, ThundermoonWeb.GameOfLifeLive) do  %>
           <i class="la la-th"></i> Game Of Life
         <% end %>
-        </li>
+      </li>
+      <li>
+        <%= link to: Routes.live_path(@conn, ThundermoonWeb.LotkaVolterra.Index) do  %>
+          <i class="la la-paw"></i> Lotka Volterra
+        <% end %>
+      </li>
     </ul>
     Other stuff:
     <ul>
