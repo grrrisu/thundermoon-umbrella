@@ -39,6 +39,7 @@ defmodule Thundermoon.MixProject do
       {:ecto_sql, "~> 3.0"},
       {:postgrex, ">= 0.0.0"},
       {:jason, "~> 1.1"},
+      {:lotka_volterra, in_umbrella: true},
       {:credo, "~> 1.1.0", only: [:dev, :test], runtime: false}
     ]
   end
