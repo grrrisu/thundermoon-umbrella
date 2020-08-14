@@ -1,12 +1,12 @@
 // define hooks for live view
 let Hooks = {};
 
-import Chart from 'chart.js';
+import Chart from "chart.js";
 
 Hooks.LotkaVolterraChart = {
   mounted() {
     const chart = new Chart(this.el, {
-      type: 'line',
+      type: "line",
       data: {
         labels: [],
         datasets: [{
@@ -20,11 +20,11 @@ Hooks.LotkaVolterraChart = {
       },
       options: {
         scales: {
-            yAxes: [{
-                ticks: {
-                    beginAtZero: true
-                }
-            }]
+          yAxes: [{
+            ticks: {
+              beginAtZero: true
+            }
+          }]
         }
       }
     });
@@ -36,6 +36,6 @@ Hooks.LotkaVolterraChart = {
       chart.update();
     });
   }
-}
+};
 
 export default Hooks;
