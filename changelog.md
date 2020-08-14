@@ -60,7 +60,6 @@
 
 * remove cypress from devDependencies
 
-
 ## 0.3.0
 
 * new application ```sim```

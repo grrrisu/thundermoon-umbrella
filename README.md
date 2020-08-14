@@ -32,7 +32,7 @@ first copy and rename the files in `.env` to `app` and `db`.
 
 set the corresponding values in those files and then run:
 
-```
+```shell
 docker build -t thundermoon:app --target=app .
 IMAGE=thundermoon:app docker-compose up
 ```

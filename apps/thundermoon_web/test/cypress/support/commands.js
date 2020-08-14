@@ -12,6 +12,8 @@
 // -- This is a parent command --
 // Cypress.Commands.add("login", (email, password) => { ... })
 //
+
+/* global cy */
 Cypress.Commands.add("login", (external_user_id) => {
   cy
     .request({
