@@ -10,7 +10,7 @@ Hooks.LotkaVolterraChart = {
       data: {
         labels: [],
         datasets: [{
-          label: "vegetation",
+          label: "Vegetation",
           borderColor: "rgba(59, 120, 59, 0.8)",
           backgroundColor: "rgba(44, 160, 44, 0.2)",
           lineTension: 0,

@@ -1,6 +1,6 @@
 <h3>Create a new Grid</h3>
-<%= form_for @changeset, "#", [phx_submit: :create], fn f -> %>
+<%= f = form_for @changeset, "#", [phx_submit: :create] %>
   <%= text_input f, :size, type: :number, placeholder: "size of grid, eg. 10", size: 5 %>
   <%= error_tag(f, :size) %>
   <%= submit "Create" %>
-<% end %>
+</form>
