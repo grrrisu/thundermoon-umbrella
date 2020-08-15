@@ -8,8 +8,7 @@ defmodule ThundermoonWeb.LotkaVolterra.Index do
     {:ok,
      socket
      |> set_simulation(sim_id)
-     |> assign(started: false)
-     |> assign(x_axe: 0)}
+     |> assign(started: false)}
   end
 
   @impl true
@@ -35,11 +34,7 @@ defmodule ThundermoonWeb.LotkaVolterra.Index do
   def handle_info({:update, data: vegetation}, socket) do
     {:noreply,
      socket
-     |> assign(x_axe: socket.assigns.x_axe + 1, vegetation: vegetation)
-     |> push_event("update-chart", %{
-       x_axe: socket.assigns.x_axe + 1,
-       vegetation: vegetation.size
-     })}
+     |> assign(vegetation: vegetation)}
   end
 
   @impl true
@@ -60,13 +55,8 @@ defmodule ThundermoonWeb.LotkaVolterra.Index do
         |> push_redirect(to: Routes.live_path(socket, ThundermoonWeb.LotkaVolterra.New))
 
       vegetation ->
-        if connected?(socket) do
-          subscribe_to_sim(sim_id)
-        end
-
-        socket
-        |> push_event("update-chart", %{x_axe: 0, vegetation: vegetation.size})
-        |> assign(sim_id: sim_id, vegetation: vegetation)
+        if connected?(socket), do: subscribe_to_sim(sim_id)
+        assign(socket, sim_id: sim_id, vegetation: vegetation)
     end
   end
 

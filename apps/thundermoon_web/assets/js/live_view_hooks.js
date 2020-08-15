@@ -31,7 +31,7 @@ Hooks.LotkaVolterraChart = {
 
     this.handleEvent("update-chart", (data) => {
       let vegetation = Number(data.vegetation).toFixed(2);
-      chart.data.labels.push(data.x_axe);
+      chart.data.labels.push(data.x_axis);
       chart.data.datasets[0].data.push(vegetation);
       chart.update();
     });
