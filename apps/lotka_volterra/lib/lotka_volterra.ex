@@ -7,8 +7,8 @@ defmodule LotkaVolterra do
   alias Sim.Laboratory
   alias LotkaVolterra.Vegetation
 
-  def create(pub_sub) do
-    Laboratory.create(fn -> %Vegetation{} end, pub_sub)
+  def create(vegetation \\ %Vegetation{}, pub_sub) do
+    Laboratory.create(fn -> vegetation end, pub_sub)
   end
 
   def object(id) do
