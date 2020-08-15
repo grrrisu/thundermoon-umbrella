@@ -19,4 +19,16 @@ defmodule Thundermoon.LotkaVolterra.FormData do
     |> validate_number(:death_rate, greater_than: 0)
     |> validate_number(:size, greater_than: 0)
   end
+
+  def apply_params(model, params) do
+    model
+    |> changeset(params)
+    |> apply_valid_changes()
+  end
+
+  defp apply_valid_changes(%Ecto.Changeset{valid?: false} = changeset), do: {:error, changeset}
+
+  defp apply_valid_changes(%Ecto.Changeset{valid?: true} = changeset) do
+    {:ok, Ecto.Changeset.apply_changes(changeset)}
+  end
 end
