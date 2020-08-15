@@ -1,0 +1,15 @@
+<h1>Lotka Volterra</h1>
+
+<h3>Vegetation</h3>
+
+<p></p>
+
+<%= f = form_for @changeset, "#", [phx_submit: :create, phx_change: :validate] %>
+  <fieldset>
+    <%= live_text_input(@socket, f, :capacity) %>
+    <%= live_text_input(@socket, f, :birth_rate, label: "Birth Rate") %>
+    <%= live_text_input(@socket, f, :death_rate, label: "Death Rate") %>
+    <%= live_text_input(@socket, f, :size) %>
+    <%= submit "Create" %>
+  </fieldset>
+</form>

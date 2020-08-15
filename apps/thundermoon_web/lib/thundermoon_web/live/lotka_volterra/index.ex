@@ -4,25 +4,19 @@ defmodule ThundermoonWeb.LotkaVolterra.Index do
   alias Phoenix.PubSub
 
   @impl true
-  def mount(_params, _session, socket) do
+  def mount(%{"sim_id" => sim_id}, _session, socket) do
     {:ok,
      socket
+     |> set_simulation(sim_id)
      |> assign(started: false)
-     |> assign(x_axe: 0)
-     |> assign(vegetation: %{size: 0})}
+     |> assign(x_axe: 0)}
   end
 
   @impl true
-  def handle_event("create", _params, socket) do
-    {sim_id, vegetation} = create()
-
-    {:noreply,
+  def mount(%{}, _session, socket) do
+    {:ok,
      socket
-     |> assign(vegetation: vegetation, sim_id: sim_id, x_axe: 0)
-     |> push_event("update-chart", %{
-       x_axe: 0,
-       vegetation: vegetation.size
-     })}
+     |> push_redirect(to: Routes.live_path(socket, ThundermoonWeb.LotkaVolterra.New))}
   end
 
   @impl true
@@ -58,10 +52,22 @@ defmodule ThundermoonWeb.LotkaVolterra.Index do
     if Map.has_key?(socket.assigns, :sim_id), do: LotkaVolterra.delete(socket.assigns.sim_id)
   end
 
-  defp create() do
-    {sim_id, object} = LotkaVolterra.create(ThundermoonWeb.PubSub)
-    subscribe_to_sim(sim_id)
-    {sim_id, object}
+  defp set_simulation(socket, sim_id) do
+    case LotkaVolterra.object(sim_id) do
+      {:error, :not_found} ->
+        socket
+        |> put_flash(:error, "simulation not found, create a new one")
+        |> push_redirect(to: Routes.live_path(socket, ThundermoonWeb.LotkaVolterra.New))
+
+      vegetation ->
+        if connected?(socket) do
+          subscribe_to_sim(sim_id)
+        end
+
+        socket
+        |> push_event("update-chart", %{x_axe: 0, vegetation: vegetation.size})
+        |> assign(sim_id: sim_id, vegetation: vegetation)
+    end
   end
 
   defp subscribe_to_sim(sim_id) do
