@@ -32,9 +32,7 @@ defmodule ThundermoonWeb.LotkaVolterra.Index do
 
   @impl true
   def handle_info({:update, data: vegetation}, socket) do
-    {:noreply,
-     socket
-     |> assign(vegetation: vegetation)}
+    {:noreply, assign(socket, vegetation: vegetation)}
   end
 
   @impl true
