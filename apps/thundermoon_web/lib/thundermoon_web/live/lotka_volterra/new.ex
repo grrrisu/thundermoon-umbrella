@@ -11,6 +11,7 @@ defmodule ThundermoonWeb.LotkaVolterra.New do
      |> assign(changeset: set_changeset())}
   end
 
+  @impl true
   def handle_event("validate", %{"vegetation" => params}, socket) do
     changeset =
       %Vegetation{}
@@ -20,6 +21,7 @@ defmodule ThundermoonWeb.LotkaVolterra.New do
     {:noreply, assign(socket, changeset: changeset)}
   end
 
+  @impl true
   def handle_event("create", %{"vegetation" => params}, socket) do
     case FormData.apply_params(%Vegetation{}, params) do
       {:ok, vegetation} ->

@@ -1,9 +1,10 @@
 <h1>Lotka Volterra</h1>
 
-<div id="chart-container" phx-update="ignore">
-  <canvas id="chart" phx-hook="LotkaVolterraChart" width="400" height="200"></canvas>
-</div>
+<%= live_component @socket, ThundermoonWeb.LotkaVolterra.Chart, id: "chart-#{@sim_id}", vegetation: @vegetation %>
 
 <div>
   <%= live_component @socket, ThundermoonWeb.Component.StartButton, started: @started %>
+  <%= live_redirect(to: Routes.live_path(@socket, ThundermoonWeb.LotkaVolterra.New), class: "button button-icon button-warning") do %>
+    <i class="la la-2x la-reply-all"></i> recreate
+  <% end %>
 </div>
