@@ -3,7 +3,7 @@
 <%= live_component @socket, ThundermoonWeb.LotkaVolterra.Chart, id: "chart-#{@sim_id}", vegetation: @vegetation %>
 
 <div>
-  <%= live_component @socket, ThundermoonWeb.Component.StartButton, started: @started %>
+  <%= start_button(@socket, @started) %>
   <%= live_redirect(to: Routes.live_path(@socket, ThundermoonWeb.LotkaVolterra.New), class: "button button-icon button-warning") do %>
     <i class="la la-2x la-reply-all"></i> recreate
   <% end %>
