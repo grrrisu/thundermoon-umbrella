@@ -23,6 +23,12 @@ defmodule Thundermoon.LotkaVolterra.FormDataTest do
       refute changeset.valid?
       refute changeset.errors[:size] |> is_nil()
     end
+
+    test "validate size smaller than capacity" do
+      changeset = FormData.changeset(%Vegetation{}, %{capacity: 50, size: 500})
+      refute changeset.valid?
+      refute changeset.errors[:capacity] |> is_nil()
+    end
   end
 
   describe "apply params" do
