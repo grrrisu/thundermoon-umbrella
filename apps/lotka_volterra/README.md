@@ -1,6 +1,8 @@
 # LotkaVolterra
 
-**TODO: Add description**
+Lotka Volterra Equations
+
+<https://en.wikipedia.org/wiki/Lotka%E2%80%93Volterra_equations>
 
 ## Installation
 
