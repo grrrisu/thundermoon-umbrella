@@ -9,7 +9,7 @@ defmodule ThundermoonWeb.LiveHelpers do
     )
   end
 
-  def start_button(socket, started) do
-    live_component(socket, ThundermoonWeb.Component.StartButton, started: started)
+  def start_button(socket, id, started) do
+    live_component(socket, ThundermoonWeb.Component.StartButton, id: id, started: started)
   end
 end

@@ -19,13 +19,13 @@ defmodule ThundermoonWeb.LotkaVolterra.Index do
   end
 
   @impl true
-  def handle_event("toggle-sim-start", %{"action" => "start"}, socket) do
+  def handle_info(:start, socket) do
     LotkaVolterra.start(socket.assigns.sim_id)
     {:noreply, socket}
   end
 
   @impl true
-  def handle_event("toggle-sim-start", %{"action" => "stop"}, socket) do
+  def handle_info(:stop, socket) do
     LotkaVolterra.stop(socket.assigns.sim_id)
     {:noreply, socket}
   end
