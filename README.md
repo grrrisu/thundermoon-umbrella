@@ -24,6 +24,8 @@ The examples include a simple chat, a counter and [Conways Game of Life](https:/
 
 - [Game of Life](apps/game_of_life/README.md)
 
+- [Lotka Volterra](apps/lotka_volterra/README.md)
+
 ## Docker
 
 to start the application in a docker container
