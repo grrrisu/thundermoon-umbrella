@@ -21,13 +21,13 @@ defmodule ThundermoonWeb.LotkaVolterraLive.Index do
   @impl true
   def handle_info(:start, socket) do
     LotkaVolterra.start(socket.assigns.sim_id)
-    {:noreply, socket}
+    {:noreply, put_flash(socket, :info, "simulation started")}
   end
 
   @impl true
   def handle_info(:stop, socket) do
     LotkaVolterra.stop(socket.assigns.sim_id)
-    {:noreply, socket}
+    {:noreply, put_flash(socket, :info, "simulation stopped")}
   end
 
   @impl true
