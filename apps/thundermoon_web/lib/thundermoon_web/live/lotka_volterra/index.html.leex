@@ -4,7 +4,7 @@
 
 <div>
   <%= start_button(@socket, "start-#{@sim_id}", @started) %>
-  <%= live_redirect(to: Routes.live_path(@socket, ThundermoonWeb.LotkaVolterra.New), class: "button button-icon button-warning") do %>
+  <%= live_redirect(to: Routes.lotka_volterra_new_path(@socket, :new), class: "button button-icon button-warning") do %>
     <i class="la la-2x la-reply-all"></i> recreate
   <% end %>
 </div>

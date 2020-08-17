@@ -6,8 +6,10 @@ defmodule ThundermoonWeb.Component.StartButtonTest do
 
   setup(%{conn: conn}) do
     conn = login_as(conn, %{username: "crumb"})
-    {:ok, view, _html} = live(conn, "/lotka-volterra")
-    html = render_click(view, "create")
+    {sim_id, _obj} = LotkaVolterra.create(ThundermoonWeb.PubSub)
+
+    {:ok, view, html} = live(conn, Routes.lotka_volterra_index_path(conn, :index, sim_id: sim_id))
+
     %{view: view, html: html}
   end
 
