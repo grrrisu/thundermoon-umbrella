@@ -34,7 +34,7 @@ describe("lotka volterra page", function() {
       cy.get("input#vegetation_size").clear().type("150");
       cy.get("form").submit();
       cy.get("#chart");
-    })
+    });
 
   });
 
