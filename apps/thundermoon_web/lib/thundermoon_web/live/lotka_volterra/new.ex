@@ -1,4 +1,4 @@
-defmodule ThundermoonWeb.LotkaVolterra.New do
+defmodule ThundermoonWeb.LotkaVolterraLive.New do
   use ThundermoonWeb, :live_view
 
   alias Thundermoon.LotkaVolterra.FormData
@@ -30,9 +30,7 @@ defmodule ThundermoonWeb.LotkaVolterra.New do
         {:noreply,
          socket
          |> put_flash(:info, "successfully created vegetation")
-         |> push_redirect(
-           to: Routes.live_path(socket, ThundermoonWeb.LotkaVolterra.Index, sim_id: sim_id)
-         )}
+         |> push_redirect(to: Routes.lotka_volterra_index_path(socket, :index, sim_id: sim_id))}
 
       {:error, changeset} ->
         {:noreply,

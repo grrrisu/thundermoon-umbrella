@@ -23,7 +23,7 @@
         <% end %>
       </li>
       <li>
-        <%= link to: Routes.live_path(@conn, ThundermoonWeb.LotkaVolterra.Index) do  %>
+        <%= link to: Routes.lotka_volterra_new_path(@conn, :new) do  %>
           <i class="la la-paw"></i> Lotka Volterra
         <% end %>
       </li>

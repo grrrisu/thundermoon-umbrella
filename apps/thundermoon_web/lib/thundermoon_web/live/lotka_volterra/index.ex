@@ -1,4 +1,4 @@
-defmodule ThundermoonWeb.LotkaVolterra.Index do
+defmodule ThundermoonWeb.LotkaVolterraLive.Index do
   use ThundermoonWeb, :live_view
 
   alias Phoenix.PubSub
@@ -15,7 +15,7 @@ defmodule ThundermoonWeb.LotkaVolterra.Index do
   def mount(%{}, _session, socket) do
     {:ok,
      socket
-     |> push_redirect(to: Routes.live_path(socket, ThundermoonWeb.LotkaVolterra.New))}
+     |> push_redirect(to: Routes.live_path(socket, ThundermoonWeb.LotkaVolterraLive.New))}
   end
 
   @impl true
@@ -50,7 +50,7 @@ defmodule ThundermoonWeb.LotkaVolterra.Index do
       {:error, :not_found} ->
         socket
         |> put_flash(:error, "simulation not found, create a new one")
-        |> push_redirect(to: Routes.live_path(socket, ThundermoonWeb.LotkaVolterra.New))
+        |> push_redirect(to: Routes.live_path(socket, ThundermoonWeb.LotkaVolterraLive.New))
 
       vegetation ->
         if connected?(socket), do: subscribe_to_sim(sim_id)
