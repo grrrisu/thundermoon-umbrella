@@ -50,7 +50,7 @@ defmodule ThundermoonWeb.LotkaVolterraLive.Index do
       {:error, :not_found} ->
         socket
         |> put_flash(:error, "simulation not found, create a new one")
-        |> push_redirect(to: Routes.live_path(socket, ThundermoonWeb.LotkaVolterraLive.New))
+        |> push_redirect(to: Routes.lotka_volterra_new_path(socket, :new))
 
       vegetation ->
         if connected?(socket), do: subscribe_to_sim(sim_id)
