@@ -1,6 +1,6 @@
 <h1>Lotka Volterra</h1>
 
-<%= live_component @socket, ThundermoonWeb.LotkaVolterra.Chart, id: "chart-#{@sim_id}", vegetation: @vegetation %>
+<%= live_component @socket, ThundermoonWeb.LotkaVolterra.Chart, id: "chart-#{@sim_id}", field: @field %>
 
 <div class="action-buttons">
   <%= start_button(@socket, "start-#{@sim_id}", @started) %>

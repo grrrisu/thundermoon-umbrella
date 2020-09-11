@@ -23,10 +23,13 @@ defmodule ThundermoonWeb.LotkaVolterra.Chart do
   defp set_x_axis(socket), do: assign(socket, x_axis: 0)
 
   defp push_data_to_client(socket) do
+    {vegetation, herbivore} = socket.assigns.field
+
     socket
     |> push_event("update-chart", %{
       x_axis: socket.assigns.x_axis,
-      vegetation: socket.assigns.vegetation.size
+      vegetation: vegetation.size,
+      herbivore: herbivore && herbivore.size
     })
   end
 end

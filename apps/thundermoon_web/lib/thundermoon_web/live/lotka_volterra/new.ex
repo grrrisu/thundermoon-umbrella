@@ -2,7 +2,7 @@ defmodule ThundermoonWeb.LotkaVolterraLive.New do
   use ThundermoonWeb, :live_view
 
   alias Thundermoon.LotkaVolterra.FormData
-  alias LotkaVolterra.Vegetation
+  alias LotkaVolterra.{Vegetation, Herbivore}
 
   @impl true
   def mount(_params, _session, socket) do
@@ -41,7 +41,7 @@ defmodule ThundermoonWeb.LotkaVolterraLive.New do
   end
 
   defp create_sim(vegetation) do
-    {sim_id, _object} = LotkaVolterra.create(vegetation, ThundermoonWeb.PubSub)
+    {sim_id, _object} = LotkaVolterra.create({vegetation, %Herbivore{}}, ThundermoonWeb.PubSub)
     sim_id
   end
 
