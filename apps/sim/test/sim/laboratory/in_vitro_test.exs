@@ -27,7 +27,7 @@ defmodule Sim.Laboratory.InVitroTest do
 
     test "receive changes", %{pid: pid} do
       assert {:ok, 0} = GenServer.call(pid, {:create, fn -> 0 end})
-      assert :ok = GenServer.call(pid, {:start, fn n -> 1 end})
+      assert :ok = GenServer.call(pid, {:start, fn _n -> 1 end})
       assert_receive {:sim, [started: true]}
       send(pid, :tick)
       assert_receive {:update, [data: 1]}

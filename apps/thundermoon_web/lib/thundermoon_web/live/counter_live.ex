@@ -6,7 +6,6 @@ defmodule ThundermoonWeb.CounterLive do
   alias Phoenix.PubSub
 
   alias Thundermoon.Counter
-  alias Thundermoon.Repo
   alias Thundermoon.Accounts
 
   alias ThundermoonWeb.CounterView

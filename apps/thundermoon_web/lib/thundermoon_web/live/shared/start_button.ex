@@ -1,6 +1,7 @@
 defmodule ThundermoonWeb.Component.StartButton do
   use ThundermoonWeb, :live_component
 
+  @impl true
   def update(assigns, socket) do
     {:ok,
      socket
@@ -9,6 +10,7 @@ defmodule ThundermoonWeb.Component.StartButton do
      |> assign(label: set_label(assigns.started))}
   end
 
+  @impl true
   def render(assigns) do
     ~L"""
     <a href="#" id="start-button" phx-click="toggle-sim-start" phx-value-action="<%= @label %>" phx-target="<%= @myself %>" class="button button-icon">
