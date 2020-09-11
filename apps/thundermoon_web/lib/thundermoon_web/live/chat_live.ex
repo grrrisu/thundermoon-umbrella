@@ -5,7 +5,6 @@ defmodule ThundermoonWeb.ChatLive do
 
   alias Phoenix.PubSub
 
-  alias Thundermoon.Repo
   alias Thundermoon.Accounts
   alias Thundermoon.ChatMessages
 
