@@ -31,8 +31,8 @@ defmodule ThundermoonWeb.LotkaVolterraLive.Index do
   end
 
   @impl true
-  def handle_info({:update, data: vegetation}, socket) do
-    {:noreply, assign(socket, vegetation: vegetation)}
+  def handle_info({:update, data: field}, socket) do
+    {:noreply, assign(socket, field: field)}
   end
 
   @impl true
@@ -52,9 +52,9 @@ defmodule ThundermoonWeb.LotkaVolterraLive.Index do
         |> put_flash(:error, "simulation not found, create a new one")
         |> push_redirect(to: Routes.lotka_volterra_new_path(socket, :new))
 
-      vegetation ->
+      field ->
         if connected?(socket), do: subscribe_to_sim(sim_id)
-        assign(socket, sim_id: sim_id, vegetation: vegetation)
+        assign(socket, sim_id: sim_id, field: field)
     end
   end
 
