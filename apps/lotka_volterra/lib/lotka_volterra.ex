@@ -7,9 +7,11 @@ defmodule LotkaVolterra do
   alias Sim.Laboratory
   alias LotkaVolterra.Sim.Vegetations
   alias LotkaVolterra.Sim.Herbivores
-  alias LotkaVolterra.{Vegetation, Herbivore}
+  alias LotkaVolterra.Vegetation
 
-  def create({%Vegetation{} = vegetation, %Herbivore{} = herbivore}, pub_sub) do
+  def create(nil, pub_sub), do: create({%Vegetation{}, nil}, pub_sub)
+
+  def create({%Vegetation{} = vegetation, herbivore}, pub_sub) do
     Laboratory.create(fn -> {vegetation, herbivore} end, pub_sub)
   end
 
