@@ -10,7 +10,7 @@ defmodule ThundermoonWeb.LotkaVolterraLive.IndexTest do
   end
 
   def create_sim(_) do
-    {sim_id, _obj} = LotkaVolterra.create(ThundermoonWeb.PubSub)
+    {sim_id, _obj} = LotkaVolterra.create(nil, ThundermoonWeb.PubSub)
     %{sim_id: sim_id}
   end
 
