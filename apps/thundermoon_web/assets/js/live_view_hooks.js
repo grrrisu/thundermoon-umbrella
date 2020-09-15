@@ -19,8 +19,8 @@ Hooks.LotkaVolterraChart = {
         },
         {
           label: "Herbivore",
-          borderColor: "rgba(120, 120, 59, 0.8)",
-          backgroundColor: "rgba(160, 160, 44, 0.2)",
+          borderColor: "rgb(166, 89, 78, 0.8)",
+          backgroundColor: "rgb(166, 89, 78, 0.2)",
           lineTension: 0,
           borderWidth: 2,
           data: []
