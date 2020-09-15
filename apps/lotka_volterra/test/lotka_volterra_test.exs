@@ -3,14 +3,19 @@ defmodule LotkaVolterraTest do
   doctest LotkaVolterra
 
   alias Sim.Laboratory
+  alias LotkaVolterra.{Vegetation, Herbivore}
 
   describe "simulation" do
     test "with default values" do
-      {id, vegetation} = LotkaVolterra.create(ThundermoonWeb.PubSub)
+      {id, {vegetation, herbivore}} =
+        LotkaVolterra.create({%Vegetation{}, %Herbivore{}}, ThundermoonWeb.PubSub)
+
       LotkaVolterra.start(id)
       # this would take 1 sec to the first change
       send(Laboratory.get(id).pid, :tick)
-      assert vegetation.size < LotkaVolterra.object(id).size
+      {simulated_vegetation, simulated_herbivore} = LotkaVolterra.object(id)
+      assert vegetation.size < simulated_vegetation.size
+      assert herbivore.size < simulated_herbivore.size
       LotkaVolterra.stop(id)
     end
   end

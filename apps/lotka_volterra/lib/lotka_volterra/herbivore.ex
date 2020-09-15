@@ -1,6 +1,8 @@
 defmodule LotkaVolterra.Herbivore do
-  defstruct birth_rate: 0.15,
-            death_rate: 0.3,
-            graze_rate: 0.1,
+  defstruct birth_rate: 0.5,
+            death_rate: 0.01,
+            needed_food: 5,
+            starving_rate: 0.4,
+            graze_rate: 0.05,
             size: 50.0
 end
