@@ -11,5 +11,9 @@
     <%= live_text_input(@socket, f, :death_rate, label: "Death Rate") %>
     <%= live_text_input(@socket, f, :size) %>
     <%= submit "Create" %>
+    or
+    <%= link to: "#", phx_click: "add_herbivore", class: "button button-icon" do %>
+      Add Herbivore
+    <% end %>
   </fieldset>
 </form>
