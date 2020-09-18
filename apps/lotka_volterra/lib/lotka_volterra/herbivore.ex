@@ -4,5 +4,5 @@ defmodule LotkaVolterra.Herbivore do
             needed_food: 5,
             starving_rate: 0.4,
             graze_rate: 0.05,
-            size: 50.0
+            size: 50
 end
