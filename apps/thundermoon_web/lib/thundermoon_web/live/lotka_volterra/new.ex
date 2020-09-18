@@ -1,21 +1,23 @@
 defmodule ThundermoonWeb.LotkaVolterraLive.New do
   use ThundermoonWeb, :live_view
 
-  alias Thundermoon.LotkaVolterra.FormData
+  alias Thundermoon.LotkaVolterra.VegetationForm
   alias LotkaVolterra.{Vegetation, Herbivore}
 
   @impl true
   def mount(_params, _session, socket) do
     {:ok,
      socket
-     |> assign(changeset: set_changeset())}
+     |> assign(changeset: empty_form())}
+  end
+
   end
 
   @impl true
   def handle_event("validate", %{"vegetation" => params}, socket) do
     changeset =
       %Vegetation{}
-      |> FormData.changeset(params)
+      |> VegetationForm.changeset(params)
       |> Map.put(:action, :insert)
 
     {:noreply, assign(socket, changeset: changeset)}
@@ -45,7 +47,7 @@ defmodule ThundermoonWeb.LotkaVolterraLive.New do
     sim_id
   end
 
-  defp set_changeset() do
-    FormData.changeset(%Vegetation{})
+  defp empty_form() do
+    VegetationForm.changeset(%Vegetation{})
   end
 end
