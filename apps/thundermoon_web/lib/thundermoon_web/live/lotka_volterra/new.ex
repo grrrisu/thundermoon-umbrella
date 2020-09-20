@@ -11,12 +11,14 @@ defmodule ThundermoonWeb.LotkaVolterraLive.New do
     {:ok, socket}
   end
 
-  def handle_params(%{"model" => "herbivore"}, url, socket) do
+  @impl true
+  def handle_params(%{"model" => "herbivore"}, _url, socket) do
     Logger.info("add herbivore")
     {:noreply, assign(socket, changeset: empty_form(:herbivore))}
   end
 
-  def handle_params(%{}, url, socket) do
+  @impl true
+  def handle_params(%{}, _url, socket) do
     {:noreply, assign(socket, changeset: empty_form(:vegetation))}
   end
 

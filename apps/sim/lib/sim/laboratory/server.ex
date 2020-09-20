@@ -34,7 +34,7 @@ defmodule Sim.Laboratory.Server do
     {:reply, response, state}
   end
 
-  def handle_call(:clean, _from, state) do
+  def handle_call(:clean, _from, _state) do
     {:reply, :ok, %{}}
   end
 
@@ -51,7 +51,7 @@ defmodule Sim.Laboratory.Server do
     end
   end
 
-  def handle_info(msg, state) do
+  def handle_info(_msg, state) do
     {:noreply, state}
   end
 
