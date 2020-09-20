@@ -3,7 +3,7 @@ defmodule Test.Dummy do
 
   alias Test.Dummy.Factory
 
-  def create(size) do
+  def create(_size) do
     create(Factory, %{initial: 0})
   end
 end

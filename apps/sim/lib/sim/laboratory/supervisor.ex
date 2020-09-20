@@ -9,7 +9,7 @@ defmodule Sim.Laboratory.Supervisor do
 
   def init(:ok) do
     children = [
-      Sim.Laboratory.Server,
+      Server,
       {DynamicSupervisor, name: Sim.Laboratory.InVitroSupervisor, strategy: :one_for_one}
     ]
 

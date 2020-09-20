@@ -48,11 +48,7 @@ defmodule Thundermoon.Memo.Server do
     end
   end
 
-  def handle_call({:delete, id}, _from, state) do
-    {:reply, {:error, :not_found}, state}
-  end
-
-  def handle_call(:clean, _from, state) do
+  def handle_call(:clean, _from, _state) do
     {:reply, :ok, %{}}
   end
 
