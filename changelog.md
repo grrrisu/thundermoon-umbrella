@@ -4,6 +4,10 @@
 
 * Lotka Volterra simulation
 
+  * Vegetation with limited capacity
+
+  * Herbivores eating vegetation
+
 * Sim Laboratory:
 
   * InVitro are session like simulation containers that can be used per live_view
