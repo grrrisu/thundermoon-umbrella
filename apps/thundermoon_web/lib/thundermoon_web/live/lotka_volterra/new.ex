@@ -81,7 +81,6 @@ defmodule ThundermoonWeb.LotkaVolterraLive.New do
          |> push_redirect(to: Routes.lotka_volterra_index_path(socket, :index, sim_id: sim_id))}
 
       {:error, changeset} ->
-        IO.inspect(changeset)
         {:noreply, validation_failed(socket, changeset, "creating herbivore failed")}
     end
   end
