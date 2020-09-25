@@ -10,7 +10,7 @@ _image: Thunderbird Moon by Joe Wilson-Sxwaset_
 
 This is a collection of examples using [phoenix live view](https://github.com/phoenixframework/phoenix_live_view).
 The state is hold in memory and broadcasted to all clients.
-The examples include a simple chat, a counter and [Conways Game of Life](https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life).
+The examples include a simple chat, a counter, [Conways Game of Life](https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life) and [Lotka-Volterra](https://en.wikipedia.org/wiki/Lotka%E2%80%93Volterra_equations).
 
 [Changelog](./changelog.md)
 
