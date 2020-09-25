@@ -49,7 +49,7 @@ defmodule ThundermoonWeb.MixProject do
       {:sim, in_umbrella: true},
       {:game_of_life, in_umbrella: true},
       {:jason, "~> 1.1"},
-      {:poison, "~> 3.1"},
+      {:poison, "~> 4.0"},
       {:plug_cowboy, "~> 2.3"},
       {:ueberauth, "~> 0.6"},
       {:ueberauth_github, "~> 0.8.0"},
