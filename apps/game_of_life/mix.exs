@@ -32,7 +32,7 @@ defmodule GameOfLife.MixProject do
   defp deps do
     [
       {:sim, in_umbrella: true},
-      {:credo, "~> 1.1.0", only: [:dev, :test], runtime: false}
+      {:credo, "~> 1.4.0", only: [:dev, :test], runtime: false}
     ]
   end
 end

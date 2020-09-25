@@ -40,7 +40,7 @@ defmodule Thundermoon.MixProject do
       {:postgrex, ">= 0.0.0"},
       {:jason, "~> 1.1"},
       {:lotka_volterra, in_umbrella: true},
-      {:credo, "~> 1.1.0", only: [:dev, :test], runtime: false}
+      {:credo, "~> 1.4.0", only: [:dev, :test], runtime: false}
     ]
   end
 
