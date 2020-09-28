@@ -54,9 +54,8 @@ blocks:
       jobs:
         - name: check credo
           commands:
-            # check credo with priority medium = 10
             - docker pull "$DOCKER_REPOSITORY:test_$SEMAPHORE_GIT_BRANCH"
-            - docker run "$DOCKER_REPOSITORY:test_$SEMAPHORE_GIT_BRANCH" mix credo suggest --min-priority 10
+            - docker run "$DOCKER_REPOSITORY:test_$SEMAPHORE_GIT_BRANCH" mix credo suggest --min-priority high
         - name: check formatted
           commands:
             - docker pull "$DOCKER_REPOSITORY:test_$SEMAPHORE_GIT_BRANCH"
