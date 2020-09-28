@@ -38,6 +38,7 @@ describe("game of life page", function() {
         .then((_resp) => {
           cy.login(123);
           cy.visit("/game_of_life");
+          cy.get(".phx-connected");
         });
     });
 
