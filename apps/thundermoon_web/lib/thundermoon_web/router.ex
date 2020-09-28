@@ -43,7 +43,7 @@ defmodule ThundermoonWeb.Router do
     resources "/users", UserController, only: [:index, :edit, :update, :delete]
     live "/chat", ChatLive
     live "/counter", CounterLive
-    live "/game_of_life", GameOfLifeLive
+    live "/game_of_life", GameOfLifeLive.Index, :index
     live "/lotka-volterra", LotkaVolterraLive.Index, :index
     live "/lotka-volterra/new", LotkaVolterraLive.New, :new
   end

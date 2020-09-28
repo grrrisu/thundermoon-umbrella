@@ -1,13 +1,14 @@
 defmodule GameOfLife.FormData do
-  import Ecto.Changeset
-  use Ecto.Schema
+  use Thundermoon.FormData
 
-  schema("") do
-    field :size, :integer, virtual: true
-  end
+  defstruct size: nil
+
+  @types %{
+    size: :integer
+  }
 
   def changeset(model, params \\ %{}) do
-    model
+    {model, @types}
     |> cast(params, [:size])
     |> validate_required(:size)
     |> validate_number(:size, greater_than: 0, less_than: 51)

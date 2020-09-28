@@ -9,9 +9,9 @@ defmodule ThundermoonWeb.GameOfLifeLive do
 
   alias Thundermoon.Repo
   alias Thundermoon.Accounts.User
-  alias GameOfLife.FormData
 
   alias ThundermoonWeb.GameOfLifeView
+  alias GameOfLife.FormData
   alias ThundermoonWeb.Router.Helpers, as: Routes
 
   def mount(_params, session, socket) do
@@ -20,9 +20,7 @@ defmodule ThundermoonWeb.GameOfLifeLive do
 
     socket =
       socket
-      |> set_current_user(session)
       |> set_label_sim_start(GameOfLife.started?())
-      |> set_empty_changeset()
 
     {:ok, assign(socket, grid: grid)}
   end
@@ -82,7 +80,6 @@ defmodule ThundermoonWeb.GameOfLifeLive do
       socket =
         socket
         |> set_label_sim_start(false)
-        |> set_empty_changeset()
 
       {:noreply, assign(socket, %{grid: nil})}
     end)
@@ -110,16 +107,6 @@ defmodule ThundermoonWeb.GameOfLifeLive do
       true ->
         {:noreply, not_authorized(socket)}
     end
-  end
-
-  defp set_current_user(socket, session) do
-    current_user = Repo.get!(User, session["current_user_id"])
-    assign(socket, %{current_user: current_user})
-  end
-
-  defp set_empty_changeset(socket) do
-    changeset = FormData.changeset(%FormData{})
-    assign(socket, %{changeset: changeset})
   end
 
   defp not_authorized(socket) do

@@ -18,7 +18,7 @@
         <% end %>
       </li>
       <li>
-        <%= link to: Routes.live_path(@conn, ThundermoonWeb.GameOfLifeLive) do  %>
+        <%= link to: Routes.game_of_life_index_path(@conn, :index) do  %>
           <i class="la la-th"></i> Game Of Life
         <% end %>
       </li>
