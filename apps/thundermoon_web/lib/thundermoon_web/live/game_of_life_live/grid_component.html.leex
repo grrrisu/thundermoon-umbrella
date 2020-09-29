@@ -1,21 +1,7 @@
-<div id="grid" style="grid-template-columns: repeat(<%= Sim.Grid.width(@grid) %>, 20px); grid-template-rows: repeat(<%= Sim.Grid.height(@grid) %>, 20px); width: <%= Sim.Grid.width(@grid) * 20 + 1 %>px">
-  <%= for x <- 0..(Sim.Grid.width(@grid) - 1) do %>
-    <%= for y <- 0..(Sim.Grid.height(@grid) - 1) do %>
-      <div class="cell <%= Sim.Grid.get(@grid, x, y) && "alive" %>" phx-click="toggle-cell" phx-value-x="<%= x %>" phx-value-y="<%= y %>" phx-target="<%= @myself %>"></div>
+<div id="grid" style="grid-template-columns: repeat(<%= @width %>, 20px); grid-template-rows: repeat(<%= @height %>, 20px); width: <%= @width * 20 + 1 %>px">
+  <%= for x <- 0..(@width - 1) do %>
+    <%= for y <- 0..(@height - 1) do %>
+      <div class="cell <%= cell_class(@grid, x, y) %>" phx-click="toggle-cell" phx-value-x="<%= x %>" phx-value-y="<%= y %>" phx-target="<%= @myself %>"></div>
     <% end %>
-  <% end %>
-</div>
-<div class="action-buttons">
-  <%= start_button(@socket, "start-game-of-life-button", @started) %>
-  <a href="#" id="recreate-button" phx-click="recreate" phx-target="<%= @myself %>" class="button button-icon button-warning">
-    <i class="la la-2x la-reply"></i> reset
-  </a>
-  <a href="#" id="clear-button" phx-click="clear" phx-target="<%= @myself %>" class="button button-icon button-warning">
-    <i class="la la-2x la-eraser"></i> clear
-  </a>
-  <%= if can?(@current_user, :create, GameOfLife) do %>
-    <a href="#" id="restart-button" phx-click="restart" phx-target="<%= @myself %>" class="button button-icon button-warning">
-      <i class="la la-2x la-reply-all"></i> recreate
-    </a>
   <% end %>
 </div>
