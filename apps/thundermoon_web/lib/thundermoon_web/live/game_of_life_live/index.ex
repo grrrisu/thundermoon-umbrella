@@ -6,7 +6,7 @@ defmodule ThundermoonWeb.GameOfLifeLive.Index do
 
   alias Thundermoon.Accounts
 
-  alias ThundermoonWeb.GameOfLifeLive.{FormComponent, GridComponent}
+  alias ThundermoonWeb.GameOfLifeLive.{FormComponent, GridComponent, ActionButtonsComponent}
 
   def mount(_params, session, socket) do
     if connected?(socket), do: PubSub.subscribe(ThundermoonWeb.PubSub, "GameOfLife")
@@ -27,10 +27,13 @@ defmodule ThundermoonWeb.GameOfLifeLive.Index do
     """
   end
 
-  def render(assigns) do
+  def render(%{grid: grid} = assigns) when not is_nil(grid) do
     ~L"""
+    <h1>Game of Life</h1>
     <%= live_component @socket, GridComponent,
-      id: "grid-#{@current_user.id}", grid: @grid, current_user: @current_user %>
+      id: "grid-#{@current_user.id}", grid: @grid %>
+    <%= live_component @socket, ActionButtonsComponent,
+      id: "action-buttons-#{@current_user.id}", current_user: @current_user %>
     """
   end
 
@@ -48,18 +51,22 @@ defmodule ThundermoonWeb.GameOfLifeLive.Index do
   @impl true
   def handle_info(:start, socket) do
     GameOfLife.start_sim()
-    {:noreply, put_flash(socket, :info, "simulation started")}
+    {:noreply, socket}
   end
 
   @impl true
   def handle_info(:stop, socket) do
     GameOfLife.stop_sim()
-    {:noreply, put_flash(socket, :info, "simulation stopped")}
+    {:noreply, socket}
   end
 
   @impl true
   def handle_info({:sim, started: started}, socket) do
-    send_update(GridComponent, id: "grid-#{socket.assigns.current_user.id}", started: started)
+    send_update(ActionButtonsComponent,
+      id: "action-buttons-#{socket.assigns.current_user.id}",
+      started: started
+    )
+
     {:noreply, socket}
   end
 

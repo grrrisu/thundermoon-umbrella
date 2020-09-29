@@ -6,7 +6,7 @@ defmodule ThundermoonWeb.GameOfLifeLive.GridComponent do
     {:ok,
      socket
      |> assign(assigns)
-     |> assign(started: GameOfLife.started?())}
+     |> assign(width: Sim.Grid.width(assigns.grid), height: Sim.Grid.height(assigns.grid))}
   end
 
   @impl true
@@ -15,22 +15,10 @@ defmodule ThundermoonWeb.GameOfLifeLive.GridComponent do
     {:noreply, socket}
   end
 
-  @impl true
-  def handle_event("clear", _value, socket) do
-    GameOfLife.clear()
-    {:noreply, socket}
+  def cell_class(grid, x, y) do
+    Sim.Grid.get(grid, x, y) |> alive_class()
   end
 
-  @impl true
-  def handle_event("recreate", _value, socket) do
-    GameOfLife.recreate()
-    {:noreply, socket}
-  end
-
-  @impl true
-  def handle_event("restart", _value, socket) do
-    GameOfLife.restart()
-    send(self(), {:update, data: nil})
-    {:noreply, socket}
-  end
+  defp alive_class(false), do: ""
+  defp alive_class(true), do: "alive"
 end
