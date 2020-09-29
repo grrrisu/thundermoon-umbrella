@@ -7,14 +7,14 @@
 </div>
 <div class="action-buttons">
   <%= start_button(@socket, "start-game-of-life-button", @started) %>
-  <a href="#" phx-click="recreate" phx-target="<%= @myself %>" class="button button-icon button-warning">
+  <a href="#" id="recreate-button" phx-click="recreate" phx-target="<%= @myself %>" class="button button-icon button-warning">
     <i class="la la-2x la-reply"></i> reset
   </a>
-  <a href="#" phx-click="clear" phx-target="<%= @myself %>" class="button button-icon button-warning">
+  <a href="#" id="clear-button" phx-click="clear" phx-target="<%= @myself %>" class="button button-icon button-warning">
     <i class="la la-2x la-eraser"></i> clear
   </a>
   <%= if can?(@current_user, :create, GameOfLife) do %>
-    <a href="#" phx-click="restart" phx-target="<%= @myself %>" class="button button-icon button-warning">
+    <a href="#" id="restart-button" phx-click="restart" phx-target="<%= @myself %>" class="button button-icon button-warning">
       <i class="la la-2x la-reply-all"></i> recreate
     </a>
   <% end %>

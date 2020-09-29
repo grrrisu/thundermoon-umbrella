@@ -28,7 +28,6 @@ defmodule ThundermoonWeb.GameOfLifeLive.FormComponent do
         send(self(), {:form_submitted, data.size})
 
       {:error, changeset} ->
-        IO.inspect(changeset)
         assign(socket, changeset: changeset)
     end
 
