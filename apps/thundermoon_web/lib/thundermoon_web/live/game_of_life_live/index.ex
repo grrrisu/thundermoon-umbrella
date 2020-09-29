@@ -18,6 +18,7 @@ defmodule ThundermoonWeb.GameOfLifeLive.Index do
 
   def render(%{grid: nil} = assigns) do
     ~L"""
+    <h1>Game of Life</h1>
     <%= if can?(@current_user, :create, GameOfLife) do %>
       <%= live_component @socket, FormComponent, id: "form" %>
     <% else %>
