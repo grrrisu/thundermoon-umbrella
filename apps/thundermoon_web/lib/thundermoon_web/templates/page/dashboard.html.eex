@@ -13,7 +13,7 @@
         <% end %>
       </li>
       <li>
-        <%= link to: Routes.live_path(@conn, ThundermoonWeb.CounterLive) do %>
+        <%= link to: Routes.counter_index_path(@conn, :index) do %>
           <i class="la la-plus-square"></i> Counter
         <% end %>
       </li>

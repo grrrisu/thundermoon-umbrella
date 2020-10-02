@@ -1,4 +1,4 @@
-defmodule ThundermoonWeb.CounterLive do
+defmodule ThundermoonWeb.CounterLive.Index do
   use ThundermoonWeb, :live_view
 
   import Canada.Can
@@ -17,12 +17,7 @@ defmodule ThundermoonWeb.CounterLive do
     {:ok, _} = Counter.create()
     digits = Counter.get_digits()
 
-    socket = set_label_sim_start(socket, Counter.started?())
-    {:ok, assign(socket, current_user: user, digits: digits)}
-  end
-
-  def render(assigns) do
-    CounterView.render("index.html", assigns)
+    {:ok, assign(socket, current_user: user, started: Counter.started?(), digits: digits)}
   end
 
   def handle_event("inc", %{"number" => number}, socket) when number in ["1", "10", "100"] do
@@ -35,12 +30,14 @@ defmodule ThundermoonWeb.CounterLive do
     {:noreply, socket}
   end
 
-  def handle_event("toggle-sim-start", %{"action" => "start"}, socket) do
+  @impl true
+  def handle_info(:start, socket) do
     Counter.start()
     {:noreply, socket}
   end
 
-  def handle_event("toggle-sim-start", %{"action" => "stop"}, socket) do
+  @impl true
+  def handle_info(:stop, socket) do
     Counter.stop()
     {:noreply, socket}
   end
@@ -62,12 +59,7 @@ defmodule ThundermoonWeb.CounterLive do
   end
 
   def handle_info({:sim, started: started}, socket) do
-    {:noreply, set_label_sim_start(socket, started)}
-  end
-
-  defp set_label_sim_start(socket, started) do
-    label = if started, do: "stop", else: "start"
-    assign(socket, label_sim_start: label)
+    {:noreply, assign(socket, started: started)}
   end
 
   defp not_authorized(socket) do
