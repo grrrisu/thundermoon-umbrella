@@ -2,29 +2,9 @@
 
 <div class="counter-wrapper">
   <div class="counter">
-    <div class="inc-button">
-      <a href="#" id="digit-100-inc" class="button" phx-value-number="100" phx-click="inc">+</a>
-    </div>
-    <div id="digit-100" class="digit"><%= @digits.digit_100 %></div>
-    <div class="dec-button">
-      <a href="#" id="digit-100-dec" class="button" phx-value-number="100" phx-click="dec">-</a>
-    </div>
-
-    <div class="inc-button">
-      <a href="#" id="digit-10-inc" class="button" phx-value-number="10" phx-click="inc">+</a>
-    </div>
-    <div id="digit-10" class="digit"><%= @digits.digit_10 %></div>
-    <div class="dec-button">
-      <a href="#" id="digit-10-dec" class="button" phx-value-number="10" phx-click="dec">-</a>
-    </div>
-
-    <div class="inc-button">
-      <a href="#" id="digit-1-inc" class="button" phx-value-number="1" phx-click="inc">+</a>
-    </div>
-    <div id="digit-1" class="digit"><%= @digits.digit_1 %></div>
-    <div class="dec-button">
-      <a href="#" id="digit-1-dec" class="button" phx-value-number="1" phx-click="dec">-</a>
-    </div>
+    <%= live_component(@socket, ThundermoonWeb.CounterLive.Digit, id: "digit-100", digit: 100, value: @digits.digit_100) %>
+    <%= live_component(@socket, ThundermoonWeb.CounterLive.Digit, id: "digit-10", digit: 10, value: @digits.digit_10) %>
+    <%= live_component(@socket, ThundermoonWeb.CounterLive.Digit, id: "digit-1", digit: 1, value: @digits.digit_1) %>
   </div>
 
   <div class="counter-controls">
