@@ -2,19 +2,12 @@
 
 <div class="counter-wrapper">
   <div class="counter">
-    <%= live_component(@socket, ThundermoonWeb.CounterLive.Digit, id: "digit-100", digit: 100, value: @digits.digit_100) %>
-    <%= live_component(@socket, ThundermoonWeb.CounterLive.Digit, id: "digit-10", digit: 10, value: @digits.digit_10) %>
-    <%= live_component(@socket, ThundermoonWeb.CounterLive.Digit, id: "digit-1", digit: 1, value: @digits.digit_1) %>
+    <%= live_component @socket, ThundermoonWeb.CounterLive.Digit, id: "digit-100", digit: 100, value: @digits.digit_100 %>
+    <%= live_component @socket, ThundermoonWeb.CounterLive.Digit, id: "digit-10", digit: 10, value: @digits.digit_10 %>
+    <%= live_component @socket, ThundermoonWeb.CounterLive.Digit, id: "digit-1", digit: 1, value: @digits.digit_1 %>
   </div>
 
-  <div class="counter-controls">
-    <%= start_button(@socket, "start-counter-button", @started) %>
-    <%= if can?(@current_user, :reset, Thundermoon.Counter) do %>
-      <a href="#" phx-click="reset" class="button button-icon button-warning">
-        <i class="la la-2x la-reply"></i> reset
-      </a>
-    <% end %>
-  </div>
+  <%= live_component @socket, ThundermoonWeb.CounterLive.ActionButtons, id: "action-buttons", current_user: @current_user, started: @started %>
 </div>
 
 

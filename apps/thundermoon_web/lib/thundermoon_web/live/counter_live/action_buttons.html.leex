@@ -1,0 +1,9 @@
+<div class="action-buttons">
+  <%= start_button(@socket, "start-counter-button", @started) %>
+
+  <%= if can?(@current_user, :reset) do %>
+    <%= link to: "#", id: "reset-button", phx_click: "reset", phx_target: @myself, class: "button button-icon button-warning" do %>
+      <i class="la la-2x la-reply"></i> reset
+    <% end %>
+  <% end %>
+</div>
