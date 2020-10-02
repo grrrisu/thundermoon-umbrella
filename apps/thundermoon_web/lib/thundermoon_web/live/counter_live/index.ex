@@ -11,6 +11,7 @@ defmodule ThundermoonWeb.CounterLive.Index do
   alias ThundermoonWeb.CounterView
   alias ThundermoonWeb.Router.Helpers, as: Routes
 
+  @impl true
   def mount(_params, session, socket) do
     user = Accounts.get_user(session["current_user_id"])
     if connected?(socket), do: PubSub.subscribe(ThundermoonWeb.PubSub, "counter")
@@ -32,29 +33,14 @@ defmodule ThundermoonWeb.CounterLive.Index do
     {:noreply, socket}
   end
 
-  def handle_event("reset", _value, socket) do
-    cond do
-      socket.assigns.current_user |> can?(:reset, Counter) ->
-        Counter.reset()
-        {:noreply, socket}
-
-      true ->
-        {:noreply, not_authorized(socket)}
-    end
-  end
-
+  @impl true
   def handle_info({:update, new_digit}, socket) do
     new_digits = Map.merge(socket.assigns.digits, new_digit)
     {:noreply, assign(socket, %{digits: new_digits})}
   end
 
+  @impl true
   def handle_info({:sim, started: started}, socket) do
     {:noreply, assign(socket, started: started)}
-  end
-
-  defp not_authorized(socket) do
-    socket
-    |> put_flash(:error, "You are not authorized for this action")
-    |> redirect(to: Routes.page_path(socket, :index))
   end
 end
