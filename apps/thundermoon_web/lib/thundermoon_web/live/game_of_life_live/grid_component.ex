@@ -1,12 +1,14 @@
 defmodule ThundermoonWeb.GameOfLifeLive.GridComponent do
   use ThundermoonWeb, :live_component
 
+  alias Sim.Grid
+
   @impl true
   def update(assigns, socket) do
     {:ok,
      socket
      |> assign(assigns)
-     |> assign(width: Sim.Grid.width(assigns.grid), height: Sim.Grid.height(assigns.grid))}
+     |> assign(width: Grid.width(assigns.grid), height: Grid.height(assigns.grid))}
   end
 
   @impl true
@@ -16,7 +18,7 @@ defmodule ThundermoonWeb.GameOfLifeLive.GridComponent do
   end
 
   def cell_class(grid, x, y) do
-    Sim.Grid.get(grid, x, y) |> alive_class()
+    Grid.get(grid, x, y) |> alive_class()
   end
 
   defp alive_class(false), do: ""
