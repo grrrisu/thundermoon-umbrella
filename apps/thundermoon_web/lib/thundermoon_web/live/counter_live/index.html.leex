@@ -28,7 +28,7 @@
   </div>
 
   <div class="counter-controls">
-    <%= start_button(@label_sim_start) %>
+    <%= start_button(@socket, "start-counter-button", @started) %>
     <%= if can?(@current_user, :reset, Thundermoon.Counter) do %>
       <a href="#" phx-click="reset" class="button button-icon button-warning">
         <i class="la la-2x la-reply"></i> reset
