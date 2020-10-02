@@ -20,16 +20,6 @@ defmodule ThundermoonWeb.CounterLive.Index do
     {:ok, assign(socket, current_user: user, started: Counter.started?(), digits: digits)}
   end
 
-  def handle_event("inc", %{"number" => number}, socket) when number in ["1", "10", "100"] do
-    Counter.inc(number)
-    {:noreply, socket}
-  end
-
-  def handle_event("dec", %{"number" => number}, socket) when number in ["1", "10", "100"] do
-    Counter.dec(number)
-    {:noreply, socket}
-  end
-
   @impl true
   def handle_info(:start, socket) do
     Counter.start()

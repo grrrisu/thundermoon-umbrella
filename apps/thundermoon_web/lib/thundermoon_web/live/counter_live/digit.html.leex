@@ -1,0 +1,7 @@
+<div class="inc-button">
+  <%= link "+", to: "#", id: "#{@id}-inc", class: "button", phx_target: @myself, phx_click: "inc" %>
+</div>
+<div id="<%= @id %>" class="digit"><%= @value %></div>
+<div class="dec-button">
+  <%= link "-", to: "#", id: "#{@id}-dec", class: "button", phx_target: @myself, phx_click: "dec" %>
+</div>

@@ -39,7 +39,7 @@ defmodule ThundermoonWeb.CounterLiveTest do
     test "inc digit 10", %{conn: conn} do
       PubSub.subscribe(ThundermoonWeb.PubSub, "counter")
       {:ok, view, _html} = live(conn, "/counter")
-      render_click(view, :inc, %{"number" => "10"})
+      view |> element("#digit-10-inc") |> render_click()
       assert_receive({:update, %{digit_10: 1}})
       Counter.reset()
     end
@@ -47,9 +47,9 @@ defmodule ThundermoonWeb.CounterLiveTest do
     test "dec digit 10", %{conn: conn} do
       PubSub.subscribe(ThundermoonWeb.PubSub, "counter")
       {:ok, view, _html} = live(conn, "/counter")
-      render_click(view, :inc, %{"number" => "10"})
+      view |> element("#digit-10-inc") |> render_click()
       assert_receive({:update, %{digit_10: 1}})
-      render_click(view, :dec, %{"number" => "10"})
+      view |> element("#digit-10-dec") |> render_click()
       assert_receive({:update, %{digit_10: 0}})
       Counter.reset()
     end
@@ -65,9 +65,9 @@ defmodule ThundermoonWeb.CounterLiveTest do
     test "can start and stop sim", %{conn: conn} do
       PubSub.subscribe(ThundermoonWeb.PubSub, "counter")
       {:ok, view, _html} = live(conn, "/counter")
-      render_click(view, "toggle-sim-start", %{"action" => "start"})
+      view |> element("#start-button") |> render_click()
       assert_receive({:sim, started: true})
-      render_click(view, "toggle-sim-start", %{"action" => "stop"})
+      view |> element("#start-button") |> render_click()
       assert_receive({:sim, started: false})
     end
   end
