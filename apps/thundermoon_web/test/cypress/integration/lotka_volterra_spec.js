@@ -28,7 +28,7 @@ describe("lotka volterra page", function() {
 
     it("I can add a herbivore to the simulation", function(){
       cy.get("h3").contains("Vegetation");
-      cy.get("a").contains("Add Herbivore").click()
+      cy.get("a").contains("Add Herbivore").click();
       cy.get("h3").contains("Herbivore");
       cy.get("input#herbivore_birth_rate").clear().type("0.5");
       cy.get("input#herbivore_death_rate").clear().type("0.1");

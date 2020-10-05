@@ -1,5 +1,15 @@
 # Changelog
 
+## dev
+
+* Components for counter (digit, action buttons)
+
+* Components for game of life (form, grid, action buttons)
+
+* various upgrades
+
+  * credo
+
 ## 0.4.0
 
 * Lotka Volterra simulation
