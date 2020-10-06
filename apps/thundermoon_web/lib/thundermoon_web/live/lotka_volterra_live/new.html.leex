@@ -1,8 +1,8 @@
 <h1>Lotka Volterra</h1>
 
 <%=
-case @changeset.data do
-  %LotkaVolterra.Vegetation{} -> live_component @socket, ThundermoonWeb.LotkaVolterraLive.NewVegetation, changeset: @changeset
-  %LotkaVolterra.Herbivore{} -> live_component @socket, ThundermoonWeb.LotkaVolterraLive.NewHerbivore, changeset: @changeset
+case @entity do
+  :vegetation -> live_component @socket, ThundermoonWeb.LotkaVolterraLive.NewVegetation, id: "vegetation"
+  :herbivore -> live_component @socket, ThundermoonWeb.LotkaVolterraLive.NewHerbivore, id: "herbivore"
 end
 %>

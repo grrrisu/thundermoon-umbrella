@@ -3,7 +3,7 @@
 
   <p></p>
 
-  <%= f = form_for @changeset, "#", [phx_submit: :create, phx_change: :validate] %>
+  <%= f = form_for @changeset, "#", [phx_submit: :create, phx_change: :validate, phx_target: @myself] %>
     <fieldset>
       <%= live_text_input(@socket, f, :birth_rate, label: "Birth Rate") %>
       <%= live_text_input(@socket, f, :death_rate, label: "Death Rate") %>
