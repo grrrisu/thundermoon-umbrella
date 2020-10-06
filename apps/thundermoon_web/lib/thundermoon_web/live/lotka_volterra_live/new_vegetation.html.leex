@@ -3,7 +3,7 @@
 
   <p></p>
 
-  <%= f = form_for @changeset, "#", [phx_submit: :create, phx_change: :validate] %>
+  <%= f = form_for @changeset, "#", [phx_submit: :create, phx_change: :validate, phx_target: @myself] %>
     <fieldset>
       <%= live_text_input(@socket, f, :capacity) %>
       <%= live_text_input(@socket, f, :birth_rate, label: "Birth Rate") %>
@@ -11,7 +11,7 @@
       <%= live_text_input(@socket, f, :size) %>
       <%= submit "Create" %>
       or
-      <%= link to: "#", phx_click: "add_herbivore", id: "button-add-herbivore", class: "button button-icon" do %>
+      <%= link to: "#", phx_click: "add_herbivore", phx_target: @myself, id: "button-add-herbivore", class: "button button-icon" do %>
         Add Herbivore
       <% end %>
     </fieldset>
