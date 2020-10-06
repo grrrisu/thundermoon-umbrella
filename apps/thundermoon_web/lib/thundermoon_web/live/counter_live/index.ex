@@ -1,15 +1,10 @@
 defmodule ThundermoonWeb.CounterLive.Index do
   use ThundermoonWeb, :live_view
 
-  import Canada.Can
-
   alias Phoenix.PubSub
 
   alias Thundermoon.Counter
   alias Thundermoon.Accounts
-
-  alias ThundermoonWeb.CounterView
-  alias ThundermoonWeb.Router.Helpers, as: Routes
 
   @impl true
   def mount(_params, session, socket) do
