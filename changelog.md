@@ -6,6 +6,10 @@
 
 * Components for game of life (form, grid, action buttons)
 
+* shared components:
+
+  * entity form
+
 * various upgrades
 
   * credo
