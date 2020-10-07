@@ -2,11 +2,13 @@ defmodule ThundermoonWeb.GameOfLifeLive.FormComponent do
   use ThundermoonWeb, :live_component
 
   alias GameOfLife.FormData
-  alias ThundermoonWeb.GameOfLifeLive.Index
 
   @impl true
   def update(assigns, socket) do
-    {:ok, assign(socket, changeset: empty_changeset())}
+    {:ok,
+     socket
+     |> assign(assigns)
+     |> assign(changeset: empty_changeset())}
   end
 
   @impl true

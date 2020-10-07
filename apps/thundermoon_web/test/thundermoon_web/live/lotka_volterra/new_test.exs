@@ -25,20 +25,21 @@ defmodule ThundermoonWeb.LotkaVolterraLive.NewTest do
       {:ok, view, html} = live(conn)
       assert html =~ "<h3>Vegetation</h3>"
 
-      {:ok, _view, html} =
-        view
-        |> element("form")
-        |> render_submit(%{
-          "vegetation" => %{
-            "capacity" => "6000",
-            "birth_rate" => "0.2",
-            "death_rate" => "0.1",
-            "size" => "1000"
-          }
-        })
-        |> follow_redirect(conn)
+      view
+      |> element("form")
+      |> render_submit(%{
+        "vegetation" => %{
+          "capacity" => "6000",
+          "birth_rate" => "0.2",
+          "death_rate" => "0.1",
+          "size" => "1000"
+        }
+      })
 
-      assert html =~ "successfully created vegetation"
+      # https://github.com/phoenixframework/phoenix_live_view/blob/v0.14.7/lib/phoenix_live_view/test/live_view_test.ex#L1009
+      # assert_redirect -> assert_navigation
+      assert_receive {_ref, {:redirect, _topic, %{to: to}}}
+      assert to =~ "/lotka-volterra?sim_id="
     end
 
     test "create a herbivore", %{conn: conn} do
@@ -46,26 +47,27 @@ defmodule ThundermoonWeb.LotkaVolterraLive.NewTest do
       assert html_response(conn, 200) =~ "<h3>Vegetation</h3>"
       {:ok, view, _html} = live(conn)
 
-      assert view
-             |> element("#button-add-herbivore")
-             |> render_click() =~ "<h3>Herbivore</h3>"
+      view
+      |> element("#button-add-herbivore")
+      |> render_click()
 
-      {:ok, _view, html} =
-        view
-        |> element("form")
-        |> render_submit(%{
-          "herbivore" => %{
-            "birth_rate" => "0.2",
-            "death_rate" => "0.1",
-            "needed_food" => "4",
-            "starving_rate" => "0.4",
-            "graze_rate" => "0.01",
-            "size" => "1000"
-          }
-        })
-        |> follow_redirect(conn)
+      assert render(view) =~ "<h3>Herbivore</h3>"
 
-      assert html =~ "successfully created herbivore"
+      view
+      |> element("form")
+      |> render_submit(%{
+        "herbivore" => %{
+          "birth_rate" => "0.2",
+          "death_rate" => "0.1",
+          "needed_food" => "4",
+          "starving_rate" => "0.4",
+          "graze_rate" => "0.01",
+          "size" => "1000"
+        }
+      })
+
+      assert_receive {_ref, {:redirect, _topic, %{to: to}}}
+      assert to =~ "/lotka-volterra?sim_id="
     end
   end
 end
