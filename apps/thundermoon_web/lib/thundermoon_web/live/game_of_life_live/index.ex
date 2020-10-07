@@ -8,6 +8,7 @@ defmodule ThundermoonWeb.GameOfLifeLive.Index do
 
   alias ThundermoonWeb.GameOfLifeLive.{FormComponent, GridComponent, ActionButtonsComponent}
 
+  @impl true
   def mount(_params, session, socket) do
     if connected?(socket), do: PubSub.subscribe(ThundermoonWeb.PubSub, "GameOfLife")
 
@@ -16,6 +17,7 @@ defmodule ThundermoonWeb.GameOfLifeLive.Index do
      |> assign(current_user: get_current_user(session), grid: get_grid())}
   end
 
+  @impl true
   def render(%{grid: nil} = assigns) do
     ~L"""
     <h1>Game of Life</h1>
@@ -27,6 +29,7 @@ defmodule ThundermoonWeb.GameOfLifeLive.Index do
     """
   end
 
+  @impl true
   def render(%{grid: grid} = assigns) when not is_nil(grid) do
     ~L"""
     <h1>Game of Life</h1>
