@@ -1,4 +1,4 @@
-defmodule ThundermoonWeb.LotkaVolterra.Entity do
+defmodule ThundermoonWeb.Component.EntityForm do
   defmacro __using__(opts) do
     # "vegetation"
     params_name = opts[:params_name]

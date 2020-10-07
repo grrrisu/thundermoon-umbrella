@@ -1,5 +1,5 @@
 defmodule ThundermoonWeb.LotkaVolterraLive.NewHerbivore do
-  use ThundermoonWeb.LotkaVolterra.Entity,
+  use ThundermoonWeb.Component.EntityForm,
     params_name: "herbivore",
     model: LotkaVolterra.Herbivore,
     form_data: Thundermoon.LotkaVolterra.HerbivoreForm
