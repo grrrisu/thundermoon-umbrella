@@ -1,5 +1,4 @@
 defmodule LotkaVolterra.Sim.Animal do
-
   # population grows by birth rate and and and shrinks by death rate (age) and hunger.
   # Hunger is the ratio of needed food and food available multiplied by starving_rate.
   # The food consumed is proportional to the size of the population multiplied by graze_rate.
@@ -25,8 +24,7 @@ defmodule LotkaVolterra.Sim.Animal do
     producer_size = producer_size - delta_producer(animal, producer_size) * step
     animal_size = size + delta_animal(animal, producer_size) * step
 
-    {Map.put(producer, :size, producer_size),
-    Map.put(animal, :size, animal_size)}
+    {Map.put(producer, :size, producer_size), Map.put(animal, :size, animal_size)}
   end
 
   def delta_producer(

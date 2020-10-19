@@ -1,13 +1,19 @@
 defmodule ThundermoonWeb.LotkaVolterraLive.New do
   use ThundermoonWeb, :live_view
 
-  alias LotkaVolterra.{Vegetation, Herbivore}
+  alias LotkaVolterra.{Vegetation, Herbivore, Predator}
 
   require Logger
 
   @impl true
   def mount(_params, _session, socket) do
     {:ok, socket}
+  end
+
+  @impl true
+  def handle_params(%{"model" => "predator"}, _url, socket) do
+    Logger.info("add predator")
+    {:noreply, assign(socket, entity: :predator)}
   end
 
   @impl true
@@ -42,6 +48,16 @@ defmodule ThundermoonWeb.LotkaVolterraLive.New do
   end
 
   @impl true
+  def handle_info({:entity_submitted, %Predator{} = predator}, socket) do
+    sim_id = create_sim(socket.assigns.vegetation, socket.assigns.herbivore, predator)
+
+    {:noreply,
+     socket
+     |> put_flash(:info, "successfully created predator")
+     |> push_redirect(to: Routes.lotka_volterra_index_path(socket, :index, sim_id: sim_id))}
+  end
+
+  @impl true
   def handle_info({:entity_added, %Vegetation{} = vegetation}, socket) do
     {:noreply,
      socket
@@ -49,8 +65,18 @@ defmodule ThundermoonWeb.LotkaVolterraLive.New do
      |> push_patch(to: Routes.lotka_volterra_new_path(socket, :new, model: "herbivore"))}
   end
 
-  defp create_sim(vegetation, herbivore \\ nil) do
-    {sim_id, _object} = LotkaVolterra.create({vegetation, herbivore}, ThundermoonWeb.PubSub)
+  @impl true
+  def handle_info({:entity_added, %Herbivore{} = herbivore}, socket) do
+    {:noreply,
+     socket
+     |> assign(herbivore: herbivore)
+     |> push_patch(to: Routes.lotka_volterra_new_path(socket, :new, model: "predator"))}
+  end
+
+  defp create_sim(vegetation, herbivore \\ nil, predator \\ nil) do
+    {sim_id, _object} =
+      LotkaVolterra.create({vegetation, herbivore, predator}, ThundermoonWeb.PubSub)
+
     sim_id
   end
 end

@@ -32,3 +32,6 @@ erl_crash.dump
 
 # Database
 /data/
+
+# Visual Code
+.vscode/settings.json
