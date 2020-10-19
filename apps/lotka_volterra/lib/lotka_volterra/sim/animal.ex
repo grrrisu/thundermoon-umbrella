@@ -1,5 +1,4 @@
-defmodule LotkaVolterra.Sim.Herbivores do
-  alias LotkaVolterra.{Vegetation, Herbivore}
+defmodule LotkaVolterra.Sim.Animal do
 
   # population grows by birth rate and and and shrinks by death rate (age) and hunger.
   # Hunger is the ratio of needed food and food available multiplied by starving_rate.
@@ -8,10 +7,10 @@ defmodule LotkaVolterra.Sim.Herbivores do
   # b : birth_rate
   # d : death_rate
   # f : needed_food per unit
-  # g : graze_rate
+  # g : graze_rate / hunt_rate
   # a : starving_rate
   # s : size
-  # v : vegetation.size
+  # v : producer.size
   #
 
   # Δv = - f s g
@@ -20,45 +19,45 @@ defmodule LotkaVolterra.Sim.Herbivores do
   # Δs = s (b - a ------  - d)
   #                 v
 
-  def sim(vegetation, nil), do: {vegetation, nil}
+  def sim(producer, nil), do: {producer, nil}
 
-  def sim(%Vegetation{} = vegetation, %Herbivore{size: size} = herbivore, step \\ 1) do
-    vegetation_size = vegetation.size - delta_vegetation(herbivore, vegetation) * step
-    herbivore_size = size + delta_herbivore(herbivore, vegetation) * step
+  def sim(%{size: producer_size} = producer, %{size: size} = animal, step \\ 1) do
+    producer_size = producer_size - delta_producer(animal, producer_size) * step
+    animal_size = size + delta_animal(animal, producer_size) * step
 
-    {%Vegetation{vegetation | size: vegetation_size},
-     %Herbivore{herbivore | size: herbivore_size}}
+    {Map.put(producer, :size, producer_size),
+    Map.put(animal, :size, animal_size)}
   end
 
-  def delta_vegetation(
-        %Herbivore{
+  def delta_producer(
+        %{
           needed_food: needed_food,
           graze_rate: graze_rate,
           size: size
         },
-        %Vegetation{size: vegetation}
+        producer_size
       ) do
     (needed_food * size * graze_rate)
-    |> max_consumed_food(vegetation)
+    |> max_consumed_food(producer_size)
   end
 
-  defp max_consumed_food(consumed_food, vegetation) when vegetation - consumed_food < 0 do
+  defp max_consumed_food(consumed_food, producer) when producer - consumed_food < 0 do
     0
   end
 
-  defp max_consumed_food(consumed_food, _vegetation), do: consumed_food
+  defp max_consumed_food(consumed_food, _producer), do: consumed_food
 
-  def delta_herbivore(
-        %Herbivore{
+  def delta_animal(
+        %{
           birth_rate: birth_rate,
           death_rate: death_rate,
           needed_food: needed_food,
           starving_rate: starving_rate,
           size: size
         },
-        %Vegetation{size: vegetation}
+        producer_size
       ) do
-    hunger_rate = starving_rate * (size * needed_food / vegetation)
+    hunger_rate = starving_rate * (size * needed_food / producer_size)
 
     (size * (birth_rate - hunger_rate - death_rate))
     |> min_grown_size(size, starving_rate)
