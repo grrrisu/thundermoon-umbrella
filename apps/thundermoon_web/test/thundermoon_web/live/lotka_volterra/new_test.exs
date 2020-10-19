@@ -51,7 +51,7 @@ defmodule ThundermoonWeb.LotkaVolterraLive.NewTest do
       |> element("#button-add-herbivore")
       |> render_click()
 
-      assert render(view) =~ "<h3>Herbivore</h3>"
+      assert render(view) =~ "<h3>Herbivore"
 
       view
       |> element("form")

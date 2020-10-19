@@ -4,5 +4,6 @@
 case @entity do
   :vegetation -> live_component @socket, ThundermoonWeb.LotkaVolterraLive.NewVegetation, id: "vegetation"
   :herbivore -> live_component @socket, ThundermoonWeb.LotkaVolterraLive.NewHerbivore, id: "herbivore"
+  :predator -> live_component @socket, ThundermoonWeb.LotkaVolterraLive.NewPredator, id: "predator"
 end
 %>

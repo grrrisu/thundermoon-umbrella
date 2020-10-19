@@ -3,8 +3,6 @@ defmodule Thundermoon.LotkaVolterra.HerbivoreForm do
 
   alias Ecto.Changeset
 
-  alias LotkaVolterra.Herbivore
-
   @types %{
     birth_rate: :float,
     death_rate: :float,
@@ -14,7 +12,7 @@ defmodule Thundermoon.LotkaVolterra.HerbivoreForm do
     size: :integer
   }
 
-  def changeset(%Herbivore{} = model, params \\ %{}) do
+  def changeset(%{} = model, params \\ %{}) do
     {model, @types}
     |> cast(params, [:birth_rate, :death_rate, :needed_food, :starving_rate, :graze_rate, :size])
     |> validate_required(:size)
