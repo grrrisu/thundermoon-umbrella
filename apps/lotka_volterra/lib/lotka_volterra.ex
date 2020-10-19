@@ -6,7 +6,7 @@ defmodule LotkaVolterra do
 
   alias Sim.Laboratory
   alias LotkaVolterra.Sim.Vegetations
-  alias LotkaVolterra.Sim.Herbivores
+  alias LotkaVolterra.Sim.Animal
   alias LotkaVolterra.Vegetation
 
   def create(nil, pub_sub), do: create({%Vegetation{}, nil}, pub_sub)
@@ -22,7 +22,7 @@ defmodule LotkaVolterra do
   def start(id) do
     Laboratory.start(id, fn {vegetation, herbivore} ->
       Vegetations.sim(vegetation)
-      |> Herbivores.sim(herbivore)
+      |> Animal.sim(herbivore)
     end)
   end
 
