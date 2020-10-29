@@ -34,7 +34,7 @@ defmodule Thundermoon.LotkaVolterra.VegetationFormTest do
   describe "apply valid changes" do
     test "valid" do
       changeset = VegetationForm.changeset(%Vegetation{}, %{size: 800})
-      assert {:ok, %Vegetation{} = vegetation} = VegetationForm.apply_valid_changes(changeset)
+      assert {:ok, %Vegetation{}} = VegetationForm.apply_valid_changes(changeset)
     end
 
     test "invalid" do
