@@ -1,4 +1,4 @@
-defmodule Thundermoon.LotkaVolterra.HerbivoreForm do
+defmodule Thundermoon.LotkaVolterra.AnimalForm do
   import Ecto.Changeset
 
   alias Ecto.Changeset

@@ -81,7 +81,7 @@ defmodule Thundermoon.AccountsTest do
   test "delete user" do
     user = setup_users()
 
-    assert {:ok, deleted_user} = Accounts.destroy_user(user.id)
+    assert {:ok, _deleted_user} = Accounts.destroy_user(user.id)
 
     assert_raise Ecto.NoResultsError, fn ->
       Accounts.destroy_user(user.id)
