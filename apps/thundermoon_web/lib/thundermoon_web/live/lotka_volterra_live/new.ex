@@ -12,14 +12,26 @@ defmodule ThundermoonWeb.LotkaVolterraLive.New do
 
   @impl true
   def handle_params(%{"model" => "predator"}, _url, socket) do
-    Logger.info("add predator")
-    {:noreply, assign(socket, entity: :predator)}
+    case Map.has_key?(socket.assigns, :herbivore) do
+      false ->
+        {:noreply, push_patch(socket, to: Routes.lotka_volterra_new_path(socket, :new))}
+
+      true ->
+        Logger.info("add predator")
+        {:noreply, assign(socket, entity: :predator)}
+    end
   end
 
   @impl true
   def handle_params(%{"model" => "herbivore"}, _url, socket) do
-    Logger.info("add herbivore")
-    {:noreply, assign(socket, entity: :herbivore)}
+    case Map.has_key?(socket.assigns, :vegetation) do
+      false ->
+        {:noreply, push_patch(socket, to: Routes.lotka_volterra_new_path(socket, :new))}
+
+      true ->
+        Logger.info("add herbivore")
+        {:noreply, assign(socket, entity: :herbivore)}
+    end
   end
 
   @impl true
