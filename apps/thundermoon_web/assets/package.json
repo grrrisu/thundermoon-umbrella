@@ -24,5 +24,6 @@
   "staticFiles": {
     "staticPath": "static",
     "watcherGlob": "**"
-  }
+  },
+  "name": "assets"
 }
