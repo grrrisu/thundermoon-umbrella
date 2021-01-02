@@ -58,6 +58,10 @@ defmodule Sim.Realm.CommandGuard do
     {:noreply, finish_command(state, command)}
   end
 
+  def handle_info(:next_command, state) do
+    {:noreply, next_command(state)}
+  end
+
   def handle_info(_msg, state) do
     {:noreply, state}
   end
@@ -67,14 +71,28 @@ defmodule Sim.Realm.CommandGuard do
   end
 
   defp next_command(state) do
+    state
+    |> launch_command()
+    |> more_commands()
+  end
+
+  defp launch_command(state) do
     with {{:value, command}, queue} <- :queue.out(state.pending_commands),
          {:ok, new_lock} <- state.commands_module.lock(state, command) do
       task = execute_command(state, command)
       %{state | pending_commands: queue, current_lock: new_lock, task: {task.ref, command}}
     else
-      {:empty, _queue} -> %{state | task: {nil, nil}}
-      {:locked, _current_lock} -> %{state | task: {nil, nil}}
+      {:empty, _queue} -> state
+      {:locked, _current_lock} -> state
     end
+  end
+
+  defp more_commands(state) do
+    if not :queue.is_empty(state.pending_commands) do
+      Process.send_after(self(), :next_command, 10)
+    end
+
+    state
   end
 
   defp execute_command(state, command) do
@@ -87,8 +105,14 @@ defmodule Sim.Realm.CommandGuard do
   end
 
   defp finish_command(state, command) do
+    send(self(), :next_command)
+
     state
     |> state.commands_module.unlock(command)
-    |> next_command()
+    |> remove_task(command)
+  end
+
+  defp remove_task(state, _command) do
+    %{state | task: {nil, nil}}
   end
 end

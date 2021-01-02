@@ -1,139 +1,145 @@
 defmodule Sim.RealmTest do
   use ExUnit.Case, async: false
 
-  alias Test.Dummy
-  alias Test.Dummy.Factory
+  alias Test.Realm
 
   require Logger
 
   setup do
-    start_supervised!({Sim.Realm.Supervisor, name: Test.Dummy})
-    Phoenix.PubSub.subscribe(ThundermoonWeb.PubSub, "Test.Dummy")
+    start_supervised!(
+      {Sim.Realm.Supervisor, name: Test.Realm, commands_module: Test.CommandHandler}
+    )
+
+    Phoenix.PubSub.subscribe(ThundermoonWeb.PubSub, "Test.Realm")
 
     on_exit(fn ->
-      Phoenix.PubSub.unsubscribe(ThundermoonWeb.PubSub, "Test.Dummy")
+      Phoenix.PubSub.unsubscribe(ThundermoonWeb.PubSub, "Test.Realm")
     end)
   end
 
   describe "init" do
     test "root" do
-      assert nil == Dummy.get_root()
+      assert nil == Realm.get_root()
     end
 
     test "started" do
-      assert false == Dummy.started?()
+      assert false == Realm.started?()
     end
   end
 
-  describe "set_root" do
-    test "get new root" do
-      assert :root == Dummy.set_root(:root)
-      assert :root == Dummy.get_root()
-    end
+  # describe "set_root" do
+  #   test "get new root" do
+  #     assert :root == Realm.set_root(:root)
+  #     assert :root == Realm.get_root()
+  #   end
 
-    test "receive broadcast" do
-      Dummy.set_root(:new_root)
-      assert_receive({:update, data: :new_root})
-    end
-  end
+  #   test "receive broadcast" do
+  #     Realm.set_root(:new_root)
+  #     assert_receive({:update, data: :new_root})
+  #   end
+  # end
 
   describe "create" do
     test "set root" do
-      assert 4 = Dummy.create(Factory, %{initial: 4})
-      assert 4 == Dummy.get_root()
+      assert :ok = Realm.create(3)
+      # as create is executed async root is still nil
+      assert nil == Realm.get_root()
     end
 
     test "receive broadcast" do
-      Dummy.create(Factory, %{initial: 5})
-      assert_receive({:update, data: 5})
+      assert :ok = Realm.create(5)
+      assert_receive({:update, data: 10})
     end
   end
 
   describe "simulation loop" do
     setup do
-      %{root: Dummy.create(Factory, %{initial: 0})}
+      Realm.create(0)
+      assert_receive({:update, data: 0})
+      :ok
     end
 
     test "start" do
-      assert :ok = Dummy.start_sim()
+      assert :ok = Realm.start_sim()
       assert_receive({:sim, started: true})
     end
 
     test "stop" do
-      assert :ok = Dummy.start_sim()
-      assert :ok = Dummy.stop_sim()
+      assert :ok = Realm.start_sim()
+      assert :ok = Realm.stop_sim()
       assert_receive({:sim, started: false})
     end
 
     test "sim" do
-      assert :ok = Dummy.start_sim()
+      assert :ok = Realm.start_sim(10)
       # wait one sim cycle
-      Process.sleep(100)
       assert_receive({:update, data: 1})
+      Process.sleep(10)
+      assert_receive({:update, data: 2})
     end
 
     test "started?" do
-      assert false == Dummy.started?()
-      Dummy.start_sim()
+      assert false == Realm.started?()
+      Realm.start_sim()
       Process.sleep(1)
-      assert true == Dummy.started?()
-      Dummy.stop_sim()
+      assert true == Realm.started?()
+      Realm.stop_sim()
       Process.sleep(1)
-      assert false == Dummy.started?()
+      assert false == Realm.started?()
     end
   end
 
   describe "recover" do
     setup do
-      %{root: Dummy.create(Factory, %{initial: 0})}
+      %{root: Realm.create(Factory, %{initial: 0})}
     end
 
     test "server crash" do
-      Dummy.start_sim()
-      Dummy.RealmServer |> GenServer.stop(:shutdown)
+      Realm.start_sim()
+      Realm.RealmServer |> GenServer.stop(:shutdown)
       wait_for_all()
-      assert 0 >= Dummy.get_root()
-      assert true == Dummy.started?()
+      assert 0 >= Realm.get_root()
+      assert true == Realm.started?()
     end
 
     test "simulation loop crash" do
-      Dummy.start_sim()
-      Dummy.SimulationLoop |> GenServer.stop(:shutdown)
+      Realm.start_sim()
+      Realm.SimulationLoop |> GenServer.stop(:shutdown)
       assert_receive({:sim, started: false})
       wait_for_all()
-      assert 0 >= Dummy.get_root()
-      assert false == Dummy.started?()
+      assert 0 >= Realm.get_root()
+      assert false == Realm.started?()
     end
 
     test "data crash" do
-      Dummy.start_sim()
-      Dummy.Data |> Agent.stop(:shutdown)
+      Realm.start_sim()
+      Realm.Data |> Agent.stop(:shutdown)
       wait_for_all()
       refute_receive({:sim, started: false})
-      assert nil == Dummy.get_root()
-      assert false == Dummy.started?()
+      assert nil == Realm.get_root()
+      assert false == Realm.started?()
     end
 
     test "sim task crash" do
       # negative number will crash sim
-      Dummy.set_root(-1)
-      Dummy.start_sim()
+      Realm.set_root(-1)
+      Realm.start_sim()
       # wait one sim cycle
       Process.sleep(100)
       assert_receive({:sim, started: false})
-      assert -1 == Dummy.get_root()
-      assert false == Dummy.started?()
+      assert -1 == Realm.get_root()
+      assert false == Realm.started?()
     end
 
     test "create crash" do
-      assert catch_exit(Dummy.create(Factory, :raise))
+      assert catch_exit(Realm.create(Factory, :raise))
       wait_for_all()
-      assert 0 >= Dummy.get_root()
+      assert 0 >= Realm.get_root()
     end
   end
 
   def wait_for_all() do
-    Enum.all?([Dummy.RealmServer, Dummy.SimulationLoop, Dummy.Data], fn process ->
+    Enum.all?([Realm.RealmServer, Realm.SimulationLoop, Realm.Data], fn process ->
       wait_for(process)
     end)
   end
