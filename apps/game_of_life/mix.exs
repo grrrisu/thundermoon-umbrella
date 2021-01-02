@@ -32,6 +32,7 @@ defmodule GameOfLife.MixProject do
   defp deps do
     [
       {:sim, in_umbrella: true},
+      {:phoenix_pubsub, "~> 2.0"},
       {:credo, "~> 1.5.0-rc.2",
        git: "git://github.com/grrrisu/credo.git",
        branch: "fix-option-min-priority",

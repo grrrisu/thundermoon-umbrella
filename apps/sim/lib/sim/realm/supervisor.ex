@@ -1,31 +1,31 @@
 defmodule Sim.Realm.Supervisor do
   use Supervisor
 
+  alias Sim.Realm
+
   def start_link(opts) do
-    Supervisor.start_link(__MODULE__, opts[:name], name: opts[:name] || __MODULE__)
+    Supervisor.start_link(__MODULE__, {opts[:name], opts[:commands_module]},
+      name: Realm.server_name(opts[:name], "Supervisor")
+    )
   end
 
-  def init(name) do
+  def init({name, commands_module}) do
     children = [
-      {Sim.Realm.Data, name: name, pubsub: ThundermoonWeb.PubSub, topic: topic(name)},
-      {Sim.Realm.SimulationLoop, name: name},
-      {Sim.Realm.ServerSupervisor, name: name}
+      {Sim.Realm.Data,
+       name: Realm.server_name(name, "Data"), pubsub: ThundermoonWeb.PubSub, topic: topic(name)},
+      {Sim.Realm.SimulationLoop,
+       name: Realm.server_name(name, "SimulationLoop"),
+       pubsub: ThundermoonWeb.PubSub,
+       topic: topic(name),
+       command_guard_module: Realm.server_name(name, "CommandGuard")},
+      {Sim.Realm.CommandGuard,
+       commands_module: commands_module,
+       task_supervisor_name: Realm.server_name(name, "CommandTaskSupervisor"),
+       name: Realm.server_name(name, "CommandGuard")},
+      {Task.Supervisor, name: Realm.server_name(name, "CommandTaskSupervisor")}
     ]
 
     Supervisor.init(children, strategy: :rest_for_one)
-  end
-
-  def restart_realm(supervisor) do
-    Supervisor.which_children(supervisor)
-    |> Enum.map(fn child -> child |> Tuple.to_list() |> List.first() end)
-    |> Enum.map(fn child ->
-      :ok = Supervisor.terminate_child(supervisor, child)
-      child
-    end)
-    |> Enum.reverse()
-    |> Enum.each(fn child ->
-      {:ok, _pid} = Supervisor.restart_child(supervisor, child)
-    end)
   end
 
   defp topic(name) do
