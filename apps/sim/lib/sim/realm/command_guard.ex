@@ -3,14 +3,19 @@ defmodule Sim.Realm.CommandGuard do
 
   require Logger
 
-  def start_link(commands_module) do
-    GenServer.start_link(__MODULE__, commands_module, name: __MODULE__)
+  def start_link(opts) do
+    GenServer.start_link(__MODULE__, {opts[:commands_module], opts[:task_supervisor_name]},
+      name: opts[:name]
+    )
   end
 
-  def init(commands_module) do
+  def init({commands_module, task_supervisor_name}) do
+    Logger.debug("start command guard with #{commands_module}")
+
     {:ok,
      %{
        commands_module: commands_module,
+       task_supervisor_module: task_supervisor_name,
        pending_commands: :queue.new(),
        current_lock: nil,
        task: {nil, nil}
@@ -19,8 +24,8 @@ defmodule Sim.Realm.CommandGuard do
 
   # --- client ---
 
-  def receive(command) do
-    GenServer.call(__MODULE__, {:receive, command})
+  def receive(server, command) do
+    GenServer.call(server, {:receive, command})
   end
 
   # --- server ---
@@ -36,13 +41,20 @@ defmodule Sim.Realm.CommandGuard do
   def handle_info({ref, answer}, %{task: {ref, command}} = state) do
     # We don't care about the DOWN message now, so let's demonitor and flush it
     Process.demonitor(ref, [:flush])
-    Logger.info("task executing command #{command} finished with result #{answer}")
+
+    Logger.debug(
+      "task executing command #{inspect(command)} finished with result #{inspect(answer)}"
+    )
+
     {:noreply, finish_command(state, command)}
   end
 
   # The task failed
   def handle_info({:DOWN, ref, :process, _pid, reason}, %{task: {ref, command}} = state) do
-    Logger.warn("task executing command #{command} failed with reason #{reason}")
+    Logger.warn(
+      "task executing command #{inspect(command)} failed with reason #{inspect(reason)}"
+    )
+
     {:noreply, finish_command(state, command)}
   end
 
@@ -55,7 +67,7 @@ defmodule Sim.Realm.CommandGuard do
   end
 
   defp next_command(state) do
-    with {command, queue} when command != :empty <- :queue.out(state.pending_commands),
+    with {{:value, command}, queue} <- :queue.out(state.pending_commands),
          {:ok, new_lock} <- state.commands_module.lock(state, command) do
       task = execute_command(state, command)
       %{state | pending_commands: queue, current_lock: new_lock, task: {task.ref, command}}
@@ -67,7 +79,7 @@ defmodule Sim.Realm.CommandGuard do
 
   defp execute_command(state, command) do
     Task.Supervisor.async_nolink(
-      @task_supervisor,
+      state.task_supervisor_module,
       fn ->
         state.commands_module.handle_command(command)
       end

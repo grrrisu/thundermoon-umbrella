@@ -6,23 +6,16 @@ defmodule GameOfLife do
   It acts as a single point of entry to the game.
   """
 
-  alias GameOfLife.Grid
-
-  def create(size) do
-    create(Grid, %{size: size})
-  end
-
   def recreate() do
     stop_sim()
-    call_server(:recreate)
+    send_command(%{command: :recreate})
   end
 
   def clear() do
-    stop_sim()
-    call_server(:clear)
+    send_command(%{command: :clear})
   end
 
   def toggle(x, y) do
-    call_server({:toggle, x, y})
+    send_command(%{command: :toggle, x: x, y: y})
   end
 end

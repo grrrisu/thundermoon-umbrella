@@ -2,58 +2,57 @@ defmodule Sim.Realm do
   @moduledoc """
   The context for realm
   """
-  alias Sim.Realm.Server
+  alias Sim.Realm.CommandGuard
+
+  def server_name(name, server) do
+    Module.concat(name, server)
+  end
 
   defmacro __using__(opts) do
     app_module = opts[:app_module]
 
     quote do
-      @supervisor unquote(app_module)
-      @server Server.server_name(unquote(app_module))
+      alias Sim.Realm
+      alias Sim.Realm.{Data, SimulationLoop}
 
-      def call_server(arg) do
-        GenServer.call(@server, arg)
-      end
-
-      def cast_server(arg) do
-        GenServer.cast(@server, arg)
-      end
+      @supervisor Realm.server_name(unquote(app_module), "Supervisor")
+      @server Realm.server_name(unquote(app_module), "CommandGuard")
+      @simulation_loop Realm.server_name(unquote(app_module), "SimulationLoop")
+      @data Realm.server_name(unquote(app_module), "Data")
 
       def get_root() do
-        GenServer.call(@server, :get_root)
+        Data.get_data(@data)
       end
 
-      def set_root(root) do
-        GenServer.call(@server, {:set_root, root})
+      def send_command(command) do
+        CommandGuard.receive(@server, command)
       end
 
-      def create(factory, config) when is_atom(factory) do
-        GenServer.call(@server, {:create, factory, config})
+      def create(config) do
+        send_command(%{command: :create, config: config})
       end
 
-      def recreate(factory, config) when is_atom(factory) do
-        GenServer.call(@server, :stop_sim)
-        GenServer.call(@server, {:create, factory, config})
+      def recreate(config) do
+        stop_sim()
+        create(config)
       end
 
       def restart() do
-        :ok = Sim.Realm.Supervisor.restart_realm(@supervisor)
+        @supervisor
+        |> Process.whereis()
+        |> Process.exit(:normal)
       end
 
       def start_sim() do
-        GenServer.call(@server, :start_sim)
+        send_command(%{command: :start})
       end
 
       def stop_sim() do
-        GenServer.call(@server, :stop_sim)
+        send_command(%{command: :stop})
       end
 
       def started?() do
-        GenServer.call(@server, :started?)
-      end
-
-      def sim(func) do
-        GenServer.cast(@server, {:sim, func})
+        SimulationLoop.running?(@simulation_loop)
       end
     end
   end
