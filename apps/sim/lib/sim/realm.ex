@@ -43,8 +43,8 @@ defmodule Sim.Realm do
         |> Process.exit(:normal)
       end
 
-      def start_sim() do
-        send_command(%{command: :start})
+      def start_sim(delay \\ 1_000, command \\ %{command: :sim}) do
+        send_command(%{command: :start, delay: delay})
       end
 
       def stop_sim() do

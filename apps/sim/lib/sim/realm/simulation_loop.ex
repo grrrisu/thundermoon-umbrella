@@ -46,9 +46,8 @@ defmodule Sim.Realm.SimulationLoop do
   def handle_cast({:start, delay, command}, %{next_tick: nil} = state) do
     Logger.info("starting simulation ...")
     broadcast(state, true)
-
-    {:noreply,
-     %{state | next_tick: create_next_tick(state.delay), delay: delay, command: command}}
+    send(self(), :tick)
+    {:noreply, %{state | delay: delay, command: command}}
   end
 
   def handle_cast({:start, _delay, _command}, state) do
