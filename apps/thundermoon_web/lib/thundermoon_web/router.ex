@@ -61,7 +61,7 @@ defmodule ThundermoonWeb.Router do
 
       post "/login", Api.IntegrationController, :authorize
       delete "/logout", Api.IntegrationController, :clear_session
-      patch "/game_of_life/restart", Api.IntegrationController, :restart_game_of_life
+      patch "/game_of_life/reset", Api.IntegrationController, :reset_game_of_life
       post "/game_of_life/create", Api.IntegrationController, :create_game_of_life
     end
   end

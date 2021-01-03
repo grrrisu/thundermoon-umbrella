@@ -3,7 +3,7 @@
 describe("game of life page", function() {
 
   beforeEach(function() {
-    cy.request("PATCH", "/api/game_of_life/restart");
+    cy.request("PATCH", "/api/game_of_life/reset");
   });
 
   afterEach(function() {
