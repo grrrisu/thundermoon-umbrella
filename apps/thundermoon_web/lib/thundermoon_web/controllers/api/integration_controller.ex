@@ -23,9 +23,9 @@ defmodule ThundermoonWeb.Api.IntegrationController do
     |> send_resp(205, "user session cleared")
   end
 
-  def restart_game_of_life(conn, _params) do
-    :ok = GameOfLife.restart()
-    send_resp(conn, 205, "game of life has been restarted")
+  def reset_game_of_life(conn, _params) do
+    :ok = GameOfLife.reset()
+    send_resp(conn, 205, "game of life has been reseted")
   end
 
   def create_game_of_life(conn, %{"size" => size}) do

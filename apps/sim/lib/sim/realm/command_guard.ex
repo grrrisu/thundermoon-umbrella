@@ -94,11 +94,11 @@ defmodule Sim.Realm.CommandGuard do
   defp more_commands(%{digging_for_next_command: true} = state), do: state
 
   defp more_commands(%{digging_for_next_command: false} = state) do
-    if not :queue.is_empty(state.pending_commands) do
+    if :queue.is_empty(state.pending_commands) do
+      state
+    else
       Process.send_after(self(), :next_command, 10)
       %{state | digging_for_next_command: true}
-    else
-      state
     end
   end
 
