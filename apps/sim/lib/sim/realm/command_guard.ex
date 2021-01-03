@@ -55,7 +55,10 @@ defmodule Sim.Realm.CommandGuard do
       "task executing command #{inspect(command)} failed with reason #{inspect(reason)}"
     )
 
-    {:noreply, finish_command(state, command)}
+    {:noreply,
+     state
+     |> finish_command(command)
+     |> add_command(%{command: :stop})}
   end
 
   def handle_info(:next_command, state) do

@@ -22,6 +22,11 @@ defmodule Test.CommandHandler do
     change_data(fn n -> n + 1 end)
   end
 
+  @impl true
+  def handle_command(%{command: :crash}) do
+    change_data(fn n -> raise "crash command" end)
+  end
+
   def handle_command(any) do
     IO.puts("unhandled command #{inspect(any)}")
   end
