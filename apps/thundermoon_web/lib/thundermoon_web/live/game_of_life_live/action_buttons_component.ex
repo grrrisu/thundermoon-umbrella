@@ -22,8 +22,8 @@ defmodule ThundermoonWeb.GameOfLifeLive.ActionButtonsComponent do
   end
 
   @impl true
-  def handle_event("restart", _value, socket) do
-    GameOfLife.restart()
+  def handle_event("reset", _value, socket) do
+    GameOfLife.reset()
     send(self(), {:update, data: nil})
     {:noreply, socket}
   end

@@ -38,9 +38,7 @@ defmodule Sim.Realm do
       end
 
       def restart() do
-        @supervisor
-        |> Process.whereis()
-        |> Process.exit(:normal)
+        Supervisor.stop(@supervisor)
       end
 
       def start_sim(delay \\ 1_000, command \\ %{command: :sim}) do

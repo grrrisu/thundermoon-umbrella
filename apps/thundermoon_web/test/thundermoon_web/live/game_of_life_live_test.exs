@@ -6,9 +6,8 @@ defmodule ThundermoonWeb.GameOfLifeLiveTest do
 
   alias Phoenix.PubSub
 
-  def restart_realm(_) do
-    GameOfLife.restart()
-    :ok
+  def reset_realm(_) do
+    GameOfLife.reset()
   end
 
   def login_as_member(%{conn: conn}) do
@@ -29,7 +28,7 @@ defmodule ThundermoonWeb.GameOfLifeLiveTest do
   end
 
   describe "a member" do
-    setup [:login_as_member, :restart_realm]
+    setup [:login_as_member, :reset_realm]
 
     test "disconnected and connected mount", %{conn: conn} do
       conn = get(conn, "/game_of_life")
@@ -45,7 +44,7 @@ defmodule ThundermoonWeb.GameOfLifeLiveTest do
     end
 
     test "can start and stop sim", %{conn: conn} do
-      GameOfLife.create(3)
+      :ok = GameOfLife.create(3)
       PubSub.subscribe(ThundermoonWeb.PubSub, "GameOfLife")
       {:ok, view, _html} = live(conn, "/game_of_life")
 
@@ -93,7 +92,7 @@ defmodule ThundermoonWeb.GameOfLifeLiveTest do
   end
 
   describe "a admin" do
-    setup [:login_as_admin, :restart_realm]
+    setup [:login_as_admin, :reset_realm]
 
     test "can create a grid", %{conn: conn} do
       PubSub.subscribe(ThundermoonWeb.PubSub, "GameOfLife")
@@ -117,7 +116,7 @@ defmodule ThundermoonWeb.GameOfLifeLiveTest do
       {:ok, view, html} = live(conn, "/game_of_life")
       assert html =~ "id=\"grid\""
       view |> element("#start-button") |> render_click()
-      view |> element("#restart-button") |> render_click() =~ "Create a new Grid"
+      view |> element("#reset-button") |> render_click() =~ "Create a new Grid"
     end
   end
 end
