@@ -21,12 +21,17 @@ defmodule GameOfLife.Commands do
 
   @impl true
   def handle_command(%{command: :create, config: size}) do
-    change_data(fn _nil -> Grid.create(%{size: size}) end)
+    Grid.create(%{size: size}) |> set_data()
   end
 
   @impl true
   def handle_command(%{command: :recreate}) do
     change_data(fn grid -> Grid.create(%{size: Grid.height(grid)}) end)
+  end
+
+  @impl true
+  def handle_command(%{command: :reset}) do
+    set_data(nil)
   end
 
   @impl true

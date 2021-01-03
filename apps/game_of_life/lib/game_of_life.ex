@@ -6,6 +6,11 @@ defmodule GameOfLife do
   It acts as a single point of entry to the game.
   """
 
+  def reset() do
+    stop_sim()
+    send_command(%{command: :reset})
+  end
+
   def recreate() do
     stop_sim()
     send_command(%{command: :recreate})
