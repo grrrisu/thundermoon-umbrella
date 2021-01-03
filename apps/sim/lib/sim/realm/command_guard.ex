@@ -18,7 +18,8 @@ defmodule Sim.Realm.CommandGuard do
        task_supervisor_module: task_supervisor_name,
        pending_commands: :queue.new(),
        current_lock: nil,
-       task: {nil, nil}
+       task: {nil, nil},
+       digging_for_next_command: false
      }}
   end
 
@@ -62,7 +63,7 @@ defmodule Sim.Realm.CommandGuard do
   end
 
   def handle_info(:next_command, state) do
-    {:noreply, next_command(state)}
+    {:noreply, next_command(%{state | digging_for_next_command: false})}
   end
 
   def handle_info(_msg, state) do
@@ -90,12 +91,15 @@ defmodule Sim.Realm.CommandGuard do
     end
   end
 
-  defp more_commands(state) do
+  defp more_commands(%{digging_for_next_command: true} = state), do: state
+
+  defp more_commands(%{digging_for_next_command: false} = state) do
     if not :queue.is_empty(state.pending_commands) do
       Process.send_after(self(), :next_command, 10)
+      %{state | digging_for_next_command: true}
+    else
+      state
     end
-
-    state
   end
 
   defp execute_command(state, command) do
