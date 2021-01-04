@@ -29,7 +29,7 @@ defmodule Sim.Realm do
       end
 
       def create(config) do
-        send_command(%{command: :create, config: config})
+        send_command({:create, config: config})
       end
 
       def recreate(config) do
@@ -41,12 +41,12 @@ defmodule Sim.Realm do
         Supervisor.stop(@supervisor)
       end
 
-      def start_sim(delay \\ 1_000, command \\ %{command: :sim}) do
-        send_command(%{command: :start, delay: delay})
+      def start_sim(delay \\ 1_000, command \\ {:sim}) do
+        send_command({:sim_start, delay: delay})
       end
 
       def stop_sim() do
-        send_command(%{command: :stop})
+        send_command({:sim_stop})
       end
 
       def started?() do

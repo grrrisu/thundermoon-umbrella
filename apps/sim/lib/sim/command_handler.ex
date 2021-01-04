@@ -2,29 +2,28 @@ defmodule Sim.CommandHandler do
   @moduledoc """
   examples
 
-    def handle_command(%{command: :start}) do
-      SimulationLoop.start(GameOfLife.SimulationLoop, 1_000, %{command: :sim})
+    def handle_command({:start}) do
+      SimulationLoop.start(GameOfLife.SimulationLoop, 1_000, {:sim})
     end
 
-    def handle_command(%{command: :stop}) do
+    def handle_command({:stop}) do
       SimulationLoop.stop(GameOfLife.SimulationLoop)
     end
 
-    def handle_command(%{command: :create, config: config}) do
+    def handle_command({:create, config: config}) do
       Data.set_data(GameOfLife.Data)
       |> Simulation.create(config)
       |> Data.set_data(GameOfLife.Data)
     end
 
-    def handle_command(%{command: :sim}) do
+    def handle_command({:sim}) do
       Data.get_data(GameOfLife.Data)
       |> Simulation.sim()
       |> Data.set_data(GameOfLife.Data)
     end
   """
 
-  @type command :: %{command: term}
-  # @type command :: %{atom, keyword}
+  @type command :: {atom, keyword}
   @type state :: %{current_lock: term}
 
   @doc """
