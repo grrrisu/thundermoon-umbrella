@@ -11,7 +11,7 @@ defmodule Sim.Commands.Helpers do
 
       @behaviour Sim.CommandHandler
 
-      def start_simulation_loop(delay \\ 1_000, command \\ %{command: :sim}) do
+      def start_simulation_loop(delay \\ 1_000, command \\ {:sim}) do
         SimulationLoop.start(@simulation_loop, delay, command)
       end
 

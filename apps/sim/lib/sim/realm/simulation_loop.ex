@@ -9,7 +9,7 @@ defmodule Sim.Realm.SimulationLoop do
 
   # --- client ---
 
-  def start(server, delay \\ 100, command \\ %{command: :sim}) do
+  def start(server, delay \\ 100, command \\ {:sim}) do
     GenServer.cast(server, {:start, delay, command})
   end
 
@@ -38,7 +38,7 @@ defmodule Sim.Realm.SimulationLoop do
        topic: topic,
        next_tick: nil,
        delay: 1_000,
-       command: %{command: :sim},
+       command: {:sim},
        command_guard_module: command_guard_module
      }}
   end

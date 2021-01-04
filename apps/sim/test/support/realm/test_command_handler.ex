@@ -3,27 +3,27 @@ defmodule Test.CommandHandler do
   use Sim.Commands.GlobalLock
 
   @impl true
-  def handle_command(%{command: :create, config: size}) do
+  def handle_command({:create, config: size}) do
     change_data(fn _nil -> size * 2 end)
   end
 
   @impl true
-  def handle_command(%{command: :start, delay: delay}) do
-    start_simulation_loop(100)
+  def handle_command({:sim_start, delay: delay}) do
+    start_simulation_loop(delay)
   end
 
   @impl true
-  def handle_command(%{command: :stop}) do
+  def handle_command({:sim_stop}) do
     stop_simulation_loop()
   end
 
   @impl true
-  def handle_command(%{command: :sim}) do
+  def handle_command({:sim}) do
     change_data(fn n -> n + 1 end)
   end
 
   @impl true
-  def handle_command(%{command: :crash}) do
+  def handle_command({:crash}) do
     change_data(fn n -> raise "crash command" end)
   end
 

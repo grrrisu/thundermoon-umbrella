@@ -2,7 +2,7 @@
 
 ![Sim.Realm Diagram](documentation/SimRealm.png)
 
-* Custom.Realm acts as a context mapping. In provides an API to convert incoming requests to commands. For example a function call `toggle(x,y)` gets mapped to a command `{:toggle, x: x, y: y}`
+* Custom.Realm acts as an entrypoint. In provides an API to convert incoming requests to commands. For example a function call `toggle(x,y)` gets mapped to a command `{:toggle, x: x, y: y}`
 
 * The CommandGuard receives all the commands and executes them in order they arrive (fifo). It also makes sure they get executed in **isolation**. For that it calls `lock` before each command and `unlock` after each regardless if it was successful or not. The command itself is executed within its own Task.
 
@@ -12,20 +12,3 @@
 This part is the most robust one, the data will still be available even if the command guard and the simulation loop crash.
 
 * Sim.Realm.SimulationLoop: Has a recurring tick when the simulation is running, that will trigger a sim command.
-
-## Installation
-
-If [available in Hex](https://hex.pm/docs/publish), the package can be installed
-by adding `sim` to your list of dependencies in `mix.exs`:
-
-```elixir
-def deps do
-  [
-    {:sim, "~> 0.3.2"}
-  ]
-end
-```
-
-Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_doc)
-and published on [HexDocs](https://hexdocs.pm). Once published, the docs can
-be found at [https://hexdocs.pm/sim](https://hexdocs.pm/sim).

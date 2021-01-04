@@ -59,7 +59,7 @@ defmodule Sim.Realm.CommandGuard do
     {:noreply,
      state
      |> finish_command(command)
-     |> add_command(%{command: :stop})}
+     |> add_command({:sim_stop})}
   end
 
   def handle_info(:next_command, state) do
