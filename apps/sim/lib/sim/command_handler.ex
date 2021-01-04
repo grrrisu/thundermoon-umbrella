@@ -1,4 +1,4 @@
-defmodule Sim.Commands do
+defmodule Sim.CommandHandler do
   @moduledoc """
   examples
 

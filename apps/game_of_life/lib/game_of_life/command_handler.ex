@@ -1,4 +1,4 @@
-defmodule GameOfLife.Commands do
+defmodule GameOfLife.CommandHandler do
   use Sim.Commands.Helpers, app_module: GameOfLife
   use Sim.Commands.GlobalLock
 
