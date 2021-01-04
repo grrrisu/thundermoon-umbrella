@@ -1,6 +1,6 @@
 # Changelog
 
-## dev
+## 0.5.0
 
 * Components for counter (digit, action buttons)
 
@@ -10,9 +10,24 @@
 
   * entity form
 
+* Sim:
+
+  * introduce command handlers
+
+  * command guard to control concurrent workers on the data
+
+  * SimulationLoop holds state of running flag
+
+* Game of Life using commands
+
+* Lotka Volterra
+
+  * predators
+
 * various upgrades
 
   * credo
+
 
 ## 0.4.0
 
