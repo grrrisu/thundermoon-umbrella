@@ -1,5 +1,11 @@
 # Changelog
 
+## dev
+
+* various upgrades
+
+  * Elixir 1.11.2
+
 ## 0.5.0
 
 * Components for counter (digit, action buttons)
