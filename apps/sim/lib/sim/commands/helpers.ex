@@ -9,7 +9,7 @@ defmodule Sim.Commands.Helpers do
       @data_server Realm.server_name(unquote(app_module), "Data")
       @simulation_loop Realm.server_name(unquote(app_module), "SimulationLoop")
 
-      @behaviour Sim.Commands
+      @behaviour Sim.CommandHandler
 
       def start_simulation_loop(delay \\ 1_000, command \\ %{command: :sim}) do
         SimulationLoop.start(@simulation_loop, delay, command)

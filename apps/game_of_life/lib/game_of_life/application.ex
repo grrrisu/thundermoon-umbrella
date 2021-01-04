@@ -5,7 +5,7 @@ defmodule GameOfLife.Application do
 
   def start(_type, _args) do
     children = [
-      {Sim.Realm.Supervisor, name: GameOfLife, commands_module: GameOfLife.Commands}
+      {Sim.Realm.Supervisor, name: GameOfLife, commands_module: GameOfLife.CommandHandler}
     ]
 
     opts = [
