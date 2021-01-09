@@ -6,6 +6,10 @@
 
   * Elixir 1.11.2
 
+  * Phoenix Live View 0.15
+
+  * Phoenix Live Dashboard 0.4
+
 ## 0.5.0
 
 * Components for counter (digit, action buttons)
