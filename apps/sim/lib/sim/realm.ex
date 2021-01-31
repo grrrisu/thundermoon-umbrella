@@ -2,7 +2,7 @@ defmodule Sim.Realm do
   @moduledoc """
   The context for realm
   """
-  alias Sim.Realm.CommandGuard
+  alias Sim.Realm.CommandFan
 
   def server_name(name, server) do
     Module.concat(name, server)
@@ -16,7 +16,7 @@ defmodule Sim.Realm do
       alias Sim.Realm.{Data, SimulationLoop}
 
       @supervisor Realm.server_name(unquote(app_module), "Supervisor")
-      @server Realm.server_name(unquote(app_module), "CommandGuard")
+      @server Realm.server_name(unquote(app_module), "CommandFan")
       @simulation_loop Realm.server_name(unquote(app_module), "SimulationLoop")
       @data Realm.server_name(unquote(app_module), "Data")
 
@@ -25,11 +25,11 @@ defmodule Sim.Realm do
       end
 
       def send_command(command) do
-        CommandGuard.receive(@server, command)
+        CommandFan.dispatch(@server, command)
       end
 
       def create(config) do
-        send_command({:create, config: config})
+        send_command({:realm, :create, config: config})
       end
 
       def recreate(config) do

@@ -21,9 +21,11 @@ defmodule Sim.Realm.CommandFan do
   @impl true
   def init(opts) do
     {:ok,
-     services: init_services(opts[:services]),
-     task_supervisor_module: opts[:task_supervisor_module],
-     event_bus_module: opts[:event_bus_module]}
+     %{
+       services: init_services(opts[:services]),
+       task_supervisor_module: opts[:task_supervisor_module],
+       event_bus_module: opts[:event_bus_module]
+     }}
   end
 
   def init_services(services) do
@@ -56,19 +58,17 @@ defmodule Sim.Realm.CommandFan do
 
   # The task completed successfully
   @impl true
-  def handle_info({ref, events}, state) when is_list(events) do
+  def handle_info({ref, :ok}, state) do
     case find_ended_task(ref, state.services) do
       nil ->
-        noreply_unknown_ref(ref, "received answer #{inspect(events)}", state)
+        noreply_unknown_ref(ref, "received answer :ok}", state)
 
       {context, service} ->
         # We don't care about the DOWN message now, so let's demonitor and flush it
         Process.demonitor(ref, [:flush])
 
         Logger.debug(
-          "task executing command #{inspect(service.running_command)} finished with result #{
-            inspect(events)
-          }"
+          "task executing command #{inspect(service.running_command)} finished successfully"
         )
 
         {:noreply, assign_service(state, context, handle_answer(service, state))}
