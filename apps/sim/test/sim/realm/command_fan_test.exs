@@ -33,6 +33,7 @@ defmodule Sim.Realm.CommandFanTest do
   describe "dispatch command" do
     setup do
       {:ok, task_supervisor} = start_supervised(Task.Supervisor)
+      {:ok, event_bus} = start_supervised(Test.EventBusNull)
       {:ok, task_pid} = Task.start(fn -> :nothing end)
       task_ref = Process.monitor(task_pid)
 
@@ -57,10 +58,11 @@ defmodule Sim.Realm.CommandFanTest do
             queue: :queue.from_list([{:admin, :start_sim, []}])
           }
         },
-        task_supervisor_module: task_supervisor
+        task_supervisor_module: task_supervisor,
+        event_bus_module: event_bus
       }
 
-      %{state: state, task_ref: task_ref}
+      %{state: state, task_ref: task_ref, event_bus: event_bus}
     end
 
     test "queue if another command of the same service is already running", %{state: state} do
@@ -88,13 +90,20 @@ defmodule Sim.Realm.CommandFanTest do
       assert :queue.len(state.services.admin.queue) == 0
     end
 
-    test "execute next command even after task has failed", %{state: state, task_ref: task_ref} do
+    test "execute next command even after task has failed", %{
+      state: state,
+      task_ref: task_ref,
+      event_bus: event_bus
+    } do
       {:noreply, state} =
         CommandFan.handle_info({:DOWN, task_ref, :process, "pid", :error}, state)
 
       assert state.services.admin.running_command == {:admin, :start_sim, []}
       assert is_reference(state.services.admin.running_ref)
       assert :queue.len(state.services.admin.queue) == 0
+
+      assert [{:command_failed, [command: {:admin, :create, [size: 25]}, reason: :error]}] ==
+               Test.EventBusNull.get_events(event_bus)
     end
   end
 end
