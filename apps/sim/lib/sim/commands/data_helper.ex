@@ -1,26 +1,18 @@
-defmodule Sim.Commands.Helpers do
+defmodule Sim.Commands.DataHelpers do
   defmacro __using__(opts) do
     app_module = opts[:app_module]
 
     quote do
       alias Sim.Realm
-      alias Sim.Realm.{Data, SimulationLoop}
+      alias Sim.Realm.Data
 
       @data_server Realm.server_name(unquote(app_module), "Data")
-      @simulation_loop Realm.server_name(unquote(app_module), "SimulationLoop")
 
       @behaviour Sim.CommandHandler
 
-      def start_simulation_loop(delay \\ 1_000, command \\ {:sim}) do
-        SimulationLoop.start(@simulation_loop, delay, command)
-      end
-
-      def stop_simulation_loop() do
-        SimulationLoop.stop(@simulation_loop)
-      end
-
       def set_data(data) do
         Data.set_data(@data_server, data)
+        [{:update, data: data}]
       end
 
       def get_data() do

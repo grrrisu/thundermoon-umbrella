@@ -22,11 +22,6 @@ defmodule Sim.Realm.Supervisor do
        services: %{user: UserService, sim: SimService},
        task_supervisor_name: Realm.server_name(name, "CommandTaskSupervisor"),
        name: Realm.server_name(name, "CommandFan")},
-      {Sim.Realm.CommandGuard,
-       commands_module: commands_module,
-       task_supervisor_name: Realm.server_name(name, "CommandTaskSupervisor"),
-       name: Realm.server_name(name, "CommandGuard")},
-      {Task.Supervisor, name: Realm.server_name(name, "CommandTaskSupervisor")}
     ]
 
     Supervisor.init(children, strategy: :rest_for_one)
