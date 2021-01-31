@@ -25,8 +25,7 @@ defmodule Sim.Realm.CommandFanTest do
 
     test "init services", %{state: state} do
       services = %{sim: SimService, action: ActionService}
-      initialized_state = CommandFan.init_services(services)
-      assert initialized_state == state
+      assert state == CommandFan.init_services(services)
     end
   end
 
@@ -104,6 +103,37 @@ defmodule Sim.Realm.CommandFanTest do
 
       assert [{:command_failed, [command: {:admin, :create, [size: 25]}, reason: :error]}] ==
                Test.EventBusNull.get_events(event_bus)
+    end
+  end
+
+  describe "command task" do
+    setup do
+      {:ok, task_supervisor} = start_supervised(Task.Supervisor)
+      {:ok, event_bus} = start_supervised(Test.EventBusNull)
+
+      state = %{
+        services: %{
+          test: %{
+            module: Test.CommandHandler,
+            running_command: nil,
+            running_ref: nil,
+            queue: :queue.new()
+          }
+        },
+        task_supervisor_module: task_supervisor,
+        event_bus_module: event_bus
+      }
+
+      %{state: state, event_bus: event_bus}
+    end
+
+    test "execute command and add events to event bus", %{state: state, event_bus: event_bus} do
+      command = {:test, :echo, payload: "holeridu"}
+
+      service_state = CommandFan.queue_or_execute(command, state.services.test, state)
+      assert service_state.running_command == command
+      Process.sleep(10)
+      assert [{:test, :echoed, payload: "holeridu"}] == Test.EventBusNull.get_events(event_bus)
     end
   end
 end
