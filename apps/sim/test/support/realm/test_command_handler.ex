@@ -22,6 +22,10 @@ defmodule Test.CommandHandler do
     change_data(fn n -> n + 1 end)
   end
 
+  def execute({:test, :echo, payload: payload}) do
+    [{:test, :echoed, payload: payload}]
+  end
+
   @impl true
   def execute({:crash}) do
     change_data(fn _n -> raise "crash command" end)
