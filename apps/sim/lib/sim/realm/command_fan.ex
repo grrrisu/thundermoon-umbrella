@@ -8,6 +8,8 @@ defmodule Sim.Realm.CommandFan do
 
   require Logger
 
+  alias Sim.Realm.EventBus
+
   @type context :: atom
   @type cmd :: atom
   @type command :: {context, cmd, keyword}
@@ -20,7 +22,8 @@ defmodule Sim.Realm.CommandFan do
   def init(opts) do
     {:ok,
      services: init_services(opts[:services]),
-     task_supervisor_module: opts[:task_supervisor_module]}
+     task_supervisor_module: opts[:task_supervisor_module],
+     event_bus_module: opts[:event_bus_module]}
   end
 
   def init_services(services) do
@@ -53,7 +56,7 @@ defmodule Sim.Realm.CommandFan do
 
   # The task completed successfully
   @impl true
-  def handle_info({ref, events}, state) do
+  def handle_info({ref, events}, state) when is_list(events) do
     case find_ended_task(ref, state.services) do
       nil ->
         noreply_unknown_ref(ref, "received answer #{inspect(events)}", state)
@@ -68,7 +71,7 @@ defmodule Sim.Realm.CommandFan do
           }"
         )
 
-        {:noreply, assign_service(state, context, handle_answer(events, service, state))}
+        {:noreply, assign_service(state, context, handle_answer(service, state))}
     end
   end
 
@@ -86,10 +89,8 @@ defmodule Sim.Realm.CommandFan do
           }"
         )
 
-        # add_command({:sim_stop})
-        events = [{:command_failed, command: service.running_command, reason: reason}]
-
-        {:noreply, assign_service(state, context, handle_answer(events, service, state))}
+        handle_task_error(service.running_command, reason, state.event_bus_module)
+        {:noreply, assign_service(state, context, handle_answer(service, state))}
     end
   end
 
@@ -100,6 +101,7 @@ defmodule Sim.Realm.CommandFan do
         state.task_supervisor_module,
         fn ->
           module.execute(command)
+          |> store_events(state.event_bus_module)
         end
       )
 
@@ -111,8 +113,8 @@ defmodule Sim.Realm.CommandFan do
     %{service_state | queue: :queue.in(command, queue)}
   end
 
-  def store_events(events) do
-    Logger.info(inspect(events))
+  def store_events(events, event_bus_module) do
+    EventBus.add_events(event_bus_module, events)
   end
 
   defp find_ended_task(ref, services) do
@@ -121,8 +123,13 @@ defmodule Sim.Realm.CommandFan do
     end)
   end
 
-  defp handle_answer(events, service, state) do
-    store_events(events)
+  defp handle_task_error(running_command, reason, event_bus_module) do
+    # add_command({:sim_stop})
+    events = [{:command_failed, command: running_command, reason: reason}]
+    store_events(events, event_bus_module)
+  end
+
+  defp handle_answer(service, state) do
     service = %{service | running_ref: nil, running_command: nil}
 
     case :queue.out(service.queue) do

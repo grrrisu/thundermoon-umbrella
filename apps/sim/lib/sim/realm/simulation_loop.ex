@@ -39,7 +39,7 @@ defmodule Sim.Realm.SimulationLoop do
        next_tick: nil,
        delay: 1_000,
        command: {:sim},
-       command_guard_module: command_guard_module
+       command_guard_module: opts[:command_guard_module]
      }}
   end
 
