@@ -3,7 +3,7 @@ defmodule Sim.Realm.SimulationLoop do
 
   require Logger
 
-  alias Sim.Realm.CommandFan
+  alias Sim.Realm.CommandBus
 
   # --- client ---
 
@@ -63,7 +63,7 @@ defmodule Sim.Realm.SimulationLoop do
   end
 
   def handle_info(:tick, state) do
-    :ok = CommandFan.dispatch(state.command_bus_module, state.command)
+    :ok = CommandBus.dispatch(state.command_bus_module, state.command)
     {:noreply, %{state | next_tick: create_next_tick(state.delay)}}
   end
 

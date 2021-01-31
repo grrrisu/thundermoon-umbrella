@@ -1,4 +1,4 @@
-defmodule Sim.Realm.CommandFan do
+defmodule Sim.Realm.CommandBus do
   @moduledoc """
   A command bus routing commands to a domain service executing the command in a separate task.
   One command per domain service can be executed, but multiple commands from different
