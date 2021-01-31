@@ -82,7 +82,7 @@ defmodule Sim.Realm.CommandFanTest do
     end
 
     test "execute next command after task has finished", %{state: state, task_ref: task_ref} do
-      {:noreply, state} = CommandFan.handle_info({task_ref, ["an_event"]}, state)
+      {:noreply, state} = CommandFan.handle_info({task_ref, :ok}, state)
 
       assert state.services.admin.running_command == {:admin, :start_sim, []}
       assert is_reference(state.services.admin.running_ref)

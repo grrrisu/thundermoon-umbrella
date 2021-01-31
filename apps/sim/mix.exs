@@ -35,7 +35,8 @@ defmodule Sim.MixProject do
        git: "git://github.com/grrrisu/credo.git",
        branch: "fix-option-min-priority",
        only: [:dev, :test],
-       runtime: false}
+       runtime: false},
+      {:phoenix_pubsub, "~> 2.0"}
     ]
   end
 end

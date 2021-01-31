@@ -3,7 +3,7 @@ defmodule Test.CommandHandler do
   use Sim.Commands.DataHelpers, app_module: Test.Realm
 
   @impl true
-  def execute({:create, config: size}) do
+  def execute({:realm, :create, config: size}) do
     change_data(fn _nil -> size * 2 end)
   end
 

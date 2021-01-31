@@ -6,15 +6,14 @@ defmodule Sim.RealmTest do
   require Logger
 
   setup do
+    start_supervised!({Phoenix.PubSub, name: :test_pub_sub})
+
     start_supervised!(
-      {Sim.Realm.Supervisor, name: Test.Realm, commands_module: Test.CommandHandler}
+      {Sim.Realm.Supervisor,
+       name: Test.Realm, domain_services: %{realm: Test.CommandHandler}, pub_sub: :test_pub_sub}
     )
 
-    Phoenix.PubSub.subscribe(ThundermoonWeb.PubSub, "Test.Realm")
-
-    on_exit(fn ->
-      Phoenix.PubSub.unsubscribe(ThundermoonWeb.PubSub, "Test.Realm")
-    end)
+    Phoenix.PubSub.subscribe(:test_pub_sub, "Test.Realm")
   end
 
   describe "init" do
