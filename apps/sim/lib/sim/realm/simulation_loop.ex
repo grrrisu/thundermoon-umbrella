@@ -5,8 +5,6 @@ defmodule Sim.Realm.SimulationLoop do
 
   alias Sim.Realm.CommandGuard
 
-  alias Phoenix.PubSub
-
   # --- client ---
 
   def start(server, delay \\ 100, command \\ {:sim}) do
@@ -24,18 +22,14 @@ defmodule Sim.Realm.SimulationLoop do
   # -- server ---
 
   def start_link(opts \\ []) do
-    GenServer.start_link(__MODULE__, {opts[:command_guard_module], opts[:pubsub], opts[:topic]},
-      name: opts[:name]
-    )
+    GenServer.start_link(__MODULE__, opts, name: opts[:name])
   end
 
-  def init({command_guard_module, pubsub, topic}) do
+  def init(opts) do
     Logger.debug("start simulation loop")
 
     {:ok,
      %{
-       pubsub: pubsub,
-       topic: topic,
        next_tick: nil,
        delay: 1_000,
        command: {:sim},
@@ -45,7 +39,6 @@ defmodule Sim.Realm.SimulationLoop do
 
   def handle_cast({:start, delay, command}, %{next_tick: nil} = state) do
     Logger.info("starting simulation ...")
-    broadcast(state, true)
     send(self(), :tick)
     {:noreply, %{state | delay: delay, command: command}}
   end
@@ -78,17 +71,8 @@ defmodule Sim.Realm.SimulationLoop do
     Process.send_after(self(), :tick, delay)
   end
 
-  def terminate(_reason, state) do
-    broadcast(state, false)
-  end
-
   defp set_stop(state) do
     Logger.info("stop sim loop")
-    broadcast(state, false)
     %{state | next_tick: nil}
-  end
-
-  defp broadcast(state, started) do
-    PubSub.broadcast(state.pubsub, state.topic, {:sim, started: started})
   end
 end

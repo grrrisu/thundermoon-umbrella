@@ -1,15 +1,13 @@
 defmodule Sim.Realm.Data do
   use Agent
 
-  alias Phoenix.PubSub
-
   require Logger
 
   def start_link(opts) do
     Agent.start_link(
       fn ->
         Logger.debug("start realm data")
-        %{data: nil, pubsub: opts[:pubsub], topic: opts[:topic]}
+        %{data: nil}
       end,
       name: opts[:name]
     )
@@ -25,12 +23,7 @@ defmodule Sim.Realm.Data do
 
   def set_data(agent, data) do
     Agent.update(agent, fn state ->
-      :ok = broadcast(state, {:update, data: data})
       %{state | data: data}
     end)
-  end
-
-  defp broadcast(state, payload) do
-    PubSub.broadcast(state.pubsub, state.topic, payload)
   end
 end
