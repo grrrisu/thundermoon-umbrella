@@ -11,12 +11,9 @@ defmodule Sim.Realm.Supervisor do
 
   def init({name, domain_services}) do
     children = [
-      {Sim.Realm.Data,
-       name: Realm.server_name(name, "Data"), pubsub: ThundermoonWeb.PubSub, topic: topic(name)},
+      {Sim.Realm.Data, name: Realm.server_name(name, "Data")},
       {Sim.Realm.SimulationLoop,
        name: Realm.server_name(name, "SimulationLoop"),
-       pubsub: ThundermoonWeb.PubSub,
-       topic: topic(name),
        command_bus_module: Realm.server_name(name, "CommandFan")},
       {Sim.Realm.CommandFan,
        services: domain_services,
@@ -31,6 +28,11 @@ defmodule Sim.Realm.Supervisor do
         name: Realm.server_name(name, "EventBus"),
         task_supervisor_name: Realm.server_name(name, "EventTaskSupervisor")
       },
+      {Sim.Realm.Broadcaster,
+       name: Realm.server_name(name, "Broadcaster"),
+       pubsub: ThundermoonWeb.PubSub,
+       topic: topic(name)},
+      {Task.Supervisor, name: Realm.server_name(name, "EventTaskSupervisor")}
     ]
 
     Supervisor.init(children, strategy: :rest_for_one)
