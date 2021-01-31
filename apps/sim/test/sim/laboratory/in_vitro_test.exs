@@ -6,8 +6,9 @@ defmodule Sim.Laboratory.InVitroTest do
   alias Sim.Laboratory.InVitro
 
   setup do
-    PubSub.subscribe(ThundermoonWeb.PubSub, "1")
-    %{pid: start_supervised!({InVitro, entry_id: "1", pub_sub: ThundermoonWeb.PubSub})}
+    start_supervised!({PubSub, name: :test_pub_sub})
+    PubSub.subscribe(:test_pub_sub, "1")
+    %{pid: start_supervised!({InVitro, entry_id: "1", pub_sub: :test_pub_sub})}
   end
 
   describe "create" do
