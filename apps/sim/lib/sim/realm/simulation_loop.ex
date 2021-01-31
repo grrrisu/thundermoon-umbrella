@@ -3,7 +3,7 @@ defmodule Sim.Realm.SimulationLoop do
 
   require Logger
 
-  alias Sim.Realm.CommandGuard
+  alias Sim.Realm.CommandFan
 
   # --- client ---
 
@@ -32,8 +32,8 @@ defmodule Sim.Realm.SimulationLoop do
      %{
        next_tick: nil,
        delay: 1_000,
-       command: {:sim},
-       command_guard_module: opts[:command_guard_module]
+       command: {:sim, :tick},
+       command_bus_module: opts[:command_bus_module]
      }}
   end
 
@@ -63,7 +63,7 @@ defmodule Sim.Realm.SimulationLoop do
   end
 
   def handle_info(:tick, state) do
-    :ok = CommandGuard.receive(state.command_guard_module, state.command)
+    :ok = CommandFan.dispatch(state.command_bus_module, state.command)
     {:noreply, %{state | next_tick: create_next_tick(state.delay)}}
   end
 
