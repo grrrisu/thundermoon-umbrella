@@ -10,7 +10,7 @@ defmodule Sim.RealmTest do
 
     start_supervised!(
       {Sim.Realm.Supervisor,
-       name: Test.Realm, domain_services: %{test: Test.CommandHandler}, pub_sub: :test_pub_sub}
+      name: Test.Realm, domain_services: [%{test: Test.CommandHandler}], pub_sub: :test_pub_sub}
     )
 
     Phoenix.PubSub.subscribe(:test_pub_sub, "Test.Realm")
@@ -74,6 +74,14 @@ defmodule Sim.RealmTest do
       Process.sleep(1)
       assert false == Realm.started?()
     end
+
+    test "command crash" do
+      Realm.start_sim(1_000, {:test, :sim})
+      Realm.crash()
+      assert_receive({:sim, started: false})
+      assert 0 == Realm.get_root()
+      assert false == Realm.started?()
+    end
   end
 
   describe "recover" do
@@ -118,7 +126,7 @@ defmodule Sim.RealmTest do
     test "command crash" do
       Realm.start_sim(1_000, {:test, :sim})
       Realm.crash()
-      wait_for_all()
+      # wait_for_all()
       assert_receive({:sim, started: false})
       assert 0 == Realm.get_root()
       assert false == Realm.started?()
