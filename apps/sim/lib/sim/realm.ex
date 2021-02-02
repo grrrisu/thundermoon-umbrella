@@ -10,7 +10,6 @@ defmodule Sim.Realm do
 
   defmacro __using__(opts) do
     app_module = opts[:app_module]
-    context = opts[:context] || :realm
 
     quote do
       alias Sim.Realm
@@ -20,7 +19,6 @@ defmodule Sim.Realm do
       @server Realm.server_name(unquote(app_module), "CommandBus")
       @simulation_loop Realm.server_name(unquote(app_module), "SimulationLoop")
       @data Realm.server_name(unquote(app_module), "Data")
-      @context unquote(context)
 
       def get_root() do
         Data.get_data(@data)
@@ -31,7 +29,7 @@ defmodule Sim.Realm do
       end
 
       def create(config) do
-        send_command({@context, :create, config: config})
+        send_command({:realm, :create, config: config})
       end
 
       def recreate(config) do
@@ -44,11 +42,11 @@ defmodule Sim.Realm do
       end
 
       def start_sim(delay \\ 1_000, command \\ {:sim}) do
-        send_command({@context, :sim_start, delay: delay})
+        send_command({:sim, :start, delay: delay})
       end
 
       def stop_sim() do
-        send_command({@context, :sim_stop})
+        send_command({:sim, :stop})
       end
 
       def started?() do
