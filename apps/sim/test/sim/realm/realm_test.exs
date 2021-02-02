@@ -10,7 +10,11 @@ defmodule Sim.RealmTest do
 
     start_supervised!(
       {Sim.Realm.Supervisor,
-      name: Test.Realm, domain_services: [%{test: Test.CommandHandler}], pub_sub: :test_pub_sub}
+       name: Test.Realm,
+       domain_services: [
+         %{test: Test.CommandHandler, realm: Test.CommandHandler, sim: Test.CommandHandler}
+       ],
+       pub_sub: :test_pub_sub}
     )
 
     Phoenix.PubSub.subscribe(:test_pub_sub, "Test.Realm")
@@ -47,12 +51,12 @@ defmodule Sim.RealmTest do
     end
 
     test "start" do
-      assert :ok = Realm.start_sim(1_000, {:test, :sim})
+      assert :ok = Realm.start_sim()
       assert_receive({:sim, started: true})
     end
 
     test "stop" do
-      assert :ok = Realm.start_sim(1_000, {:test, :sim})
+      assert :ok = Realm.start_sim()
       assert :ok = Realm.stop_sim()
       assert_receive({:sim, started: false})
     end
@@ -67,7 +71,7 @@ defmodule Sim.RealmTest do
 
     test "started?" do
       assert false == Realm.started?()
-      Realm.start_sim(1_000, {:test, :sim})
+      Realm.start_sim()
       Process.sleep(1)
       assert true == Realm.started?()
       Realm.stop_sim()
@@ -75,11 +79,10 @@ defmodule Sim.RealmTest do
       assert false == Realm.started?()
     end
 
-    test "command crash" do
-      Realm.start_sim(1_000, {:test, :sim})
+    test "crashed command stops sim" do
+      Realm.start_sim()
       Realm.crash()
       assert_receive({:sim, started: false})
-      assert 0 == Realm.get_root()
       assert false == Realm.started?()
     end
   end
@@ -95,7 +98,7 @@ defmodule Sim.RealmTest do
 
     @tag :skip
     test "server crash" do
-      Realm.start_sim(1_000, {:test, :sim})
+      Realm.start_sim()
       Test.Realm.CommandGuard |> GenServer.stop(:shutdown)
       wait_for_all()
       assert 0 <= Realm.get_root()
@@ -104,7 +107,7 @@ defmodule Sim.RealmTest do
 
     @tag :skip
     test "simulation loop crash" do
-      Realm.start_sim(1_000, {:test, :sim})
+      Realm.start_sim()
       Test.Realm.SimulationLoop |> GenServer.stop(:shutdown)
       assert_receive({:sim, started: false})
       wait_for_all()
@@ -114,7 +117,7 @@ defmodule Sim.RealmTest do
 
     @tag :skip
     test "data crash" do
-      Realm.start_sim(1_000, {:test, :sim})
+      Realm.start_sim()
       Test.Realm.Data |> Agent.stop(:shutdown)
       wait_for_all()
       refute_receive({:sim, started: false})
@@ -124,7 +127,7 @@ defmodule Sim.RealmTest do
 
     @tag :skip
     test "command crash" do
-      Realm.start_sim(1_000, {:test, :sim})
+      Realm.start_sim()
       Realm.crash()
       # wait_for_all()
       assert_receive({:sim, started: false})

@@ -36,7 +36,9 @@ defmodule Sim.Realm.CommandBusTest do
     end
 
     test "get worker state", %{state: state} do
-      state = state |> Map.put(:task_supervisor_module, "tsp") |> Map.put(:event_bus_module, "ebm")
+      state =
+        state |> Map.put(:task_supervisor_module, "tsp") |> Map.put(:event_bus_module, "ebm")
+
       worker_state = %{
         services: [:realm, :sim],
         module: SimService,
@@ -120,7 +122,7 @@ defmodule Sim.Realm.CommandBusTest do
       assert :queue.len(worker.queue) == 0
     end
 
-    test "execute next command even after task has failed", %{
+    test "runs immediately sim stop after a task has failed", %{
       state: state,
       task_ref: task_ref,
       event_bus: event_bus
@@ -130,9 +132,9 @@ defmodule Sim.Realm.CommandBusTest do
 
       worker = CommandBus.assemble_worker_state(:admin, state)
 
-      assert worker.running_command == {:admin, :create, config: 5}
+      assert worker.running_command == {:sim, :stop, []}
       assert is_reference(worker.running_ref)
-      assert :queue.len(worker.queue) == 0
+      assert :queue.to_list(worker.queue) == [{:admin, :create, config: 5}]
 
       assert [{:command_failed, [command: {:admin, :clear, []}, reason: :error]}] ==
                Test.EventBusNull.get_events(event_bus)
@@ -146,11 +148,12 @@ defmodule Sim.Realm.CommandBusTest do
 
       state = %{
         services: %{
-          test: Test.CommandHandler
+          test: Test.CommandHandler,
+          sim: Test.CommandHandler
         },
         workers: [
           %{
-            services: [:test],
+            services: [:test, :sim],
             running_command: nil,
             running_ref: nil,
             queue: :queue.new()

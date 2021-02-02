@@ -3,22 +3,22 @@ defmodule Test.CommandHandler do
   use Sim.Commands.DataHelpers, app_module: Test.Realm
 
   @impl true
-  def execute({:test, :create, config: size}) do
+  def execute({:realm, :create, config: size}) do
     change_data(fn _nil -> size * 2 end)
   end
 
   @impl true
-  def execute({:test, :sim_start, delay: delay}) do
-    start_simulation_loop(delay, {:test, :sim})
+  def execute({:sim, :start, delay: delay}) do
+    start_simulation_loop(delay)
   end
 
   @impl true
-  def execute({:test, :sim_stop, []}) do
+  def execute({:sim, :stop, []}) do
     stop_simulation_loop()
   end
 
   @impl true
-  def execute({:test, :sim, []}) do
+  def execute({:sim, :tick, []}) do
     change_data(fn n -> n + 1 end)
   end
 

@@ -14,6 +14,8 @@ defmodule Sim.Realm.CommandBus do
   @type cmd :: atom
   @type command :: {context, cmd, keyword}
 
+  @sim_stop_command {:sim, :stop, []}
+
   def start_link(opts) do
     GenServer.start_link(__MODULE__, opts, name: opts[:name])
   end
@@ -116,9 +118,7 @@ defmodule Sim.Realm.CommandBus do
         # We don't care about the DOWN message now, so let's demonitor and flush it
         Process.demonitor(ref, [:flush])
 
-        Logger.debug(
-          "task executing command #{inspect(running_command)} finished successfully"
-        )
+        Logger.debug("task executing command #{inspect(running_command)} finished successfully")
 
         {:noreply,
          context
@@ -177,10 +177,9 @@ defmodule Sim.Realm.CommandBus do
   end
 
   defp handle_task_error(worker, reason) do
-    # add_command({:sim_stop})
     events = [{:command_failed, command: worker.running_command, reason: reason}]
     store_events(events, worker.event_bus_module)
-    worker
+    %{worker | queue: :queue.in_r(@sim_stop_command, worker.queue)}
   end
 
   defp handle_answer(worker) do
