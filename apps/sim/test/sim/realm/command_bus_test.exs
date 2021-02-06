@@ -2,6 +2,7 @@ defmodule Sim.Realm.CommandBusTest do
   use ExUnit.Case, async: false
 
   alias Sim.Realm.CommandBus
+  alias Test.EventBusNull
 
   describe "service state" do
     setup do
@@ -56,7 +57,7 @@ defmodule Sim.Realm.CommandBusTest do
   describe "dispatch command" do
     setup do
       {:ok, task_supervisor} = start_supervised(Task.Supervisor)
-      {:ok, event_bus} = start_supervised(Test.EventBusNull)
+      {:ok, event_bus} = start_supervised(EventBusNull)
       {:ok, task_pid} = Task.start(fn -> :nothing end)
       task_ref = Process.monitor(task_pid)
 
@@ -137,14 +138,14 @@ defmodule Sim.Realm.CommandBusTest do
       assert :queue.to_list(worker.queue) == [{:admin, :create, config: 5}]
 
       assert [{:command_failed, [command: {:admin, :clear, []}, reason: :error]}] ==
-               Test.EventBusNull.get_events(event_bus)
+               EventBusNull.get_events(event_bus)
     end
   end
 
   describe "command task" do
     setup do
       {:ok, task_supervisor} = start_supervised(Task.Supervisor)
-      {:ok, event_bus} = start_supervised(Test.EventBusNull)
+      {:ok, event_bus} = start_supervised(EventBusNull)
 
       state = %{
         services: %{
@@ -173,7 +174,7 @@ defmodule Sim.Realm.CommandBusTest do
 
       assert worker.running_command == command
       Process.sleep(10)
-      assert [{:test, :echoed, payload: "holeridu"}] == Test.EventBusNull.get_events(event_bus)
+      assert [{:test, :echoed, payload: "holeridu"}] == EventBusNull.get_events(event_bus)
     end
   end
 end
