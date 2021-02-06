@@ -5,7 +5,16 @@ defmodule GameOfLife.Application do
 
   def start(_type, _args) do
     children = [
-      {Sim.Realm.Supervisor, name: GameOfLife, commands_module: GameOfLife.CommandHandler}
+      {Sim.Realm.Supervisor,
+       name: GameOfLife,
+       domain_services: [
+         %{
+           user: GameOfLife.CommandHandler,
+           realm: GameOfLife.CommandHandler,
+           sim: GameOfLife.CommandHandler
+         }
+       ],
+       pub_sub: ThundermoonWeb.PubSub}
     ]
 
     opts = [
