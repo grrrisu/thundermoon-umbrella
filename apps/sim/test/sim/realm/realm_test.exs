@@ -1,12 +1,14 @@
 defmodule Sim.RealmTest do
   use ExUnit.Case, async: false
 
+  alias Phoenix.PubSub
+
   alias Test.Realm
 
   require Logger
 
   setup do
-    start_supervised!({Phoenix.PubSub, name: :test_pub_sub})
+    start_supervised!({PubSub, name: :test_pub_sub})
 
     start_supervised!(
       {Sim.Realm.Supervisor,
@@ -17,7 +19,7 @@ defmodule Sim.RealmTest do
        pub_sub: :test_pub_sub}
     )
 
-    Phoenix.PubSub.subscribe(:test_pub_sub, "Test.Realm")
+    PubSub.subscribe(:test_pub_sub, "Test.Realm")
   end
 
   describe "init" do
