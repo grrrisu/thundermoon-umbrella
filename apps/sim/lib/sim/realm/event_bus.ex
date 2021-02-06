@@ -16,7 +16,7 @@ defmodule Sim.Realm.EventBus do
 
   @impl true
   def handle_cast({:add_events, events}, state) do
-    Enum.map(events, fn event -> reduce_event(event, state) end)
+    Enum.each(events, fn event -> reduce_event(event, state) end)
     {:noreply, state}
   end
 
