@@ -1,6 +1,18 @@
 # Changelog
 
-## dev
+## 0.6.0
+
+* Sim:
+
+  * Introducing event sourcing
+
+  * Replace the global lock CommandGuard with CommandBus
+
+  * CommandBus and Domain Services executing commands in groups
+
+  * EventBus handling events
+
+  * Extract broadcasting as its own event reducer
 
 * various upgrades
 
