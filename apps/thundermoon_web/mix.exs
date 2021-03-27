@@ -60,11 +60,7 @@ defmodule ThundermoonWeb.MixProject do
       {:observer_cli, "~> 1.5"},
       {:phoenix_live_reload, "~> 1.2", only: :dev},
       {:floki, "~> 0.27", only: :test},
-      {:credo, "~> 1.5.0-rc.2",
-       git: "git://github.com/grrrisu/credo.git",
-       branch: "fix-option-min-priority",
-       only: [:dev, :test],
-       runtime: false}
+      {:credo, "~> 1.5", only: [:dev, :test], runtime: false}
     ]
   end
 
