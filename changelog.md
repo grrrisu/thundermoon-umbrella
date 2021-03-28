@@ -2,8 +2,9 @@
 
 ## dev
 
+- css: replace milligram with tailwindcss
+- include line-awesome as npm package
 - various upgrades
-
   - credo 1.5.5
 
 ## 0.6.0
