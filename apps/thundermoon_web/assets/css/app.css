@@ -2,10 +2,11 @@
 
 @import "./tailwind.css";
 @import "../node_modules/nprogress/nprogress.css";
-@import "./line-awesome.css";
-@import "./variables.scss";
+@import "line-awesome/dist/line-awesome/css/line-awesome.css";
+/* @import "../node_modules/line-awesome/dist/font-awesome-line-awesome/css/all.css"; */
+/* @import "./variables.scss";
 @import "./main.scss";
 @import "./form.scss";
 @import "./chat.scss";
 @import "./counter.scss";
-@import "./game_of_life.scss";
+@import "./game_of_life.scss"; */
