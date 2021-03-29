@@ -9,39 +9,9 @@
     <%= csrf_meta_tag() %>
     <script type="text/javascript" src="<%= Routes.static_path(@conn, "/app.js") %>"></script>
   </head>
-  <body>
-    <header>
-      <section class="container">
-        <nav role="navigation">
-          <%= if signed_in?(@conn) do %>
-          <ul>
-            <li><%= link "Dashboard", to: "/dashboard" %></li>
-            <li><%= link "Users", to: Routes.user_path(@conn, :index) %></li>
-          </ul>
-          <% end %>
-          <ul>
-            <%= if signed_in?(@conn) do %>
-              <li>
-                <%= link to: Routes.auth_path(@conn, :delete), method: :delete  do %>
-                  Logout <i class="la la-sign-out"></i>
-                <% end %>
-              </li>
-            <% else %>
-              <li>
-                <%= link to: Routes.auth_path(@conn, :request) do %>
-                  <span>Login</span>
-                  <i class="la la-2x la-github-square vertical-align-middle"></i>
-                <% end %>
-              </li>
-            <% end %>
-          </ul>
-        </nav>
-        <%= link to: "/", class: "logo" do %>
-          <%= img_tag Routes.static_path(@conn, "/images/thunderbirdmoon.jpg"), alt: "Thundermoon"%>
-        <% end %>
-      </section>
-    </header>
-    <main role="main" class="container">
+  <body class="bg-gray-900 text-white">
+    <%= render "header.html", conn: @conn %>
+    <main role="main" class="container mx-auto">
       <%= @inner_content %>
     </main>
     <footer>
