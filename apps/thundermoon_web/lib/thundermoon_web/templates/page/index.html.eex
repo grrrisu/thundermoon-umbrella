@@ -1,4 +1,4 @@
-<div class="w-4/5 mx-auto">
+<%= render_layout ThundermoonWeb.PageView, "text_section.html", conn: @conn do %>
   <section class="bg-gray-700 my-8 p-8 rounded-lg shadow-lg text-center">
     <h1 class="text-4xl font-semibold mb-4">Welcome to the Thundermoon Project</h1>
     <p>some simulation examples using phoenix live view.</p>
@@ -20,4 +20,4 @@
       <% end %>
     </article>
   </section>
-</div>
+<% end %>
