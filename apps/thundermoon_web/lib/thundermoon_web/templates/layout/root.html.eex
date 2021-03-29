@@ -9,16 +9,18 @@
     <%= csrf_meta_tag() %>
     <script type="text/javascript" src="<%= Routes.static_path(@conn, "/app.js") %>"></script>
   </head>
-  <body class="bg-gray-900 text-white">
+  <body class="bg-gray-900 text-white flex flex-col min-h-screen">
     <%= render "header.html", conn: @conn %>
-    <main role="main" class="container mx-auto">
+    <main role="main" class="container mx-auto mb-8">
       <%= @inner_content %>
     </main>
-    <footer class="container mx-auto">
-      <%= link to: "https://github.com/grrrisu/thundermoon-umbrella" do %>
-        Github
-        <i class="la la-2x la-github align-middle"></i>
-      <% end %>
+    <footer class="bg-gray-800 border-black mt-auto py-8">
+      <div class="container mx-auto">
+        <%= link to: "https://github.com/grrrisu/thundermoon-umbrella" do %>
+          Github
+          <i class="la la-2x la-github align-middle"></i>
+        <% end %>
+      </div>
     </footer>
   </body>
 </html>
