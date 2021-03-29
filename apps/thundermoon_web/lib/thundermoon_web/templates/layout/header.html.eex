@@ -8,20 +8,20 @@
           <li><%= link "Dashboard", to: "/dashboard" %></li>
           <li><%= link "Users", to: Routes.user_path(@conn, :index) %></li>
         <% end %>
-          <%= if signed_in?(@conn) do %>
-            <li>
-              <%= link to: Routes.auth_path(@conn, :delete), method: :delete  do %>
-                Logout <i class="la la-sign-out"></i>
-              <% end %>
-            </li>
-          <% else %>
-            <li>
-              <%= link to: Routes.auth_path(@conn, :request) do %>
-                <span>Login</span>
-                <i class="la la-lg la-github align-middle"></i>
-              <% end %>
-            </li>
-          <% end %>
-        </ul>
-      </nav>
+        <%= if signed_in?(@conn) do %>
+          <li>
+            <%= link to: Routes.auth_path(@conn, :delete), method: :delete  do %>
+              Logout <i class="la la-sign-out"></i>
+            <% end %>
+          </li>
+        <% else %>
+          <li>
+            <%= link to: Routes.auth_path(@conn, :request) do %>
+              <span>Login</span>
+              <i class="la la-lg la-github align-middle"></i>
+            <% end %>
+          </li>
+        <% end %>
+      </ul>
+    </nav>
   </header>
