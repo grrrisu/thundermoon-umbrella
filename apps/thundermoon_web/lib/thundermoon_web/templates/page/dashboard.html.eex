@@ -1,47 +1,49 @@
-<section class="phx-hero">
-  <h1><%= gettext "Welcome %{name}!", name: @current_user.username %></h1>
-  <p>Dashboard</p>
-</section>
+<div class="w-4/5 mx-auto">
+  <section class="bg-gray-700 my-8 p-8 rounded-lg shadow-lg text-center">
+    <h1 class="text-4xl font-semibold mb-4"><%= gettext "Welcome %{name}!", name: @current_user.username %></h1>
+    <p>Dashboard</p>
+  </section>
 
-<section class="row">
-  <article class="column">
-    <p>Live View examples:</p>
-    <ul>
-      <li>
-        <%= link to: Routes.live_path(@conn, ThundermoonWeb.ChatLive) do %>
-          <i class="la la-comments"></i> Chat
+  <section class="row">
+    <article class="column">
+      <p>Live View examples:</p>
+      <ul>
+        <li>
+          <%= link to: Routes.live_path(@conn, ThundermoonWeb.ChatLive) do %>
+            <i class="la la-comments"></i> Chat
+          <% end %>
+        </li>
+        <li>
+          <%= link to: Routes.counter_index_path(@conn, :index) do %>
+            <i class="la la-plus-square"></i> Counter
+          <% end %>
+        </li>
+        <li>
+          <%= link to: Routes.game_of_life_index_path(@conn, :index) do  %>
+            <i class="la la-th"></i> Game Of Life
+          <% end %>
+        </li>
+        <li>
+          <%= link to: Routes.lotka_volterra_new_path(@conn, :new) do  %>
+            <i class="la la-paw"></i> Lotka Volterra
+          <% end %>
+        </li>
+      </ul>
+      Other stuff:
+      <ul>
+        <%= if local?() do %>
+        <li>
+          <%= link to: Routes.live_dashboard_path(@conn, :home) do %>
+            <i class="las la-tachometer-alt"></i> Live Dashboard
+          <% end %>
+        </li>
         <% end %>
-      </li>
-      <li>
-        <%= link to: Routes.counter_index_path(@conn, :index) do %>
-          <i class="la la-plus-square"></i> Counter
-        <% end %>
-      </li>
-      <li>
-        <%= link to: Routes.game_of_life_index_path(@conn, :index) do  %>
-          <i class="la la-th"></i> Game Of Life
-        <% end %>
-      </li>
-      <li>
-        <%= link to: Routes.lotka_volterra_new_path(@conn, :new) do  %>
-          <i class="la la-paw"></i> Lotka Volterra
-        <% end %>
-      </li>
-    </ul>
-    Other stuff:
-    <ul>
-      <%= if local?() do %>
-      <li>
-        <%= link to: Routes.live_dashboard_path(@conn, :home) do %>
-          <i class="las la-tachometer-alt"></i> Live Dashboard
-        <% end %>
-      </li>
-      <% end %>
-      <li>
-        <%= link to: Routes.user_path(@conn, :index) do %>
-          <i class="la la-user"></i> Users
-        <% end %>
-      </li>
-    </ul>
-  </article>
-</section>
+        <li>
+          <%= link to: Routes.user_path(@conn, :index) do %>
+            <i class="la la-user"></i> Users
+          <% end %>
+        </li>
+      </ul>
+    </article>
+  </section>
+</div>

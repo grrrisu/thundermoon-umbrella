@@ -12,4 +12,18 @@
   .btn-primary {
     @apply bg-purple-900 text-gray-100 focus:bg-purple-800 focus:ring-1 focus:ring-offset-purple-400 focus:ring-offset-1 hover:bg-purple-800;
   }
+
+  iframe[hidden] {
+    display: none;
+  }
+}
+
+@layer utilities {
+  p a {
+    @apply text-blue-400;
+  }
+
+  p a:hover {
+    @apply text-blue-500;
+  }
 }

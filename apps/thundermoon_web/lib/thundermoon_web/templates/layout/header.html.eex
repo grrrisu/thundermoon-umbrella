@@ -1,9 +1,9 @@
-<header class="bg-gray-800 py-3 px-8 mb-8 flex flex-column justify-between content-center shadow-lg">
+<header class="bg-gray-800 py-3 px-8 mb-8 flex justify-between content-center shadow-lg">
   <%= link to: "/", class: "logo" do %>
     <%= img_tag Routes.static_path(@conn, "/images/thunderbirdmoon.gif"), class: "w-20 rounded-full shadow", alt: "Thundermoon"%>
   <% end %>
     <nav role="navigation" class="self-center">
-      <ul class="flex flex-column space-x-4">
+      <ul class="flex space-x-4">
         <%= if signed_in?(@conn) do %>
           <li><%= link "Dashboard", to: "/dashboard" %></li>
           <li><%= link "Users", to: Routes.user_path(@conn, :index) %></li>

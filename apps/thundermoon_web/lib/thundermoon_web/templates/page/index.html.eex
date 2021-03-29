@@ -1,21 +1,23 @@
-<section class="phx-hero">
-  <h1><%= gettext "Welcome to %{name}!", name: "Thundermoon" %></h1>
-  <p>some simulation examples using phoenix live view.</p>
-</section>
+<div class="w-4/5 mx-auto">
+  <section class="bg-gray-700 my-8 p-8 rounded-lg shadow-lg text-center">
+    <h1 class="text-4xl font-semibold mb-4">Welcome to the Thundermoon Project</h1>
+    <p>some simulation examples using phoenix live view.</p>
+  </section>
 
-<section class="row">
-  <article class="column">
-    <p>
-      This is a collection of examples using <a href="https://github.com/phoenixframework/phoenix_live_view" target="_blank">phoenix live view</a>. The state is hold in memory and broadcasted to all clients. The examples include a simple chat, a counter, <a href="https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life" target="_blank">Conways Game of Life</a> and <a href="https://en.wikipedia.org/wiki/Lotka%E2%80%93Volterra_equations" target="_blank"> Lotka-Volterra</a>.
-    </p>
-    <p>The source can be found at <a href="https://github.com/grrrisu/thundermoon-umbrella" target="_blank">Github.</a></p>
-    <p>To keep the usual bots away a login is required.</p>
-    <%= unless signed_in?(@conn) do %>
-      <p>
-        <%= link to: Routes.auth_path(@conn, :request), class: "btn btn-primary" do %>
-          Login <i class="la la-2x la-github align-middle"></i>
-        <% end %>
+  <section>
+    <article class="column">
+      <p class="mb-3">
+        This is a collection of examples using <a href="https://github.com/phoenixframework/phoenix_live_view" target="_blank">phoenix live view</a>. The state is hold in memory and broadcasted to all clients. The examples include a simple chat, a counter, <a href="https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life" target="_blank">Conways Game of Life</a> and a population growth simulation based on <a href="https://en.wikipedia.org/wiki/Lotka%E2%80%93Volterra_equations" target="_blank"> Lotka-Volterra</a>.
       </p>
-    <% end %>
-  </article>
-</section>
+      <p class="mb-3">The source can be found at <a href="https://github.com/grrrisu/thundermoon-umbrella" target="_blank">Github.</a></p>
+      <p class="mb-3">To keep the usual bots away a login is required.</p>
+      <%= unless signed_in?(@conn) do %>
+        <div class="mb-3">
+          <%= link to: Routes.auth_path(@conn, :request), class: "btn btn-primary" do %>
+            Login <i class="la la-2x la-github align-middle"></i>
+          <% end %>
+        </div>
+      <% end %>
+    </article>
+  </section>
+</div>
