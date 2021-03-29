@@ -14,13 +14,11 @@
     <main role="main" class="container mx-auto">
       <%= @inner_content %>
     </main>
-    <footer>
-      <section class="container">
-        <%= link to: "https://github.com/grrrisu/thundermoon-umbrella" do %>
-          <%= img_tag Routes.static_path(@conn, "/images/github-logo.svg"), class: "github-logo", alt: "github"%>
-          Github
-        <% end %>
-      </section>
+    <footer class="container mx-auto">
+      <%= link to: "https://github.com/grrrisu/thundermoon-umbrella" do %>
+        Github
+        <i class="la la-2x la-github align-middle"></i>
+      <% end %>
     </footer>
   </body>
 </html>

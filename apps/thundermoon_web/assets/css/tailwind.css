@@ -1,3 +1,15 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer components {
+  .btn {
+    @apply rounded-md shadow focus:outline-none;
+  }
+  a.btn {
+    @apply px-4 py-2 mr-2;
+  }
+  .btn-primary {
+    @apply bg-purple-900 text-gray-100 focus:bg-purple-800 focus:ring-1 focus:ring-offset-purple-400 focus:ring-offset-1 hover:bg-purple-800;
+  }
+}
