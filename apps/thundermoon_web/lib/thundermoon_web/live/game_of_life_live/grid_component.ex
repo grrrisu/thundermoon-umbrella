@@ -22,5 +22,5 @@ defmodule ThundermoonWeb.GameOfLifeLive.GridComponent do
   end
 
   defp alive_class(false), do: ""
-  defp alive_class(true), do: "alive"
+  defp alive_class(true), do: "bg-gray-700"
 end
