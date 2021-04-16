@@ -16,15 +16,16 @@
     "phoenix_live_view": "file:../../../deps/phoenix_live_view"
   },
   "devDependencies": {
+    "autoprefixer": "^9.8.6",
     "@babel/core": "^7.12.3",
     "@babel/preset-env": "^7.12.1",
-    "@tailwindcss/postcss7-compat": "^2.0.4",
-    "autoprefixer": "^9.8.6",
+    "@fullhuman/postcss-purgecss": "^3.0.0",
+    "@tailwindcss/postcss7-compat": "^2.1.0",
     "parcel-bundler": "^1.12.4",
     "parcel-plugin-static-files-copy": "^2.5.0",
     "postcss": "^7.0.35",
     "sass": "^1.27.0",
-    "tailwindcss": "npm:@tailwindcss/postcss7-compat@^2.0.4"
+    "tailwindcss": "npm:@tailwindcss/postcss7-compat@^2.1.0"
   },
   "staticFiles": {
     "staticPath": "static",
