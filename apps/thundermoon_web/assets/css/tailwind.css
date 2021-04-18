@@ -22,20 +22,16 @@
     @apply px-4 py-2 mr-2;
   }
   .btn-primary {
-    @apply bg-purple-900 text-gray-100 focus:bg-purple-800 focus:ring-1 focus:ring-offset-purple-400 focus:ring-offset-1 hover:bg-purple-800;
+    @apply bg-purple-800 text-gray-100 focus:bg-purple-700 focus:ring-1 focus:ring-offset-purple-400 focus:ring-offset-1 hover:bg-purple-700;
+  }
+
+  .btn-warning {
+    @apply bg-pink-700 text-gray-100 focus:bg-pink-600 focus:ring-1 focus:ring-offset-pink-300 focus:ring-offset-1 hover:bg-pink-600;
   }
 
   iframe[hidden] {
     display: none;
   }
-  /* 
-  hover:ring-1 hover:ring-offset-purple-400 hover:ring-offset-1
-  .input {
-    @apply bg-gray-700 focus:outline-none focus:bg-gray-600;
-  }
-  .text-input {
-    @apply text-gray-100 font-light p-2 w-full rounded-md focus:shadow-inner focus:ring-1 focus:ring-gray-400;
-  } */
 }
 
 @layer utilities {

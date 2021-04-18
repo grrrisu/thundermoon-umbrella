@@ -1,9 +1,9 @@
-<div class="action-buttons">
+<div class="border bg-gray-800 border-gray-600 rounded-md ml-16 py-4 px-8">
   <%= start_button(@socket, "start-counter-button", @started) %>
 
   <%= if can?(@current_user, :reset) do %>
-    <%= link to: "#", id: "reset-button", phx_click: "reset", phx_target: @myself, class: "button button-icon button-warning" do %>
-      <i class="la la-2x la-reply"></i> reset
+    <%= link to: "#", id: "reset-button", phx_click: "reset", phx_target: @myself, class: "btn btn-warning" do %>
+      <i class="align-middle la text-xl la-reply"></i> reset
     <% end %>
   <% end %>
 </div>
