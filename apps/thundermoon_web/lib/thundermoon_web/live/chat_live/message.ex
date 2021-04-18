@@ -4,11 +4,10 @@ defmodule ThundermoonWeb.ChatLive.Message do
   @impl true
   def update(assigns, socket) do
     {:ok,
-      socket
-      |> assign(assigns)
-      |> assign_is_current_user
-      |> assign_message_color
-    }
+     socket
+     |> assign(assigns)
+     |> assign_is_current_user
+     |> assign_message_color}
   end
 
   @impl true
@@ -34,11 +33,12 @@ defmodule ThundermoonWeb.ChatLive.Message do
   end
 
   defp assign_message_color(socket) do
-    color = case socket.assigns.is_current_user do
-      true -> "bg-indigo-500"
-      false -> "bg-gray-500"
-    end
+    color =
+      case socket.assigns.is_current_user do
+        true -> "bg-indigo-500"
+        false -> "bg-gray-500"
+      end
+
     assign(socket, :message_color, color)
   end
-
 end
