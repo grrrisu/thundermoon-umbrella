@@ -7,21 +7,7 @@
   <h3>Messages</h3>
   <div id="messages" class="mb-6">
     <%= for message <- Enum.reverse(@messages) do %>
-      <div class="flex">
-      <%= if @current_user.id == message.user_id do %>
-        <div class="w-3/12"></div>
-        <div class="bg-indigo-500 rounded-md px-4 py-2 mb-2 w-9/12">
-          <div class="font-bold"><%= message.user %></div>
-          <div class="font-light"><%= message.text %></div>
-        </div>
-      <% else  %>
-        <div class="bg-gray-500 rounded-md px-4 py-2 mb-2 w-9/12">
-          <div class="font-bold"><%= message.user %></div>
-          <div class="font-light"><%= message.text %></div>
-        </div>
-        <div class="w-3/12"></div>
-      <% end %>
-      </div>
+      <%= live_component @socket, Message, message: message, current_user: @current_user %>
     <% end %>
   </div>
   <%= f = form_for :message, "#", [phx_submit: :send, class: "flex"]  %>
