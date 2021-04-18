@@ -1,7 +1,5 @@
-<div class="inc-button">
-  <%= link "+", to: "#", id: "#{@id}-inc", class: "button", phx_target: @myself, phx_click: "inc" %>
-</div>
-<div id="<%= @id %>" class="digit"><%= @value %></div>
-<div class="dec-button">
-  <%= link "-", to: "#", id: "#{@id}-dec", class: "button", phx_target: @myself, phx_click: "dec" %>
+<div class="flex flex-col space-y-4">
+  <%= link "+", to: "#", id: "#{@id}-inc", class: "btn text-2xl btn-primary", phx_target: @myself, phx_click: "inc" %>
+  <div id="<%= @id %>" class="digit font-mono text-6xl"><%= @value %></div>
+  <%= link "-", to: "#", id: "#{@id}-dec", class: "btn text-2xl btn-primary", phx_target: @myself, phx_click: "dec" %>
 </div>

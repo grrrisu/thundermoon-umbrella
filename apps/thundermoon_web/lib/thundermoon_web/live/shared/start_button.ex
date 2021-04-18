@@ -13,8 +13,8 @@ defmodule ThundermoonWeb.Component.StartButton do
   @impl true
   def render(assigns) do
     ~L"""
-    <a href="#" id="start-button" phx-click="toggle-sim-start" phx-value-action="<%= @label %>" phx-target="<%= @myself %>" class="button button-icon">
-      <i class="la la-2x <%= @icon %>"></i><%= @label %>
+    <a href="#" id="start-button" phx-click="toggle-sim-start" phx-value-action="<%= @label %>" phx-target="<%= @myself %>" class="btn btn-primary">
+      <i class="align-middle la text-xl <%= @icon %>"></i><%= @label %>
     </a>
     """
   end

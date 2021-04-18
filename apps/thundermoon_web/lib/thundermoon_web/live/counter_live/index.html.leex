@@ -1,13 +1,13 @@
 <h1>Counter</h1>
 
-<div class="counter-wrapper">
-  <div class="counter">
-    <%= live_component @socket, ThundermoonWeb.CounterLive.Digit, id: "digit-100", digit: 100, value: @digits.digit_100 %>
-    <%= live_component @socket, ThundermoonWeb.CounterLive.Digit, id: "digit-10", digit: 10, value: @digits.digit_10 %>
-    <%= live_component @socket, ThundermoonWeb.CounterLive.Digit, id: "digit-1", digit: 1, value: @digits.digit_1 %>
+<div class="flex items-center mt-12">
+  <div class="flex space-x-2">
+    <%= live_component @socket, Digit, id: "digit-100", digit: 100, value: @digits.digit_100 %>
+    <%= live_component @socket, Digit, id: "digit-10", digit: 10, value: @digits.digit_10 %>
+    <%= live_component @socket, Digit, id: "digit-1", digit: 1, value: @digits.digit_1 %>
   </div>
 
-  <%= live_component @socket, ThundermoonWeb.CounterLive.ActionButtons, id: "action-buttons", current_user: @current_user, started: @started %>
+  <%= live_component @socket, ActionButtons, id: "action-buttons", current_user: @current_user, started: @started %>
 </div>
 
 
