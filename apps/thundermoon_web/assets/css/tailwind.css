@@ -18,7 +18,8 @@
   .btn {
     @apply rounded-md shadow focus:outline-none;
   }
-  a.btn {
+  a.btn,
+  button.btn {
     @apply px-4 py-2 mr-2;
   }
   .btn-primary {

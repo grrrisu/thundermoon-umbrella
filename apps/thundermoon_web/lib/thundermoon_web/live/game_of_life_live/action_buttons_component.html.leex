@@ -1,14 +1,14 @@
-<div class="action-buttons">
+<%= live_component @socket, ActionBox do%>
   <%= start_button(@socket, "start-game-of-life-button", @started) %>
-  <a href="#" id="recreate-button" phx-click="recreate" phx-target="<%= @myself %>" class="button button-icon button-warning">
-    <i class="la la-2x la-reply"></i> recreate
+  <a href="#" id="recreate-button" phx-click="recreate" phx-target="<%= @myself %>" class="btn btn-warning">
+    <i class="align-middle text-xl la la-reply"></i> recreate
   </a>
-  <a href="#" id="clear-button" phx-click="clear" phx-target="<%= @myself %>" class="button button-icon button-warning">
-    <i class="la la-2x la-eraser"></i> clear
+  <a href="#" id="clear-button" phx-click="clear" phx-target="<%= @myself %>" class="btn btn-warning">
+    <i class="align-middle text-xl la la-eraser"></i> clear
   </a>
   <%= if can?(@current_user, :create, GameOfLife) do %>
-    <a href="#" id="reset-button" phx-click="reset" phx-target="<%= @myself %>" class="button button-icon button-warning">
-      <i class="la la-2x la-reply-all"></i> reset
+    <a href="#" id="reset-button" phx-click="reset" phx-target="<%= @myself %>" class="btn btn-warning">
+      <i class="align-middle text-xl la la-reply-all"></i> reset
     </a>
   <% end %>
-</div>
+<% end %>
