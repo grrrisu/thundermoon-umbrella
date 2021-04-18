@@ -1,4 +1,4 @@
-<div>
+<div class="w-2/4">
   <h3>Predator</h3>
 
   <p></p>
@@ -11,7 +11,7 @@
       <%= live_text_input(@socket, f, :starving_rate, label: "Starving Rate") %>
       <%= live_text_input(@socket, f, :graze_rate, label: "Graze Rate") %>
       <%= live_text_input(@socket, f, :size) %>
-      <%= submit "Create" %>
+      <%= submit "Create", class: "btn btn-primary" %>
     </fieldset>
   </form>
 </div>

@@ -2,10 +2,10 @@
 
 <%= live_component @socket, ThundermoonWeb.LotkaVolterra.Chart, id: "chart-#{@sim_id}", field: @field %>
 
-<div class="action-buttons">
+<%= live_component @socket, ActionBox do %>
   <%= start_button(@socket, "start-#{@sim_id}", @started) %>
 
-  <%= live_redirect(to: Routes.lotka_volterra_new_path(@socket, :new), class: "button button-icon button-warning") do %>
-    <i class="la la-2x la-reply-all"></i> recreate
+  <%= live_redirect(to: Routes.lotka_volterra_new_path(@socket, :new), class: "btn btn-warning") do %>
+    <i class="align-middle text-xl la la-reply-all"></i> recreate
   <% end %>
-</div>
+<% end %>
