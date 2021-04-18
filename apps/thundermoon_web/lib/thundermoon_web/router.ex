@@ -41,7 +41,7 @@ defmodule ThundermoonWeb.Router do
 
     get "/dashboard", PageController, :dashboard
     resources "/users", UserController, only: [:index, :edit, :update, :delete]
-    live "/chat", ChatLive
+    live "/chat", ChatLive.Index, :index
     live "/counter", CounterLive.Index, :index
     live "/game_of_life", GameOfLifeLive.Index, :index
     live "/lotka-volterra", LotkaVolterraLive.Index, :index

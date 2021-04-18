@@ -1,4 +1,4 @@
-defmodule ThundermoonWeb.ChatLive do
+defmodule ThundermoonWeb.ChatLive.Index do
   use ThundermoonWeb, :live_view
 
   import Canada.Can
@@ -8,7 +8,6 @@ defmodule ThundermoonWeb.ChatLive do
   alias Thundermoon.Accounts
   alias Thundermoon.ChatMessages
 
-  alias ThundermoonWeb.ChatView
   alias ThundermoonWeb.Presence
 
   def mount(_params, session, socket) do
@@ -19,14 +18,10 @@ defmodule ThundermoonWeb.ChatLive do
     {:ok, assign(socket, %{current_user: user, version: 0, messages: messages, users: users})}
   end
 
-  def render(assigns) do
-    ChatView.render("index.html", assigns)
-  end
-
   # this is triggered by the live_view event phx-submit
   def handle_event("send", %{"message" => %{"text" => text}}, socket) do
-    username = socket.assigns.current_user.username
-    message = %{user: username, text: text}
+    user = socket.assigns.current_user
+    message = %{user: user.username, text: text, user_id: user.id}
     ChatMessages.add(message)
     PubSub.broadcast(ThundermoonWeb.PubSub, "chat", {:send, message})
     {:noreply, assign(socket, %{version: System.unique_integer()})}

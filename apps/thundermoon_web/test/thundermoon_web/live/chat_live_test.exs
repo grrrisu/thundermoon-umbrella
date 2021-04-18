@@ -49,7 +49,7 @@ defmodule ThundermoonWeb.ChatLiveTest do
     end
 
     test "can not clear messages", %{conn: conn} do
-      ChatMessages.add(%{user: "franquin", text: "Bonjour"})
+      ChatMessages.add(%{user: "franquin", text: "Bonjour", user_id: 5})
       {:ok, view, html} = live(conn, "/chat")
       assert html =~ "Bonjour"
       render_click(view, :clear)
@@ -63,7 +63,7 @@ defmodule ThundermoonWeb.ChatLiveTest do
     setup [:login_as_admin]
 
     test "can clear all messages", %{conn: conn} do
-      ChatMessages.add(%{user: "franquin", text: "Bonjour"})
+      ChatMessages.add(%{user: "franquin", text: "Bonjour", user_id: 5})
       {:ok, view, html} = live(conn, "/chat")
       assert html =~ "Bonjour"
       render_click(view, :clear)

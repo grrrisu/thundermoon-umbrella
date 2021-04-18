@@ -11,7 +11,7 @@
         <%= render "card_section.html",
           title: "Chat",
           description: "A simple chat with just one room",
-          link: Routes.live_path(@conn, ThundermoonWeb.ChatLive),
+          link: Routes.chat_index_path(@conn, :index),
           icon: "la-comments"
         %>
         <%= render "card_section.html",
