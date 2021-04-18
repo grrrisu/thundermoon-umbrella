@@ -2,6 +2,18 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer base {
+  /* headlines */
+
+  h1 {
+    @apply text-4xl font-light mb-6;
+  }
+
+  h3 {
+    @apply text-2xl font-normal mb-3;
+  }
+}
+
 @layer components {
   .btn {
     @apply rounded-md shadow focus:outline-none;
@@ -16,14 +28,33 @@
   iframe[hidden] {
     display: none;
   }
+  /* 
+  hover:ring-1 hover:ring-offset-purple-400 hover:ring-offset-1
+  .input {
+    @apply bg-gray-700 focus:outline-none focus:bg-gray-600;
+  }
+  .text-input {
+    @apply text-gray-100 font-light p-2 w-full rounded-md focus:shadow-inner focus:ring-1 focus:ring-gray-400;
+  } */
 }
 
 @layer utilities {
+  /* links */
+
   p a {
     @apply text-blue-400;
   }
 
   p a:hover {
     @apply text-blue-500;
+  }
+
+  /* form */
+
+  .input {
+    @apply bg-gray-700 focus:outline-none focus:bg-gray-600;
+  }
+  .text-input {
+    @apply text-gray-100 font-light p-2 w-full rounded-md focus:shadow-inner focus:ring-1 focus:ring-gray-400;
   }
 }

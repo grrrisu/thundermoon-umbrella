@@ -1,0 +1,40 @@
+<h1>Chat</h1>
+
+<%= if can?(@current_user, :delete, Thundermoon.ChatMessages) do %>
+  <a href="#" phx-click="clear" style="float: right">Clear all messages</a>
+<% end %>
+<section class="w-1/2 mb-12">
+  <h3>Messages</h3>
+  <div id="messages" class="mb-6">
+    <%= for message <- Enum.reverse(@messages) do %>
+      <div class="flex">
+      <%= if @current_user.id == message.user_id do %>
+        <div class="w-3/12"></div>
+        <div class="bg-indigo-500 rounded-md px-4 py-2 mb-2 w-9/12">
+          <div class="font-bold"><%= message.user %></div>
+          <div class="font-light"><%= message.text %></div>
+        </div>
+      <% else  %>
+        <div class="bg-gray-500 rounded-md px-4 py-2 mb-2 w-9/12">
+          <div class="font-bold"><%= message.user %></div>
+          <div class="font-light"><%= message.text %></div>
+        </div>
+        <div class="w-3/12"></div>
+      <% end %>
+      </div>
+    <% end %>
+  </div>
+  <%= f = form_for :message, "#", [phx_submit: :send, class: "flex"]  %>
+    <%= text_input f, :text, class: "input text-input", "data-version": @version, value: "", placeholder: "write a message" %>
+    <%= submit "Send", class: "btn btn-primary ml-3 px-4 py-2" %>
+  </form>
+</section>
+
+<section class="w-1/2 mb-12">
+  <h3>Users online</h3>
+  <div class="users">
+    <%= for user <- @users do %>
+      <div class="user"><%= user.username %></div>
+    <% end %>
+  </div>
+</section>
