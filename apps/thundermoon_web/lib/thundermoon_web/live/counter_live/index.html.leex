@@ -1,7 +1,7 @@
 <h1>Counter</h1>
 
 <div class="flex items-center mt-12">
-  <div class="flex space-x-2">
+  <div class="flex space-x-2 mr-16">
     <%= live_component @socket, Digit, id: "digit-100", digit: 100, value: @digits.digit_100 %>
     <%= live_component @socket, Digit, id: "digit-10", digit: 10, value: @digits.digit_10 %>
     <%= live_component @socket, Digit, id: "digit-1", digit: 1, value: @digits.digit_1 %>
