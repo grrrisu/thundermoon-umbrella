@@ -10,7 +10,7 @@ defmodule ThundermoonWeb.ChatLive.Index do
 
   alias ThundermoonWeb.Presence
 
-  alias ThundermoonWeb.ChatLive.Message
+  alias ThundermoonWeb.ChatLive.{Message, Form}
 
   def mount(_params, session, socket) do
     user = Accounts.get_user(session["current_user_id"])
@@ -18,15 +18,6 @@ defmodule ThundermoonWeb.ChatLive.Index do
     messages = ChatMessages.list()
     users = get_users(Presence.list("chat"))
     {:ok, assign(socket, %{current_user: user, version: 0, messages: messages, users: users})}
-  end
-
-  # this is triggered by the live_view event phx-submit
-  def handle_event("send", %{"message" => %{"text" => text}}, socket) do
-    user = socket.assigns.current_user
-    message = %{user: user.username, text: text, user_id: user.id}
-    ChatMessages.add(message)
-    PubSub.broadcast(ThundermoonWeb.PubSub, "chat", {:send, message})
-    {:noreply, assign(socket, %{version: System.unique_integer()})}
   end
 
   def handle_event("clear", _value, socket) do

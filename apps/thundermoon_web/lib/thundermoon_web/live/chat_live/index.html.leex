@@ -3,6 +3,7 @@
 <%= if can?(@current_user, :delete, Thundermoon.ChatMessages) do %>
   <a href="#" phx-click="clear" style="float: right">Clear all messages</a>
 <% end %>
+
 <section class="w-1/2 mb-12">
   <h3>Messages</h3>
   <div id="messages" class="mb-6">
@@ -10,10 +11,7 @@
       <%= live_component @socket, Message, message: message, current_user: @current_user %>
     <% end %>
   </div>
-  <%= f = form_for :message, "#", [phx_submit: :send, class: "flex"]  %>
-    <%= text_input f, :text, class: "input text-input", "data-version": @version, value: "", placeholder: "write a message" %>
-    <%= submit "Send", class: "btn btn-primary ml-3 px-4 py-2" %>
-  </form>
+  <%= live_component @socket, Form, current_user: @current_user, version: @version, id: :chat_form %>
 </section>
 
 <section class="w-1/2 mb-12">

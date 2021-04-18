@@ -39,7 +39,7 @@ defmodule ThundermoonWeb.ChatLiveTest do
       PubSub.subscribe(ThundermoonWeb.PubSub, "chat")
       {:ok, view, _html} = live(conn, "/chat")
       data = %{"message" => %{"text" => "hello there"}}
-      render_submit(view, :send, data)
+      view |> element("form") |> render_submit(data)
       assert_receive({:send, %{user: "crumb", text: "hello there"}})
     end
 
