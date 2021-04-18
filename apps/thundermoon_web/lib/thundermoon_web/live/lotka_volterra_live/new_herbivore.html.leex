@@ -1,4 +1,4 @@
-<div>
+<div class="w-2/4">
   <h3>Herbivore</h3>
 
   <p></p>
@@ -11,9 +11,9 @@
       <%= live_text_input(@socket, f, :starving_rate, label: "Starving Rate") %>
       <%= live_text_input(@socket, f, :graze_rate, label: "Graze Rate") %>
       <%= live_text_input(@socket, f, :size) %>
-      <%= submit "Create" %>
+      <%= submit "Create", class: "btn btn-primary" %>
       or
-      <%= link to: "#", phx_click: "add_predator", phx_target: @myself, id: "button-add-predator", class: "button button-icon" do %>
+      <%= link to: "#", phx_click: "add_predator", phx_target: @myself, id: "button-add-predator", class: "btn btn-primary" do %>
         Add Predator
       <% end %>
     </fieldset>

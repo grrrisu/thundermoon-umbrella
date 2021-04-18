@@ -3,6 +3,8 @@ defmodule ThundermoonWeb.LotkaVolterraLive.Index do
 
   alias Phoenix.PubSub
 
+  alias ThundermoonWeb.Component.ActionBox
+
   @impl true
   def mount(%{"sim_id" => sim_id}, _session, socket) do
     {:ok,
