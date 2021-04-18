@@ -10,6 +10,8 @@ defmodule ThundermoonWeb.ChatLive.Index do
 
   alias ThundermoonWeb.Presence
 
+  alias ThundermoonWeb.ChatLive.Message
+
   def mount(_params, session, socket) do
     user = Accounts.get_user(session["current_user_id"])
     if connected?(socket), do: subscribe(user)
