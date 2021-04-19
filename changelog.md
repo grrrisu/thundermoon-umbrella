@@ -2,9 +2,9 @@
 
 ## dev
 
-- css: replace milligram with tailwindcss
-- css: design revamped with a new dark theme
-- include line-awesome as npm package
+- css: replaced milligram with tailwindcss
+- css: revamped the design with a new dark theme
+- included line-awesome as npm package
 - various upgrades
   - credo 1.5.5
 
