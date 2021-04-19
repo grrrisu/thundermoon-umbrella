@@ -16,5 +16,4 @@ defmodule ThundermoonWeb.Component.ActionBox do
     </div>
     """
   end
-
 end

@@ -3,6 +3,7 @@
 ## dev
 
 - css: replace milligram with tailwindcss
+- css: design revamped with a new dark theme
 - include line-awesome as npm package
 - various upgrades
   - credo 1.5.5
