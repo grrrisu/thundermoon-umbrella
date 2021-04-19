@@ -1,5 +1,5 @@
-<section class="row">
-  <article class="column">
+<section class="">
+  <article class="w-3/4">
     <h1>Users</h1>
 
     <div class="shadow overflow-hidden border-b border-gray-900 rounded-lg">
