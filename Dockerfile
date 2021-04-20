@@ -26,6 +26,7 @@ RUN apk add --no-cache python make g++
 WORKDIR /app
 
 COPY apps/thundermoon_web/assets/package*.json /app/apps/thundermoon_web/assets/
+COPY apps/thundermoon_web/lib/ /app/apps/thundermoon_web/lib/
 COPY --from=dependencies /app/deps/phoenix/ /app/deps/phoenix
 COPY --from=dependencies /app/deps/phoenix_html/ /app/deps/phoenix_html
 COPY --from=dependencies /app/deps/phoenix_live_view/ /app/deps/phoenix_live_view
