@@ -9,40 +9,44 @@ Hooks.LotkaVolterraChart = {
       type: "line",
       data: {
         labels: [],
-        datasets: [{
-          label: "Vegetation",
-          borderColor: "rgba(59, 120, 59, 0.8)",
-          backgroundColor: "rgba(44, 160, 44, 0.2)",
-          lineTension: 0,
-          borderWidth: 2,
-          data: []
-        },
-        {
-          label: "Herbivore",
-          borderColor: "rgb(166, 89, 78, 0.8)",
-          backgroundColor: "rgb(166, 89, 78, 0.2)",
-          lineTension: 0,
-          borderWidth: 2,
-          data: []
-        },
-        {
-          label: "Predator",
-          borderColor: "rgb(256, 89, 78, 0.8)",
-          backgroundColor: "rgb(256, 89, 78, 0.2)",
-          lineTension: 0,
-          borderWidth: 2,
-          data: []
-        }]
+        datasets: [
+          {
+            label: "Vegetation",
+            borderColor: "rgb(46, 160, 67, 0.8)",
+            backgroundColor: "rgba(44, 160, 44, 0.2)",
+            lineTension: 0,
+            borderWidth: 2,
+            data: [],
+          },
+          {
+            label: "Herbivore",
+            borderColor: "rgb(219, 109, 40, 0.8)",
+            backgroundColor: "rgb(166, 89, 78, 0.2)",
+            lineTension: 0,
+            borderWidth: 2,
+            data: [],
+          },
+          {
+            label: "Predator",
+            borderColor: "rgb(248, 81, 73, 0.8)",
+            backgroundColor: "rgb(256, 89, 78, 0.2)",
+            lineTension: 0,
+            borderWidth: 2,
+            data: [],
+          },
+        ],
       },
       options: {
         scales: {
-          yAxes: [{
-            ticks: {
-              beginAtZero: true
-            }
-          }]
-        }
-      }
+          yAxes: [
+            {
+              ticks: {
+                beginAtZero: true,
+              },
+            },
+          ],
+        },
+      },
     });
 
     this.handleEvent("update-chart", (data) => {
@@ -55,7 +59,7 @@ Hooks.LotkaVolterraChart = {
       chart.data.datasets[2].data.push(predator);
       chart.update();
     });
-  }
+  },
 };
 
 export default Hooks;
