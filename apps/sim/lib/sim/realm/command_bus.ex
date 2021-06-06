@@ -118,7 +118,7 @@ defmodule Sim.Realm.CommandBus do
         # We don't care about the DOWN message now, so let's demonitor and flush it
         Process.demonitor(ref, [:flush])
 
-        Logger.debug("task executing command #{inspect(running_command)} finished successfully")
+        # Logger.debug("task executing command #{inspect(running_command)} finished successfully")
 
         {:noreply,
          context
@@ -133,10 +133,11 @@ defmodule Sim.Realm.CommandBus do
   def handle_info({:DOWN, ref, :process, _pid, reason}, state) do
     case find_ended_task(ref, state) do
       nil ->
+        Logger.error("received down from unknown source")
         noreply_unknown_ref(ref, "received DOWN", state)
 
       %{running_command: {context, _, _} = running_command} ->
-        Logger.debug(
+        Logger.warn(
           "task executing command #{inspect(running_command)} failed with reason #{
             inspect(reason)
           }"

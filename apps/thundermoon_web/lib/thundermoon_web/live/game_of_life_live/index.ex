@@ -4,6 +4,8 @@ defmodule ThundermoonWeb.GameOfLifeLive.Index do
   import Canada.Can
   alias Phoenix.PubSub
 
+  require Logger
+
   alias Thundermoon.Accounts
 
   alias ThundermoonWeb.GameOfLifeLive.{FormComponent, GridComponent, ActionButtonsComponent}
@@ -48,7 +50,14 @@ defmodule ThundermoonWeb.GameOfLifeLive.Index do
 
   @impl true
   def handle_info({:update, data: grid}, socket) do
+    Logger.debug("set grid")
     {:noreply, assign(socket, grid: grid)}
+  end
+
+  @impl true
+  def handle_info({:command_failed, command: command, reason: _reason}, socket) do
+    Logger.warn("command failed: #{inspect(command)}")
+    {:noreply, put_flash(socket, :error, "command failed #{inspect(command)}")}
   end
 
   @impl true
