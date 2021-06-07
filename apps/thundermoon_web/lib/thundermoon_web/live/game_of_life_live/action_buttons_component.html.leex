@@ -1,5 +1,5 @@
 <%= live_component @socket, ActionBox do%>
-  <%= start_button(@socket, "start-game-of-life-button", @started) %>
+  <%= start_button("start-game-of-life-button", @started) %>
   <a href="#" id="recreate-button" phx-click="recreate" phx-target="<%= @myself %>" class="btn btn-warning">
     <i class="align-middle text-xl la la-reply"></i> recreate
   </a>
