@@ -1,5 +1,5 @@
 <%= live_component @socket, ActionBox do %>
-  <%= start_button(@socket, "start-counter-button", @started) %>
+  <%= start_button("start-counter-button", @started) %>
 
   <%= if can?(@current_user, :reset) do %>
     <%= link to: "#", id: "reset-button", phx_click: "reset", phx_target: @myself, class: "btn btn-warning" do %>
