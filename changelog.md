@@ -2,11 +2,21 @@
 
 ## dev
 
-- css: replaced milligram with tailwindcss
-- css: revamped the design with a new dark theme
-- included line-awesome as npm package
-- various upgrades
-  - credo 1.5.5
+- Game Of Life:
+
+  - push only changes to game of life live_view for faster rendering
+
+- General:
+
+  - css: replaced milligram with tailwindcss
+
+  - css: revamped the design with a new dark theme
+
+  - included line-awesome as npm package
+
+  - various upgrades
+
+    - credo 1.5.5
 
 ## 0.6.0
 

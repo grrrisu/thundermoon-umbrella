@@ -59,7 +59,7 @@
     @apply text-gray-100 font-light p-2 w-full rounded-md focus:shadow-inner focus:ring-1 focus:ring-gray-400;
   }
 
-  /* Game of Life*/
+  /* Game of Life */
   .game-of-life-active {
     @apply bg-gray-700;
   }
