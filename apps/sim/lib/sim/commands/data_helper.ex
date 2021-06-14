@@ -10,6 +10,11 @@ defmodule Sim.Commands.DataHelpers do
 
       @behaviour Sim.CommandHandler
 
+      def set_data(set_func) when is_function(set_func) do
+        :ok = Data.set_data(@data_server, set_func)
+        [{:update, :ok}]
+      end
+
       def set_data(data) do
         Data.set_data(@data_server, data)
         [{:update, data: data}]
