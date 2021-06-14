@@ -9,9 +9,9 @@ Hooks.GameOfLife = {
       data.changes.forEach(([x, y, cell]) => {
         let css = document.getElementById(`cell_${x}_${y}`).classList;
         if (cell) {
-          css.add("bg-gray-700");
+          css.add("game-of-life-active");
         } else {
-          css.remove("bg-gray-700");
+          css.remove("game-of-life-active");
         }
       });
     });
