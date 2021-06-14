@@ -2,8 +2,8 @@ defmodule GameOfLife.Simulation do
   alias Sim.Torus, as: Grid
 
   def sim(grid) do
-    Enum.reduce(0..(Grid.width(grid) -1), %{}, fn x, changes ->
-      Enum.reduce(0..(Grid.height(grid) -1), changes, fn y, changes ->
+    Enum.reduce(0..(Grid.width(grid) - 1), %{}, fn x, changes ->
+      Enum.reduce(0..(Grid.height(grid) - 1), changes, fn y, changes ->
         Grid.get(grid, x, y)
         |> detect_change(grid, x, y)
         |> add_changes(changes)
@@ -13,7 +13,7 @@ defmodule GameOfLife.Simulation do
 
   def detect_change(old_value, grid, x, y) do
     new_value = sim_cell(grid, x, y)
-    unless new_value == old_value, do: {{x,y}, new_value}
+    unless new_value == old_value, do: {{x, y}, new_value}
   end
 
   def add_changes(nil, changes), do: changes

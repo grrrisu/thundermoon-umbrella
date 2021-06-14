@@ -1,7 +1,7 @@
-<div id="grid" class="grid auto-rows-fr mb-6 bg-gray-300 border-l border-b border-gray-900" style="grid-template-columns: repeat(<%= @width %>, 20px); grid-template-rows: repeat(<%= @height %>, 20px); width: <%= @width * 20 + 1 %>px">
+<div id="grid" class="grid auto-rows-fr mb-6 bg-gray-300 border-l border-b border-gray-900" style="grid-template-columns: repeat(<%= @width %>, 20px); grid-template-rows: repeat(<%= @height %>, 20px); width: <%= @width * 20 + 1 %>px" phx-hook="GameOfLife">
   <%= for x <- 0..(@width - 1) do %>
     <%= for y <- 0..(@height - 1) do %>
-      <div class="bg-gray-200 border-t border-r border-gray-900 cell <%= cell_class(@grid, x, y) %>" phx-click="toggle-cell" phx-value-x="<%= x %>" phx-value-y="<%= y %>" phx-target="<%= @myself %>"></div>
+      <div id="cell_<%= x %>_<%= y %>" class="bg-gray-200 border-t border-r border-gray-900 cell <%= cell_class(@grid, x, y) %>" phx-click="toggle-cell" phx-value-x="<%= x %>" phx-value-y="<%= y %>" phx-target="<%= @myself %>"></div>
     <% end %>
   <% end %>
 </div>

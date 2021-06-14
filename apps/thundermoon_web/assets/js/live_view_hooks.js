@@ -3,6 +3,21 @@ let Hooks = {};
 
 import Chart from "chart.js";
 
+Hooks.GameOfLife = {
+  mounted() {
+    this.handleEvent("update-game-of-life", (data) => {
+      data.changes.forEach(([x, y, cell]) => {
+        let css = document.getElementById(`cell_${x}_${y}`).classList;
+        if (cell) {
+          css.add("bg-gray-700");
+        } else {
+          css.remove("bg-gray-700");
+        }
+      });
+    });
+  },
+};
+
 Hooks.LotkaVolterraChart = {
   mounted() {
     const chart = new Chart(this.el, {
