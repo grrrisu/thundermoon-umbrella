@@ -54,7 +54,7 @@ describe("game of life page", function () {
       cy.get("#grid").children(".cell").should("have.length", 25);
       cy.get(".btn").contains("clear").click();
       cy.get("#grid")
-        .children(".cell:not(.bg-gray-700)")
+        .children(".cell:not(.game-of-life-active)")
         .should("have.length", 25);
     });
 
@@ -65,14 +65,14 @@ describe("game of life page", function () {
       cy.get("#grid")
         .children(".cell")
         .first()
-        .should("not.have.class", "bg-gray-700");
+        .should("not.have.class", "game-of-life-active");
 
       cy.get("#grid").children(".cell").first().click({ force: true });
 
       cy.get("#grid")
         .children(".cell")
         .first()
-        .should("have.class", "bg-gray-700");
+        .should("have.class", "game-of-life-active");
     });
   });
 
