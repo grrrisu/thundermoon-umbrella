@@ -15,8 +15,8 @@ defmodule GameOfLife.SimulationTest do
     ]
 
     grid = Grid.create(3, 3, grid)
-    new_grid = Simulation.sim(grid)
-    assert true == Grid.get(new_grid, 1, 1)
+    changes = Simulation.sim(grid)
+    assert true == changes[{1, 1}]
   end
 
   test "Any live cell with fewer than two live neighbours dies, as if by underpopulation." do
@@ -27,8 +27,8 @@ defmodule GameOfLife.SimulationTest do
     ]
 
     grid = Grid.create(3, 3, grid)
-    new_grid = Simulation.sim(grid)
-    assert false == Grid.get(new_grid, 1, 1)
+    changes = Simulation.sim(grid)
+    assert false == changes[{1, 1}]
   end
 
   test "Any live cell with two or three live neighbours lives on to the next generation." do
@@ -39,8 +39,8 @@ defmodule GameOfLife.SimulationTest do
     ]
 
     grid = Grid.create(3, 3, grid)
-    new_grid = Simulation.sim(grid)
-    assert true == Grid.get(new_grid, 1, 1)
+    changes = Simulation.sim(grid)
+    assert is_nil(changes[{1, 1}])
   end
 
   test "Any live cell with more than three live neighbours dies, as if by overpopulation." do
@@ -51,7 +51,7 @@ defmodule GameOfLife.SimulationTest do
     ]
 
     grid = Grid.create(3, 3, grid)
-    new_grid = Simulation.sim(grid)
-    assert false == Grid.get(new_grid, 1, 1)
+    changes = Simulation.sim(grid)
+    assert false == changes[{1, 1}]
   end
 end

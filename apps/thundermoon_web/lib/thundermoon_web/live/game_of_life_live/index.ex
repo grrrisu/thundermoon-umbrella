@@ -55,6 +55,13 @@ defmodule ThundermoonWeb.GameOfLifeLive.Index do
   end
 
   @impl true
+  def handle_info({:changed, changes: changes}, socket) do
+    Logger.debug("change grid")
+    changes = changes |> Enum.map(fn {{x, y}, cell} -> [x, y, cell] end)
+    {:noreply, push_event(socket, "update-game-of-life", %{changes: changes})}
+  end
+
+  @impl true
   def handle_info({:command_failed, command: command, reason: _reason}, socket) do
     Logger.warn("command failed: #{inspect(command)}")
     {:noreply, put_flash(socket, :error, "command failed #{inspect(command)}")}
