@@ -21,6 +21,12 @@ defmodule Sim.Realm.Data do
     Agent.get(agent, & &1.data)
   end
 
+  def set_data(agent, set_func) when is_function(set_func) do
+    Agent.update(agent, fn state ->
+      %{state | data: set_func.()}
+    end)
+  end
+
   def set_data(agent, data) do
     Agent.update(agent, fn state ->
       %{state | data: data}

@@ -18,7 +18,7 @@ defmodule GameOfLife.CommandHandler do
   def execute({:sim, :tick, []}) do
     grid = get_data()
     changes = grid |> Simulation.sim()
-    Sim.Grid.apply_changes(grid, changes) |> set_data()
+    set_data(fn -> Sim.Grid.apply_changes(grid, changes) end)
     [{:changed, changes: changes}]
   end
 
