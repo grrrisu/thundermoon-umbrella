@@ -24,6 +24,12 @@ defmodule Sim.Grid do
     Grid.create(width, height, fn _x, _y -> value end)
   end
 
+  def apply_changes(grid, changes) do
+    Enum.reduce(changes, grid, fn {{x, y}, value}, grid ->
+      Grid.put(grid, x, y, value)
+    end)
+  end
+
   def get(%{0 => columns} = grid, x, y)
       when x >= 0 and x < map_size(grid) and y >= 0 and y < map_size(columns) do
     get_in(grid, [x, y])
