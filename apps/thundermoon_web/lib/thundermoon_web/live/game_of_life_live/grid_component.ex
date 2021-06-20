@@ -8,7 +8,8 @@ defmodule ThundermoonWeb.GameOfLifeLive.GridComponent do
     {:ok,
      socket
      |> assign(assigns)
-     |> assign(width: Grid.width(assigns.grid), height: Grid.height(assigns.grid))}
+     |> assign(width: Grid.width(assigns.grid), height: Grid.height(assigns.grid))
+     |> assign_grid_css()}
   end
 
   @impl true
@@ -23,4 +24,12 @@ defmodule ThundermoonWeb.GameOfLifeLive.GridComponent do
 
   defp alive_class(false), do: ""
   defp alive_class(true), do: "game-of-life-active"
+
+  defp assign_grid_css(%{assigns: %{width: width, height: height}} = socket) do
+    assign(
+      socket,
+      :grid_style,
+      "grid-template-columns: repeat(#{width}, 1fr); grid-template-rows: repeat(#{height}, 1fr); width: 90vmin; height: 90vmin"
+    )
+  end
 end
