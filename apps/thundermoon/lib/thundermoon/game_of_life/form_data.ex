@@ -11,6 +11,6 @@ defmodule GameOfLife.FormData do
     {model, @types}
     |> cast(params, [:size])
     |> validate_required(:size)
-    |> validate_number(:size, greater_than: 0, less_than: 51)
+    |> validate_number(:size, greater_than: 0, less_than_or_equal_to: 100)
   end
 end
