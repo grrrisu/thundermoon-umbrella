@@ -22,10 +22,10 @@ config :thundermoon_web, ThundermoonWeb.Endpoint,
   check_origin: false,
   watchers: [
     node: [
-      "node_modules/parcel-bundler/bin/cli.js",
+      "node_modules/parcel/lib/cli.js",
       "watch",
       "js/app.js",
-      "--out-dir",
+      "--dist-dir",
       "../priv/static",
       cd: Path.expand("../apps/thundermoon_web/assets", __DIR__)
     ]
