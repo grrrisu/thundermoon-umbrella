@@ -21,12 +21,12 @@
     "@babel/preset-env": "^7.12.1",
     "@fullhuman/postcss-purgecss": "^3.0.0",
     "@tailwindcss/postcss7-compat": "^2.1.0",
-    "autoprefixer": "^9.8.6",
+    "autoprefixer": "^10.2.6",
     "parcel": "^2.0.0-beta.3.1",
     "parcel-plugin-static-files-copy": "^2.5.0",
-    "postcss": "^7.0.35",
+    "postcss": "^8.3.5",
     "sass": "^1.27.0",
-    "tailwindcss": "npm:@tailwindcss/postcss7-compat@^2.1.0"
+    "tailwindcss": "^2.2.2"
   },
   "staticFiles": {
     "staticPath": "static",
