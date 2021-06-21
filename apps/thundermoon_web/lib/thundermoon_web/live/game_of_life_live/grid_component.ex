@@ -29,7 +29,7 @@ defmodule ThundermoonWeb.GameOfLifeLive.GridComponent do
     assign(
       socket,
       :grid_style,
-      "grid-template-columns: repeat(#{width}, 1fr); grid-template-rows: repeat(#{height}, 1fr); width: 90vmin; height: 90vmin"
+      "grid-template-columns: repeat(#{width}, 1fr); grid-template-rows: repeat(#{height}, 1fr); width: 85vmin; height: 85vmin"
     )
   end
 end
