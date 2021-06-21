@@ -31,6 +31,7 @@ COPY --from=dependencies /app/deps/phoenix/ /app/deps/phoenix
 COPY --from=dependencies /app/deps/phoenix_html/ /app/deps/phoenix_html
 COPY --from=dependencies /app/deps/phoenix_live_view/ /app/deps/phoenix_live_view
 
+RUN mkdir -p /app/apps/thundermoon_web/priv/static
 WORKDIR /app/apps/thundermoon_web/assets
 RUN npm ci
 COPY apps/thundermoon_web/assets /app/apps/thundermoon_web/assets
