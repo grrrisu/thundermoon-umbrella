@@ -5,10 +5,30 @@
   </section>
 
   <section>
-    <article class="column">
+    <article class="column" x-data="{ example: 'chat' }">
       <p class="mb-3">
-        This is a collection of examples using <a href="https://github.com/phoenixframework/phoenix_live_view" target="_blank">phoenix live view</a>. The state is hold in memory and broadcasted to all clients. The examples include a simple chat, a counter, <a href="https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life" target="_blank">Conways Game of Life</a> and a population growth simulation based on <a href="https://en.wikipedia.org/wiki/Lotka%E2%80%93Volterra_equations" target="_blank"> Lotka-Volterra</a>.
+        This is a collection of examples using <a href="https://github.com/phoenixframework/phoenix_live_view" target="_blank">phoenix live view</a>.
+        The state is hold in memory and broadcasted to all clients.
+        The examples include a simple
+        <a href="#" @click.prevent="example = 'chat'">chat</a>,
+        a <a href="#" @click.prevent="example = 'counter'">counter</a>,
+        <a href="#" @click.prevent="example = 'game-of-life'">Game Of Life</a> (<a href="https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life" target="_blank">Wikipedia</a>)
+        and a population growth simulation based on <a href="#" @click.prevent="example = 'lotka-volterra'">Lotka-Volterra</a> (<a href="https://en.wikipedia.org/wiki/Lotka%E2%80%93Volterra_equations" target="_blank">Wikipedia</a>).
       </p>
+      <div class="my-8">
+        <div x-show="example === 'chat'">
+          <img src="/images/home/chat.png" style="width: calc(1352px / 3)">
+        </div>
+        <div x-show="example === 'counter'">
+          <img src="/images/home/counter.png" style="width: calc(1150px / 3)">
+        </div>
+        <div x-show="example === 'game-of-life'">
+          <img src="/images/home/game_of_life.png" style="width: calc(1342px / 3)">
+        </div>
+        <div x-show="example === 'lotka-volterra'">
+          <img src="/images/home/lotka_volterra.png" style="width: calc(2600px / 3)">
+        </div>
+      </div>
       <p class="mb-3">The source can be found at <a href="https://github.com/grrrisu/thundermoon-umbrella" target="_blank">Github.</a></p>
       <p class="mb-3">To keep the usual bots away a login is required.</p>
       <%= unless signed_in?(@conn) do %>
