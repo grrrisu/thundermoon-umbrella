@@ -8,11 +8,15 @@
 
 - General:
 
+  - implement the PETAL Stack
+
   - css: replaced milligram with tailwindcss
 
   - css: revamped the design with a new dark theme
 
   - included line-awesome as npm package
+
+  - javascript: include Alpine 101
 
   - various upgrades
 
