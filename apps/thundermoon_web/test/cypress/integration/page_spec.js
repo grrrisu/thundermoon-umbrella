@@ -2,7 +2,7 @@
 
 describe("root page", function () {
   beforeEach(function () {
-    cy.login("/");
+    cy.visit("/");
   });
 
   it("should see the title", function () {
