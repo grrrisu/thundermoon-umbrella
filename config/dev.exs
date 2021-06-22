@@ -25,6 +25,7 @@ config :thundermoon_web, ThundermoonWeb.Endpoint,
       "node_modules/parcel/lib/cli.js",
       "watch",
       "js/app.js",
+      "--no-scope-hoist",
       "--dist-dir",
       "../priv/static",
       cd: Path.expand("../apps/thundermoon_web/assets", __DIR__)
