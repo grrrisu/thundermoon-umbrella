@@ -2,7 +2,7 @@
   "repository": {},
   "license": "MIT",
   "scripts": {
-    "deploy": "parcel build js/app.js --dist-dir ../priv/static",
+    "deploy": "parcel build js/app.js --no-scope-hoist --dist-dir ../priv/static",
     "watch": "parcel watch js/app.js --dist-dir ../priv/static",
     "clean": "rm -r ../priv/static/*",
     "cypress": "cypress open --project ../test"
