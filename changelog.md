@@ -22,6 +22,8 @@
 
     - credo 1.5.5
 
+    - parcel to 2.0.0-beta.3.1 (to make alpine work with parcel)
+
 ## 0.6.0
 
 - Sim:
