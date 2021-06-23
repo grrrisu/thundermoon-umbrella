@@ -44,8 +44,9 @@ defmodule ThundermoonWeb.GameOfLifeLiveTest do
     end
 
     test "can start and stop sim", %{conn: conn} do
-      :ok = GameOfLife.create(3)
       PubSub.subscribe(ThundermoonWeb.PubSub, "GameOfLife")
+      :ok = GameOfLife.create(3)
+      assert_receive({:update, data: %{}})
       {:ok, view, _html} = live(conn, "/game_of_life")
 
       view |> element("#start-button") |> render_click()
@@ -56,8 +57,9 @@ defmodule ThundermoonWeb.GameOfLifeLiveTest do
     end
 
     test "can reset the grid", %{conn: conn} do
-      GameOfLife.create(3)
       PubSub.subscribe(ThundermoonWeb.PubSub, "GameOfLife")
+      GameOfLife.create(3)
+      assert_receive({:update, data: %{}})
       {:ok, view, _html} = live(conn, "/game_of_life")
       view |> element("#start-button") |> render_click()
       view |> element("#recreate-button") |> render_click()
@@ -66,16 +68,18 @@ defmodule ThundermoonWeb.GameOfLifeLiveTest do
     end
 
     test "can clear the grid", %{conn: conn} do
-      GameOfLife.create(3)
       PubSub.subscribe(ThundermoonWeb.PubSub, "GameOfLife")
+      GameOfLife.create(3)
+      assert_receive({:update, data: %{}})
       {:ok, view, _html} = live(conn, "/game_of_life")
       view |> element("#clear-button") |> render_click()
       assert_receive({:update, data: %{0 => %{0 => false}}})
     end
 
     test "can change the value of a cell", %{conn: conn} do
-      GameOfLife.create(3)
       PubSub.subscribe(ThundermoonWeb.PubSub, "GameOfLife")
+      GameOfLife.create(3)
+      assert_receive({:update, data: %{}})
       {:ok, view, _html} = live(conn, "/game_of_life")
       grid = GameOfLife.get_root()
       value = get_in(grid, [0, 0])
@@ -85,7 +89,9 @@ defmodule ThundermoonWeb.GameOfLifeLiveTest do
     end
 
     test "can not recreate a grid", %{conn: conn} do
+      PubSub.subscribe(ThundermoonWeb.PubSub, "GameOfLife")
       GameOfLife.create(3)
+      assert_receive({:update, data: %{}})
       {:ok, _view, html} = live(conn, "/game_of_life")
       refute html =~ "#recreate-button"
     end
@@ -112,7 +118,9 @@ defmodule ThundermoonWeb.GameOfLifeLiveTest do
     end
 
     test "can recreate a grid", %{conn: conn} do
+      PubSub.subscribe(ThundermoonWeb.PubSub, "GameOfLife")
       GameOfLife.create(3)
+      assert_receive({:update, data: %{}})
       {:ok, view, html} = live(conn, "/game_of_life")
       assert html =~ "id=\"grid\""
       view |> element("#start-button") |> render_click()
