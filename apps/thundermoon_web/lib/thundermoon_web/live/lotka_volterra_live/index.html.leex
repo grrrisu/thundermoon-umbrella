@@ -9,16 +9,16 @@
     <i class="align-middle text-xl la la-reply-all"></i> recreate
   <% end %>
 
-  <div x-data="{ showForm: false }" x-cloak class="inline relative">
-    <a @click.prevent="showForm = !showForm" class="btn btn-outline">
-      <i class="las la-plus-circle"></i>
-      Vegetation
-    </a>
-    <div x-show="showForm" class="absolute left-0 bottom-7">
-      <div class="border bg-gray-800 border-gray-600 rounded-md p-4">
-        <%= live_component @socket, NewVegetation, id: "vegetation", sim_id: @sim_id, data: @vegetation %>
-      </div>
-      <i class="las la-angle-down"></i>
-    <div>
-  </div>
+  <%= live_component @socket, EditButton, button_label: "Vegetation" do %>
+    <%= live_component @socket, NewVegetation, id: "vegetation", sim_id: @sim_id, data: @vegetation %>
+  <% end %>
+
+  <%= live_component @socket, EditButton, button_label: "Herbivore" do %>
+    <%= live_component @socket, NewHerbivore, id: "herbivore", sim_id: @sim_id, data: @herbivore %>
+  <% end %>
+
+  <%= live_component @socket, EditButton, button_label: "Predator" do %>
+    <%= live_component @socket, NewPredator, id: "predator", sim_id: @sim_id, data: @predator %>
+  <% end %>
+ 
 <% end %>

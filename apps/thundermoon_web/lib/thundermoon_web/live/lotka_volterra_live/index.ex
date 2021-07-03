@@ -4,7 +4,7 @@ defmodule ThundermoonWeb.LotkaVolterraLive.Index do
   alias Phoenix.PubSub
 
   alias ThundermoonWeb.Component.ActionBox
-  alias ThundermoonWeb.LotkaVolterraLive.{NewVegetation, NewHerbivore, NewPredator}
+  alias ThundermoonWeb.LotkaVolterraLive.{EditButton, NewVegetation, NewHerbivore, NewPredator}
 
   @impl true
   def mount(%{"sim_id" => sim_id}, _session, socket) do
@@ -35,7 +35,8 @@ defmodule ThundermoonWeb.LotkaVolterraLive.Index do
 
   @impl true
   def handle_info({:update, data: field}, socket) do
-    {:noreply, assign(socket, field: field)}
+    {vegetation, herbivore, predator} = field
+    {:noreply, assign(socket, field: field, vegetation: vegetation, herbivore: herbivore, predator: predator)}
   end
 
   @impl true
@@ -55,9 +56,9 @@ defmodule ThundermoonWeb.LotkaVolterraLive.Index do
         |> put_flash(:error, "simulation not found, create a new one")
         |> push_redirect(to: Routes.lotka_volterra_new_path(socket, :new))
 
-      {vegation, herbivores, predators} = field ->
+      {vegation, herbivore, predator} = field ->
         if connected?(socket), do: subscribe_to_sim(sim_id)
-        assign(socket, sim_id: sim_id, field: field, vegetation: vegation, herbivores: herbivores, predators: predators)
+        assign(socket, sim_id: sim_id, field: field, vegetation: vegation, herbivore: herbivore, predator: predator)
     end
   end
 
