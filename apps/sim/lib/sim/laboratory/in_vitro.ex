@@ -29,6 +29,11 @@ defmodule Sim.Laboratory.InVitro do
     {:reply, state.object, state}
   end
 
+  def handle_call({:update_object, update_func}, _from, state) do
+    object = update(state, update_func)
+    {:reply, object, %{state | object: object}}
+  end
+
   def handle_call({:start, sim_func}, _from, %{sim_process: nil} = state) do
     broadcast(state, {:sim, started: true})
     Logger.debug("sim started for #{state.id}")
@@ -58,14 +63,18 @@ defmodule Sim.Laboratory.InVitro do
     Process.send_after(self(), :tick, @sim_interval)
   end
 
-  defp sim(state) do
+  defp update(state, update_func) do
     state.object
-    |> state.sim_func.()
+    |> update_func.()
     |> broadcast_sim_changes(state)
   end
 
+  defp sim(state) do
+    update(state, state.sim_func)
+  end
+
   defp broadcast_sim_changes(object, state) do
-    broadcast(state, {:update, data: object})
+    :ok = broadcast(state, {:update, data: object})
     object
   end
 

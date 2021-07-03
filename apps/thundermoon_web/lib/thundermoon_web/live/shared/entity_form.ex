@@ -19,7 +19,8 @@ defmodule ThundermoonWeb.Component.EntityForm do
         {:ok,
          socket
          |> assign(assigns)
-         |> assign(changeset: empty_form())}
+         |> assign(creating: not Map.has_key?(assigns, :data))
+         |> assign(changeset: get_changeset(assigns))}
       end
 
       @impl true
@@ -36,17 +37,19 @@ defmodule ThundermoonWeb.Component.EntityForm do
       def handle_event("create", %{@params_name => params}, socket) do
         case apply_params(params) do
           {:ok, entity} ->
-            send(self(), {:entity_submitted, entity})
-            {:noreply, socket}
+            {:noreply, entity_submitted(entity, socket)}
 
           {:error, changeset} ->
             {:noreply, validation_failed(socket, changeset, "creating #{@params_name} failed")}
         end
       end
 
-      def empty_form() do
-        @model
-        |> @form_data.changeset()
+      def get_changeset(%{data: data}) do
+        data |> @form_data.changeset()
+      end
+
+      def get_changeset(_assigns) do
+        @model |> @form_data.changeset()
       end
 
       defp apply_params(params) do

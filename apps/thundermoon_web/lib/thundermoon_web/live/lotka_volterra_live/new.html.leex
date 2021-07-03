@@ -3,7 +3,7 @@
 <%=
 case @entity do
   :vegetation -> live_component @socket, NewVegetation, id: "vegetation"
-  :herbivore -> live_component @socket, NewHerbivore, id: "herbivore"
-  :predator -> live_component @socket, NewPredator, id: "predator"
+  :herbivore -> live_component @socket, NewHerbivore, id: "herbivore", vegetation: @vegetation
+  :predator -> live_component @socket, NewPredator, id: "predator", vegetation: @vegetation, herbivore: @herbivore
 end
 %>

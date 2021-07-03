@@ -15,6 +15,14 @@ defmodule LotkaVolterra do
     Laboratory.create(fn -> {vegetation, herbivore, predator} end, pub_sub)
   end
 
+  def update(id, type, entity) do
+    Laboratory.update(id, type, entity)
+  end
+
+  def update_object(id, update_func) do
+    Laboratory.update_object(id, update_func)
+  end
+
   def object(id) do
     Laboratory.object(id)
   end

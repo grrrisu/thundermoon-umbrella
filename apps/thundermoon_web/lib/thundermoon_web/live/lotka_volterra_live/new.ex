@@ -41,32 +41,10 @@ defmodule ThundermoonWeb.LotkaVolterraLive.New do
   end
 
   @impl true
-  def handle_info({:entity_submitted, %Vegetation{} = vegetation}, socket) do
-    sim_id = create_sim(vegetation)
-
+  def handle_info({:object_created, sim_id}, socket) do
     {:noreply,
      socket
-     |> put_flash(:info, "successfully created vegetation")
-     |> push_redirect(to: Routes.lotka_volterra_index_path(socket, :index, sim_id: sim_id))}
-  end
-
-  @impl true
-  def handle_info({:entity_submitted, %Herbivore{} = herbivore}, socket) do
-    sim_id = create_sim(socket.assigns.vegetation, herbivore)
-
-    {:noreply,
-     socket
-     |> put_flash(:info, "successfully created herbivore")
-     |> push_redirect(to: Routes.lotka_volterra_index_path(socket, :index, sim_id: sim_id))}
-  end
-
-  @impl true
-  def handle_info({:entity_submitted, %Predator{} = predator}, socket) do
-    sim_id = create_sim(socket.assigns.vegetation, socket.assigns.herbivore, predator)
-
-    {:noreply,
-     socket
-     |> put_flash(:info, "successfully created predator")
+     |> put_flash(:info, "successfully created")
      |> push_redirect(to: Routes.lotka_volterra_index_path(socket, :index, sim_id: sim_id))}
   end
 
@@ -84,12 +62,5 @@ defmodule ThundermoonWeb.LotkaVolterraLive.New do
      socket
      |> assign(herbivore: herbivore)
      |> push_patch(to: Routes.lotka_volterra_new_path(socket, :new, model: "predator"))}
-  end
-
-  defp create_sim(vegetation, herbivore \\ nil, predator \\ nil) do
-    {sim_id, _object} =
-      LotkaVolterra.create({vegetation, herbivore, predator}, ThundermoonWeb.PubSub)
-
-    sim_id
   end
 end

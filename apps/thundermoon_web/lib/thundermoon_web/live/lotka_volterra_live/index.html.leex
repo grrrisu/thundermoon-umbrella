@@ -8,4 +8,17 @@
   <%= live_redirect(to: Routes.lotka_volterra_new_path(@socket, :new), class: "btn btn-warning") do %>
     <i class="align-middle text-xl la la-reply-all"></i> recreate
   <% end %>
+
+  <div x-data="{ showForm: false }" x-cloak class="inline relative">
+    <a @click.prevent="showForm = !showForm" class="btn btn-outline">
+      <i class="las la-plus-circle"></i>
+      Vegetation
+    </a>
+    <div x-show="showForm" class="absolute left-0 bottom-7">
+      <div class="border bg-gray-800 border-gray-600 rounded-md p-4">
+        <%= live_component @socket, NewVegetation, id: "vegetation", sim_id: @sim_id, data: @vegetation %>
+      </div>
+      <i class="las la-angle-down"></i>
+    <div>
+  </div>
 <% end %>

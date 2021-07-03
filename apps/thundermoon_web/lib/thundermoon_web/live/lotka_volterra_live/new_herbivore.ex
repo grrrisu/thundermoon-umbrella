@@ -4,6 +4,7 @@ defmodule ThundermoonWeb.LotkaVolterraLive.NewHerbivore do
     model: LotkaVolterra.Herbivore,
     form_data: Thundermoon.LotkaVolterra.AnimalForm
 
+  alias LotkaVolterra.Herbivore
   alias Thundermoon.LotkaVolterra.AnimalForm
 
   @impl true
@@ -16,5 +17,24 @@ defmodule ThundermoonWeb.LotkaVolterraLive.NewHerbivore do
       {:error, changeset} ->
         {:noreply, validation_failed(socket, changeset, "creating herbivore failed")}
     end
+  end
+
+  def entity_submitted(%Herbivore{} = herbivore, %{assigns: %{sim_id: sim_id }} = socket) do
+    LotkaVolterra.update_object(sim_id, fn {vegetation, _old_herbivore, predators} ->
+      {vegetation, herbivore, predators}
+    end)
+
+    socket
+    |> put_flash(:info, "successfully updated herbivore")
+  end
+
+  def entity_submitted(%Herbivore{} = herbivore, socket) do
+    {sim_id, _object} =
+      LotkaVolterra.create({socket.assigns.vegetation, herbivore, nil}, ThundermoonWeb.PubSub)
+
+    send(self(), {:object_created, sim_id})
+
+    socket
+    |> put_flash(:info, "successfully created herbivore")
   end
 end
