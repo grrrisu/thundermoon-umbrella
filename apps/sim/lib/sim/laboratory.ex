@@ -27,6 +27,10 @@ defmodule Sim.Laboratory do
     GenServer.call(server, {:update, id, key, value})
   end
 
+  def update_object(id, update_func, server \\ Server) when is_function(update_func) do
+    GenServer.call(server, {:update_object, id, update_func})
+  end
+
   def call(id, payload, server \\ Server) do
     case get(id, server) do
       {:error, :not_found} -> {:error, :not_found}

@@ -23,14 +23,23 @@ defmodule Sim.Laboratory.Registry do
     Enum.find(state, fn {_key, value} -> value.ref == ref end)
   end
 
+  def update_object(state, id, func) when is_function(func) do
+    case Map.get(state, id) do
+      nil ->
+        {{:error, :not_found}, state}
+
+      entry ->
+        {:ok, GenServer.call(entry.pid, {:update_object, func})}
+    end
+  end
+
   def update(state, id, key, value) do
     case Map.get(state, id) do
       nil ->
         {{:error, :not_found}, state}
 
       entry ->
-        entry = Map.put(entry, key, value)
-        {entry, update_state(state, entry)}
+        {entry, update_state(state, Map.put(entry, key, value))}
     end
   end
 

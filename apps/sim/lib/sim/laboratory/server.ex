@@ -24,6 +24,11 @@ defmodule Sim.Laboratory.Server do
     {:reply, Registry.get(state, id), state}
   end
 
+  def handle_call({:update_object, id, func}, _from, state) do
+    {:ok, response} = Registry.update_object(state, id, func)
+    {:reply, {:ok, response}, state}
+  end
+
   def handle_call({:update, id, key, value}, _from, state) do
     {response, state} = Registry.update(state, id, key, value)
     {:reply, response, state}
