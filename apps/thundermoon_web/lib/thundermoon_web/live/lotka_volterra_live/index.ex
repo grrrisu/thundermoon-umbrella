@@ -36,7 +36,9 @@ defmodule ThundermoonWeb.LotkaVolterraLive.Index do
   @impl true
   def handle_info({:update, data: field}, socket) do
     {vegetation, herbivore, predator} = field
-    {:noreply, assign(socket, field: field, vegetation: vegetation, herbivore: herbivore, predator: predator)}
+
+    {:noreply,
+     assign(socket, field: field, vegetation: vegetation, herbivore: herbivore, predator: predator)}
   end
 
   @impl true
@@ -58,7 +60,14 @@ defmodule ThundermoonWeb.LotkaVolterraLive.Index do
 
       {vegation, herbivore, predator} = field ->
         if connected?(socket), do: subscribe_to_sim(sim_id)
-        assign(socket, sim_id: sim_id, field: field, vegetation: vegation, herbivore: herbivore, predator: predator)
+
+        assign(socket,
+          sim_id: sim_id,
+          field: field,
+          vegetation: vegation,
+          herbivore: herbivore,
+          predator: predator
+        )
     end
   end
 

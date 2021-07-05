@@ -7,7 +7,7 @@
     <title>Thundermoon</title>
     <link rel="stylesheet" href="<%= Routes.static_path(@conn, "/app.css") %>"/>
     <%= csrf_meta_tag() %>
-    <script type="text/javascript" src="<%= Routes.static_path(@conn, "/app.js") %>"></script>
+    <script phx-track-static type="text/javascript" src="<%= Routes.static_path(@conn, "/app.js") %>"></script>
   </head>
   <body class="bg-gray-900 text-white flex flex-col min-h-screen">
     <%= render "header.html", conn: @conn %>
@@ -23,7 +23,4 @@
       </div>
     </footer>
   </body>
-  <script>
-    Alpine.start();
-  </script>
 </html>

@@ -19,7 +19,7 @@ defmodule ThundermoonWeb.LotkaVolterraLive.NewHerbivore do
     end
   end
 
-  def entity_submitted(%Herbivore{} = herbivore, %{assigns: %{sim_id: sim_id }} = socket) do
+  def entity_submitted(%Herbivore{} = herbivore, %{assigns: %{sim_id: sim_id}} = socket) do
     LotkaVolterra.update_object(sim_id, fn {vegetation, _old_herbivore, predators} ->
       {vegetation, herbivore, predators}
     end)
