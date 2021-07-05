@@ -6,7 +6,7 @@ defmodule ThundermoonWeb.LotkaVolterraLive.NewPredator do
 
   alias LotkaVolterra.Predator
 
-  def entity_submitted(%Predator{} = predator, %{assigns: %{sim_id: sim_id }} = socket) do
+  def entity_submitted(%Predator{} = predator, %{assigns: %{sim_id: sim_id}} = socket) do
     LotkaVolterra.update_object(sim_id, fn {vegetation, herbivore, _old_predator} ->
       {vegetation, herbivore, predator}
     end)
@@ -17,7 +17,10 @@ defmodule ThundermoonWeb.LotkaVolterraLive.NewPredator do
 
   def entity_submitted(%Predator{} = predator, socket) do
     {sim_id, _object} =
-      LotkaVolterra.create({socket.assigns.vegetation, socket.assigns.herbivore, predator}, ThundermoonWeb.PubSub)
+      LotkaVolterra.create(
+        {socket.assigns.vegetation, socket.assigns.herbivore, predator},
+        ThundermoonWeb.PubSub
+      )
 
     send(self(), {:object_created, sim_id})
 

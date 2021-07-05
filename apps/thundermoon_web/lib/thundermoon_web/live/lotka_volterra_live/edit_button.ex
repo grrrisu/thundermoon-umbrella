@@ -17,5 +17,4 @@ defmodule ThundermoonWeb.LotkaVolterraLive.EditButton do
     </div>
     """
   end
-
 end

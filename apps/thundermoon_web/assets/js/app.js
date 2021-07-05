@@ -7,6 +7,7 @@ import LiveSocket from "phoenix_live_view";
 
 import Alpine from "alpinejs";
 window.Alpine = Alpine;
+Alpine.start();
 
 import Hooks from "./live_view_hooks.js";
 

@@ -39,7 +39,8 @@ defmodule Sim.Laboratory.Registry do
         {{:error, :not_found}, state}
 
       entry ->
-        {entry, update_state(state, Map.put(entry, key, value))}
+        new_entry = Map.put(entry, key, value)
+        {new_entry, update_state(state, new_entry)}
     end
   end
 
