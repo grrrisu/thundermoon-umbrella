@@ -44,7 +44,7 @@ defmodule ThundermoonWeb.Component.EntityForm do
         end
       end
 
-      def get_changeset(%{data: data}) do
+      def get_changeset(%{data: data}) when not is_nil(data) do
         data |> @form_data.changeset()
       end
 
