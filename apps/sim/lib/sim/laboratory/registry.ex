@@ -29,7 +29,7 @@ defmodule Sim.Laboratory.Registry do
         {{:error, :not_found}, state}
 
       entry ->
-        {:ok, GenServer.call(entry.pid, {:update_object, func})}
+        GenServer.call(entry.pid, {:update_object, func})
     end
   end
 

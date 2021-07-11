@@ -31,7 +31,7 @@ defmodule Sim.Laboratory.InVitro do
 
   def handle_call({:update_object, update_func}, _from, state) do
     object = update(state, update_func)
-    {:reply, object, %{state | object: object}}
+    {:reply, {:ok, object}, %{state | object: object}}
   end
 
   def handle_call({:start, sim_func}, _from, %{sim_process: nil} = state) do
