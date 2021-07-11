@@ -17,6 +17,21 @@ defmodule Sim.Laboratory.InVitroTest do
     end
   end
 
+  describe "update object" do
+    test "with new values", %{pid: pid} do
+      assert {:ok, %{a: 1, b: 2}} = GenServer.call(pid, {:create, fn -> %{a: 1, b: 2} end})
+
+      assert {:ok, %{a: 2, b: 3}} =
+               GenServer.call(
+                 pid,
+                 {:update_object,
+                  fn %{a: a, b: b} ->
+                    %{a: a + 1, b: b + 1}
+                  end}
+               )
+    end
+  end
+
   describe "sim" do
     test "counter", %{pid: pid} do
       assert {:ok, 0} = GenServer.call(pid, {:create, fn -> 0 end})
