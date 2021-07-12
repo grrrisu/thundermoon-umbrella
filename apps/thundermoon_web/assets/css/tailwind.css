@@ -52,11 +52,19 @@
 
   /* form */
 
+  .help-block {
+    @apply text-pink-400;
+  }
+
+  .input-error {
+    @apply bg-pink-800 text-gray-100 focus:outline-none focus:bg-pink-700;
+  }
+
   .input {
-    @apply bg-gray-700 focus:outline-none focus:bg-gray-600;
+    @apply bg-gray-700 text-gray-100 focus:outline-none focus:bg-gray-600;
   }
   .text-input {
-    @apply text-gray-100 font-light p-2 w-full rounded-md focus:shadow-inner focus:ring-1 focus:ring-gray-400;
+    @apply font-light p-2 w-full rounded-md focus:shadow-inner focus:ring-1 focus:ring-gray-400;
   }
 
   /* Game of Life */
