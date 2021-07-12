@@ -5,7 +5,7 @@ defmodule ThundermoonWeb.LiveHelpers do
     live_component(ThundermoonWeb.Component.Form.TextInput,
       form: form,
       field: field,
-      opts: Keyword.merge([class: "input text-input mb-3"], opts)
+      opts: opts
     )
   end
 
