@@ -1,13 +1,4 @@
 <div class="w-full xl:w-4/5 mx-auto">
-  <%= if live_flash(@flash, :info) do %>
-  <p class="rounded bg-blue-400 text-blue-900 py-3 px-4" phx-click="lv:clear-flash" phx-value-key="info">
-    <%= live_flash(@flash, :info) %>
-  </p>
-  <% end %>
-  <%= if live_flash(@flash, :error) do %>
-  <p class="rounded bg-red-300 text-red-900 py-3 px-4" phx-click="lv:clear-flash" phx-value-key="error">
-    <%= live_flash(@flash, :error) %>
-  </p>
-  <% end %>
+  <%= live_flash_alerts(alert: @flash) %>
 </div>
 <%= @inner_content %>

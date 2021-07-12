@@ -9,15 +9,18 @@
       <%= live_text_input(f, :birth_rate, label: "Birth Rate") %>
       <%= live_text_input(f, :death_rate, label: "Death Rate") %>
       <%= live_text_input(f, :size) %>
-      <%= if @creating do %>
-        <%= submit "Create", class: "btn btn-primary" %>
-        or
-        <%= link to: "#", phx_click: "add_herbivore", phx_target: @myself, id: "button-add-herbivore", class: "btn btn-primary" do %>
-          Add Herbivore
+      <div class="mb-3">
+        <%= if @creating do %>
+          <%= submit "Create", class: "btn btn-primary" %>
+          or
+          <%= link to: "#", phx_click: "add_herbivore", phx_target: @myself, id: "button-add-herbivore", class: "btn btn-primary" do %>
+            Add Herbivore
+          <% end %>
+        <%= else %>
+          <%= submit "Update", class: "btn btn-primary" %>
         <% end %>
-      <%= else %>
-        <%= submit "Update", class: "btn btn-primary" %>
-      <% end %>
+      </div>
+      <%= live_flash_alerts(alert: @flash) %>
     </fieldset>
   </form>
 </div>

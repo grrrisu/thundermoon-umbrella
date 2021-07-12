@@ -11,7 +11,10 @@
       <%= live_text_input(f, :starving_rate, label: "Starving Rate") %>
       <%= live_text_input(f, :graze_rate, label: "Graze Rate") %>
       <%= live_text_input(f, :size) %>
-      <%= submit "Create", class: "btn btn-primary" %>
+      <div class="mb-3">
+        <%= submit "Create", class: "btn btn-primary" %>
+      </div>
+      <%= live_flash_alerts(alert: @flash) %>
     </fieldset>
   </form>
 </div>
