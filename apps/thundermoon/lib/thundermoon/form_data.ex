@@ -27,7 +27,9 @@ defmodule Thundermoon.FormData do
         end)
       end
 
-      def apply_valid_changes(%Ecto.Changeset{valid?: false} = changeset), do: {:error, changeset}
+      def apply_valid_changes(%Ecto.Changeset{valid?: false} = changeset) do
+        {:error, Map.put(changeset, :action, :insert)}
+      end
 
       def apply_valid_changes(%Ecto.Changeset{valid?: true} = changeset) do
         {:ok, apply_changes(changeset)}
