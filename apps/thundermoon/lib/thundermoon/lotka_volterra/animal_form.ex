@@ -7,10 +7,12 @@ defmodule Thundermoon.LotkaVolterra.AnimalForm do
     needed_food: :integer,
     starving_rate: :float,
     graze_rate: :float,
-    size: :integer
+    size: Sim.Integer
   }
 
   def changeset(%{} = model, params \\ %{}) do
+    model = load_attributes(model, %{size: Sim.Integer})
+
     {model, @types}
     |> cast(params, [:birth_rate, :death_rate, :needed_food, :starving_rate, :graze_rate, :size])
     |> validate_required(:size)

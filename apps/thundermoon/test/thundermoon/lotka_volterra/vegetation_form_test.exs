@@ -12,6 +12,11 @@ defmodule Thundermoon.LotkaVolterra.VegetationFormTest do
       assert 650 == Changeset.get_field(changeset, :size)
     end
 
+    test "load values" do
+      changeset = VegetationForm.changeset(%Vegetation{size: 333.666})
+      assert 333 == Changeset.get_field(changeset, :size)
+    end
+
     test "overwrite values" do
       valid_params = %{capacity: 5000, birth_rate: 0.5, death_rate: 0.1, size: 800}
       changeset = VegetationForm.changeset(%Vegetation{size: 650}, valid_params)
