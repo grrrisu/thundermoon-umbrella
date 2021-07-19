@@ -11,11 +11,6 @@ defmodule Thundermoon.Application do
       Thundermoon.Memo.Server,
       Thundermoon.ChatMessages,
       Thundermoon.CounterRealmSupervisor
-      # %{
-      #   id: Thundermoon.LotkaVolterra,
-      #   start:
-      #     {Sim.RealmSupervisor, :start_link, [Thundermoon.LotkaVolterra, ThundermoonWeb.Endpoint]}
-      # }
     ]
 
     Supervisor.start_link(children, strategy: :one_for_one, name: Thundermoon.Supervisor)
