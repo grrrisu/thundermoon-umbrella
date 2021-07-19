@@ -16,7 +16,7 @@
           <%= link to: "#", phx_click: "add_herbivore", phx_target: @myself, id: "button-add-herbivore", class: "btn btn-primary" do %>
             Add Herbivore
           <% end %>
-        <%= else %>
+        <% else %>
           <%= submit "Update", class: "btn btn-primary" %>
         <% end %>
       </div>

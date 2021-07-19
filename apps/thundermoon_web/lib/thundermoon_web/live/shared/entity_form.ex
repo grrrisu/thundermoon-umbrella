@@ -4,7 +4,7 @@ defmodule ThundermoonWeb.Component.EntityForm do
     params_name = opts[:params_name]
     # LotkaVolterra.Vegetation -> %Vegetation{}
     model = opts[:model]
-    # Thundermoon.LotkaVolterra.VegetationForm
+    # Thundermoon.LotkaVolterra.VegetationFormData
     form_data = opts[:form_data]
 
     quote do
