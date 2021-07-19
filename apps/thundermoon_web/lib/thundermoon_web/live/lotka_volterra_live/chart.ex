@@ -1,4 +1,4 @@
-defmodule ThundermoonWeb.LotkaVolterra.Chart do
+defmodule ThundermoonWeb.LotkaVolterraLive.Chart do
   use ThundermoonWeb, :live_component
 
   @impl true

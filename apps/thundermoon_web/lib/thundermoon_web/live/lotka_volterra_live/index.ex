@@ -4,7 +4,14 @@ defmodule ThundermoonWeb.LotkaVolterraLive.Index do
   alias Phoenix.PubSub
 
   alias ThundermoonWeb.Component.ActionBox
-  alias ThundermoonWeb.LotkaVolterraLive.{EditButton, NewVegetation, NewHerbivore, NewPredator}
+
+  alias ThundermoonWeb.LotkaVolterraLive.{
+    Chart,
+    EditButton,
+    VegetationForm,
+    HerbivoreForm,
+    PredatorForm
+  }
 
   @impl true
   def mount(%{"sim_id" => sim_id}, _session, socket) do

@@ -1,24 +1,24 @@
 <h1>Lotka Volterra</h1>
 
-<%= live_component @socket, ThundermoonWeb.LotkaVolterra.Chart, id: "chart-#{@sim_id}", field: @field %>
+<%= live_component Chart, id: "chart-#{@sim_id}", field: @field %>
 
-<%= live_component @socket, ActionBox do %>
+<%= live_component ActionBox do %>
   <%= start_button("start-#{@sim_id}", @started) %>
 
   <%= live_redirect(to: Routes.lotka_volterra_new_path(@socket, :new), class: "btn btn-warning") do %>
     <i class="align-middle text-xl la la-reply-all"></i> recreate
   <% end %>
 
-  <%= live_component @socket, EditButton, button_label: "Vegetation" do %>
-    <%= live_component @socket, NewVegetation, id: "vegetation", sim_id: @sim_id, data: @vegetation %>
+  <%= live_component EditButton, button_label: "Vegetation" do %>
+    <%= live_component VegetationForm, id: "vegetation", sim_id: @sim_id, data: @vegetation %>
   <% end %>
 
-  <%= live_component @socket, EditButton, button_label: "Herbivore" do %>
-    <%= live_component @socket, NewHerbivore, id: "herbivore", sim_id: @sim_id, data: @herbivore %>
+  <%= live_component EditButton, button_label: "Herbivore" do %>
+    <%= live_component HerbivoreForm, id: "herbivore", sim_id: @sim_id, data: @herbivore %>
   <% end %>
 
-  <%= live_component @socket, EditButton, button_label: "Predator" do %>
-    <%= live_component @socket, NewPredator, id: "predator", sim_id: @sim_id, data: @predator %>
+  <%= live_component EditButton, button_label: "Predator" do %>
+    <%= live_component PredatorForm, id: "predator", sim_id: @sim_id, data: @predator %>
   <% end %>
  
 <% end %>
