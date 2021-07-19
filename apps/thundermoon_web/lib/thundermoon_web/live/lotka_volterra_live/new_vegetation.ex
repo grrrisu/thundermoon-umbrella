@@ -2,14 +2,14 @@ defmodule ThundermoonWeb.LotkaVolterraLive.NewVegetation do
   use ThundermoonWeb.Component.EntityForm,
     params_name: "vegetation",
     model: LotkaVolterra.Vegetation,
-    form_data: Thundermoon.LotkaVolterra.VegetationForm
+    form_data: Thundermoon.LotkaVolterra.VegetationFormData
 
   alias LotkaVolterra.Vegetation
-  alias Thundermoon.LotkaVolterra.VegetationForm
+  alias Thundermoon.LotkaVolterra.VegetationFormData
 
   @impl true
   def handle_event("add_herbivore", _params, socket) do
-    case VegetationForm.apply_action(socket.assigns.changeset, :update) do
+    case VegetationFormData.apply_action(socket.assigns.changeset, :update) do
       {:ok, vegetation} ->
         send(self(), {:entity_added, vegetation})
         {:noreply, socket}

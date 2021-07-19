@@ -2,14 +2,14 @@ defmodule ThundermoonWeb.LotkaVolterraLive.NewHerbivore do
   use ThundermoonWeb.Component.EntityForm,
     params_name: "herbivore",
     model: LotkaVolterra.Herbivore,
-    form_data: Thundermoon.LotkaVolterra.AnimalForm
+    form_data: Thundermoon.LotkaVolterra.AnimalFormData
 
   alias LotkaVolterra.Herbivore
-  alias Thundermoon.LotkaVolterra.AnimalForm
+  alias Thundermoon.LotkaVolterra.AnimalFormData
 
   @impl true
   def handle_event("add_predator", _params, socket) do
-    case AnimalForm.apply_action(socket.assigns.changeset, :update) do
+    case AnimalFormData.apply_action(socket.assigns.changeset, :update) do
       {:ok, herbivore} ->
         send(self(), {:entity_added, herbivore})
         {:noreply, socket}

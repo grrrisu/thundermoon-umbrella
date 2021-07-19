@@ -45,7 +45,7 @@ defmodule Sim.Laboratory.RegistryTest do
     end
 
     test "an unknown entry", %{state: state} do
-      assert {{:error, :not_found}, state} = Registry.update(state, "unknown", :foo, "bar")
+      assert {{:error, :not_found}, ^state} = Registry.update(state, "unknown", :foo, "bar")
     end
   end
 
