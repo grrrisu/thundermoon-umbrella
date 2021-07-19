@@ -1,4 +1,4 @@
-defmodule ThundermoonWeb.LotkaVolterraLive.NewPredator do
+defmodule ThundermoonWeb.LotkaVolterraLive.PredatorForm do
   use ThundermoonWeb.Component.EntityForm,
     params_name: "predator",
     model: LotkaVolterra.Predator,

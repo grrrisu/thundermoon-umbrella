@@ -1,4 +1,4 @@
-defmodule ThundermoonWeb.LotkaVolterraLive.NewVegetation do
+defmodule ThundermoonWeb.LotkaVolterraLive.VegetationForm do
   use ThundermoonWeb.Component.EntityForm,
     params_name: "vegetation",
     model: LotkaVolterra.Vegetation,
