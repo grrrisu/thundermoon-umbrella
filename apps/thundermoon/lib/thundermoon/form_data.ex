@@ -3,6 +3,8 @@ defmodule Thundermoon.FormData do
     quote do
       import Ecto.Changeset
 
+      defdelegate apply_action(changeset, action), to: Ecto.Changeset
+
       def validate_greater_than(changeset, field, other, opts \\ []) do
         changeset
         |> validate_changed_greater_than(field, other, opts)
@@ -27,13 +29,6 @@ defmodule Thundermoon.FormData do
         end)
       end
 
-      def apply_valid_changes(%Ecto.Changeset{valid?: false} = changeset) do
-        {:error, Map.put(changeset, :action, :insert)}
-      end
 
-      def apply_valid_changes(%Ecto.Changeset{valid?: true} = changeset) do
-        {:ok, apply_changes(changeset)}
-      end
-    end
   end
 end
