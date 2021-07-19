@@ -9,7 +9,7 @@ defmodule ThundermoonWeb.LotkaVolterraLive.NewHerbivore do
 
   @impl true
   def handle_event("add_predator", _params, socket) do
-    case AnimalForm.apply_valid_changes(socket.assigns.changeset) do
+    case AnimalForm.apply_action(socket.assigns.changeset, :update) do
       {:ok, herbivore} ->
         send(self(), {:entity_added, herbivore})
         {:noreply, socket}

@@ -25,7 +25,7 @@ defmodule ThundermoonWeb.GameOfLifeLive.FormComponent do
   def handle_event("create", %{"form_data" => params}, socket) do
     changeset = FormData.changeset(socket.assigns.changeset, params)
 
-    case FormData.apply_valid_changes(changeset) do
+    case FormData.apply_action(changeset, :update) do
       {:ok, data} ->
         send(self(), {:form_submitted, data.size})
 

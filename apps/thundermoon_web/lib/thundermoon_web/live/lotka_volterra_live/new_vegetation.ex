@@ -9,7 +9,7 @@ defmodule ThundermoonWeb.LotkaVolterraLive.NewVegetation do
 
   @impl true
   def handle_event("add_herbivore", _params, socket) do
-    case VegetationForm.apply_valid_changes(socket.assigns.changeset) do
+    case VegetationForm.apply_action(socket.assigns.changeset, :update) do
       {:ok, vegetation} ->
         send(self(), {:entity_added, vegetation})
         {:noreply, socket}

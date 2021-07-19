@@ -58,7 +58,7 @@ defmodule ThundermoonWeb.Component.EntityForm do
 
       defp apply_params(params) do
         @form_data.changeset(@model, params)
-        |> @form_data.apply_valid_changes()
+        |> @form_data.apply_action(:update)
       end
 
       defp validation_failed(socket, changeset, message) do
