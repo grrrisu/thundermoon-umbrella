@@ -29,6 +29,21 @@ defmodule Thundermoon.FormData do
         end)
       end
 
+      # -------------------
 
+      def load_attributes(model, %{} = attributes) do
+        Enum.reduce(attributes, model, fn {attribute, type}, result ->
+          value = Map.get(model, attribute)
+          Map.put(result, attribute, load_attribute(value, type))
+        end)
+      end
+
+      defp load_attribute(value, type) do
+        case type.load(value) do
+          {:ok, value} -> value
+          :error -> raise "could not load for type #{type}"
+        end
+      end
+    end
   end
 end

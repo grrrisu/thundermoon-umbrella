@@ -7,10 +7,12 @@ defmodule Thundermoon.LotkaVolterra.VegetationForm do
     capacity: :integer,
     birth_rate: :float,
     death_rate: :float,
-    size: :integer
+    size: Sim.Integer
   }
 
   def changeset(%Vegetation{} = model, params \\ %{}) do
+    model = load_attributes(model, %{size: Sim.Integer})
+
     {model, @types}
     |> cast(params, [:capacity, :birth_rate, :death_rate, :size])
     |> validate_required(:size)
