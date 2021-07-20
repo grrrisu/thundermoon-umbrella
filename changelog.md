@@ -1,10 +1,24 @@
 # Changelog
 
-## dev
+## 0.7.0
+
+- Chat:
+
+  - extract message and chat to their own component
 
 - Game Of Life:
 
   - push only changes to game of life live_view for faster rendering
+
+  - adapt dimensions of grid to viewport
+
+- Lotka Voltera
+
+  - edit vegetation, herbivores or predators on the chart page
+
+- Sim
+
+  - update object within in vitro
 
 - General:
 
@@ -17,6 +31,12 @@
   - included line-awesome as npm package
 
   - javascript: include Alpine 101
+
+  - validate greater also validates smaller at same time
+
+  - EctoType for simulated integers (are floats behind the scenes)
+
+  - preview images on landing page
 
   - various upgrades
 
