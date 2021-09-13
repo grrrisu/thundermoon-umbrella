@@ -24,8 +24,13 @@ defmodule ThundermoonWeb.LotkaVolterraLive.IndexTest do
   describe "a member" do
     setup [:login_as_member, :create_sim]
 
+    test "redirected if sim_id does not exists", %{conn: conn} do
+      assert {:error, {:live_redirect, %{to: "/lotka-volterra/new"}}} =
+               live(conn, "/lotka-volterra?sim_id=555")
+    end
+
     test "disconnected and connected mount", %{conn: conn, sim_id: sim_id} do
-      conn = get(conn, "/lotka-volterra", sim_id: sim_id)
+      conn = get(conn, "/lotka-volterra?sim_id=" <> sim_id)
       assert html_response(conn, 200) =~ "<h1>Lotka Volterra</h1>"
       {:ok, _view, html} = live(conn)
       assert html =~ "<h1>Lotka Volterra</h1>"
