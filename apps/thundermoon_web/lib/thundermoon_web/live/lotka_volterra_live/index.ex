@@ -25,7 +25,7 @@ defmodule ThundermoonWeb.LotkaVolterraLive.Index do
   def mount(%{}, _session, socket) do
     {:ok,
      socket
-     |> push_redirect(to: Routes.live_path(socket, ThundermoonWeb.LotkaVolterraLive.New))}
+     |> push_redirect(to: Routes.lotka_volterra_new_path(socket, :new))}
   end
 
   @impl true
