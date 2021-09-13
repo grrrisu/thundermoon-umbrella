@@ -138,9 +138,7 @@ defmodule Sim.Realm.CommandBus do
 
       %{running_command: {context, _, _} = running_command} ->
         Logger.warn(
-          "task executing command #{inspect(running_command)} failed with reason #{
-            inspect(reason)
-          }"
+          "task executing command #{inspect(running_command)} failed with reason #{inspect(reason)}"
         )
 
         {:noreply,
