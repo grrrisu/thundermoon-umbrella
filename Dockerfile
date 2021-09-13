@@ -1,5 +1,5 @@
 # docker build -t thundermoon:dependencies --target=dependencies .
-FROM elixir:1.11.2-alpine as dependencies
+FROM elixir:1.12.3-alpine as dependencies
 RUN apk add --no-cache \
     gcc \
     git \
