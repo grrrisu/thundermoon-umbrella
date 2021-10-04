@@ -17,7 +17,7 @@ RUN mix release
 
 #########################################################
 # docker build -t thundermoon:app --target=app -f .semaphore/Dockerfile_release .
-FROM alpine:3.12 as app
+FROM alpine:3.14 as app
 
 RUN apk add --update bash openssl
 
