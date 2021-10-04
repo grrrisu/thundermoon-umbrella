@@ -1,5 +1,13 @@
 # Changelog
 
+## dev
+
+- General:
+
+  - Elixir 1.12.3
+
+  - Phoenix 1.16.0
+
 ## 0.7.0
 
 - Chat:
