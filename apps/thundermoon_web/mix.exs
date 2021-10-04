@@ -37,10 +37,10 @@ defmodule ThundermoonWeb.MixProject do
   # Type `mix help deps` for examples and options.
   defp deps do
     [
-      {:phoenix, "~> 1.5.12"},
+      {:phoenix, "~> 1.6.0"},
       {:phoenix_pubsub, "~> 2.0"},
       {:phoenix_ecto, "~> 4.0"},
-      {:phoenix_html, "~> 3.0"},
+      {:phoenix_html, "~> 3.0.4"},
       {:phoenix_live_view, "~> 0.16"},
       {:phoenix_live_dashboard, "~> 0.5"},
       {:telemetry_metrics, "~> 0.6"},
