@@ -43,6 +43,14 @@ config :logger, Sentry.LoggerBackend,
 # Use Jason for JSON parsing in Phoenix
 config :phoenix, :json_library, Jason
 
+config :esbuild,
+  version: "0.12.26",
+  default: [
+    args: ~w(js/app.js --bundle --target=es2016 --outdir=../priv/static/assets),
+    cd: Path.expand("../apps/thundermoon_web/assets", __DIR__),
+    env: %{"NODE_PATH" => Path.expand("../deps", __DIR__)}
+  ]
+
 config :ueberauth, Ueberauth,
   providers: [
     github: {Ueberauth.Strategy.Github, [allow_private_emails: true]}

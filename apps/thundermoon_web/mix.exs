@@ -60,6 +60,7 @@ defmodule ThundermoonWeb.MixProject do
       {:hackney, "~> 1.8"},
       {:observer_cli, "~> 1.5"},
       {:phoenix_live_reload, "~> 1.2", only: :dev},
+      {:esbuild, "~> 0.2", runtime: Mix.env() == :dev},
       {:floki, "~> 0.30", only: :test},
       {:credo, "~> 1.5", only: [:dev, :test], runtime: false}
     ]
@@ -70,6 +71,9 @@ defmodule ThundermoonWeb.MixProject do
   #
   # See the documentation for `Mix` for more info on aliases.
   defp aliases do
-    [test: ["ecto.create --quiet", "ecto.migrate", "test"]]
+    [
+      test: ["ecto.create --quiet", "ecto.migrate", "test"],
+      "assets.deploy": ["esbuild default --minify", "phx.digest"]
+    ]
   end
 end
