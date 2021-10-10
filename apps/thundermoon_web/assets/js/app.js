@@ -1,5 +1,3 @@
-import css from "../css/app.css";
-
 import "phoenix_html";
 
 import { Socket } from "phoenix";

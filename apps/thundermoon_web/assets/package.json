@@ -2,7 +2,7 @@
   "repository": {},
   "license": "MIT",
   "scripts": {
-    "clean": "rm -r ../priv/static/*",
+    "clean": "rm -r ../priv/static/assets/*",
     "cypress": "cypress open --project ../test"
   },
   "dependencies": {
@@ -17,10 +17,12 @@
   "devDependencies": {
     "@babel/core": "^7.12.3",
     "@babel/preset-env": "^7.12.1",
-    "autoprefixer": "^10.2.6",
-    "postcss": "^8.3.5",
+    "autoprefixer": "^10.3.7",
+    "postcss": "^8.3.9",
+    "postcss-cli": "^9.0.1",
+    "postcss-import": "^14.0.2",
     "sass": "^1.27.0",
-    "tailwindcss": "^2.2.4"
+    "tailwindcss": "^2.2.16"
   },
   "name": "assets"
 }

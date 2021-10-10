@@ -1,7 +1,9 @@
 module.exports = {
+  mode: "jit",
   purge: [
     "../**/*.html.eex",
     "../**/*.html.leex",
+    "../**/*.html.heex",
     "../**/views/**/*.ex",
     "../**/live/**/*.ex",
     "./css/**/*.css",
