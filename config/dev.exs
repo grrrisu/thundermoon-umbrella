@@ -30,6 +30,13 @@ config :thundermoon_web, ThundermoonWeb.Endpoint,
       "--postcss",
       "--watch",
       cd: Path.expand("../apps/thundermoon_web/assets", __DIR__)
+    ],
+    npx: [
+      "cpx",
+      "./static/**/*",
+      "../priv/static",
+      "--watch",
+      cd: Path.expand("../apps/thundermoon_web/assets", __DIR__)
     ]
   ]
 
