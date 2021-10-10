@@ -37,6 +37,12 @@ config :thundermoon_web, ThundermoonWeb.Endpoint,
       "../priv/static",
       "--watch",
       cd: Path.expand("../apps/thundermoon_web/assets", __DIR__)
+    ],
+    npx: [
+      "cpx",
+      "./node_modules/line-awesome/dist/line-awesome/fonts/*",
+      "../priv/static/fonts",
+      cd: Path.expand("../apps/thundermoon_web/assets", __DIR__)
     ]
   ]
 
