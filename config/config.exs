@@ -21,7 +21,7 @@ config :thundermoon_web,
 config :thundermoon_web, ThundermoonWeb.Endpoint,
   url: [host: "localhost"],
   secret_key_base: "tppRzffplbnK5cQm15uBQNUPGcM66dQyDYmPmDv+hUPWYmc9DL1ypKuJQr9J2Ect",
-  render_errors: [view: ThundermoonWeb.ErrorView, accepts: ~w(html json)],
+  render_errors: [view: ThundermoonWeb.ErrorView, accepts: ~w(html json), layout: false],
   pubsub_server: ThundermoonWeb.PubSub,
   live_view: [signing_salt: "3xuIiywqogg7Ar9EFVpbQGP6lEfmoLzY"]
 
