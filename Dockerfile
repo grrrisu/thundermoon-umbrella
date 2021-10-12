@@ -33,9 +33,13 @@ COPY --from=dependencies /app/deps/phoenix_live_view/ /app/deps/phoenix_live_vie
 
 RUN mkdir -p /app/apps/thundermoon_web/priv/static
 WORKDIR /app/apps/thundermoon_web/assets
+
 RUN npm ci
 COPY apps/thundermoon_web/assets /app/apps/thundermoon_web/assets
-RUN npm run deploy
+ENV NODE_ENV=production
+RUN npx tailwindcss --input=css/app.css --output=../priv/static/assets/app.css --postcss
+RUN npx cpx "./static/**/*" ../priv/static
+RUN npx cpx "./node_modules/line-awesome/dist/line-awesome/fonts/*" ../priv/static/fonts
 
 ########################################################
 # docker build -t thundermoon:builder --target=builder .
@@ -55,7 +59,6 @@ WORKDIR /app
 COPY .formatter.exs /app/
 COPY mix.* /app/
 
-
 ENV MIX_ENV=test
 RUN mix do deps.get deps.compile compile
 
@@ -63,10 +66,12 @@ RUN mix do deps.get deps.compile compile
 # docker build -t thundermoon:integration --target=integration .
 FROM builder as integration
 
-WORKDIR /app/apps/thundermoon_web/
-RUN mix phx.digest
-
 WORKDIR /app
+
+COPY --from=assets /app/apps/thundermoon_web/assets/node_modules/ /app/apps/thundermoon_web/assets/node_modules/
+
+RUN mix esbuild default --minify
+RUN mix phx.digest
 
 ENV SECRET_KEY_BASE set_later
 ENV MIX_ENV=integration
@@ -75,4 +80,31 @@ RUN mix compile
 COPY *.sh /app/
 CMD ["/app/run_integration.sh"]
 
+#########################################################
+# docker build -t thundermoon:releaser --target=releaser .
+FROM builder as releaser
+
+WORKDIR /app
+
+COPY --from=assets /app/apps/thundermoon_web/assets/node_modules/ /app/apps/thundermoon_web/assets/node_modules/
+
+RUN mix esbuild default --minify
+RUN mix phx.digest
+RUN mix compile
+RUN mix release
+
+#########################################################
+# docker build -t thundermoon:app --target=app .
+FROM alpine:3.14 as app
+
+RUN apk add --update bash openssl libgcc libstdc++
+
+WORKDIR /app
+
+COPY --from=releaser /app/_build/prod/rel/thundermoon_umbrella /app
+COPY *.sh /app/
+
+ENV HOME=/app
+
+CMD ["/app/run.sh"]
 
