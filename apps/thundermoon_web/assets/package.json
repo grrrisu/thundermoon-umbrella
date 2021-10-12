@@ -2,6 +2,7 @@
   "repository": {},
   "license": "MIT",
   "scripts": {
+    "deploy": "NODE_ENV=production postcss css/app.css -o ../priv/static/assets/app.css",
     "clean": "rm -r ../priv/static/assets/*",
     "cypress": "cypress open --project ../test"
   },
