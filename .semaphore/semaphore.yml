@@ -94,7 +94,7 @@ blocks:
             - echo POSTGRES_PASSWORD="${DB_PASSWORD}" >> .env/db
             - mv config/dev.secret.example.exs config/dev.secret.exs
             - docker pull "$DOCKER_REPOSITORY:builder_$SEMAPHORE_GIT_BRANCH"
-            - docker build -t $IMAGE_TAG --target=app --build-arg BUILDER_IMAGE="$DOCKER_REPOSITORY:builder_$SEMAPHORE_GIT_BRANCH" -f .semaphore/Dockerfile_release .
+            - docker build -t $IMAGE_TAG --target=app --build-arg BUILDER_IMAGE="$DOCKER_REPOSITORY:builder_$SEMAPHORE_GIT_BRANCH" .
             - docker push $IMAGE_TAG
 promotions:
   - name: Deploy
