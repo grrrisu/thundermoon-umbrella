@@ -23,7 +23,7 @@
     "postcss": "^8.3.9",
     "postcss-cli": "^9.0.1",
     "postcss-import": "^14.0.2",
-    "sass": "^1.27.0",
+    "sass": "^1.43.2",
     "tailwindcss": "^2.2.16"
   },
   "name": "assets"
