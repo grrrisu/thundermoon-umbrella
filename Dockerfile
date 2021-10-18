@@ -1,110 +1,92 @@
-# docker build -t thundermoon:dependencies --target=dependencies .
-FROM elixir:1.12.3-alpine as dependencies
-RUN apk add --no-cache \
-    gcc \
-    git \
-    make \
-    musl-dev
-RUN mix local.rebar --force && \
-    mix local.hex --force
+ARG MIX_ENV="prod"
 
-WORKDIR /app
-ENV MIX_ENV=prod
+# docker build -t thundermoon:build --target=build .
+FROM elixir:1.12.3-alpine as build
 
-COPY mix.* /app/
-COPY apps/sim/mix.exs /app/apps/sim/mix.exs
-COPY apps/thundermoon/mix.exs /app/apps/thundermoon/mix.exs
-COPY apps/thundermoon_web/mix.exs /app/apps/thundermoon_web/mix.exs
-RUN mix do deps.get --only prod, deps.compile
-
-########################################################
-# docker build -t thundermoon:assets --target=assets .
-FROM node:14.15.3-alpine as assets
-
-RUN apk add --no-cache python make g++
+RUN apk add --no-cache build-base npm git python3 curl
 
 WORKDIR /app
 
-COPY apps/thundermoon_web/assets/package*.json /app/apps/thundermoon_web/assets/
-COPY apps/thundermoon_web/lib/ /app/apps/thundermoon_web/lib/
-COPY --from=dependencies /app/deps/phoenix/ /app/deps/phoenix
-COPY --from=dependencies /app/deps/phoenix_html/ /app/deps/phoenix_html
-COPY --from=dependencies /app/deps/phoenix_live_view/ /app/deps/phoenix_live_view
+# install hex + rebar
+RUN mix local.hex --force && \
+    mix local.rebar --force
 
-RUN mkdir -p /app/apps/thundermoon_web/priv/static
+# set build ENV
+ARG MIX_ENV
+ENV MIX_ENV="${MIX_ENV}"
+
+# install mix dependencies
+COPY mix.exs mix.lock ./
+COPY apps/game_of_life/mix.exs ./apps/game_of_life/mix.exs
+COPY apps/lotka_volterra/mix.exs ./apps/lotka_volterra/mix.exs
+COPY apps/sim/mix.exs ./apps/sim/mix.exs
+COPY apps/thundermoon/mix.exs ./apps/thundermoon/mix.exs
+COPY apps/thundermoon_web/mix.exs ./apps/thundermoon_web/mix.exs
+
+RUN mix deps.get --only $MIX_ENV
+RUN mkdir -p config
+
+# copy compile-time config files before we compile dependencies
+# to ensure any relevant config change will trigger the dependencies
+# to be re-compiled.
+COPY config/config.exs config/$MIX_ENV.exs config/
+RUN mix deps.compile
+
+COPY apps/ ./apps
+#COPY .formatter.exs /app/
+
+# note: if your project uses a tool like https://purgecss.com/,
+# which customizes asset compilation based on what it finds in
+# your Elixir templates, you will need to move the asset compilation
+# step down so that `lib` is available.
 WORKDIR /app/apps/thundermoon_web/assets
 
 RUN npm ci
-COPY apps/thundermoon_web/assets /app/apps/thundermoon_web/assets
 ENV NODE_ENV=production
 RUN npx tailwindcss --input=css/app.css --output=../priv/static/assets/app.css --postcss
 RUN npx cpx "./static/**/*" ../priv/static
 RUN npx cpx "./node_modules/line-awesome/dist/line-awesome/fonts/*" ../priv/static/fonts
 
-########################################################
-# docker build -t thundermoon:builder --target=builder .
-FROM dependencies AS builder
-
 WORKDIR /app
-COPY --from=assets /app/apps/thundermoon_web/priv/static/ /app/apps/thundermoon_web/priv/static/
-COPY apps/ /app/apps
-COPY config/ /app/config
-
-########################################################
-# docker build -t thundermoon:test --target=test .
-FROM builder as test
-
-WORKDIR /app
-
-COPY .formatter.exs /app/
-COPY mix.* /app/
-
-ENV MIX_ENV=test
-RUN mix do deps.get deps.compile compile
-
-########################################################
-# docker build -t thundermoon:integration --target=integration .
-FROM builder as integration
-
-WORKDIR /app
-
-COPY --from=assets /app/apps/thundermoon_web/assets/node_modules/ /app/apps/thundermoon_web/assets/node_modules/
-
 RUN mix esbuild default --minify
 RUN mix phx.digest
 
-ENV SECRET_KEY_BASE set_later
-ENV MIX_ENV=integration
 
+# compile and build the release
 RUN mix compile
-COPY *.sh /app/
-CMD ["/app/run_integration.sh"]
-
-#########################################################
-# docker build -t thundermoon:releaser --target=releaser .
-FROM builder as releaser
-
-WORKDIR /app
-
-COPY --from=assets /app/apps/thundermoon_web/assets/node_modules/ /app/apps/thundermoon_web/assets/node_modules/
-
-RUN mix esbuild default --minify
-RUN mix phx.digest
-RUN mix compile
+# changes to config/runtime.exs don't require recompiling the code
+COPY config/runtime.exs config/
+# uncomment COPY if rel/ exists
+# COPY rel rel
 RUN mix release
 
-#########################################################
+########################################################
 # docker build -t thundermoon:app --target=app .
-FROM alpine:3.14 as app
+FROM alpine:3.12.1 AS app
+RUN apk add --no-cache libstdc++ openssl ncurses-libs
 
-RUN apk add --update bash openssl libgcc libstdc++
+ARG MIX_ENV
+ENV USER="elixir"
 
-WORKDIR /app
 
-COPY --from=releaser /app/_build/prod/rel/thundermoon_umbrella /app
-COPY *.sh /app/
+WORKDIR "/home/${USER}/app"
+# Creates an unprivileged user to be used exclusively to run the Phoenix app
+RUN \
+  addgroup \
+   -g 1000 \
+   -S "${USER}" \
+  && adduser \
+   -s /bin/sh \
+   -u 1000 \
+   -G "${USER}" \
+   -h "/home/${USER}" \
+   -D "${USER}" \
+  && su "${USER}"
 
-ENV HOME=/app
+# Everything from this line onwards will run in the context of the unprivileged user.
+USER "${USER}"
+
+COPY --from=build --chown="${USER}":"${USER}" /app/_build/"${MIX_ENV}"/rel/thundermoon_umbrella ./
+COPY --chown="${USER}":"${USER}" *.sh ./
 
 CMD ["/app/run.sh"]
-
