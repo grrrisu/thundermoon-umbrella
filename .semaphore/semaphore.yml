@@ -21,24 +21,24 @@ blocks:
           - echo "${DOCKER_PASSWORD}" | docker login -u "${DOCKER_USERNAME}" --password-stdin
           - checkout
       jobs:
-        - name: build test containers
+        - name: build container
           commands:
-            # builder
-            - docker build -t thundermoon:builder --target=builder .
-            - docker tag thundermoon:builder "$DOCKER_REPOSITORY:builder_$SEMAPHORE_GIT_BRANCH"
-            - docker push "$DOCKER_REPOSITORY:builder_$SEMAPHORE_GIT_BRANCH"
+            # build
+            - docker build -t thundermoon:build --target=build .
+            - docker tag thundermoon:build "$DOCKER_REPOSITORY:build_$SEMAPHORE_GIT_SHA"
+            - docker push "$DOCKER_REPOSITORY:build_$SEMAPHORE_GIT_SHA"
             # test
             - docker build -t thundermoon:test --target=test .
-            - docker tag thundermoon:test "$DOCKER_REPOSITORY:test_$SEMAPHORE_GIT_BRANCH"
-            - docker push "$DOCKER_REPOSITORY:test_$SEMAPHORE_GIT_BRANCH"
+            - docker tag thundermoon:test "$DOCKER_REPOSITORY:test_$SEMAPHORE_GIT_SHA"
+            - docker push "$DOCKER_REPOSITORY:test_$SEMAPHORE_GIT_SHA"
             # integration
             - mv config/dev.secret.example.exs config/dev.secret.exs
             - docker build -t thundermoon:integration --target=integration .
-            - docker tag thundermoon:integration "$DOCKER_REPOSITORY:integration_$SEMAPHORE_GIT_BRANCH"
-            - docker push "$DOCKER_REPOSITORY:integration_$SEMAPHORE_GIT_BRANCH"
-      epilogue:
-        commands:
-          - mkdir -p deps
+            - docker tag thundermoon:integration "$DOCKER_REPOSITORY:integration_$SEMAPHORE_GIT_SHA"
+            - docker push "$DOCKER_REPOSITORY:integration_$SEMAPHORE_GIT_SHA"
+      # epilogue:
+      #   commands:
+      #     - mkdir -p deps
   - name: "Test"
     task:
       secrets:
@@ -54,52 +54,55 @@ blocks:
       jobs:
         - name: check credo
           commands:
-            - docker pull "$DOCKER_REPOSITORY:test_$SEMAPHORE_GIT_BRANCH"
-            - docker run "$DOCKER_REPOSITORY:test_$SEMAPHORE_GIT_BRANCH" mix credo suggest --min-priority high
+            - docker pull "$DOCKER_REPOSITORY:test_$SEMAPHORE_GIT_SHA"
+            - docker tag "$DOCKER_REPOSITORY:test_$SEMAPHORE_GIT_SHA" thundermoon:test
+            - docker run "thundermoon:test" mix credo suggest --min-priority high
         - name: check formatted
           commands:
-            - docker pull "$DOCKER_REPOSITORY:test_$SEMAPHORE_GIT_BRANCH"
-            - docker run "$DOCKER_REPOSITORY:test_$SEMAPHORE_GIT_BRANCH" mix format --check-formatted
+            - docker pull "$DOCKER_REPOSITORY:test_$SEMAPHORE_GIT_SHA"
+            - docker tag "$DOCKER_REPOSITORY:test_$SEMAPHORE_GIT_SHA" thundermoon:test
+            - docker run "thundermoon:test" mix format --check-formatted
         - name: mix test
           commands:
-            - docker pull "$DOCKER_REPOSITORY:test_$SEMAPHORE_GIT_BRANCH"
-            - IMAGE="$DOCKER_REPOSITORY:test_$SEMAPHORE_GIT_BRANCH" docker-compose -f .semaphore/docker-compose.yml up --abort-on-container-exit --exit-code-from app
+            - docker pull "$DOCKER_REPOSITORY:test_$SEMAPHORE_GIT_SHA"
+            - docker tag "$DOCKER_REPOSITORY:test_$SEMAPHORE_GIT_SHA" thundermoon:test
+            - IMAGE="thundermoon:test" docker-compose -f .semaphore/docker-compose.yml up --abort-on-container-exit --exit-code-from app
         - name: cypress
           commands:
-            - docker pull "$DOCKER_REPOSITORY:integration_$SEMAPHORE_GIT_BRANCH"
-            - IMAGE="$DOCKER_REPOSITORY:integration_$SEMAPHORE_GIT_BRANCH" docker-compose -f .semaphore/docker-compose.integration.yml up --abort-on-container-exit --exit-code-from browser
-  - name: Publish Container
-    task:
-      secrets:
-        - name: dockerhub-secrets
-        - name: thundermoon-secrets
-      env_vars:
-        - name: DOCKER_REPOSITORY
-          value: grrrocker/thundermoon-umbrella
-      prologue:
-        commands:
-          # Authenticate to the registry for all jobs in the block
-          - echo "${DOCKER_PASSWORD}" | docker login -u "${DOCKER_USERNAME}" --password-stdin
-          - export IMAGE_TAG=$DOCKER_REPOSITORY:$SEMAPHORE_GIT_BRANCH
-          - checkout
-      jobs:
-        - name: push build
-          commands:
-            - mkdir -p .env
-            - touch .env/app
-            - echo DB_PASSWORD="${DB_PASSWORD}" >> .env/app
-            - echo SECRET_KEY_BASE="${SECRET_KEY_BASE}" >> .env/app
-            - echo SENTRY_DSN="${SENTRY_DSN}" >> .env/app
-            - touch .env/db
-            - echo POSTGRES_PASSWORD="${DB_PASSWORD}" >> .env/db
-            - mv config/dev.secret.example.exs config/dev.secret.exs
-            - docker pull "$DOCKER_REPOSITORY:builder_$SEMAPHORE_GIT_BRANCH"
-            - docker build -t $IMAGE_TAG --target=app --build-arg BUILDER_IMAGE="$DOCKER_REPOSITORY:builder_$SEMAPHORE_GIT_BRANCH" .
-            - docker push $IMAGE_TAG
-promotions:
-  - name: Deploy
-    pipeline_file: deploy.yml
-    auto_promote_on:
-      - result: passed
-        branch:
-          - main
+            - docker pull "$DOCKER_REPOSITORY:integration_$SEMAPHORE_GIT_SHA"
+            - IMAGE="$DOCKER_REPOSITORY:integration_$SEMAPHORE_GIT_SHA" docker-compose -f .semaphore/docker-compose.integration.yml up --abort-on-container-exit --exit-code-from browser
+#   - name: Publish Container
+#     task:
+#       secrets:
+#         - name: dockerhub-secrets
+#         - name: thundermoon-secrets
+#       env_vars:
+#         - name: DOCKER_REPOSITORY
+#           value: grrrocker/thundermoon-umbrella
+#       prologue:
+#         commands:
+#           # Authenticate to the registry for all jobs in the block
+#           - echo "${DOCKER_PASSWORD}" | docker login -u "${DOCKER_USERNAME}" --password-stdin
+#           - export IMAGE_TAG=$DOCKER_REPOSITORY:$SEMAPHORE_GIT_BRANCH
+#           - checkout
+#       jobs:
+#         - name: push build
+#           commands:
+#             - mkdir -p .env
+#             - touch .env/app
+#             - echo DB_PASSWORD="${DB_PASSWORD}" >> .env/app
+#             - echo SECRET_KEY_BASE="${SECRET_KEY_BASE}" >> .env/app
+#             - echo SENTRY_DSN="${SENTRY_DSN}" >> .env/app
+#             - touch .env/db
+#             - echo POSTGRES_PASSWORD="${DB_PASSWORD}" >> .env/db
+#             - mv config/dev.secret.example.exs config/dev.secret.exs
+#             - docker pull "$DOCKER_REPOSITORY:builder_$SEMAPHORE_GIT_BRANCH"
+#             - docker build -t $IMAGE_TAG --target=app --build-arg BUILDER_IMAGE="$DOCKER_REPOSITORY:builder_$SEMAPHORE_GIT_BRANCH" .
+#             - docker push $IMAGE_TAG
+# promotions:
+#   - name: Deploy
+#     pipeline_file: deploy.yml
+#     auto_promote_on:
+#       - result: passed
+#         branch:
+#           - main
