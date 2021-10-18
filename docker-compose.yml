@@ -1,9 +1,10 @@
-version: '3.7'
+version: "3.7"
 services:
   app:
     image: $IMAGE
+    user: elixir:elixir
     env_file:
-     - .env/app
+      - .env/app
     environment:
       PORT: 4000
     ports:
@@ -17,7 +18,7 @@ services:
   db:
     image: postgres:11.4-alpine
     env_file:
-     - .env/db
+      - .env/db
     environment:
       POSTGRES_USER: thundermoon
       POSTGRES_DB: thundermoon_prod
