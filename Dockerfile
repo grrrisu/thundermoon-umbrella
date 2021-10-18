@@ -1,4 +1,5 @@
 ARG MIX_ENV="prod"
+ARG BUILD_IMAGE=build
 
 # docker build -t thundermoon:build --target=build .
 FROM elixir:1.12.3-alpine as build
@@ -23,17 +24,16 @@ COPY apps/sim/mix.exs ./apps/sim/mix.exs
 COPY apps/thundermoon/mix.exs ./apps/thundermoon/mix.exs
 COPY apps/thundermoon_web/mix.exs ./apps/thundermoon_web/mix.exs
 
-RUN mix deps.get --only $MIX_ENV
+RUN mix deps.get
 RUN mkdir -p config
 
 # copy compile-time config files before we compile dependencies
 # to ensure any relevant config change will trigger the dependencies
 # to be re-compiled.
-COPY config/config.exs config/$MIX_ENV.exs config/
+COPY config/ ./config
 RUN mix deps.compile
 
 COPY apps/ ./apps
-#COPY .formatter.exs /app/
 
 # note: if your project uses a tool like https://purgecss.com/,
 # which customizes asset compilation based on what it finds in
@@ -51,7 +51,6 @@ WORKDIR /app
 RUN mix esbuild default --minify
 RUN mix phx.digest
 
-
 # compile and build the release
 RUN mix compile
 # changes to config/runtime.exs don't require recompiling the code
@@ -61,13 +60,39 @@ COPY config/runtime.exs config/
 RUN mix release
 
 ########################################################
+# docker build -t --target=test thundermoon:test .
+FROM thundermoon:build AS test
+
+WORKDIR /app
+
+COPY .formatter.exs /app/
+
+ENV MIX_ENV=test
+RUN mix compile
+
+########################################################
+# docker build -t thundermoon:integration --target=integration .
+FROM build as integration
+
+WORKDIR /app
+
+RUN mix esbuild default --minify
+RUN mix phx.digest
+
+ENV SECRET_KEY_BASE set_later
+ENV MIX_ENV=integration
+
+RUN mix compile
+COPY *.sh /app/
+CMD ["/app/run_integration.sh"]
+
+########################################################
 # docker build -t thundermoon:app --target=app .
 FROM alpine:3.12.1 AS app
 RUN apk add --no-cache libstdc++ openssl ncurses-libs
 
 ARG MIX_ENV
 ENV USER="elixir"
-
 
 WORKDIR "/home/${USER}/app"
 # Creates an unprivileged user to be used exclusively to run the Phoenix app
@@ -86,7 +111,7 @@ RUN \
 # Everything from this line onwards will run in the context of the unprivileged user.
 USER "${USER}"
 
-COPY --from=build --chown="${USER}":"${USER}" /app/_build/"${MIX_ENV}"/rel/thundermoon_umbrella ./
+COPY --from=thundermoon:build --chown="${USER}":"${USER}" /app/_build/"${MIX_ENV}"/rel/thundermoon_umbrella ./
 COPY --chown="${USER}":"${USER}" *.sh ./
 
 CMD ["/app/run.sh"]
