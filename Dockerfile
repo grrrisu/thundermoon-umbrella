@@ -49,19 +49,11 @@ RUN npx cpx "./node_modules/line-awesome/dist/line-awesome/fonts/*" ../priv/stat
 
 WORKDIR /app
 RUN mix esbuild default --minify
-RUN mix phx.digest
-
-# compile and build the release
 RUN mix compile
-# changes to config/runtime.exs don't require recompiling the code
-COPY config/runtime.exs config/
-# uncomment COPY if rel/ exists
-# COPY rel rel
-RUN mix release
 
 ########################################################
 # docker build -t --target=test thundermoon:test .
-FROM thundermoon:build AS test
+FROM build AS test
 
 WORKDIR /app
 
@@ -76,15 +68,28 @@ FROM build as integration
 
 WORKDIR /app
 
-RUN mix esbuild default --minify
-RUN mix phx.digest
-
 ENV SECRET_KEY_BASE set_later
 ENV MIX_ENV=integration
 
 RUN mix compile
 COPY *.sh /app/
 CMD ["/app/run_integration.sh"]
+
+########################################################
+# docker build -t thundermoon:releaser --target=releaser .
+FROM build as releaser
+
+WORKDIR /app
+ENV MIX_ENV=prod
+
+# compile and build the release
+RUN mix compile
+# changes to config/runtime.exs don't require recompiling the code
+COPY config/runtime.exs config/
+# uncomment COPY if rel/ exists
+# COPY rel rel
+RUN mix phx.digest
+RUN mix release
 
 ########################################################
 # docker build -t thundermoon:app --target=app .
@@ -111,7 +116,7 @@ RUN \
 # Everything from this line onwards will run in the context of the unprivileged user.
 USER "${USER}"
 
-COPY --from=thundermoon:build --chown="${USER}":"${USER}" /app/_build/"${MIX_ENV}"/rel/thundermoon_umbrella ./
+COPY --from=releaser --chown="${USER}":"${USER}" /app/_build/"${MIX_ENV}"/rel/thundermoon_umbrella ./
 COPY --chown="${USER}":"${USER}" *.sh ./
 
 CMD ["/app/run.sh"]
