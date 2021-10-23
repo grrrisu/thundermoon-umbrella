@@ -6,6 +6,35 @@ agent:
     os_image: ubuntu1804
 
 blocks:
+  - name: build application
+    task:
+      secrets:
+        - name: dockerhub-secrets
+        - name: thundermoon-secrets
+      env_vars:
+        - name: DOCKER_REPOSITORY
+          value: grrrocker/thundermoon-umbrella
+      prologue:
+        commands:
+          # Authenticate to the registry for all jobs in the block
+          - echo "${DOCKER_PASSWORD}" | docker login -u "${DOCKER_USERNAME}" --password-stdin
+          - export IMAGE_TAG=$DOCKER_REPOSITORY:$SEMAPHORE_GIT_BRANCH
+          - checkout
+      jobs:
+        - name: build app
+          commands:
+            - mkdir -p .env
+            - touch .env/app
+            - echo DB_PASSWORD="${DB_PASSWORD}" >> .env/app
+            - echo SECRET_KEY_BASE="${SECRET_KEY_BASE}" >> .env/app
+            - echo SENTRY_DSN="${SENTRY_DSN}" >> .env/app
+            - touch .env/db
+            - echo POSTGRES_PASSWORD="${DB_PASSWORD}" >> .env/db
+            - mv config/dev.secret.example.exs config/dev.secret.exs
+            - docker pull "$DOCKER_REPOSITORY:build_$SEMAPHORE_GIT_SHA"
+            - docker tag "$DOCKER_REPOSITORY:build_$SEMAPHORE_GIT_SHA" thundermoon:build
+            - docker build -t $IMAGE_TAG --target=app .
+            - docker push $IMAGE_TAG
   - name: "Deploy to the lab"
     task:
       env_vars:
