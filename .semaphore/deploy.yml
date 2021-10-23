@@ -1,5 +1,5 @@
 version: v1.0
-name: Deploy
+name: "Deploy to the lab"
 agent:
   machine:
     type: e1-standard-2
@@ -21,7 +21,7 @@ blocks:
           - export IMAGE_TAG=$DOCKER_REPOSITORY:$SEMAPHORE_GIT_BRANCH
           - checkout
       jobs:
-        - name: build app
+        - name: build image
           commands:
             - mkdir -p .env
             - touch .env/app
@@ -33,9 +33,9 @@ blocks:
             - mv config/dev.secret.example.exs config/dev.secret.exs
             - docker pull "$DOCKER_REPOSITORY:build_$SEMAPHORE_GIT_SHA"
             - docker tag "$DOCKER_REPOSITORY:build_$SEMAPHORE_GIT_SHA" thundermoon:build
-            - docker build -t $IMAGE_TAG --target=app .
+            - docker build -t $IMAGE_TAG --target=app --build-arg BUILD_IMAGE=thundermoon:build .
             - docker push $IMAGE_TAG
-  - name: "Deploy to the lab"
+  - name: install on server
     task:
       env_vars:
         - name: SSH_USER_AT_HOST

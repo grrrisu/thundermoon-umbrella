@@ -28,12 +28,12 @@ blocks:
             - docker tag thundermoon:build "$DOCKER_REPOSITORY:build_$SEMAPHORE_GIT_SHA"
             - docker push "$DOCKER_REPOSITORY:build_$SEMAPHORE_GIT_SHA"
             # test
-            - docker build -t thundermoon:test --target=test .
+            - docker build -t thundermoon:test --target=test --build-arg BUILD_IMAGE=thundermoon:build .
             - docker tag thundermoon:test "$DOCKER_REPOSITORY:test_$SEMAPHORE_GIT_SHA"
             - docker push "$DOCKER_REPOSITORY:test_$SEMAPHORE_GIT_SHA"
             # integration
             - mv config/dev.secret.example.exs config/dev.secret.exs
-            - docker build -t thundermoon:integration --target=integration .
+            - docker build -t thundermoon:integration --target=integration --build-arg BUILD_IMAGE=thundermoon:build .
             - docker tag thundermoon:integration "$DOCKER_REPOSITORY:integration_$SEMAPHORE_GIT_SHA"
             - docker push "$DOCKER_REPOSITORY:integration_$SEMAPHORE_GIT_SHA"
       # epilogue:
