@@ -25,11 +25,11 @@ COPY apps/thundermoon/mix.exs ./apps/thundermoon/mix.exs
 COPY apps/thundermoon_web/mix.exs ./apps/thundermoon_web/mix.exs
 
 RUN mix deps.get
-RUN mkdir -p config
 
 # copy compile-time config files before we compile dependencies
 # to ensure any relevant config change will trigger the dependencies
 # to be re-compiled.
+RUN mkdir -p config
 COPY config/ ./config
 RUN mix deps.compile
 
@@ -49,7 +49,6 @@ RUN npx cpx "./node_modules/line-awesome/dist/line-awesome/fonts/*" ../priv/stat
 
 WORKDIR /app
 RUN mix esbuild default --minify
-RUN mix compile
 
 ########################################################
 # docker build -t --target=test thundermoon:test .
