@@ -1,8 +1,5 @@
-ARG MIX_ENV="prod"
-ARG BUILD_IMAGE=build
-
-# docker build -t thundermoon:build --target=build .
-FROM elixir:1.12.3-alpine as build
+# docker build -t thundermoon:build .
+FROM elixir:1.12.3-alpine
 
 RUN apk add --no-cache build-base npm git python3 curl
 
@@ -13,8 +10,8 @@ RUN mix local.hex --force && \
     mix local.rebar --force
 
 # set build ENV
-ARG MIX_ENV
-ENV MIX_ENV="${MIX_ENV}"
+#ARG MIX_ENV
+ENV MIX_ENV=prod
 
 # install mix dependencies
 COPY mix.exs mix.lock ./
@@ -49,75 +46,3 @@ RUN npx cpx "./node_modules/line-awesome/dist/line-awesome/fonts/*" ../priv/stat
 
 WORKDIR /app
 RUN mix esbuild default --minify
-
-########################################################
-# docker build -t --target=test thundermoon:test .
-FROM $BUILD_IMAGE AS test
-
-WORKDIR /app
-
-COPY .formatter.exs /app/
-
-ENV MIX_ENV=test
-RUN mix compile
-
-########################################################
-# docker build -t thundermoon:integration --target=integration .
-FROM $BUILD_IMAGE as integration
-
-WORKDIR /app
-
-ENV SECRET_KEY_BASE set_later
-ENV MIX_ENV=integration
-
-COPY config/dev.secret.exs ./config/dev.secret.exs
-
-RUN mix compile
-COPY *.sh /app/
-CMD ["/app/run_integration.sh"]
-
-########################################################
-# docker build -t thundermoon:releaser --target=releaser .
-FROM $BUILD_IMAGE as releaser
-
-WORKDIR /app
-ENV MIX_ENV=prod
-
-# compile and build the release
-RUN mix compile
-# changes to config/runtime.exs don't require recompiling the code
-COPY config/runtime.exs config/
-# uncomment COPY if rel/ exists
-# COPY rel rel
-RUN mix phx.digest
-RUN mix release
-
-########################################################
-# docker build -t thundermoon:app --target=app .
-FROM alpine:3.12.1 AS app
-RUN apk add --no-cache libstdc++ openssl ncurses-libs
-
-ARG MIX_ENV
-ENV USER="elixir"
-
-WORKDIR "/home/${USER}/app"
-# Creates an unprivileged user to be used exclusively to run the Phoenix app
-RUN \
-  addgroup \
-   -g 1000 \
-   -S "${USER}" \
-  && adduser \
-   -s /bin/sh \
-   -u 1000 \
-   -G "${USER}" \
-   -h "/home/${USER}" \
-   -D "${USER}" \
-  && su "${USER}"
-
-# Everything from this line onwards will run in the context of the unprivileged user.
-USER "${USER}"
-
-COPY --from=releaser --chown="${USER}":"${USER}" /app/_build/"${MIX_ENV}"/rel/thundermoon_umbrella ./
-COPY --chown="${USER}":"${USER}" *.sh ./
-
-CMD ["/app/run.sh"]

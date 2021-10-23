@@ -1,0 +1,14 @@
+########################################################
+# docker build -t thundermoon:integration --target=integration .
+FROM thundermoon:build as integration
+
+WORKDIR /app
+
+ENV SECRET_KEY_BASE set_later
+ENV MIX_ENV=integration
+
+COPY config/dev.secret.exs ./config/dev.secret.exs
+
+RUN mix compile
+COPY *.sh /app/
+CMD ["/app/run_integration.sh"]

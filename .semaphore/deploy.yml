@@ -33,7 +33,7 @@ blocks:
             - mv config/dev.secret.example.exs config/dev.secret.exs
             - docker pull "$DOCKER_REPOSITORY:build_$SEMAPHORE_GIT_SHA"
             - docker tag "$DOCKER_REPOSITORY:build_$SEMAPHORE_GIT_SHA" thundermoon:build
-            - docker build -t $IMAGE_TAG --target=app --build-arg BUILD_IMAGE=thundermoon:build .
+            - docker build -t $IMAGE_TAG --target=app -f .semaphore/Dockerfile_release .
             - docker push $IMAGE_TAG
   - name: install on server
     task:

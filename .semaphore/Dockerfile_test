@@ -1,0 +1,10 @@
+########################################################
+# docker build -t --target=test thundermoon:test .
+FROM thundermoon:build AS test
+
+WORKDIR /app
+
+COPY .formatter.exs /app/
+
+ENV MIX_ENV=test
+RUN mix compile
