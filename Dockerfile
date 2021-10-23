@@ -52,7 +52,7 @@ RUN mix esbuild default --minify
 
 ########################################################
 # docker build -t --target=test thundermoon:test .
-FROM build AS test
+FROM $BUILD_IMAGE AS test
 
 WORKDIR /app
 
@@ -63,12 +63,14 @@ RUN mix compile
 
 ########################################################
 # docker build -t thundermoon:integration --target=integration .
-FROM build as integration
+FROM $BUILD_IMAGE as integration
 
 WORKDIR /app
 
 ENV SECRET_KEY_BASE set_later
 ENV MIX_ENV=integration
+
+COPY config/dev.secret.exs ./config/dev.secret.exs
 
 RUN mix compile
 COPY *.sh /app/
@@ -76,7 +78,7 @@ CMD ["/app/run_integration.sh"]
 
 ########################################################
 # docker build -t thundermoon:releaser --target=releaser .
-FROM build as releaser
+FROM $BUILD_IMAGE as releaser
 
 WORKDIR /app
 ENV MIX_ENV=prod
