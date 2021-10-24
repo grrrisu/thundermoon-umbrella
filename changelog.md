@@ -8,6 +8,10 @@
 
   - Phoenix 1.16.0
 
+  - replace Parcel with esbuild
+
+  - refactor and reorganize Dockerfiles
+
 ## 0.7.0
 
 - Chat:
