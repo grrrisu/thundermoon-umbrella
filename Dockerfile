@@ -10,7 +10,6 @@ RUN mix local.hex --force && \
     mix local.rebar --force
 
 # set build ENV
-#ARG MIX_ENV
 ENV MIX_ENV=prod
 
 # install mix dependencies
@@ -40,7 +39,7 @@ WORKDIR /app/apps/thundermoon_web/assets
 
 RUN npm ci
 ENV NODE_ENV=production
-RUN npx tailwindcss --input=css/app.css --output=../priv/static/assets/app.css --postcss
+RUN npx tailwindcss --input=css/app.css --output=../priv/static/assets/app.css --postcss --minify
 RUN npx cpx "./static/**/*" ../priv/static
 RUN npx cpx "./node_modules/line-awesome/dist/line-awesome/fonts/*" ../priv/static/fonts
 
