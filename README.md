@@ -69,7 +69,9 @@ to create a migration issue the command in `app/thundermoon` directory and speci
 ### New Sub Application
 
 go to `./apps`and issue the mix new command like this:
- `mix new lotka_volterra --module LotkaVolterra --sup`
+`mix new lotka_volterra --module LotkaVolterra --sup`
+
+copy the new `mix.exs` file to the docker container in the `Dockerfile` line 15 (section _install dependencies_)
 
 ### Testing
 
@@ -99,22 +101,24 @@ start testing ....
 
 Run cypress with docker
 
-`docker build -t thundermoon:integration --target=integration .`
+`docker build -t thundermoon:build .`
+`docker build -t thundermoon:integration -f .semaphore/Dockerfile_integration .`
 
 `IMAGE="thundermoon:integration" docker-compose -f .semaphore/docker-compose.integration.yml up --abort-on-container-exit --exit-code-from browser`
 
 ### Release
 
-manually test release can be built
+manually a test release can be built
 
 ```shell
+MIX_ENV=prod mix esbuild default --minify
 MIX_ENV=prod mix phx.digest
 MIX_ENV=prod mix release
 
 export SECRET_KEY_BASE=REALLY_LONG_SECRET
 export DATABASE_URL=ecto://<user>:<password>@localhost/thundermoon_dev
 
-_build/dev/rel/my_app/bin/my_app eval "Thundermoon.Release.migrate"
+_build/dev/rel/thundermoon_umbrella/bin/thundermoon_umbrella eval "Thundermoon.Release.migrate"
 _build/prod/rel/thundermoon_umbrella/bin/thundermoon_umbrella start
 ```
 
