@@ -30,12 +30,13 @@ The examples include a simple chat, a counter, [Conways Game of Life](https://en
 
 to start the application in a docker container
 
-first copy and rename the files in `.env` to `app` and `db`.
+first copy and rename the files in `.env_files` to `app` and `db`.
 
 set the corresponding values in those files and then run:
 
 ```shell
-docker build -t thundermoon:app --target=app .
+docker build -t thundermoon:build .
+docker build -t thundermoon:app --target=app -f .semaphore/Dockerfile_release .
 IMAGE=thundermoon:app docker-compose up
 ```
 
