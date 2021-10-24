@@ -23,13 +23,13 @@ blocks:
       jobs:
         - name: build image
           commands:
-            - mkdir -p .env
-            - touch .env/app
-            - echo DB_PASSWORD="${DB_PASSWORD}" >> .env/app
-            - echo SECRET_KEY_BASE="${SECRET_KEY_BASE}" >> .env/app
-            - echo SENTRY_DSN="${SENTRY_DSN}" >> .env/app
-            - touch .env/db
-            - echo POSTGRES_PASSWORD="${DB_PASSWORD}" >> .env/db
+            - mkdir -p .env_files
+            - touch .env_files/app
+            - echo DB_PASSWORD="${DB_PASSWORD}" >> .env_files/app
+            - echo SECRET_KEY_BASE="${SECRET_KEY_BASE}" >> .env_files/app
+            - echo SENTRY_DSN="${SENTRY_DSN}" >> .env_files/app
+            - touch .env_files/db
+            - echo POSTGRES_PASSWORD="${DB_PASSWORD}" >> .env_files/db
             - mv config/dev.secret.example.exs config/dev.secret.exs
             - docker pull "$DOCKER_REPOSITORY:build_$SEMAPHORE_GIT_SHA"
             - docker tag "$DOCKER_REPOSITORY:build_$SEMAPHORE_GIT_SHA" thundermoon:build
@@ -51,26 +51,26 @@ blocks:
       prologue:
         commands:
           - checkout
-          - mkdir -p .env
-          - touch .env/app
-          - echo DATABASE_URL="ecto://thundermoon:${DB_PASSWORD}@db/thundermoon_prod" >> .env/app
-          - echo SECRET_KEY_BASE="${SECRET_KEY_BASE}" >> .env/app
-          - echo GITHUB_CLIENT_ID="${GITHUB_CLIENT_ID}" >> .env/app
-          - echo GITHUB_CLIENT_SECRET="${GITHUB_CLIENT_SECRET}" >> .env/app
-          - echo SECRET_LIVE_VIEW_KEY="${SECRET_LIVE_VIEW_KEY}" >> .env/app
-          - echo SENTRY_DSN="${SENTRY_DSN}" >> .env/app
-          - echo SENTRY_RELEASE=$SEMAPHORE_GIT_SHA >> .env/app
-          - touch .env/db
-          - echo POSTGRES_PASSWORD="${DB_PASSWORD}" >> .env/db
+          - mkdir -p .env_files
+          - touch .env_files/app
+          - echo DATABASE_URL="ecto://thundermoon:${DB_PASSWORD}@db/thundermoon_prod" >> .env_files/app
+          - echo SECRET_KEY_BASE="${SECRET_KEY_BASE}" >> .env_files/app
+          - echo GITHUB_CLIENT_ID="${GITHUB_CLIENT_ID}" >> .env_files/app
+          - echo GITHUB_CLIENT_SECRET="${GITHUB_CLIENT_SECRET}" >> .env_files/app
+          - echo SECRET_LIVE_VIEW_KEY="${SECRET_LIVE_VIEW_KEY}" >> .env_files/app
+          - echo SENTRY_DSN="${SENTRY_DSN}" >> .env_files/app
+          - echo SENTRY_RELEASE=$SEMAPHORE_GIT_SHA >> .env_files/app
+          - touch .env_files/db
+          - echo POSTGRES_PASSWORD="${DB_PASSWORD}" >> .env_files/db
       jobs:
         - name: Deploy
           commands:
             # the data and log direcotries, as well as logrotate is handled by ansible
             - chmod 0600 ~/.keys/*
             - ssh-add ~/.keys/*
-            - "ssh $SSH_OPTIONS $SSH_USER_AT_HOST mkdir -p $SITE_PATH/.env/"
-            - "scp $SSH_OPTIONS .env/app $SSH_USER_AT_HOST:$SITE_PATH/.env/app"
-            - "scp $SSH_OPTIONS .env/db $SSH_USER_AT_HOST:$SITE_PATH/.env/db"
+            - "ssh $SSH_OPTIONS $SSH_USER_AT_HOST mkdir -p $SITE_PATH/.env_files/"
+            - "scp $SSH_OPTIONS .env_files/app $SSH_USER_AT_HOST:$SITE_PATH/.env_files/app"
+            - "scp $SSH_OPTIONS .env_files/db $SSH_USER_AT_HOST:$SITE_PATH/.env_files/db"
             - "scp $SSH_OPTIONS docker-compose.yml $SSH_USER_AT_HOST:$SITE_PATH"
             - "scp $SSH_OPTIONS .semaphore/deploy.sh $SSH_USER_AT_HOST:$SITE_PATH"
             - "ssh $SSH_OPTIONS $SSH_USER_AT_HOST chmod u+x $SITE_PATH/deploy.sh"
