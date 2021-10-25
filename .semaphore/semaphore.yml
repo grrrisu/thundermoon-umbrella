@@ -117,10 +117,13 @@ blocks:
   - name: "clean up"
     dependencies: ["unit tests", "integration tests"]
     task:
+      secrets:
+        - name: dockerhub-secrets
       jobs:
-        - name: remove images
+        - name: remove test images
           commands:
-            - echo "todo"
+            - checkout
+            - .semaphore/cleanup_test.sh
 promotions:
   - name: Deploy
     pipeline_file: deploy.yml
