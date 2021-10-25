@@ -6,7 +6,7 @@
 
   - Elixir 1.12.3
 
-  - Phoenix 1.16.0
+  - Phoenix 1.16
 
   - replace Parcel with esbuild
 
