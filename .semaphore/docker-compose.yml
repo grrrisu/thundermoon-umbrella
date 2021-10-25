@@ -1,4 +1,4 @@
-version: '3.7'
+version: "3.7"
 services:
   app:
     image: $IMAGE
@@ -10,7 +10,9 @@ services:
       APP_HOST: app
     ports:
       - 4002:4002
-    command: 'mix test'
+    depends_on:
+      - db
+    command: "mix test"
 
   db:
     image: postgres:11.4-alpine
