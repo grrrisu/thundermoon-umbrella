@@ -4,13 +4,15 @@
 
 - General:
 
-  - Elixir 1.12.3
+  - update Elixir to 1.12.3
 
-  - Phoenix 1.16
+  - update Phoenix 1.16, Poison 5.0
+
+  - update Chart.js to 3.6.0
 
   - replace Parcel with esbuild
 
-  - refactor and reorganize Dockerfiles
+  - refactor Dockerfiles and reorganize CI/CD pipeline
 
 ## 0.7.0
 
