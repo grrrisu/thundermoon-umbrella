@@ -75,3 +75,12 @@ blocks:
             - "scp $SSH_OPTIONS .semaphore/deploy.sh $SSH_USER_AT_HOST:$SITE_PATH"
             - "ssh $SSH_OPTIONS $SSH_USER_AT_HOST chmod u+x $SITE_PATH/deploy.sh"
             - ssh $SSH_OPTIONS $SSH_USER_AT_HOST TAG=$SEMAPHORE_GIT_BRANCH sh $SITE_PATH/deploy.sh
+  - name: "clean up"
+    task:
+      secrets:
+        - name: dockerhub-secrets
+      jobs:
+        - name: remove build images
+          commands:
+            - checkout
+            - .semaphore/cleanup_build.sh
