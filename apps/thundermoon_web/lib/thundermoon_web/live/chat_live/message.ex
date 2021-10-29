@@ -12,12 +12,12 @@ defmodule ThundermoonWeb.ChatLive.Message do
 
   @impl true
   def render(assigns) do
-    ~L"""
+    ~H"""
     <div class="flex">
       <%= if @is_current_user do %>
         <div class="w-3/12"></div>
       <% end %>
-      <div class="<%= @message_color %> rounded-md px-4 py-2 mb-2 w-9/12">
+      <div class={"#{@message_color} rounded-md px-4 py-2 mb-2 w-9/12"}>
         <div class="font-bold"><%= @message.user %></div>
         <div class="font-light"><%= @message.text %></div>
       </div>

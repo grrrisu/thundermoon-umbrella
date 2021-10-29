@@ -13,11 +13,13 @@ defmodule ThundermoonWeb.ChatLive.Form do
 
   @impl true
   def render(assigns) do
-    ~L"""
-    <%= f = form_for :message, "#", [phx_target: @myself, phx_submit: :send, class: "flex"]  %>
-      <%= text_input f, :text, class: "input text-input", "data-version": @version, value: "", placeholder: "write a message" %>
-      <%= submit "Send", class: "btn btn-primary ml-3 px-4 py-2" %>
-    </form>
+    ~H"""
+    <div>
+      <.form let={f} for={:message} phx-target={@myself} phx-submit={:send} class="flex">
+        <%= text_input f, :text, class: "input text-input", "data-version": @version, value: "", placeholder: "write a message" %>
+        <%= submit "Send", class: "btn btn-primary ml-3 px-4 py-2" %>
+      </.form>
+    </div>
     """
   end
 

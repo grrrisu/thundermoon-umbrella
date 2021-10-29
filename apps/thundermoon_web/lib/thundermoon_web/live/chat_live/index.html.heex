@@ -8,10 +8,10 @@
   <h3>Messages</h3>
   <div id="messages" class="mb-6">
     <%= for message <- Enum.reverse(@messages) do %>
-      <%= live_component @socket, Message, message: message, current_user: @current_user %>
+      <.live_component module={Message} message={message} current_user={@current_user} id={message} />
     <% end %>
   </div>
-  <%= live_component @socket, Form, current_user: @current_user, version: @version, id: :chat_form %>
+  <.live_component module={Form} current_user={@current_user} version={@version} id={:chat_form} />
 </section>
 
 <section class="w-1/2 mb-12">
