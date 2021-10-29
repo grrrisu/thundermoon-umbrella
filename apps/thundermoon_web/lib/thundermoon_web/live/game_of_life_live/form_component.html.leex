@@ -1,8 +1,0 @@
-<h3>Create a new Grid</h3>
-<%= f = form_for @changeset, "#", [class: "w-2/4", phx_target: @myself, phx_change: :validate, phx_submit: :create] %>
-  <div class="flex">
-    <%= text_input f, :size, type: :number, placeholder: "size of grid, eg. 10", size: 5, class: "input text-input" %>
-    <%= submit "Create", class: "btn btn-primary ml-3" %>
-  </div>
-  <%= error_tag(f, :size) %>
-</form>

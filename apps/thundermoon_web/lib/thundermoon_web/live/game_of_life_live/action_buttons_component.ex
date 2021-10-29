@@ -1,7 +1,7 @@
 defmodule ThundermoonWeb.GameOfLifeLive.ActionButtonsComponent do
   use ThundermoonWeb, :live_component
 
-  alias ThundermoonWeb.Component.ActionBox
+  alias ThundermoonWeb.Component.Actions
 
   @impl true
   def update(assigns, socket) do

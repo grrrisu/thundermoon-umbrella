@@ -21,10 +21,10 @@ defmodule ThundermoonWeb.GameOfLifeLive.Index do
 
   @impl true
   def render(%{grid: nil} = assigns) do
-    ~L"""
+    ~H"""
     <h1>Game of Life</h1>
     <%= if can?(@current_user, :create, GameOfLife) do %>
-      <%= live_component @socket, FormComponent, id: "form" %>
+      <.live_component module={FormComponent} id="form" />
     <% else %>
       <p>There's currently no simulation available.</p>
     <% end %>
@@ -33,12 +33,10 @@ defmodule ThundermoonWeb.GameOfLifeLive.Index do
 
   @impl true
   def render(%{grid: grid} = assigns) when not is_nil(grid) do
-    ~L"""
+    ~H"""
     <h1>Game of Life</h1>
-    <%= live_component @socket, GridComponent,
-      id: "grid-#{@current_user.id}", grid: @grid %>
-    <%= live_component @socket, ActionButtonsComponent,
-      id: "action-buttons-#{@current_user.id}", current_user: @current_user %>
+    <.live_component module={GridComponent} id={"grid-#{@current_user.id}"} grid={@grid} />
+    <.live_component module={ActionButtonsComponent} id={"action-buttons-#{@current_user.id}"} current_user={@current_user} />
     """
   end
 
