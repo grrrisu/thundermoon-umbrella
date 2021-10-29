@@ -17,7 +17,7 @@ defmodule ThundermoonWeb.ChatLive.Index do
     if connected?(socket), do: subscribe(user)
     messages = ChatMessages.list()
     users = get_users(Presence.list("chat"))
-    {:ok, assign(socket, %{current_user: user, version: 0, messages: messages, users: users})}
+    {:ok, assign(socket, current_user: user, version: 0, messages: messages, users: users)}
   end
 
   def handle_event("clear", _value, socket) do
