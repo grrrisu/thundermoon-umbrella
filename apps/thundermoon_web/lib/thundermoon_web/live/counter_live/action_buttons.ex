@@ -5,7 +5,7 @@ defmodule ThundermoonWeb.CounterLive.ActionButtons do
 
   alias Thundermoon.Counter
 
-  alias ThundermoonWeb.Component.ActionBox
+  alias ThundermoonWeb.Component.Actions
 
   @impl true
   def handle_event("reset", _value, socket) do
