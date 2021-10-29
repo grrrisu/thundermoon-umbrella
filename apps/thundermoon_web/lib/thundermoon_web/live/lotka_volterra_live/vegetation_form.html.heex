@@ -1,22 +1,20 @@
-<div class="w-2/4">
-  <h3>Herbivore</h3>
+<div class="w-2/4" id={@id}>
+  <h3>Vegetation</h3>
 
   <p></p>
 
-  <%= f = form_for @changeset, "#", [phx_submit: :create, phx_change: :validate, phx_target: @myself] %>
+  <.form let={f} for={@changeset} phx-submit={:create} phx-change={:validate} phx-target={@myself}>
     <fieldset>
+      <%= live_text_input(f, :capacity) %>
       <%= live_text_input(f, :birth_rate, label: "Birth Rate") %>
       <%= live_text_input(f, :death_rate, label: "Death Rate") %>
-      <%= live_text_input(f, :needed_food, label: "Needed food") %>
-      <%= live_text_input(f, :starving_rate, label: "Starving Rate") %>
-      <%= live_text_input(f, :graze_rate, label: "Graze Rate") %>
       <%= live_text_input(f, :size) %>
       <div class="mb-3">
         <%= if @creating do %>
           <%= submit "Create", class: "btn btn-primary" %>
           or
-          <%= link to: "#", phx_click: "add_predator", phx_target: @myself, id: "button-add-predator", class: "btn btn-primary" do %>
-            Add Predator
+          <%= link to: "#", phx_click: "add_herbivore", phx_target: @myself, id: "button-add-herbivore", class: "btn btn-primary" do %>
+            Add Herbivore
           <% end %>
         <% else %>
           <%= submit "Update", class: "btn btn-primary" %>
@@ -24,5 +22,5 @@
       </div>
       <%= live_flash_alerts(alert: @flash) %>
     </fieldset>
-  </form>
+  </.form>
 </div>

@@ -3,7 +3,7 @@ defmodule ThundermoonWeb.LotkaVolterraLive.Index do
 
   alias Phoenix.PubSub
 
-  alias ThundermoonWeb.Component.ActionBox
+  alias ThundermoonWeb.Component.Actions
 
   alias ThundermoonWeb.LotkaVolterraLive.{
     Chart,

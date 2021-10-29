@@ -2,7 +2,7 @@ defmodule ThundermoonWeb.LotkaVolterraLive.EditButton do
   use ThundermoonWeb, :live_component
 
   def render(assigns) do
-    ~L"""
+    ~H"""
     <div x-data="{ showForm: false }" x-cloak x-transition class="inline relative">
       <a @click.prevent="showForm = !showForm" class="btn btn-outline">
         <i class="las la-plus-circle"></i>
