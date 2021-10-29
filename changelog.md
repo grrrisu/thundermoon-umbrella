@@ -6,7 +6,9 @@
 
   - update Elixir to 1.12.3
 
-  - update Phoenix 1.16, Poison 5.0
+  - update Phoenix 1.6 and Phoenix Live View 0.17
+
+  - various upgrades, Poison 5.0
 
   - update Chart.js to 3.6.0
 
