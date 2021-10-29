@@ -1,0 +1,24 @@
+<h1>Lotka Volterra</h1>
+
+<.live_component module={Chart} id={"chart-#{@sim_id}"} field={@field} />
+
+<Actions.box>
+  <%= start_button("start-#{@sim_id}", @started) %>
+
+  <%= live_redirect(to: Routes.lotka_volterra_new_path(@socket, :new), class: "btn btn-warning") do %>
+    <i class="align-middle text-xl la la-reply-all"></i> recreate
+  <% end %>
+
+  <.live_component module={EditButton} button_label="Vegetation" id="button-vegetation">
+    <.live_component module={VegetationForm} id="vegetation" sim_id={@sim_id} data={@vegetation} />
+  </.live_component>
+
+  <.live_component module={EditButton} button_label="Herbivore" id="button-herbivore">
+    <.live_component module={HerbivoreForm} id="herbivore" sim_id={@sim_id} data={@herbivore} />
+  </.live_component>
+
+  <.live_component module={EditButton} button_label="Predator" id="button-predator">
+    <.live_component module={PredatorForm} id="predator" sim_id={@sim_id} data={@predator} />
+  </.live_component>
+ 
+</Actions.box>

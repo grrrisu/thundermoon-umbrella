@@ -3,7 +3,7 @@
 
   <p></p>
 
-  <%= f = form_for @changeset, "#", [phx_submit: :create, phx_change: :validate, phx_target: @myself] %>
+  <.form let={f} for={@changeset} phx-submit={:create} phx-change={:validate} phx-target={@myself}>
     <fieldset>
       <%= live_text_input(f, :birth_rate, label: "Birth Rate") %>
       <%= live_text_input(f, :death_rate, label: "Death Rate") %>
@@ -16,5 +16,5 @@
       </div>
       <%= live_flash_alerts(alert: @flash) %>
     </fieldset>
-  </form>
+  </.form>
 </div>

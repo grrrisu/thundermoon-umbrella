@@ -12,7 +12,7 @@ defmodule ThundermoonWeb.LotkaVolterraLive.Chart do
 
   @impl true
   def render(assigns) do
-    ~L"""
+    ~H"""
     <div id="chart-container" phx-update="ignore">
       <canvas id="chart" phx-hook="LotkaVolterraChart" width="400" height="200"></canvas>
     </div>
