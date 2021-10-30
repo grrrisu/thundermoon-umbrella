@@ -1,5 +1,6 @@
 defmodule ThundermoonWeb.ChatLive.Message do
   use Phoenix.Component
+  use Phoenix.HTML
 
   def row(assigns) do
     ~H"""
@@ -8,6 +9,17 @@ defmodule ThundermoonWeb.ChatLive.Message do
         <div class="font-bold"><%= @message.user %></div>
         <div class="font-light"><%= @message.text %></div>
       </div>
+    </div>
+    """
+  end
+
+  def input(assigns) do
+    ~H"""
+    <div>
+      <.form let={f} for={:message} phx-submit={:send} class="flex">
+        <%= text_input f, :text, class: "input text-input", "data-version": @version, value: "", placeholder: "write a message" %>
+        <%= submit "Send", class: "btn btn-primary ml-3 px-4 py-2" %>
+      </.form>
     </div>
     """
   end
