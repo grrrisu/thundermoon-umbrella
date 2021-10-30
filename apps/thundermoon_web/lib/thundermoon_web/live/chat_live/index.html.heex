@@ -8,7 +8,7 @@
   <h3>Messages</h3>
   <div id="messages" class="mb-6">
     <%= for message <- Enum.reverse(@messages) do %>
-      <.live_component module={Message} message={message} current_user={@current_user} id={message} />
+      <Message.row message={message} current_user={@current_user} />
     <% end %>
   </div>
   <.live_component module={Form} current_user={@current_user} version={@version} id={:chat_form} />
