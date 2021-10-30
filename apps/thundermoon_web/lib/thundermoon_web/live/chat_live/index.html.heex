@@ -11,7 +11,7 @@
       <Message.row message={message} current_user={@current_user} />
     <% end %>
   </div>
-  <.live_component module={Form} current_user={@current_user} version={@version} id={:chat_form} />
+  <Message.input version={@version} />
 </section>
 
 <section class="w-1/2 mb-12">
