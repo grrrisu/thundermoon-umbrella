@@ -3,21 +3,17 @@ defmodule ThundermoonWeb.ChatLive.Message do
 
   def row(assigns) do
     ~H"""
-    <div class="flex">
-      <.indent for_current_user={true} current_user={@current_user} message={@message} />
+    <div class={"flex #{align_message(assigns)}"}>
       <div class={"#{message_color(assigns)} rounded-md px-4 py-2 mb-2 w-9/12"}>
         <div class="font-bold"><%= @message.user %></div>
         <div class="font-light"><%= @message.text %></div>
       </div>
-      <.indent for_current_user={false} current_user={@current_user} message={@message} />
     </div>
     """
   end
 
-  defp indent(assigns) do
-    ~H"""
-      <div class={is_current_user?(assigns) == @for_current_user && "w-3/12"}></div>
-    """
+  defp align_message(assigns) do
+    if is_current_user?(assigns), do: "justify-end", else: "justify-start"
   end
 
   defp message_color(assigns) do
