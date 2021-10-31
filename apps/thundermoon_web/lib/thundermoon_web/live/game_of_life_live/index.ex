@@ -8,7 +8,7 @@ defmodule ThundermoonWeb.GameOfLifeLive.Index do
 
   alias Thundermoon.Accounts
 
-  alias ThundermoonWeb.GameOfLifeLive.{FormComponent, GridComponent, ActionButtons}
+  alias ThundermoonWeb.GameOfLifeLive.{FormComponent, Grid, ActionButtons}
 
   @impl true
   def mount(_params, session, socket) do
@@ -39,7 +39,7 @@ defmodule ThundermoonWeb.GameOfLifeLive.Index do
   def render(%{grid: grid} = assigns) when not is_nil(grid) do
     ~H"""
     <h1>Game of Life</h1>
-    <.live_component module={GridComponent} id={"grid-#{@current_user.id}"} grid={@grid} />
+    <Grid.matrix grid={@grid} />
     <ActionButtons.box current_user={@current_user} started={@started} />
     """
   end
@@ -72,6 +72,12 @@ defmodule ThundermoonWeb.GameOfLifeLive.Index do
   def handle_event("reset", _value, socket) do
     GameOfLife.reset()
     {:noreply, assign(socket, grid: nil)}
+  end
+
+  @impl true
+  def handle_event("toggle-cell", %{"x" => x, "y" => y}, socket) do
+    GameOfLife.toggle(String.to_integer(x), String.to_integer(y))
+    {:noreply, socket}
   end
 
   @impl true
