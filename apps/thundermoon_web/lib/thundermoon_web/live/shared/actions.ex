@@ -32,4 +32,28 @@ defmodule ThundermoonWeb.Component.Actions do
 
   defp start_label(false), do: "start"
   defp start_label(true), do: "stop"
+
+  def recreate_button(assigns) do
+    ~H"""
+    <a href="#" id="recreate-button" phx-click="recreate" class="btn btn-warning">
+      <i class="align-middle text-xl la la-reply"></i> recreate
+    </a>
+    """
+  end
+
+  def clear_button(assigns) do
+    ~H"""
+    <a href="#" id="clear-button" phx-click="clear" class="btn btn-warning">
+      <i class="align-middle text-xl la la-eraser"></i> clear
+    </a>
+    """
+  end
+
+  def reset_button(assigns) do
+    ~H"""
+    <a href="#" id="reset-button" phx-click="reset" class="btn btn-warning">
+      <i class="align-middle text-xl la la-reply-all"></i> reset
+    </a>
+    """
+  end
 end

@@ -8,7 +8,7 @@ defmodule ThundermoonWeb.GameOfLifeLive.Index do
 
   alias Thundermoon.Accounts
 
-  alias ThundermoonWeb.GameOfLifeLive.{FormComponent, GridComponent, ActionButtonsComponent}
+  alias ThundermoonWeb.GameOfLifeLive.{FormComponent, GridComponent, ActionButtons}
 
   @impl true
   def mount(_params, session, socket) do
@@ -16,7 +16,11 @@ defmodule ThundermoonWeb.GameOfLifeLive.Index do
 
     {:ok,
      socket
-     |> assign(current_user: get_current_user(session), grid: get_grid())}
+     |> assign(
+       current_user: get_current_user(session),
+       grid: get_grid(),
+       started: GameOfLife.started?()
+     )}
   end
 
   @impl true
@@ -36,8 +40,38 @@ defmodule ThundermoonWeb.GameOfLifeLive.Index do
     ~H"""
     <h1>Game of Life</h1>
     <.live_component module={GridComponent} id={"grid-#{@current_user.id}"} grid={@grid} />
-    <.live_component module={ActionButtonsComponent} id={"action-buttons-#{@current_user.id}"} current_user={@current_user} />
+    <ActionButtons.box current_user={@current_user} started={@started} />
     """
+  end
+
+  @impl true
+  def handle_event("start", _, socket) do
+    GameOfLife.start_sim()
+    {:noreply, socket}
+  end
+
+  @impl true
+  def handle_event("stop", _, socket) do
+    GameOfLife.stop_sim()
+    {:noreply, socket}
+  end
+
+  @impl true
+  def handle_event("clear", _value, socket) do
+    GameOfLife.clear()
+    {:noreply, socket}
+  end
+
+  @impl true
+  def handle_event("recreate", _value, socket) do
+    GameOfLife.recreate()
+    {:noreply, socket}
+  end
+
+  @impl true
+  def handle_event("reset", _value, socket) do
+    GameOfLife.reset()
+    {:noreply, assign(socket, grid: nil)}
   end
 
   @impl true
@@ -66,25 +100,8 @@ defmodule ThundermoonWeb.GameOfLifeLive.Index do
   end
 
   @impl true
-  def handle_info(:start, socket) do
-    GameOfLife.start_sim()
-    {:noreply, socket}
-  end
-
-  @impl true
-  def handle_info(:stop, socket) do
-    GameOfLife.stop_sim()
-    {:noreply, socket}
-  end
-
-  @impl true
   def handle_info({:sim, started: started}, socket) do
-    send_update(ActionButtonsComponent,
-      id: "action-buttons-#{socket.assigns.current_user.id}",
-      started: started
-    )
-
-    {:noreply, socket}
+    {:noreply, assign(socket, started: started)}
   end
 
   defp get_current_user(session) do
