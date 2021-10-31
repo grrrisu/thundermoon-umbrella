@@ -2,12 +2,12 @@
 
 <div class="flex items-center mt-12">
   <div class="flex space-x-2 mr-16">
-    <.live_component module={Digit} id="digit-100" digit={100} value={@digits.digit_100} />
-    <.live_component module={Digit} id="digit-10" digit={10} value={@digits.digit_10} />
-    <.live_component module={Digit} id="digit-1" digit={1} value={@digits.digit_1} />
+    <Digit.value id="digit-100" digit="100" value={@digits.digit_100} />
+    <Digit.value id="digit-10" digit="10" value={@digits.digit_10} />
+    <Digit.value id="digit-1" digit="1" value={@digits.digit_1} />
   </div>
 
-  <.live_component module={ActionButtons} id="action-buttons" current_user={@current_user} started={@started} />
+  <ActionButtons.box current_user={@current_user} started={@started} />
 </div>
 
 
