@@ -1,31 +1,28 @@
 defmodule ThundermoonWeb.CounterLive.ActionButtons do
-  use ThundermoonWeb, :live_component
+  use Phoenix.Component
+  use Phoenix.HTML
 
   import Canada.Can
 
-  alias Thundermoon.Counter
-
   alias ThundermoonWeb.Component.Actions
 
-  @impl true
-  def handle_event("reset", _value, socket) do
-    cond do
-      can?(socket.assigns.current_user, :reset) ->
-        Counter.reset()
-        {:noreply, socket}
+  def box(assigns) do
+    ~H"""
+      <div>
+        <Actions.box>
+          <Actions.start_button started={@started} />
 
-      true ->
-        {:noreply, not_authorized(socket)}
-    end
+          <%= if can?(@current_user, :reset, Thundermoon.Counter) do %>
+            <%= link to: "#", id: "reset-button", phx_click: "reset", class: "btn btn-warning" do %>
+              <i class="align-middle text-xl la la-reply"></i> reset
+            <% end %>
+          <% end %>
+        </Actions.box>
+      </div>
+    """
   end
 
   def can?(current_user, action) do
     can?(current_user, action, Thundermoon.Counter)
-  end
-
-  defp not_authorized(socket) do
-    socket
-    |> put_flash(:error, "You are not authorized for this action")
-    |> redirect(to: Routes.page_path(socket, :index))
   end
 end
