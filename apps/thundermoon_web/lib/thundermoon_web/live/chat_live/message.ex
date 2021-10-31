@@ -13,7 +13,7 @@ defmodule ThundermoonWeb.ChatLive.Message do
     """
   end
 
-  def input(assigns) do
+  def input_form(assigns) do
     ~H"""
     <div>
       <.form let={f} for={:message} phx-submit={:send} class="flex">
