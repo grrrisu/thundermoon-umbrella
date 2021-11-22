@@ -21,7 +21,7 @@
     "autoprefixer": "^10.3.7",
     "cpx2": "^4.0.0",
     "postcss": "^8.3.9",
-    "postcss-cli": "^9.0.1",
+    "postcss-cli": "^9.0.2",
     "postcss-import": "^14.0.2",
     "sass": "^1.27.0",
     "tailwindcss": "^2.2.16"
