@@ -16,7 +16,7 @@
     "topbar": "^1.0.1"
   },
   "devDependencies": {
-    "@babel/core": "^7.12.3",
+    "@babel/core": "^7.16.0",
     "@babel/preset-env": "^7.12.1",
     "autoprefixer": "^10.3.7",
     "cpx2": "^4.0.0",
