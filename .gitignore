@@ -35,6 +35,3 @@ erl_crash.dump
 
 # Visual Code
 .vscode/settings.json
-
-# parcel cache
-apps/thundermoon_web/assets/.parcel-cache/*
