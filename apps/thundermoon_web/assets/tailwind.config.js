@@ -1,6 +1,5 @@
 module.exports = {
-  mode: "jit",
-  purge: [
+  content: [
     "../**/*.html.eex",
     "../**/*.html.leex",
     "../**/*.html.heex",
@@ -9,11 +8,7 @@ module.exports = {
     "./css/**/*.css",
     "./js/**/*.js",
   ],
-  darkMode: false, // or 'media' or 'class'
   theme: {
-    extend: {},
-  },
-  variants: {
     extend: {},
   },
   plugins: [],
