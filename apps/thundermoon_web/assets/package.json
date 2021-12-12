@@ -2,7 +2,7 @@
   "repository": {},
   "license": "MIT",
   "scripts": {
-    "deploy": "NODE_ENV=production postcss css/app.css -o ../priv/static/assets/app.css",
+    "deploy": "NODE_ENV=production tailwindcss --postcss --minify -i css/app.css -o ../priv/static/assets/app.css",
     "clean": "rm -r ../priv/static/assets/*",
     "cypress": "cypress open --project ../test"
   },
@@ -16,14 +16,10 @@
     "topbar": "^1.0.1"
   },
   "devDependencies": {
-    "@babel/core": "^7.12.3",
-    "@babel/preset-env": "^7.12.1",
     "autoprefixer": "^10.4.0",
     "cpx2": "^4.0.0",
     "postcss": "^8.4.4",
-    "postcss-cli": "^9.0.1",
     "postcss-import": "^14.0.2",
-    "sass": "^1.27.0",
     "tailwindcss": "^3.0.1"
   },
   "name": "assets"
