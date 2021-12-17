@@ -4,7 +4,7 @@
 
 - General:
 
-  - update Elixir to 1.12.3
+  - update Elixir to 1.13.1
 
   - update Phoenix 1.6 and Phoenix Live View 0.17
 
@@ -13,6 +13,8 @@
   - update Chart.js to 3.6.0
 
   - replace Parcel with esbuild
+
+  - update tailwindcss to 3.0
 
   - refactor Dockerfiles and reorganize CI/CD pipeline
 
