@@ -20,7 +20,7 @@ defmodule Sim.Realm.CommandBus do
   end
 
   def init(opts) do
-    Logger.info("CommandBus started")
+    Logger.debug("CommandBus started")
 
     args = [
       partitions: opts[:partitions],
@@ -36,7 +36,7 @@ defmodule Sim.Realm.CommandBus do
     {:noreply, [command], state}
   end
 
-  def handle_demand(demand, state) do
+  def handle_demand(_demand, state) do
     # we handle events in handle_cast dispatch
     {:noreply, [], state}
   end

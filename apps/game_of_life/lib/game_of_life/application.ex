@@ -8,8 +8,8 @@ defmodule GameOfLife.Application do
       {Sim.Realm.Supervisor,
        name: GameOfLife,
        domain_services: [
-         user: GameOfLife.UserService,
-         sim: GameOfLife.SimService
+         {GameOfLife.UserService, partition: :user, max_demand: 5},
+         {GameOfLife.SimService, partition: :sim, max_demand: 1}
        ],
        reducers: [Thundermoon.PubSubReducer]}
     ]

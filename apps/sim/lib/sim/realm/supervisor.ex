@@ -1,5 +1,6 @@
 defmodule Sim.Realm.Supervisor do
   use Supervisor
+  require Logger
 
   def start_link(config) do
     children = [
@@ -7,7 +8,7 @@ defmodule Sim.Realm.Supervisor do
       {Sim.Realm.CommandBus,
        [
          name: child_name(config, CommandBus),
-         partitions: Keyword.keys(config[:domain_services])
+         partitions: Enum.map(config[:domain_services], fn {_, opts} -> opts[:partition] end)
        ]},
       {Sim.Realm.ServiceSupervisor,
        [
@@ -18,7 +19,7 @@ defmodule Sim.Realm.Supervisor do
       {Sim.Realm.EventBus,
        [
          name: child_name(config, EventBus),
-         domain_services: Keyword.values(config[:domain_services])
+         domain_services: Enum.map(config[:domain_services], fn {service, _} -> service end)
        ]},
       {Sim.Realm.ReducerSupervisor,
        [
@@ -32,7 +33,7 @@ defmodule Sim.Realm.Supervisor do
     ]
 
     opts = [strategy: :rest_for_one, name: child_name(config, Supervisor)]
-    IO.inspect(children)
+    Logger.info("Eventpipeline #{opts[:name]} started")
     Supervisor.start_link(children, opts)
   end
 

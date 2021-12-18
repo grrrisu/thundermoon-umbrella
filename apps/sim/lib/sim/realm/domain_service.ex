@@ -2,15 +2,14 @@ defmodule Sim.Realm.DomainService do
   use GenStage
   require Logger
 
-  def start_link([service: {_, domain_service}, command_bus: _] = opts) do
+  def start_link([domain_service: {domain_service, _}] = opts) do
     GenStage.start_link(__MODULE__, opts, name: domain_service)
   end
 
-  def init(service: {partition, domain_service}, command_bus: command_bus) do
-    Logger.info("DomainService #{partition} started")
+  def init(domain_service: {domain_service, [subscribe_to: [{_, opts}]] = subscribe_to}) do
+    Logger.debug("DomainService #{opts[:partition]} started with max_demand #{opts[:max_demand]}")
 
-    {:producer_consumer, %{domain_service: domain_service},
-     subscribe_to: [{command_bus || Sim.Realm.CommandBus, partition: partition}]}
+    {:producer_consumer, %{domain_service: domain_service}, subscribe_to}
   end
 
   def handle_events(events, _from, state) do
@@ -20,7 +19,9 @@ defmodule Sim.Realm.DomainService do
 
   def execute(events, domain_service) do
     WorkerSupervisor
-    |> Task.Supervisor.async_stream_nolink(events, fn event -> domain_service.execute(event) end)
+    |> Task.Supervisor.async_stream_nolink(events, fn {command, args} ->
+      domain_service.execute(command, args)
+    end)
     |> Enum.to_list()
   end
 

@@ -7,7 +7,7 @@ defmodule Sim.Realm.EventBus do
   end
 
   def init(domain_services) do
-    Logger.info("EventBus started")
+    Logger.debug("EventBus started")
 
     {:producer_consumer, nil,
      subscribe_to: domain_services, dispatcher: GenStage.BroadcastDispatcher}

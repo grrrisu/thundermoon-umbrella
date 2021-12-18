@@ -7,7 +7,7 @@ defmodule Sim.Realm.EventReducer do
   end
 
   def init(opts) do
-    Logger.info("#{opts[:reducer]} started")
+    Logger.debug("#{opts[:reducer]} started")
     {:consumer, %{reducer: opts[:reducer]}, subscribe_to: [opts[:event_bus]]}
   end
 
