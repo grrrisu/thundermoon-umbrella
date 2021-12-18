@@ -19,7 +19,9 @@ defmodule Sim.Realm.ServiceSupervisor do
 
     Enum.map(opts[:domain_services], fn {module, stage_opts} ->
       Supervisor.child_spec(
-        {DomainService, domain_service: {module, subscribe_to: [{command_bus, stage_opts}]}},
+        {DomainService,
+         domain_service: {module, subscribe_to: [{command_bus, stage_opts}]},
+         worker_supervisor: task_supervisor_name(opts)},
         id: module
       )
     end)
