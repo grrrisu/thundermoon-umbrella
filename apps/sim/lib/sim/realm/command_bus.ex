@@ -24,8 +24,8 @@ defmodule Sim.Realm.CommandBus do
 
     args = [
       partitions: opts[:partitions],
-      hash: fn {domain, command} ->
-        {command, domain}
+      hash: fn {domain, command, args} ->
+        {{command, args}, domain}
       end
     ]
 
