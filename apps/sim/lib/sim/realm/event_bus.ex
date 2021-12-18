@@ -1,33 +1,19 @@
 defmodule Sim.Realm.EventBus do
-  use GenServer
+  use GenStage
+  require Logger
 
   def start_link(opts) do
-    GenServer.start_link(__MODULE__, opts, name: opts[:name])
+    GenStage.start_link(__MODULE__, opts[:domain_services], name: opts[:name] || __MODULE__)
   end
 
-  @impl true
-  def init(opts) do
-    {:ok, %{task_supervisor_name: opts[:task_supervisor_name], reducers: opts[:reducers]}}
+  def init(domain_services) do
+    Logger.info("EventBus started")
+
+    {:producer_consumer, nil,
+     subscribe_to: domain_services, dispatcher: GenStage.BroadcastDispatcher}
   end
 
-  def add_events(server, events) do
-    GenServer.cast(server, {:add_events, events})
-  end
-
-  @impl true
-  def handle_cast({:add_events, events}, state) do
-    Enum.each(events, fn event -> reduce_event(event, state) end)
-    {:noreply, state}
-  end
-
-  def reduce_event(event, state) do
-    Task.Supervisor.async_stream_nolink(
-      state.task_supervisor_name,
-      state.reducers,
-      fn {reducer_module, reducer} ->
-        reducer_module.reduce(reducer, event)
-      end
-    )
-    |> Stream.run()
+  def handle_events(events, _from, state) do
+    {:noreply, events, state}
   end
 end

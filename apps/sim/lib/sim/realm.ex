@@ -29,7 +29,7 @@ defmodule Sim.Realm do
       end
 
       def create(config) do
-        send_command({:realm, :create, config: config})
+        send_command({:user, :create, config: config})
       end
 
       def recreate(config) do
@@ -42,11 +42,11 @@ defmodule Sim.Realm do
       end
 
       def start_sim(delay \\ 1_000, command \\ {:sim}) do
-        send_command({:sim, :start, delay: delay})
+        send_command({:user, :start, delay: delay})
       end
 
       def stop_sim() do
-        send_command({:sim, :stop})
+        send_command({:user, :stop})
       end
 
       def started?() do

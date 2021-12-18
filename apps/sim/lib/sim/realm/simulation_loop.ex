@@ -22,7 +22,7 @@ defmodule Sim.Realm.SimulationLoop do
   # -- server ---
 
   def start_link(opts \\ []) do
-    GenServer.start_link(__MODULE__, opts, name: opts[:name])
+    GenServer.start_link(__MODULE__, opts, name: opts[:name] || __MODULE__)
   end
 
   def init(opts) do

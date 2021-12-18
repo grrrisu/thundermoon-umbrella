@@ -8,16 +8,16 @@ defmodule GameOfLife do
 
   def reset() do
     stop_sim()
-    send_command({:realm, :reset})
+    send_command({:user, :reset})
   end
 
   def recreate() do
     stop_sim()
-    send_command({:realm, :recreate})
+    send_command({:user, :recreate})
   end
 
   def clear() do
-    send_command({:realm, :clear})
+    send_command({:user, :clear})
   end
 
   def toggle(x, y) do

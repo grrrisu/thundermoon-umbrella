@@ -1,42 +1,43 @@
 defmodule Sim.Realm.Supervisor do
   use Supervisor
 
-  alias Sim.Realm
-
-  def start_link(opts) do
-    Supervisor.start_link(__MODULE__, {opts[:name], opts[:domain_services], opts[:pub_sub]},
-      name: Realm.server_name(opts[:name], "Supervisor")
-    )
-  end
-
-  def init({name, domain_services, pub_sub}) do
+  def start_link(config) do
     children = [
-      {Sim.Realm.Data, name: Realm.server_name(name, "Data")},
-      {Sim.Realm.SimulationLoop,
-       name: Realm.server_name(name, "SimulationLoop"),
-       command_bus_module: Realm.server_name(name, "CommandBus")},
+      {Sim.Realm.Data, name: child_name(config, Data)},
       {Sim.Realm.CommandBus,
-       services: domain_services,
-       task_supervisor_module: Realm.server_name(name, "CommandTaskSupervisor"),
-       event_bus_module: Realm.server_name(name, "EventBus"),
-       name: Realm.server_name(name, "CommandBus")},
-      {Task.Supervisor, name: Realm.server_name(name, "CommandTaskSupervisor")},
-      {
-        Sim.Realm.EventBus,
-        # Kafka, NoSQLDB, RDBMS
-        reducers: %{Sim.Realm.Broadcaster => Realm.server_name(name, "Broadcaster")},
-        name: Realm.server_name(name, "EventBus"),
-        task_supervisor_name: Realm.server_name(name, "EventTaskSupervisor")
-      },
-      {Sim.Realm.Broadcaster,
-       name: Realm.server_name(name, "Broadcaster"), pub_sub: pub_sub, topic: topic(name)},
-      {Task.Supervisor, name: Realm.server_name(name, "EventTaskSupervisor")}
+       [
+         name: child_name(config, CommandBus),
+         partitions: Keyword.keys(config[:domain_services])
+       ]},
+      {Sim.Realm.ServiceSupervisor,
+       [
+         name: child_name(config, ServiceSupervisor),
+         domain_services: config[:domain_services],
+         command_bus: child_name(config, CommandBus)
+       ]},
+      {Sim.Realm.EventBus,
+       [
+         name: child_name(config, EventBus),
+         domain_services: Keyword.values(config[:domain_services])
+       ]},
+      {Sim.Realm.ReducerSupervisor,
+       [
+         name: child_name(config, ReducerSupervisor),
+         reducers: config[:reducers],
+         event_bus: child_name(config, EventBus)
+       ]},
+      {Sim.Realm.SimulationLoop,
+       name: child_name(config, SimulationLoop),
+       command_bus_module: child_name(config, CommandBus)}
     ]
 
-    Supervisor.init(children, strategy: :rest_for_one)
+    opts = [strategy: :rest_for_one, name: child_name(config, Supervisor)]
+    IO.inspect(children)
+    Supervisor.start_link(children, opts)
   end
 
-  defp topic(name) do
-    name |> Atom.to_string() |> String.replace_leading("Elixir.", "")
+  defp child_name(config, module) do
+    prefix = if Keyword.has_key?(config, :name), do: config[:name], else: Sim.Realm
+    Module.concat(prefix, module)
   end
 end
