@@ -8,13 +8,10 @@ defmodule GameOfLife.Application do
       {Sim.Realm.Supervisor,
        name: GameOfLife,
        domain_services: [
-         %{
-           user: GameOfLife.CommandHandler,
-           realm: GameOfLife.CommandHandler,
-           sim: GameOfLife.CommandHandler
-         }
+         user: GameOfLife.UserService,
+         sim: GameOfLife.SimService
        ],
-       pub_sub: ThundermoonWeb.PubSub}
+       reducers: [Thundermoon.PubSubReducer]}
     ]
 
     opts = [

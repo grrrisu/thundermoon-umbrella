@@ -9,7 +9,7 @@ defmodule Sim.Realm.Data do
         Logger.debug("start realm data")
         %{data: nil}
       end,
-      name: opts[:name]
+      name: opts[:name] || __MODULE__
     )
   end
 
