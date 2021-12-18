@@ -11,7 +11,7 @@ defmodule GameOfLife.Application do
          {GameOfLife.UserService, partition: :user, max_demand: 5},
          {GameOfLife.SimService, partition: :sim, max_demand: 1}
        ],
-       reducers: [Thundermoon.PubSubReducer]}
+       reducers: [GameOfLife.PubSubReducer]}
     ]
 
     opts = [
