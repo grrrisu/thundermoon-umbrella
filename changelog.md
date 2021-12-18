@@ -2,6 +2,10 @@
 
 ## dev
 
+- Sim:
+
+  - refactored event pipeline to use GenStage: CommandBus -> DomainServices -> EventBus -> EventReducers
+
 - General:
 
   - update Elixir to 1.13.1
