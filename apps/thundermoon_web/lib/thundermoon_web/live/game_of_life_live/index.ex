@@ -60,9 +60,9 @@ defmodule ThundermoonWeb.GameOfLifeLive.Index do
   end
 
   @impl true
-  def handle_info({:command_failed, command: command, reason: _reason}, socket) do
-    Logger.warn("command failed: #{inspect(command)}")
-    {:noreply, put_flash(socket, :error, "command failed #{inspect(command)}")}
+  def handle_info({:error, message}, socket) do
+    Logger.warn("error: #{message}")
+    {:noreply, put_flash(socket, :error, "Error: #{message}")}
   end
 
   @impl true
