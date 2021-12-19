@@ -38,7 +38,7 @@ defmodule Sim.Realm.DomainService do
       case event do
         {:exit, {exception, _stacktrace}} -> {:error, Exception.message(exception)}
         {:ok, {:error, msg}} -> {:error, msg}
-        result -> result
+        {:ok, [{command, result}]} -> {command, result}
       end
     end)
   end
