@@ -8,8 +8,6 @@ defmodule Sim.Commands.DataHelpers do
 
       @data_server Realm.server_name(unquote(app_module), "Data")
 
-      @behaviour Sim.CommandHandler
-
       def set_data(set_func) when is_function(set_func) do
         :ok = Data.set_data(@data_server, set_func)
         [{:update, :ok}]

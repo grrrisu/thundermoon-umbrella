@@ -24,20 +24,21 @@ defmodule Sim.Realm.CommandBus do
 
     args = [
       partitions: opts[:partitions],
-      hash: fn {domain, command, args} ->
-        {{command, args}, domain}
-      end
+      hash: & &1
     ]
 
     {:producer, nil, dispatcher: {GenStage.PartitionDispatcher, args}}
   end
 
   def handle_cast({:dispatch, command}, state) do
-    {:noreply, [command], state}
+    {:noreply, [normalize_command(command)], state}
   end
 
   def handle_demand(_demand, state) do
     # we handle events in handle_cast dispatch
     {:noreply, [], state}
   end
+
+  defp normalize_command({domain, command}), do: {{command, []}, domain}
+  defp normalize_command({domain, command, args}), do: {{command, args}, domain}
 end

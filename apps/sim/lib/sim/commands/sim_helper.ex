@@ -8,8 +8,6 @@ defmodule Sim.Commands.SimHelpers do
 
       @simulation_loop Realm.server_name(unquote(app_module), "SimulationLoop")
 
-      @behaviour Sim.CommandHandler
-
       def start_simulation_loop(delay \\ 1_000, command \\ {:sim, :tick}) do
         SimulationLoop.start(@simulation_loop, delay, command)
         [{:sim, started: true}]
