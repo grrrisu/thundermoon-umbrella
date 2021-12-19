@@ -2,21 +2,26 @@ defmodule Sim.CommandHandler do
   @moduledoc """
   examples
 
-    def handle_command({:start}) do
-      SimulationLoop.start(GameOfLife.SimulationLoop, 1_000, {:sim})
-      [{:sim, started: true}]
+    def execute(:stop) do
+      SimulationLoop.stop(GameOfLife.SimulationLoop)
+      [{:sim, started: false}]
+    end
+
+    def execute(:create, config: size) do
+      :ok = Data.set_data(GameOfLife.Data, Grid.create(size))
+      [{:update, :ok}]
     end
   """
 
-  @type context :: atom
-  @type cmd :: atom
-  @type command :: {context, cmd, keyword}
-  @type event :: {atom, keyword}
+  @type command :: atom
+  @type result :: atom
+  @type data :: any
+  @type event :: {result, data}
 
   @doc """
   handle the execution of the command
   this will be executed within a task
   returns a list of events
   """
-  @callback execute(command) :: [event]
+  @callback execute(command, keyword) :: [event]
 end
