@@ -7,6 +7,12 @@ defmodule Sim.RealmTest do
 
   require Logger
 
+  def reduce(events) do
+    Enum.map(events, fn event ->
+      Phoenix.PubSub.broadcast(:test_pub_sub, "Test.Realm", event)
+    end)
+  end
+
   setup do
     start_supervised!({PubSub, name: :test_pub_sub})
 
@@ -14,9 +20,10 @@ defmodule Sim.RealmTest do
       {Sim.Realm.Supervisor,
        name: Test.Realm,
        domain_services: [
-         %{test: Test.CommandHandler, realm: Test.CommandHandler, sim: Test.CommandHandler}
+         {Test.CommandHandler, partition: :test, max_demand: 5},
+         {Test.RealmCommandHandler, partition: :user, max_demand: 1}
        ],
-       pub_sub: :test_pub_sub}
+       reducers: [Sim.RealmTest]}
     )
 
     PubSub.subscribe(:test_pub_sub, "Test.Realm")
@@ -53,18 +60,18 @@ defmodule Sim.RealmTest do
     end
 
     test "start" do
-      assert :ok = Realm.start_sim()
+      assert :ok = Realm.start_sim(1000, {:test, :tick})
       assert_receive({:sim, started: true})
     end
 
     test "stop" do
-      assert :ok = Realm.start_sim()
+      assert :ok = Realm.start_sim(1000, {:test, :tick})
       assert :ok = Realm.stop_sim()
       assert_receive({:sim, started: false})
     end
 
     test "sim" do
-      assert :ok = Realm.start_sim(10)
+      assert :ok = Realm.start_sim(10, {:test, :tick})
       assert_receive({:update, data: 1})
       # wait one sim cycle
       Process.sleep(10)
@@ -73,7 +80,7 @@ defmodule Sim.RealmTest do
 
     test "started?" do
       assert false == Realm.started?()
-      Realm.start_sim()
+      Realm.start_sim(10, {:test, :tick})
       Process.sleep(1)
       assert true == Realm.started?()
       Realm.stop_sim()
@@ -82,9 +89,8 @@ defmodule Sim.RealmTest do
     end
 
     test "crashed command stops sim" do
-      Realm.start_sim()
+      Realm.start_sim(1000, {:test, :tick})
       Realm.crash()
-      assert_receive({:sim, started: false})
       assert false == Realm.started?()
     end
   end

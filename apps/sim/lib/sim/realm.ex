@@ -41,8 +41,8 @@ defmodule Sim.Realm do
         Supervisor.stop(@supervisor)
       end
 
-      def start_sim(delay \\ 1_000, command \\ {:sim}) do
-        send_command({:user, :start, delay: delay})
+      def start_sim(delay \\ 1_000, command \\ {:sim, :tick}) do
+        send_command({:user, :start, delay: delay, command: command})
       end
 
       def stop_sim() do
