@@ -7,8 +7,8 @@ defmodule GameOfLife.UserService do
   alias GameOfLife.Grid
 
   @impl true
-  def execute(:start, delay: delay) do
-    start_simulation_loop(delay || 100)
+  def execute(:start, delay: delay, command: command) do
+    start_simulation_loop(delay || 100, command: command)
   end
 
   @impl true
