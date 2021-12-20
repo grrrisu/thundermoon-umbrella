@@ -20,6 +20,10 @@ defmodule GameOfLife do
     send_command({:user, :clear})
   end
 
+  def start_sim() do
+    send_command({:user, :start, delay: 100, command: {:sim, :tick}})
+  end
+
   def toggle(x, y) do
     send_command({:user, :toggle, x: x, y: y})
   end

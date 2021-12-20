@@ -8,7 +8,7 @@ defmodule GameOfLife.UserService do
 
   @impl true
   def execute(:start, delay: delay, command: command) do
-    start_simulation_loop(delay || 100, command: command)
+    start_simulation_loop(delay || 100, command)
   end
 
   @impl true
@@ -39,5 +39,10 @@ defmodule GameOfLife.UserService do
   @impl true
   def execute(:clear, []) do
     change_data(fn grid -> Grid.clear(grid) end)
+  end
+
+  @impl true
+  def execute(any, args) do
+    raise "unknown user command #{any} with args #{inspect(args)}"
   end
 end

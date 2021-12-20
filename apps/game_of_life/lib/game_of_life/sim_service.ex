@@ -12,4 +12,9 @@ defmodule GameOfLife.SimService do
     set_data(fn -> Sim.Grid.apply_changes(grid, changes) end)
     [{:changed, changes: changes}]
   end
+
+  @impl true
+  def execute(any, args) do
+    raise "unknown sim command #{any} with args #{inspect(args)}"
+  end
 end
