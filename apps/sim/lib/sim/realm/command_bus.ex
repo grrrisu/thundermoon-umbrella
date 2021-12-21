@@ -1,7 +1,8 @@
 defmodule Sim.Realm.CommandBus do
   @moduledoc """
   The command bus routes the incoming commands to their domain service to execute the command in a separate task.
-  Only one command per domain service is executed simultaneously, but different domain services can run at the same time.
+  You can configure how many events are executed in parallel by setting max_demand and then passing accordingly batch of events.
+  At the moment this is one as dispatch only excepts one event.
   """
   use GenStage
   require Logger
