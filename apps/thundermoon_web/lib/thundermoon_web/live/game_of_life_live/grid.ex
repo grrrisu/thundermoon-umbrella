@@ -7,7 +7,11 @@ defmodule ThundermoonWeb.GameOfLifeLive.Grid do
     assigns = matrix_assigns(assigns)
 
     ~H"""
-    <div id="grid" class="grid auto-rows-fr mb-6 bg-gray-300 border-l border-b border-gray-900" style={@grid_style} phx-hook="GameOfLife">
+    <div
+      id="grid"
+      class="grid auto-rows-fr mb-6 bg-gray-300 border-l border-b border-gray-900"
+      style={"grid-template-columns: repeat(#{@width},1fr); grid-template-rows: repeat(#{@height},1fr); width: 85vmin; height: 85vmin"}
+      phx-hook="GameOfLife">
       <%= for x <- 0..(@width - 1) do %>
         <%= for y <- 0..(@height - 1) do %>
           <.cell x={x} y={y} cell_class={cell_class(@grid, x, y)}/>
@@ -39,18 +43,9 @@ defmodule ThundermoonWeb.GameOfLifeLive.Grid do
   defp matrix_assigns(assigns) do
     assigns
     |> assign_dimensions()
-    |> assign_grid_css()
   end
 
   defp assign_dimensions(assigns) do
     assign(assigns, width: Grid.width(assigns.grid), height: Grid.height(assigns.grid))
-  end
-
-  defp assign_grid_css(%{width: width, height: height} = assigns) do
-    assign(
-      assigns,
-      :grid_style,
-      "grid-template-columns: repeat(#{width}, 1fr); grid-template-rows: repeat(#{height}, 1fr); width: 85vmin; height: 85vmin"
-    )
   end
 end
