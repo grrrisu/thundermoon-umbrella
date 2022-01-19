@@ -107,7 +107,7 @@ defmodule ThundermoonWeb.GameOfLifeLive.Index do
 
   @impl true
   def handle_info({:sim, started: started}, socket) do
-    {:noreply, assign(socket, started: started)}
+    {:noreply, assign(socket, started: started, grid: get_grid())}
   end
 
   defp get_current_user(session) do
