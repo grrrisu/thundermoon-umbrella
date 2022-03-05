@@ -30,6 +30,8 @@ defmodule Sim.Grid do
     end)
   end
 
+  def get(nil, _x, _y), do: {:error, "grid is nil"}
+
   def get(%{0 => columns} = grid, x, y)
       when x >= 0 and x < map_size(grid) and y >= 0 and y < map_size(columns) do
     get_in(grid, [x, y])
@@ -64,5 +66,25 @@ defmodule Sim.Grid do
 
   def height(grid) do
     map_size(grid[0])
+  end
+
+  # [{x0, y0, value}, {x1, y0, value}, ...]
+  def map(grid, func \\ &{&1, &2, &3}) do
+    Enum.map(grid, fn {x, col} ->
+      Enum.map(col, fn {y, value} ->
+        {func.(x, y, value)}
+      end)
+    end)
+    |> Enum.reverse()
+    |> Enum.zip()
+    |> Enum.map(&Tuple.to_list/1)
+    |> List.flatten()
+    |> Enum.map(fn {i} -> i end)
+    |> Enum.reverse()
+  end
+
+  def merge_field(grid, x, y, value, func \\ &Map.merge(&1, &2)) do
+    field = Grid.get(grid, x, y)
+    Grid.put(grid, x, y, func.(field, value))
   end
 end
