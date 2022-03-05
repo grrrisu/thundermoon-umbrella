@@ -56,4 +56,27 @@ defmodule Sim.GridTest do
     grid = Grid.create(2, 3, "one")
     assert {:error, _msg} = Grid.put(grid, "two", "one", "foo")
   end
+
+  test "map grid" do
+    grid = Grid.create(2, 3, fn x, y -> x + y end)
+
+    expected = [
+      [0, 2, 2],
+      [1, 2, 3],
+      [0, 1, 1],
+      [1, 1, 2],
+      [0, 0, 0],
+      [1, 0, 1]
+    ]
+
+    assert ^expected = Grid.map(grid, fn x, y, v -> [x, y, v] end)
+  end
+
+  test "merge field" do
+    grid = Grid.create(1, 2, %{some_value: 3})
+    grid = Grid.merge_field(grid, 0, 0, %{some_value: 0})
+    grid = Grid.merge_field(grid, 0, 1, %{other_value: 5})
+    assert %{some_value: 0} = Grid.get(grid, 0, 0)
+    assert %{other_value: 5, some_value: 3} = Grid.get(grid, 0, 1)
+  end
 end

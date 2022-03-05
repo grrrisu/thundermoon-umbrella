@@ -5,6 +5,7 @@
 - Sim:
 
   - refactored simulation loop to use a tick function, instead of calling the command bus directly. That way it can be used independently of the rest of the realm modules.
+  - map and merge functions for Grid
 
 - General:
   - various updates
