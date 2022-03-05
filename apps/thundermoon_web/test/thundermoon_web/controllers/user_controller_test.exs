@@ -25,7 +25,7 @@ defmodule ThundermoonWeb.UserControllerTest do
     end
 
     test "update a user", %{conn: conn, users: users} do
-      conn = put(conn, "users/#{List.first(users).id}", %{"user" => %{"username" => "foo"}})
+      conn = put(conn, "/users/#{List.first(users).id}", %{"user" => %{"username" => "foo"}})
       assert redirected_to(conn) == "/"
     end
   end
@@ -47,7 +47,7 @@ defmodule ThundermoonWeb.UserControllerTest do
     end
 
     test "update my own user", %{conn: conn, users: users} do
-      conn = put(conn, "users/#{List.first(users).id}", %{"user" => %{"username" => "foo"}})
+      conn = put(conn, "/users/#{List.first(users).id}", %{"user" => %{"username" => "foo"}})
       assert get_flash(conn, :info) == "User has been updated"
       assert redirected_to(conn) == "/users"
     end
@@ -58,12 +58,12 @@ defmodule ThundermoonWeb.UserControllerTest do
     end
 
     test "update another user", %{conn: conn, users: users} do
-      conn = put(conn, "users/#{List.last(users).id}", %{"user" => %{"username" => "foo"}})
+      conn = put(conn, "/users/#{List.last(users).id}", %{"user" => %{"username" => "foo"}})
       assert redirected_to(conn) == "/"
     end
 
     test "delete another user", %{conn: conn, users: users} do
-      conn = delete(conn, "users/#{List.last(users).id}")
+      conn = delete(conn, "/users/#{List.last(users).id}")
       assert redirected_to(conn) == "/"
     end
   end
@@ -85,19 +85,19 @@ defmodule ThundermoonWeb.UserControllerTest do
     end
 
     test "update another user", %{conn: conn, users: users} do
-      conn = put(conn, "users/#{List.first(users).id}", %{"user" => %{"username" => "foo"}})
+      conn = put(conn, "/users/#{List.first(users).id}", %{"user" => %{"username" => "foo"}})
       assert get_flash(conn, :info) == "User has been updated"
       assert redirected_to(conn) == "/users"
     end
 
     test "delete own user", %{conn: conn, users: users} do
-      conn = delete(conn, "users/#{List.last(users).id}")
+      conn = delete(conn, "/users/#{List.last(users).id}")
       assert get_flash(conn, :error) == "You are not authorized to access this page!"
       assert redirected_to(conn) == "/"
     end
 
     test "delete another user", %{conn: conn, users: users} do
-      conn = delete(conn, "users/#{List.first(users).id}")
+      conn = delete(conn, "/users/#{List.first(users).id}")
       assert get_flash(conn, :info) == "User has been deleted"
       assert redirected_to(conn) == "/users"
     end
