@@ -3,12 +3,10 @@ defmodule Sim.Realm.SimulationLoop do
 
   require Logger
 
-  alias Sim.Realm.CommandBus
-
   # --- client ---
 
-  def start(server, delay, command) do
-    GenServer.cast(server, {:start, delay, command})
+  def start(server, delay, tick_function) do
+    GenServer.cast(server, {:start, delay, tick_function})
   end
 
   def stop(server) do
@@ -25,25 +23,24 @@ defmodule Sim.Realm.SimulationLoop do
     GenServer.start_link(__MODULE__, opts, name: opts[:name] || __MODULE__)
   end
 
-  def init(opts) do
+  def init(_opts) do
     Logger.debug("start simulation loop")
 
     {:ok,
      %{
        next_tick: nil,
        delay: 1_000,
-       command: {:sim, :tick},
-       command_bus_module: opts[:command_bus_module]
+       tick_function: nil
      }}
   end
 
-  def handle_cast({:start, delay, command}, %{next_tick: nil} = state) do
+  def handle_cast({:start, delay, tick_function}, %{next_tick: nil} = state) do
     Logger.info("starting simulation ...")
     send(self(), :tick)
-    {:noreply, %{state | delay: delay, command: command}}
+    {:noreply, %{state | delay: delay, tick_function: tick_function}}
   end
 
-  def handle_cast({:start, _delay, _command}, state) do
+  def handle_cast({:start, _delay, _tick_function}, state) do
     # already running
     {:noreply, state}
   end
@@ -63,7 +60,7 @@ defmodule Sim.Realm.SimulationLoop do
   end
 
   def handle_info(:tick, state) do
-    :ok = CommandBus.dispatch(state.command_bus_module, state.command)
+    :ok = state.tick_function.()
     {:noreply, %{state | next_tick: create_next_tick(state.delay)}}
   end
 
