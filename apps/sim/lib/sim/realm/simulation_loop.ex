@@ -1,3 +1,4 @@
+# copied from thundermoon for now
 defmodule Sim.Realm.SimulationLoop do
   use GenServer
 
@@ -5,15 +6,15 @@ defmodule Sim.Realm.SimulationLoop do
 
   # --- client ---
 
-  def start(server, delay, tick_function) do
+  def start(server \\ __MODULE__, delay, tick_function) do
     GenServer.cast(server, {:start, delay, tick_function})
   end
 
-  def stop(server) do
+  def stop(server \\ __MODULE__) do
     :ok = GenServer.cast(server, :stop)
   end
 
-  def running?(server) do
+  def running?(server \\ __MODULE__) do
     GenServer.call(server, :running?)
   end
 
@@ -52,7 +53,7 @@ defmodule Sim.Realm.SimulationLoop do
 
   def handle_cast(:stop, %{next_tick: next_tick} = state) do
     Process.cancel_timer(next_tick)
-    {:noreply, set_stop(state)}
+    {:noreply, %{state | next_tick: nil}}
   end
 
   def handle_call(:running?, _from, state) do
@@ -60,16 +61,15 @@ defmodule Sim.Realm.SimulationLoop do
   end
 
   def handle_info(:tick, state) do
-    :ok = state.tick_function.()
-    {:noreply, %{state | next_tick: create_next_tick(state.delay)}}
+    {:noreply, %{state | next_tick: state.tick_function.() |> set_next_tick(state.delay)}}
   end
 
-  defp create_next_tick(delay) do
+  defp set_next_tick(:ok, delay) do
     Process.send_after(self(), :tick, delay)
   end
 
-  defp set_stop(state) do
+  defp set_next_tick(:stop, _delay) do
     Logger.info("stop sim loop")
-    %{state | next_tick: nil}
+    nil
   end
 end
