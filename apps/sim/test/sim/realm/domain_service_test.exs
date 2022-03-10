@@ -23,12 +23,21 @@ defmodule Sim.Realm.DoaminServiceTest do
     results = [
       {:ok, [{:sim, :result}]},
       {:ok, {:error, "fail with one"}},
-      {:exit, {%RuntimeError{message: "crash command"}, []}}
+      {:exit, {%RuntimeError{message: "crash command"}, []}},
+      {:exit, {:stopped, ["first"]}},
+      {:exit, {:undef, ["{Meeple.Service.Admin, :execute, [:foobar]}"]}},
+      {:exit, "unknown error"}
     ]
 
-    [res1, res2, res3] = DomainService.filter(results)
+    [res1, res2, res3, res4, res5, res6] = DomainService.filter(results)
     assert {:sim, :result} = res1
     assert {:error, "fail with one"} = res2
     assert {:error, "crash command"} = res3
+    assert {:error, "exited with stopped first"}
+
+    assert {:error,
+            "exited with undef {Meeple.Service.Admin, :execute, [:foobar]}, probaly an UndefinedFunctionError"}
+
+    assert {:error, "unknown error: unknow error"}
   end
 end

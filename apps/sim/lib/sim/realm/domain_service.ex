@@ -36,9 +36,23 @@ defmodule Sim.Realm.DomainService do
   def filter(events) do
     Enum.map(events, fn event ->
       case event do
-        {:exit, {exception, _stacktrace}} -> {:error, Exception.message(exception)}
-        {:ok, {:error, msg}} -> {:error, msg}
-        {:ok, [{command, result}]} -> {command, result}
+        {:exit, {:undef, [msg | _stacktrace]}} ->
+          {:error, "exited with undef #{inspect(msg)}, probably an UndefinedFunctionError"}
+
+        {:exit, {reason, [msg | _stacktrace]}} when is_atom(reason) ->
+          {:error, "exited with #{reason} #{inspect(msg)}"}
+
+        {:exit, {exception, _stacktrace}} ->
+          {:error, Exception.message(exception)}
+
+        {:exit, unknown} ->
+          {:error, "unknown error: #{inspect(unknown)}"}
+
+        {:ok, {:error, msg}} ->
+          {:error, msg}
+
+        {:ok, [{command, result}]} ->
+          {command, result}
       end
     end)
   end
