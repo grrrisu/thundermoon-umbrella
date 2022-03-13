@@ -16,18 +16,19 @@ defmodule Sim.Realm.DomainService do
      subscribe_to}
   end
 
-  def handle_events(events, _from, state) do
+  def handle_events(commands, _from, state) do
     events =
-      events
+      commands
       |> execute(state.domain_service, state.worker_supervisor)
       |> filter()
+      |> List.flatten()
 
     {:noreply, events, state}
   end
 
-  def execute(events, domain_service, worker_supervisor) do
+  def execute(commands, domain_service, worker_supervisor) do
     worker_supervisor
-    |> Task.Supervisor.async_stream_nolink(events, fn {command, args} ->
+    |> Task.Supervisor.async_stream_nolink(commands, fn {command, args} ->
       domain_service.execute(command, args)
     end)
     |> Enum.to_list()
@@ -51,8 +52,8 @@ defmodule Sim.Realm.DomainService do
         {:ok, {:error, msg}} ->
           {:error, msg}
 
-        {:ok, [{command, result}]} ->
-          {command, result}
+        {:ok, [{_command, _result} | _] = returned_events} ->
+          returned_events
       end
     end)
   end
