@@ -43,7 +43,10 @@ defmodule Sim.Realm.DomainService do
         {:exit, {reason, [msg | _stacktrace]}} when is_atom(reason) ->
           {:error, "exited with #{reason} #{inspect(msg)}"}
 
-        {:exit, {exception, _stacktrace}} ->
+        {:exit, {reason, msg}} when is_atom(reason) ->
+          {:error, "exited with #{reason} #{inspect(msg)}"}
+
+        {:exit, {%module{} = exception, _stacktrace}} ->
           {:error, Exception.message(exception)}
 
         {:exit, unknown} ->

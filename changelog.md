@@ -6,6 +6,8 @@
 
   - refactored simulation loop to use a tick function, instead of calling the command bus directly. That way it can be used independently of the rest of the realm modules.
   - map and merge functions for Grid
+  - DomainService handling now multiple events from an executions
+  - DomainService handling more exit events
 
 - General:
   - various updates
