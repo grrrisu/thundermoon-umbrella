@@ -27,10 +27,11 @@ defmodule Sim.Realm.DoaminServiceTest do
       {:exit, {%RuntimeError{message: "crash command"}, []}},
       {:exit, {:stopped, ["first"]}},
       {:exit, {:undef, ["{Meeple.Service.Admin, :execute, [:foobar]}"]}},
+      {:exit, {:noprocess, {"no process running"}}},
       {:exit, "unknown error"}
     ]
 
-    [res1, res2, res3, res4, res5, res6, res7] = DomainService.filter(results)
+    [res1, res2, res3, res4, res5, res6, res7, res8] = DomainService.filter(results)
     assert [{:sim, :result}] == res1
     assert [{:sim, :result}, {:data, :updated}] == res2
     assert {:error, "fail with one"} == res3
@@ -41,6 +42,8 @@ defmodule Sim.Realm.DoaminServiceTest do
             "exited with undef \"{Meeple.Service.Admin, :execute, [:foobar]}\", probably an UndefinedFunctionError"} ==
              res6
 
-    assert {:error, "unknown error: \"unknown error\""} == res7
+    assert {:error, "exited with noprocess {\"no process running\"}"} == res7
+
+    assert {:error, "unknown error: \"unknown error\""} == res8
   end
 end
