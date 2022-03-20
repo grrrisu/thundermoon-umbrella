@@ -21,7 +21,7 @@ defmodule Sim.CommandHandler do
   @doc """
   handle the execution of the command
   this will be executed within a task
-  returns a list of events
+  returns a list of events and/or commands
   """
-  @callback execute(command, keyword) :: [event]
+  @callback execute(command, keyword) :: [event | {:command, {command, keyword}}]
 end

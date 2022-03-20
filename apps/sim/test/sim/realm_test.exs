@@ -93,4 +93,16 @@ defmodule Sim.RealmTest do
       # TODO assert false == Realm.started?()
     end
   end
+
+  describe "echo" do
+    test "receive echo" do
+      assert :ok = Realm.echo("holidoo")
+      assert_receive({:echoed, [payload: "holidoo"]})
+    end
+
+    test "receive echo twice" do
+      assert :ok = Realm.echo_twice("holidoo")
+      assert_receive({:echoed, [payload: "holidoo holidoo"]})
+    end
+  end
 end

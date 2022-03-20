@@ -15,9 +15,9 @@ defmodule Sim.Realm.CommandBus do
     GenStage.start_link(__MODULE__, opts, name: opts[:name] || __MODULE__)
   end
 
-  @spec dispatch(atom | pid | {atom, any} | {:via, atom, any}, command) :: any
+  @spec dispatch(atom | pid | {atom, any} | {:via, atom, any}, command) :: :ok
   def dispatch(server, command) do
-    GenStage.cast(server, {:dispatch, command})
+    :ok = GenStage.cast(server, {:dispatch, command})
   end
 
   def init(opts) do
