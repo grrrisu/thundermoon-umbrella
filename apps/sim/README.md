@@ -11,7 +11,7 @@
 - **Commands** are executed in **Domain Services**. They do the actual domain logic on the aggregate/data. In the end, they return an array of events, representing the made changes.
   While the events are then used for side effects like changing the data in a database in the next steps, the changes done during calculation are applied to data in memory (**Sim.Data**) immediately. Like that the next execution of the same group will have the latest changes and will not for example simulate the same state twice or move to the same field twice, just because the data may not have been updated in time.
 
-- The **EventBus** receives all _events_ that happened in the services and broadcasts them to all reducers.
+- The **EventBus** receives a list of _events_  and/or _commands_ that happened in the services. It will send command to the _CommandBus_, while events will be broadcasted via each EventReducer.
 
 - The **EventReducers** save the event to database, a message broker or publish them via PubSub component.
 
