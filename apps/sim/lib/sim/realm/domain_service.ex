@@ -57,6 +57,9 @@ defmodule Sim.Realm.DomainService do
 
         {:ok, [{_command, _result} | _] = returned_events} ->
           returned_events
+
+        {:ok, results} ->
+          results
       end
     end)
   end

@@ -19,7 +19,8 @@ defmodule Sim.Realm.Supervisor do
       {Sim.Realm.EventBus,
        [
          name: child_name(config, EventBus),
-         domain_services: Enum.map(config[:domain_services], fn {service, _} -> service end)
+         domain_services: Enum.map(config[:domain_services], fn {service, _} -> service end),
+         command_bus: child_name(config, CommandBus)
        ]},
       {Sim.Realm.ReducerSupervisor,
        [

@@ -4,7 +4,7 @@ defmodule Test.CommandHandler do
 
   @impl true
   def execute(:echo, payload: payload) do
-    [{:test, :echoed, payload: payload}]
+    [{:echoed, payload: payload}]
   end
 
   @impl true
@@ -15,6 +15,11 @@ defmodule Test.CommandHandler do
   @impl true
   def execute(:tick, []) do
     change_data(fn n -> n + 1 end)
+  end
+
+  @impl true
+  def execute(:echo_twice, payload: payload) do
+    [{:command, {:test, :echo, payload: "#{payload} #{payload}"}}]
   end
 
   def execute(any, _) do
