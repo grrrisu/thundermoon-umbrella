@@ -8,6 +8,7 @@
   - map and merge functions for Grid
   - DomainService handling now multiple events from an executions
   - DomainService handling more exit events
+  - EventBus can now handle events and commands, commands are forwarded to the CommandBus, while events as before get processed by the reducers.
 
 - General:
   - various updates
