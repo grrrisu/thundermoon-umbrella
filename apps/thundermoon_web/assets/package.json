@@ -18,7 +18,7 @@
   "devDependencies": {
     "autoprefixer": "^10.4.4",
     "cpx2": "^4.0.0",
-    "postcss": "^8.4.8",
+    "postcss": "^8.4.12",
     "postcss-import": "^14.0.2",
     "tailwindcss": "^3.0.1"
   },
