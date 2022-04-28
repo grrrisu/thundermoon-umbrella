@@ -13,9 +13,13 @@ defmodule Sim.Commands.DataHelpers do
         [{:update, :ok}]
       end
 
-      def set_data(data) do
+      def set_data({data, events}) do
         Data.set_data(@data_server, data)
-        [{:update, data: data}]
+        events
+      end
+
+      def set_data(data) do
+        set_data({data, [{:update, data: data}]})
       end
 
       def get_data() do
