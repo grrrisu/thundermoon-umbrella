@@ -9,6 +9,7 @@
   - DomainService handling now multiple events from an executions
   - DomainService handling more exit events
   - EventBus can now handle events and commands, commands are forwarded to the CommandBus, while events as before get processed by the reducers.
+  - helper function `change_data` can now return a tuple with {data_to_stored, event_command_list}
 
 - General:
   - various updates
