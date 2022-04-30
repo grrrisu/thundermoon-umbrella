@@ -7,10 +7,11 @@ defmodule GameOfLife.SimService do
 
   @impl true
   def execute(:tick, []) do
-    grid = get_data()
-    changes = grid |> Simulation.sim()
-    set_data(fn -> Sim.Grid.apply_changes(grid, changes) end)
-    [{:changed, changes: changes}]
+    change_data(fn grid ->
+      changes = grid |> Simulation.sim()
+      grid = Sim.Grid.apply_changes(grid, changes)
+      {grid, [{:changed, changes: changes}]}
+    end)
   end
 
   @impl true
