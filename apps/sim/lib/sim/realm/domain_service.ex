@@ -37,17 +37,20 @@ defmodule Sim.Realm.DomainService do
   def filter(events) do
     Enum.map(events, fn event ->
       case event do
-        {:exit, {:undef, [msg | _stacktrace]}} ->
-          {:error, "exited with undef #{inspect(msg)}, probably an UndefinedFunctionError"}
+        {:exit, {:stopped, [msg | _stacktrace]}} ->
+          {:error, "stopped with reason #{inspect(msg)}"}
 
-        {:exit, {reason, [msg | _stacktrace]}} when is_atom(reason) ->
-          {:error, "exited with #{reason} #{inspect(msg)}"}
-
-        {:exit, {reason, msg}} when is_atom(reason) ->
-          {:error, "exited with #{reason} #{inspect(msg)}"}
-
-        {:exit, {%module{} = exception, _stacktrace}} ->
+        {:exit, {%_module{} = exception, _stacktrace}} ->
           {:error, Exception.message(exception)}
+
+        {:exit, {reason, msg}} when is_list(msg) ->
+          error_msg = Exception.format_banner(:error, reason, msg)
+          error_line = Exception.format_stacktrace_entry(List.first(msg))
+          {:error, "#{error_msg}\n#{error_line}"}
+
+        {:exit, {reason, msg}} ->
+          error_msg = Exception.format_banner(:error, reason, msg)
+          {:error, "#{error_msg}\n#{inspect(msg)}"}
 
         {:exit, unknown} ->
           {:error, "unknown error: #{inspect(unknown)}"}

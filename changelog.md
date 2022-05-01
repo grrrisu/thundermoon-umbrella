@@ -1,5 +1,11 @@
 # Changelog
 
+## dev
+
+- Sim:
+
+  - refactored returned errors from domain_services
+
 ## 0.9.0
 
 - Sim:
