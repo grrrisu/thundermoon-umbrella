@@ -5,6 +5,10 @@
 - Sim:
 
   - refactored returned errors from domain_services
+  - data update function
+
+- General:
+  - various updates
 
 ## 0.9.0
 
