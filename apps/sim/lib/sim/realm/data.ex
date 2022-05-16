@@ -32,4 +32,10 @@ defmodule Sim.Realm.Data do
       %{state | data: data}
     end)
   end
+
+  def update(agent, update_func) when is_function(update_func) do
+    Agent.update(agent, fn state ->
+      %{state | data: state |> Map.get(:data) |> update_func.()}
+    end)
+  end
 end
