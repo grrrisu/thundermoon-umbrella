@@ -44,7 +44,7 @@ config :logger, Sentry.LoggerBackend,
 config :phoenix, :json_library, Jason
 
 config :esbuild,
-  version: "0.12.26",
+  version: "0.14.41",
   default: [
     args: ~w(js/app.js --bundle --target=es2017 --outdir=../priv/static/assets),
     cd: Path.expand("../apps/thundermoon_web/assets", __DIR__),
