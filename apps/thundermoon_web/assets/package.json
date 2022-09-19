@@ -16,7 +16,7 @@
     "topbar": "^1.0.1"
   },
   "devDependencies": {
-    "autoprefixer": "^10.4.7",
+    "autoprefixer": "^10.4.11",
     "cpx2": "^4.0.0",
     "postcss": "^8.4.14",
     "postcss-import": "^14.1.0",
