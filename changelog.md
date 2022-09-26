@@ -6,6 +6,7 @@
 
   - refactored returned errors from domain_services
   - data update function
+  - add explicit event format to be passed to event bus. `[{:event, :pawn_moved, position: [1,2]}]`
 
 - General:
   - various updates
