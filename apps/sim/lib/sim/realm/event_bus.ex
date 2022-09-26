@@ -28,6 +28,7 @@ defmodule Sim.Realm.EventBus do
     {:command, CommandBus.dispatch(command_bus, command)}
   end
 
+  defp process_event({:event, event}, _), do: event
   defp process_event(event, _), do: event
 
   defp command_sent({:command, :ok}), do: true
