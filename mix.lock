@@ -1,7 +1,7 @@
 %{
   "bunt": {:hex, :bunt, "0.2.1", "e2d4792f7bc0ced7583ab54922808919518d0e57ee162901a16a1b6664ef3b14", [:mix], [], "hexpm", "a330bfb4245239787b15005e66ae6845c9cd524a288f0d141c148b02603777a5"},
-  "canada": {:hex, :canada, "1.0.2", "040e4c47609b0a67d5773ac1fbe5e99f840cef173d69b739beda7c98453e0770", [:mix], [], "hexpm", "4269f74153fe89583fe50bd4d5de57bfe01f31258a6b676d296f3681f1483c68"},
-  "canary": {:hex, :canary, "1.1.1", "4138d5e05db8497c477e4af73902eb9ae06e49dceaa13c2dd9f0b55525ded48b", [:mix], [{:canada, "~> 1.0.1", [hex: :canada, repo: "hexpm", optional: false]}, {:ecto, ">= 1.1.0", [hex: :ecto, repo: "hexpm", optional: false]}, {:plug, "~> 1.0", [hex: :plug, repo: "hexpm", optional: false]}], "hexpm", "f348d9848693c830a65b707bba9e4dfdd6434e8c356a8d4477e4535afb0d653b"},
+  "canada": {:hex, :canada, "2.0.0", "ce5e058f576a0625959fc5427fcde15311fb28a5ebc13775eafd13468ad16553", [:mix], [], "hexpm", "49a648c48d8b0864380f38f02a7f316bd30fd45602205c48197432b5225d8596"},
+  "canary": {:git, "https://github.com/runhyve/canary.git", "b81d780e1cb7a1c276599f980ab9c9a7c9cd8c12", []},
   "castore": {:hex, :castore, "0.1.18", "deb5b9ab02400561b6f5708f3e7660fc35ca2d51bfc6a940d2f513f89c2975fc", [:mix], [], "hexpm", "61bbaf6452b782ef80b33cdb45701afbcf0a918a45ebe7e73f1130d661e66a06"},
   "certifi": {:hex, :certifi, "2.9.0", "6f2a475689dd47f19fb74334859d460a2dc4e3252a3324bd2111b8f0429e7e21", [:rebar3], [], "hexpm", "266da46bdb06d6c6d35fde799bcb28d36d985d424ad7c08b5bb48f5b5cdd4641"},
   "connection": {:hex, :connection, "1.1.0", "ff2a49c4b75b6fb3e674bfc5536451607270aac754ffd1bdfe175abe4a6d7a68", [:mix], [], "hexpm", "722c1eb0a418fbe91ba7bd59a47e28008a189d47e37e0e7bb85585a016b2869c"},
