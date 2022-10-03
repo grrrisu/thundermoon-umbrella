@@ -1,7 +1,7 @@
 defmodule ThundermoonWeb.LotkaVolterraLive.New do
   use ThundermoonWeb, :live_view
 
-  alias LotkaVolterra.{Vegetation, Herbivore, Predator}
+  alias LotkaVolterra.{Vegetation, Herbivore}
   alias ThundermoonWeb.LotkaVolterraLive.{VegetationForm, HerbivoreForm, PredatorForm}
 
   require Logger
