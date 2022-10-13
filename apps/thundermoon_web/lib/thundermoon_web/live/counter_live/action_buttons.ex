@@ -11,9 +11,7 @@ defmodule ThundermoonWeb.CounterLive.ActionButtons do
       <div>
         <Actions.box>
           <Actions.start_button started={@started} />
-          <%= if can?(@current_user, :reset, Thundermoon.Counter) do %>
-            <Actions.reset_button />
-          <% end %>
+          <Actions.reset_button :if={can?(@current_user, :reset, Thundermoon.Counter)}/>
         </Actions.box>
       </div>
     """
