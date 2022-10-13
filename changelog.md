@@ -10,6 +10,7 @@
 
 - General:
   - update Elixir to 1.14.1
+  - update Phoenix LiveView to 0.18
   - various updates
 
 ## 0.9.0
