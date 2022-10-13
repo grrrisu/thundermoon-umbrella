@@ -5,9 +5,9 @@
 <Actions.box>
   <%= start_button("start-#{@sim_id}", @started) %>
 
-  <%= live_redirect(to: Routes.lotka_volterra_new_path(@socket, :new), class: "btn btn-warning") do %>
+  <.link navigate={Routes.lotka_volterra_new_path(@socket, :new)} class="btn btn-warning">
     <i class="align-middle text-xl la la-reply-all"></i> recreate
-  <% end %>
+  </.link>
 
   <.live_component module={EditButton} button_label="Vegetation" id="button-vegetation">
     <.live_component module={VegetationForm} id="vegetation" sim_id={@sim_id} data={@vegetation} />
