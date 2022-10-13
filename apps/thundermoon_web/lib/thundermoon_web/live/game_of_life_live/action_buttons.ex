@@ -12,9 +12,7 @@ defmodule ThundermoonWeb.GameOfLifeLive.ActionButtons do
         <Actions.start_button started={@started} />
         <Actions.recreate_button />
         <Actions.clear_button />
-        <%= if can?(@current_user, :create, GameOfLife) do %>
-          <Actions.reset_button />
-        <% end %>
+        <Actions.reset_button :if={can?(@current_user, :create, GameOfLife)}/>
       </Actions.box>
     </div>
     """
