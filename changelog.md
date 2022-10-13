@@ -9,6 +9,7 @@
   - add explicit event format to be passed to event bus. `[{:event, :pawn_moved, position: [1,2]}]`
 
 - General:
+  - update Elixir to 1.14.1
   - various updates
 
 ## 0.9.0
