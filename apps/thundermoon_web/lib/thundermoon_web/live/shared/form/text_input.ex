@@ -33,9 +33,9 @@ defmodule ThundermoonWeb.Component.Form.TextInput do
   end
 
   def render(assigns) do
-    ~L"""
+    ~H"""
     <div class="mb-3">
-      <label for="<%= @field %>"><%= @label %></label>
+      <label for={@field}><%= @label %></label>
       <%= text_input @form, @field, class: @input_css %>
       <%= error_tag(@form, @field) %>
     </div>
