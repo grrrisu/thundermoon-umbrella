@@ -3,9 +3,11 @@ defmodule ThundermoonWeb.ChatLive.Message do
   use Phoenix.HTML
 
   def row(assigns) do
+    assigns = assign(assigns, color: message_color(assigns), aligne: align_message(assigns))
+
     ~H"""
-    <div class={"flex #{align_message(assigns)}"}>
-      <div class={"#{message_color(assigns)} rounded-md px-4 py-2 mb-2 w-9/12"}>
+    <div class={"flex #{@aligne}"}>
+      <div class={"#{@color} rounded-md px-4 py-2 mb-2 w-9/12"}>
         <div class="font-bold"><%= @message.user %></div>
         <div class="font-light"><%= @message.text %></div>
       </div>
