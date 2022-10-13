@@ -2,8 +2,6 @@
 
 [![Build Status](https://thundermoon.semaphoreci.com/badges/thundermoon-umbrella.svg?style=semaphore)](https://thundermoon.semaphoreci.com/badges/thundermoon-umbrella.svg?style=semaphore)
 
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/2ab69a409d24453fa5431a92f7d9050e)](https://www.codacy.com/app/grrrisu/thundermoon-umbrella?utm_source=github.com&utm_medium=referral&utm_content=grrrisu/thundermoon-umbrella&utm_campaign=Badge_Grade)
-
 # Thundermoon.Umbrella
 
 ![Sim.Realm Diagram](thunderbirdmoon.png)
