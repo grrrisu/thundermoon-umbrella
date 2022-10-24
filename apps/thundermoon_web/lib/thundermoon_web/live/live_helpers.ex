@@ -12,8 +12,4 @@ defmodule ThundermoonWeb.LiveHelpers do
       opts: opts
     )
   end
-
-  def start_button(id, started) do
-    live_component(ThundermoonWeb.Component.StartButton, id: id, started: started)
-  end
 end
