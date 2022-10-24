@@ -14,11 +14,18 @@ defmodule ThundermoonWeb.Component.Actions do
       assign(assigns,
         label: start_label(assigns.started),
         action: start_action(assigns.started),
-        icon: start_icon(assigns.started)
+        icon: start_icon(assigns.started),
+        disable: start_disable(assigns.started)
       )
 
     ~H"""
-    <a href="#" id="start-button" phx-click={@action} phx-value-action={@label} class="btn btn-primary">
+    <a
+      href="#"
+      id="start-button"
+      phx-click={@action}
+      phx-value-action={@label}
+      phx-disable-with={@disable}
+      class="btn btn-primary phx-click-loading:animate-pulse">
       <i class={"align-middle la text-xl #{@icon}"}></i><%= @label %>
     </a>
     """
@@ -32,6 +39,9 @@ defmodule ThundermoonWeb.Component.Actions do
 
   defp start_label(false), do: "start"
   defp start_label(true), do: "stop"
+
+  defp start_disable(false), do: "starting ..."
+  defp start_disable(true), do: "stopping ..."
 
   def recreate_button(assigns) do
     ~H"""
