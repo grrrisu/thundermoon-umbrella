@@ -3,7 +3,7 @@ defmodule ThundermoonWeb.LotkaVolterraLive.Index do
 
   alias Phoenix.PubSub
 
-  alias ThundermoonWeb.Component.Actions
+  import ThundermoonWeb.Component.Actions
 
   alias ThundermoonWeb.LotkaVolterraLive.{
     Chart,
@@ -29,13 +29,13 @@ defmodule ThundermoonWeb.LotkaVolterraLive.Index do
   end
 
   @impl true
-  def handle_info(:start, socket) do
+  def handle_event("start", _, socket) do
     LotkaVolterra.start(socket.assigns.sim_id)
     {:noreply, put_flash(socket, :info, "simulation started")}
   end
 
   @impl true
-  def handle_info(:stop, socket) do
+  def handle_event("stop", _, socket) do
     LotkaVolterra.stop(socket.assigns.sim_id)
     {:noreply, put_flash(socket, :info, "simulation stopped")}
   end
