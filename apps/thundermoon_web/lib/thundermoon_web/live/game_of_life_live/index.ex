@@ -8,7 +8,8 @@ defmodule ThundermoonWeb.GameOfLifeLive.Index do
 
   alias Thundermoon.Accounts
 
-  alias ThundermoonWeb.GameOfLifeLive.{FormComponent, Grid, ActionButtons}
+  import ThundermoonWeb.GameOfLifeLive.{Grid, ActionButtons}
+  alias ThundermoonWeb.GameOfLifeLive.FormComponent
 
   @impl true
   def mount(_params, session, socket) do
@@ -39,8 +40,8 @@ defmodule ThundermoonWeb.GameOfLifeLive.Index do
   def render(%{grid: grid} = assigns) when not is_nil(grid) do
     ~H"""
     <h1>Game of Life</h1>
-    <Grid.matrix grid={@grid} />
-    <ActionButtons.box current_user={@current_user} started={@started} />
+    <.matrix grid={@grid} />
+    <.action_buttons current_user={@current_user} started={@started} />
     """
   end
 
