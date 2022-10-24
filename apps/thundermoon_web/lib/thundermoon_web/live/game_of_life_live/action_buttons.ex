@@ -3,17 +3,17 @@ defmodule ThundermoonWeb.GameOfLifeLive.ActionButtons do
 
   import Canada.Can
 
-  alias ThundermoonWeb.Component.Actions
+  import ThundermoonWeb.Component.Actions
 
-  def box(assigns) do
+  def action_buttons(assigns) do
     ~H"""
     <div>
-      <Actions.box>
-        <Actions.start_button started={@started} />
-        <Actions.recreate_button />
-        <Actions.clear_button />
-        <Actions.reset_button :if={can?(@current_user, :create, GameOfLife)}/>
-      </Actions.box>
+      <.box>
+        <.start_button started={@started} />
+        <.recreate_button />
+        <.clear_button />
+        <.reset_button :if={can?(@current_user, :create, GameOfLife)}/>
+      </.box>
     </div>
     """
   end
