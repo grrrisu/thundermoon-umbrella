@@ -4,15 +4,15 @@ defmodule ThundermoonWeb.CounterLive.ActionButtons do
 
   import Canada.Can
 
-  alias ThundermoonWeb.Component.Actions
+  import ThundermoonWeb.Component.Actions
 
-  def box(assigns) do
+  def action_buttons(assigns) do
     ~H"""
       <div>
-        <Actions.box>
-          <Actions.start_button started={@started} />
-          <Actions.reset_button :if={can?(@current_user, :reset, Thundermoon.Counter)}/>
-        </Actions.box>
+        <.box>
+          <.start_button started={@started} />
+          <.reset_button :if={can?(@current_user, :reset, Thundermoon.Counter)}/>
+        </.box>
       </div>
     """
   end
