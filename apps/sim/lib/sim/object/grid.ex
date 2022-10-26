@@ -1,5 +1,6 @@
 defmodule Sim.Grid do
   alias Sim.Grid
+  @behaviour Access
 
   def create(width, height, default \\ nil)
 
@@ -44,6 +45,30 @@ defmodule Sim.Grid do
 
   def get(_grid, x, y) do
     {:error, "only integers are allowed as coordinates, x: #{x}, y: #{y}"}
+  end
+
+  @impl Access
+  def fetch(grid, {x, y}) do
+    case get(grid, x, y) do
+      {:error, msg} -> :error
+      value -> {:ok, value}
+    end
+  end
+
+  @impl Access
+  def get_and_update(grid, {x, y}, func) do
+    with {:ok, value} <- fetch(grid, {x, y}),
+         {current_value, new_value} <- func.(value) do
+      {current_value, put(grid, x, y, new_value)}
+    else
+      :pop -> pop(grid, {x, y})
+      :error -> {nil, grid}
+    end
+  end
+
+  @impl Access
+  def pop(grid, {x, y}) do
+    raise "pop is not implemented"
   end
 
   def put(%{0 => columns} = grid, x, y, value)
