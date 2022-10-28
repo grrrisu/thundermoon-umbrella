@@ -17,10 +17,16 @@ defmodule Sim.Realm.Data do
     Agent.update(agent, fn state -> %{state | data: nil} end)
   end
 
+  # use a function that does not raise an exception, but returns {:ok, result} {:error, reason} tuples
+  def get_data(agent, get_func) when is_function(get_func) do
+    Agent.get(agent, &get_func.(&1.data))
+  end
+
   def get_data(agent) do
     Agent.get(agent, & &1.data)
   end
 
+  # use a function that does not raise an exception, but returns {:ok, result} {:error, reason} tuples
   def set_data(agent, set_func) when is_function(set_func) do
     Agent.update(agent, fn state ->
       %{state | data: set_func.()}
@@ -33,9 +39,10 @@ defmodule Sim.Realm.Data do
     end)
   end
 
+  # use a function that does not raise an exception, but returns {:ok, result} {:error, reason} tuples
   def update(agent, update_func) when is_function(update_func) do
     Agent.update(agent, fn state ->
-      %{state | data: state |> Map.get(:data) |> update_func.()}
+      %{state | data: state.data |> update_func.()}
     end)
   end
 end
