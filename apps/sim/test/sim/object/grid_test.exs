@@ -69,7 +69,7 @@ defmodule Sim.GridTest do
       [1, 0, 1]
     ]
 
-    assert ^expected = Grid.map(grid, fn x, y, v -> [x, y, v] end)
+    assert expected == Grid.map(grid, fn x, y, v -> [x, y, v] end)
   end
 
   test "merge field" do
@@ -78,5 +78,22 @@ defmodule Sim.GridTest do
     grid = Grid.merge_field(grid, 0, 1, %{other_value: 5})
     assert %{some_value: 0} = Grid.get(grid, 0, 0)
     assert %{other_value: 5, some_value: 3} = Grid.get(grid, 0, 1)
+  end
+
+  describe "Access behaviour" do
+    setup do
+      [grid: Grid.create(2, 3, 0)]
+    end
+
+    test "get data[key]", %{grid: grid} do
+      assert 5 == grid[{1, 1}]
+      assert 5 == get_in(%{map: grid}, [:map, {1, 1}])
+    end
+
+    test "fetch field", %{grid: grid} do
+      assert {:ok, 0} == Grid.fetch(grid, {1, 1})
+      assert :error == Grid.fetch(grid, {5, 1})
+      assert :error == Grid.fetch(nil, {5, 1})
+    end
   end
 end
