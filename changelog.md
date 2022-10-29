@@ -7,6 +7,7 @@
   - refactored returned errors from domain_services
   - data update function
   - add explicit event format to be passed to event bus. `[{:event, :pawn_moved, position: [1,2]}]`
+  - data_helpers provide new functions `change_data(change_func, update_func)` and `change_data(get_func, change_func, update_func)`
 
 - General:
   - update Elixir to 1.14.1

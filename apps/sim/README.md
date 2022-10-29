@@ -11,9 +11,9 @@
 - **Commands** are executed in **Domain Services**. They do the actual domain logic on the aggregate/data. In the end, they return an array of events, representing the made changes.
   While the events are then used for side effects like changing the data in a database in the next steps, the changes done during calculation are applied to data in memory (**Sim.Data**) immediately. Like that the next execution of the same group will have the latest changes and will not for example simulate the same state twice or move to the same field twice, just because the data may not have been updated in time.
 
-- The **EventBus** receives a list of _events_  and/or _commands_ that happened in the services. It will send command to the _CommandBus_, while events will be broadcasted via each EventReducer.
+- The **EventBus** receives a list of _events_ and/or _commands_ that happened in the services. It will send command to the _CommandBus_, while events will be broadcasted via each EventReducer.
 
-- The **EventReducers** save the event to database, a message broker or publish them via PubSub component.
+- The **EventReducers** save the event to the database, a message broker or publish it via a PubSub component.
 
 - **Sim.Realm.Data**: holds the data. This part is the most robust one, the data will still be available even if the other parts like the command bus or the simulation loop would crash.
 
@@ -28,4 +28,47 @@ example configuration:
   ],
   reducers: [GameOfLife.PubSubReducer]
 }
+```
+
+## Domain Service
+
+```elixir
+defmodule MyService
+  use Sim.Commands.DataHelpers, app_module: MyApp
+
+  def execute(:move, id: id, to: {x, y}) do
+    # executed by Data
+    root = get_data()
+    # executed by MyService
+    map = get_map(root)
+    change = move(map, id, x, y)
+    # executed by Data
+    update_data(fn data, change -> update_map(data, change) end)
+    [:moved, id: id, x: x, y: y]
+  end
+```
+
+or
+
+```elixir
+defmodule MyService
+  use Sim.Commands.DataHelpers, app_module: MyApp
+
+  def execute(:move, id: id, to: {x, y}) do
+    change_data(&move_change(&1, id, x, y), &update_map(&1, &2))
+    [:moved, id: id, to: {x, y}]
+  end
+
+  # executed by MyService
+  defp move_change(root, id, x, y)
+    map = get_map(root)
+    change = move(map, id, x, y)
+  end
+
+  # executed by Data
+  defp update_map(root, change) do
+    apply_map_change(root, change)
+  end
+
+end
 ```
