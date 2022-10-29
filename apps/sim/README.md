@@ -17,17 +17,31 @@
 
 - **Sim.Realm.Data**: holds the data. This part is the most robust one, the data will still be available even if the other parts like the command bus or the simulation loop would crash.
 
+## Application
+
 example configuration:
 
 ```elixir
 {Sim.Realm.Supervisor,
-  name: GameOfLife,
+  name: MyApp,
   domain_services: [
-    {GameOfLife.UserService, partition: :user, max_demand: 5},
-    {GameOfLife.SimService, partition: :sim, max_demand: 1}
+    {MyService, partition: :my_service, max_demand: 5},
+    {OtherService, partition: :other_service, max_demand: 1}
   ],
-  reducers: [GameOfLife.PubSubReducer]
+  reducers: [MyApp.PubSubReducer]
 }
+```
+
+## Context
+
+```elixir
+defmodule MyApp do
+  use Sim.Realm, app_module: __MODULE__
+
+  def move(id, to: position) do
+    send_command(:my_service, :move, id: id, to: position)
+  end
+end
 ```
 
 ## Domain Service
@@ -39,12 +53,20 @@ defmodule MyService
   def execute(:move, id: id, to: {x, y}) do
     # executed by Data
     root = get_data()
-    # executed by MyService
-    map = get_map(root)
-    change = move(map, id, x, y)
-    # executed by Data
+
+    move_change(root, id, x, y)
     update_data(fn data, change -> update_map(data, change) end)
     [:moved, id: id, x: x, y: y]
+  end
+
+  # executed by MyService
+  defp move_change(root, id, x, y)
+    get_map(root) |> move(id, x, y)
+  end
+
+  # executed by Data
+  defp update_map(root, change) do
+    {:ok, apply_map_change(root, change)}
   end
 ```
 
@@ -53,22 +75,27 @@ or
 ```elixir
 defmodule MyService
   use Sim.Commands.DataHelpers, app_module: MyApp
+  @behaviour Sim.CommandHandler
 
   def execute(:move, id: id, to: {x, y}) do
-    change_data(&move_change(&1, id, x, y), &update_map(&1, &2))
-    [:moved, id: id, to: {x, y}]
+    res = change_data(&move_change(&1, id, x, y), &update_map(&1, &2))
+    case res do
+      :ok -> [:moved, id: id, to: {x, y}]
+      {:ok, events} -> events
+      {:error, reason} -> [:move_failed, :id, id, reason: reason]
+    end
   end
+end
+```
 
-  # executed by MyService
-  defp move_change(root, id, x, y)
-    map = get_map(root)
-    change = move(map, id, x, y)
+## EventReducer
+
+```elixir
+defmodule MyApp.PubSubReducer do
+  def reduce(events) do
+    Enum.map(events, fn event ->
+      Phoenix.PubSub.broadcast(MyApp.PubSub, "MyApp", event)
+    end)
   end
-
-  # executed by Data
-  defp update_map(root, change) do
-    apply_map_change(root, change)
-  end
-
 end
 ```

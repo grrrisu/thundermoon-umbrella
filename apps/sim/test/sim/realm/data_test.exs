@@ -39,8 +39,26 @@ defmodule Sim.Realm.DataTest do
   describe "update" do
     test "with a function", %{agent: agent} do
       assert :ok = Data.set_data(agent, 5)
-      assert :ok = Data.update(agent, &(&1 + 4))
+      assert :ok = Data.update(agent, &{:ok, &1 + 4})
       assert 9 == Data.get_data(agent)
+    end
+
+    test "with a function returning events", %{agent: agent} do
+      assert :ok = Data.set_data(agent, 5)
+      assert {:ok, [changed: 9]} == Data.update(agent, &{:ok, &1 + 4, [changed: &1 + 4]})
+      assert 9 == Data.get_data(agent)
+    end
+
+    test "failed function", %{agent: agent} do
+      assert :ok = Data.set_data(agent, 5)
+      assert {:error, "failed"} = Data.update(agent, fn _ -> {:error, "failed"} end)
+      assert 5 == Data.get_data(agent)
+    end
+
+    test "failed fallback", %{agent: agent} do
+      assert :ok = Data.set_data(agent, 5)
+      assert {:error, _} = Data.update(agent, fn _ -> :unknown end)
+      assert 5 == Data.get_data(agent)
     end
   end
 end

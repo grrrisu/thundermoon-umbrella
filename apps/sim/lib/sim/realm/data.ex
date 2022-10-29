@@ -41,8 +41,13 @@ defmodule Sim.Realm.Data do
 
   # use a function that does not raise an exception, but returns {:ok, result} {:error, reason} tuples
   def update(agent, update_func) when is_function(update_func) do
-    Agent.update(agent, fn state ->
-      %{state | data: state.data |> update_func.()}
+    Agent.get_and_update(agent, fn state ->
+      case update_func.(state.data) do
+        {:ok, new_data} -> {:ok, %{state | data: new_data}}
+        {:ok, new_data, events} -> {{:ok, events}, %{state | data: new_data}}
+        {:error, reason} -> {{:error, reason}, state}
+        any -> {{:error, "unexpected return value #{inspect(any)}"}, state}
+      end
     end)
   end
 end
