@@ -31,9 +31,16 @@ defmodule Sim.Realm.DataTest do
 
   describe "set" do
     test "with a function", %{agent: agent} do
-      assert :ok = Data.set_data(agent, 5)
-      assert :ok = Data.set_data(agent, &(&1 + 2))
+      assert :ok = Data.set_data(agent, fn -> 5 + 2 end)
       assert 7 == Data.get_data(agent)
+    end
+  end
+
+  describe "update" do
+    test "with a function", %{agent: agent} do
+      assert :ok = Data.set_data(agent, 5)
+      assert :ok = Data.update(agent, &(&1 + 4))
+      assert 9 == Data.get_data(agent)
     end
   end
 end
