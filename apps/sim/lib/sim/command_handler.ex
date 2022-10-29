@@ -23,5 +23,7 @@ defmodule Sim.CommandHandler do
   this will be executed within a task
   returns a list of events and/or commands
   """
-  @callback execute(command, keyword) :: [event | {:command, {command, keyword}}]
+  @callback execute(command, keyword) :: [
+              event | {:command, {command, keyword} | {:event, any}}
+            ]
 end
