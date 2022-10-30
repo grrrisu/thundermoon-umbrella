@@ -48,8 +48,11 @@ defmodule Sim.Commands.DataHelpers do
       # update_func is executed by the Data agent again
       def change_data(change_func, update_func)
           when is_function(change_func) and is_function(update_func) do
-        changes = get_data() |> change_func.()
-        update_data(fn data -> update_func.(data, changes) end)
+        with {:ok, changes} <- get_data() |> change_func.() do
+          update_data(fn data -> update_func.(data, changes) end)
+        else
+          error -> error
+        end
       end
 
       # get_func is executed by the Data agent
@@ -57,8 +60,11 @@ defmodule Sim.Commands.DataHelpers do
       # update_func is executed by the Data agent again
       def change_data(get_func, change_func, update_func)
           when is_function(get_func) and is_function(change_func) and is_function(update_func) do
-        changes = get_data(get_func) |> change_func.()
-        update_data(fn data -> update_func.(data, changes) end)
+        with {:ok, changes} <- get_data(get_func) |> change_func.() do
+          update_data(fn data -> update_func.(data, changes) end)
+        else
+          error -> error
+        end
       end
     end
   end
