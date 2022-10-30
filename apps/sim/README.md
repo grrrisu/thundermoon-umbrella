@@ -2,6 +2,8 @@
 
 ![Sim.Realm Diagram](documentation/SimRealm.png)
 
+## Components Overview
+
 - The **Custom.Realm** module acts as an entry point. It provides an API to convert incoming requests to commands. A command has the form of `{:context, :name, args}`. For example a function call `toggle(2, 3)` could be mapped to a command `{:user, :toggle, x: 2, y: 3}`
 
 - **Sim.Realm.SimulationLoop**: Has a recurring tick when the simulation is running, that will trigger a _sim command_.
@@ -146,7 +148,7 @@ end
 
 `Data.update(func)` and the `update_data(func)` helpers provide also options to work with feedback.
 Let's suppose that you can not move to a position on a map, if it has already been occupied in the meantime. In this case you may want to return an error.
-The update function expects a tuple of `{:ok, new_data}`, `{:ok, new_data, events}` or `{:error, reson}`.
+The update function expects a tuple of `{:ok, new_data}`, `{:ok, new_data, events}` or `{:error, reason}`.
 Note that the update function receives the recent data at the time the update is executed, not the data received with `get_data` in the service.
 
 ```elixir
@@ -180,9 +182,9 @@ defmodule MyService do
 end
 ```
 
-The helper function `change_data(change_func, update_func)` let's you even write it even more compact.
+The helper function `change_data(change_func, update_func)` let's you write it even more compact.
 It expects the change function to return a tuple `{:ok, change}`.
-The change is then passed to update_function, everything else is passed directly back.
+The change is then passed to the update_function, everything else is returned directly back.
 
 ```elixir
 def execute(:move, id: id, to: {x, y}) do
@@ -195,6 +197,6 @@ end
 ```
 
 Please keep in mind that services are designed to do the heavy and risky work.
-Each service spwans a processs and if it fails or crashes, does not effect any other processes.
+Each service spwans a processs and if it fails or crashes, it does not effect any other processes.
 While Data is meant to be robust and should therefore only consist of simple getters and setters.
 In other words `check_move` in our example should do the haevy calculation, while `apply_move` should be as simple as possible.
