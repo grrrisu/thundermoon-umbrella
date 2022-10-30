@@ -12,7 +12,7 @@ defmodule Test.Commands.DataHelpers do
     test "with change and update function" do
       assert :ok =
                change_data(
-                 fn _data -> {[:world, :city, :factory, :wood], 3} end,
+                 fn _data -> {:ok, {[:world, :city, :factory, :wood], 3}} end,
                  fn data, {path, amount} -> {:ok, update_in(data, path, &(&1 + amount))} end
                )
 
@@ -22,7 +22,7 @@ defmodule Test.Commands.DataHelpers do
     test "with change and update function returning events" do
       assert {:ok, [:wood_changed]} ==
                change_data(
-                 fn _data -> {[:world, :city, :factory, :wood], 3} end,
+                 fn _data -> {:ok, {[:world, :city, :factory, :wood], 3}} end,
                  fn data, {path, amount} ->
                    {:ok, update_in(data, path, &(&1 + amount)), [:wood_changed]}
                  end
@@ -31,11 +31,21 @@ defmodule Test.Commands.DataHelpers do
       assert 8 == get_data(fn data -> get_in(data, [:world, :city, :factory, :wood]) end)
     end
 
-    test "with change and failing update function" do
-      assert {:error, "failed"} ==
+    test "with failing change function" do
+      assert {:error, "change not allowed"} ==
                change_data(
-                 fn _data -> {[:world, :city, :factory, :wood], 3} end,
-                 fn data, {path, amount} -> {:error, "failed"} end
+                 fn _data -> {:error, "change not allowed"} end,
+                 fn _data, {_path, _amount} -> :never_reached end
+               )
+
+      assert 5 == get_data(fn data -> get_in(data, [:world, :city, :factory, :wood]) end)
+    end
+
+    test "with change and failing update function" do
+      assert {:error, "update failed"} ==
+               change_data(
+                 fn _data -> {:ok, {[:world, :city, :factory, :wood], 3}} end,
+                 fn _data, {_path, _amount} -> {:error, "update failed"} end
                )
 
       assert 5 == get_data(fn data -> get_in(data, [:world, :city, :factory, :wood]) end)
@@ -45,7 +55,7 @@ defmodule Test.Commands.DataHelpers do
       assert :ok =
                change_data(
                  fn data -> get_in(data, [:world, :city, :factory, :wood]) end,
-                 fn wood -> {[:world, :city, :factory, :wood], wood * 0.5} end,
+                 fn wood -> {:ok, {[:world, :city, :factory, :wood], wood * 0.5}} end,
                  fn data, {path, amount} -> {:ok, update_in(data, path, &(&1 + amount))} end
                )
 
