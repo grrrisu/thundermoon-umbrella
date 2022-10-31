@@ -46,7 +46,7 @@ defmodule ThundermoonWeb do
   def live_view do
     quote do
       use Phoenix.LiveView,
-        layout: {ThundermoonWeb.LayoutView, "live.html"}
+        layout: {ThundermoonWeb.LayoutView, :live}
 
       unquote(view_helpers())
     end
