@@ -10,6 +10,7 @@ defmodule ThundermoonWeb.CounterLive.Index do
   alias Thundermoon.Counter
   alias Thundermoon.Accounts
 
+  @impl true
   def mount(_params, session, socket) do
     user = Accounts.get_user(session["current_user_id"])
     if connected?(socket), do: PubSub.subscribe(ThundermoonWeb.PubSub, "counter")
