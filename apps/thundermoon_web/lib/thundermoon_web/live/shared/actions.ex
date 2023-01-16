@@ -25,7 +25,8 @@ defmodule ThundermoonWeb.Component.Actions do
       phx-click={@action}
       phx-value-action={@label}
       phx-disable-with={@disable}
-      class="btn btn-primary phx-click-loading:animate-pulse">
+      class="btn btn-primary phx-click-loading:animate-pulse"
+    >
       <i class={"align-middle la text-xl #{@icon}"}></i><%= @label %>
     </a>
     """

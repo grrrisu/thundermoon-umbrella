@@ -1,9 +1,21 @@
 <div>
   <h3>Create a new Grid</h3>
-  <.form let={f} for={@changeset} class="w-2/4" phx-target={@myself} phx-change={:validate} phx-submit={:create}>
+  <.form
+    :let={f}
+    for={@changeset}
+    class="w-2/4"
+    phx-target={@myself}
+    phx-change={:validate}
+    phx-submit={:create}
+  >
     <div class="flex">
-      <%= text_input f, :size, type: :number, placeholder: "size of grid, eg. 10", size: 5, class: "input text-input" %>
-      <%= submit "Create", class: "btn btn-primary ml-3" %>
+      <%= text_input(f, :size,
+        type: :number,
+        placeholder: "size of grid, eg. 10",
+        size: 5,
+        class: "input text-input"
+      ) %>
+      <%= submit("Create", class: "btn btn-primary ml-3") %>
     </div>
     <%= error_tag(f, :size) %>
   </.form>

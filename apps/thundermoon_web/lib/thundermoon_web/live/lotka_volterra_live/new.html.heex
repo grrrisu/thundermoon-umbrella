@@ -1,9 +1,12 @@
 <h1>Lotka Volterra</h1>
 
-<%=
-case @entity do
-  :vegetation -> live_component VegetationForm, id: "vegetation"
-  :herbivore -> live_component HerbivoreForm, id: "herbivore", vegetation: @vegetation
-  :predator -> live_component PredatorForm, id: "predator", vegetation: @vegetation, herbivore: @herbivore
-end
-%>
+<%= case @entity do
+  :vegetation ->
+    live_component(VegetationForm, id: "vegetation")
+
+  :herbivore ->
+    live_component(HerbivoreForm, id: "herbivore", vegetation: @vegetation)
+
+  :predator ->
+    live_component(PredatorForm, id: "predator", vegetation: @vegetation, herbivore: @herbivore)
+end %>

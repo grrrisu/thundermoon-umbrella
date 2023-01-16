@@ -11,10 +11,11 @@ defmodule ThundermoonWeb.GameOfLifeLive.Grid do
       id="grid"
       class="grid auto-rows-fr mb-6 bg-gray-300 border-l border-b border-gray-900"
       style={"grid-template-columns: repeat(#{@width},1fr); grid-template-rows: repeat(#{@height},1fr); width: 85vmin; height: 85vmin"}
-      phx-hook="GameOfLife">
+      phx-hook="GameOfLife"
+    >
       <%= for x <- 0..(@width - 1) do %>
         <%= for y <- 0..(@height - 1) do %>
-          <.cell x={x} y={y} cell_class={cell_class(@grid, x, y)}/>
+          <.cell x={x} y={y} cell_class={cell_class(@grid, x, y)} />
         <% end %>
       <% end %>
     </div>
@@ -28,7 +29,8 @@ defmodule ThundermoonWeb.GameOfLifeLive.Grid do
       class={"bg-gray-200 border-t border-r border-gray-900 cell #{@cell_class}"}
       phx-click="toggle-cell"
       phx-value-x={@x}
-      phx-value-y={@y}>
+      phx-value-y={@y}
+    >
     </div>
     """
   end

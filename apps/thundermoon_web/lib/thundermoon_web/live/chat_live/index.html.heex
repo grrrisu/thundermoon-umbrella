@@ -7,7 +7,11 @@
 <section class="w-1/2 mb-12">
   <h3>Messages</h3>
   <div id="messages" class="mb-6">
-    <Message.row :for={ message <- Enum.reverse(@messages) } message={message} current_user={@current_user} />
+    <Message.row
+      :for={message <- Enum.reverse(@messages)}
+      message={message}
+      current_user={@current_user}
+    />
   </div>
   <Message.input_form version={@version} />
 </section>
@@ -15,6 +19,6 @@
 <section class="w-1/2 mb-12">
   <h3>Users online</h3>
   <div class="users">
-    <div class="user" :for={ user <- @users }><%= user.username %></div>
+    <div :for={user <- @users} class="user"><%= user.username %></div>
   </div>
 </section>

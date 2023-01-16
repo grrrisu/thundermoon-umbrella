@@ -4,7 +4,7 @@
 
 <.box>
   <.start_button started={@started} />
-  
+
   <.link navigate={Routes.lotka_volterra_new_path(@socket, :new)} class="btn btn-warning">
     <i class="align-middle text-xl la la-reply-all"></i> recreate
   </.link>
@@ -20,5 +20,4 @@
   <.live_component module={EditButton} button_label="Predator" id="button-predator">
     <.live_component module={PredatorForm} id="predator" sim_id={@sim_id} data={@predator} />
   </.live_component>
- 
 </.box>
