@@ -7,10 +7,20 @@ defmodule ThundermoonWeb.Component.FlashAlert do
 
   def render(assigns) do
     ~H"""
-    <p :if={alert(@alert, :info)} class="rounded bg-blue-400 text-blue-900 py-3 px-4" phx-click="lv:clear-flash" phx-value-key="info">
+    <p
+      :if={alert(@alert, :info)}
+      class="rounded bg-blue-400 text-blue-900 py-3 px-4"
+      phx-click="lv:clear-flash"
+      phx-value-key="info"
+    >
       <%= alert(@alert, :info) %>
     </p>
-    <p :if={alert(@alert, :error)} class="rounded bg-red-300 text-red-900 py-3 px-4" phx-click="lv:clear-flash" phx-value-key="error">
+    <p
+      :if={alert(@alert, :error)}
+      class="rounded bg-red-300 text-red-900 py-3 px-4"
+      phx-click="lv:clear-flash"
+      phx-value-key="error"
+    >
       <%= alert(@alert, :error) %>
     </p>
     """
