@@ -15,7 +15,7 @@ defmodule ThundermoonWeb.LotkaVolterraLive.New do
   def handle_params(%{"model" => "predator"}, _url, socket) do
     case Map.has_key?(socket.assigns, :herbivore) do
       false ->
-        {:noreply, push_patch(socket, to: Routes.lotka_volterra_new_path(socket, :new))}
+        {:noreply, push_patch(socket, to: ~p"/lotka-volterra/new")}
 
       true ->
         Logger.info("add predator")
@@ -27,7 +27,7 @@ defmodule ThundermoonWeb.LotkaVolterraLive.New do
   def handle_params(%{"model" => "herbivore"}, _url, socket) do
     case Map.has_key?(socket.assigns, :vegetation) do
       false ->
-        {:noreply, push_patch(socket, to: Routes.lotka_volterra_new_path(socket, :new))}
+        {:noreply, push_patch(socket, to: ~p"/lotka-volterra/new")}
 
       true ->
         Logger.info("add herbivore")
@@ -45,7 +45,7 @@ defmodule ThundermoonWeb.LotkaVolterraLive.New do
     {:noreply,
      socket
      |> put_flash(:info, "successfully created")
-     |> push_redirect(to: Routes.lotka_volterra_index_path(socket, :index, sim_id: sim_id))}
+     |> push_redirect(to: ~p"/lotka-volterra?sim_id=#{sim_id}")}
   end
 
   @impl true
@@ -53,7 +53,7 @@ defmodule ThundermoonWeb.LotkaVolterraLive.New do
     {:noreply,
      socket
      |> assign(vegetation: vegetation)
-     |> push_patch(to: Routes.lotka_volterra_new_path(socket, :new, model: "herbivore"))}
+     |> push_patch(to: ~p"/lotka-volterra/new?model=herbivore")}
   end
 
   @impl true
@@ -61,6 +61,6 @@ defmodule ThundermoonWeb.LotkaVolterraLive.New do
     {:noreply,
      socket
      |> assign(herbivore: herbivore)
-     |> push_patch(to: Routes.lotka_volterra_new_path(socket, :new, model: "predator"))}
+     |> push_patch(to: ~p"/lotka-volterra/new?model=predator")}
   end
 end

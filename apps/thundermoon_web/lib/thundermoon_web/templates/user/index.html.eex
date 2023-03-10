@@ -24,13 +24,13 @@
             </td>
             <td class="px-6 py-4 whitespace-nowrap">
               <%= if can? @current_user, :edit, user do %>
-                <%= link to: Routes.user_path(@conn, :edit, user), class: "text-blue-300 hover:underline" do %>
+                <%= link to: ~p"/users/#{user}/edit", class: "text-blue-300 hover:underline" do %>
                   <i class="la la-pencil"></i> edit
                 <% end %>
               <% end %>
               <%= if can? @current_user, :delete, user do %>
                 &nbsp;|&nbsp;
-                <%= link to: Routes.user_path(@conn, :delete, user), class: "text-blue-300 hover:underline", method: :delete, data: [confirm: "Do you really want to delete user #{user.username}"] do %>
+                <%= link to: ~p"/users/#{user}", class: "text-blue-300 hover:underline", method: :delete, data: [confirm: "Do you really want to delete user #{user.username}"] do %>
                   <i class="la la-trash"></i> delete
                 <% end %>
               <% end %>

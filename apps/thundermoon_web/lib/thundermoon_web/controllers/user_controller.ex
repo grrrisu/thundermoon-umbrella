@@ -20,7 +20,7 @@ defmodule ThundermoonWeb.UserController do
       {:ok, _user} ->
         conn
         |> put_flash(:info, "User has been updated")
-        |> redirect(to: Routes.user_path(conn, :index))
+        |> redirect(to: ~p"/users")
 
       {:error, changeset} ->
         conn
@@ -39,6 +39,6 @@ defmodule ThundermoonWeb.UserController do
           put_flash(conn, :error, "Deleting user has failed!")
       end
 
-    redirect(conn, to: Routes.user_path(conn, :index))
+    redirect(conn, to: ~p"/users")
   end
 end

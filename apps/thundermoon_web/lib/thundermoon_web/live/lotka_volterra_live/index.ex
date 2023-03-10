@@ -25,7 +25,7 @@ defmodule ThundermoonWeb.LotkaVolterraLive.Index do
   def mount(%{}, _session, socket) do
     {:ok,
      socket
-     |> push_redirect(to: Routes.lotka_volterra_new_path(socket, :new))}
+     |> push_redirect(to: ~p"/lotka-volterra/new")}
   end
 
   @impl true
@@ -63,7 +63,7 @@ defmodule ThundermoonWeb.LotkaVolterraLive.Index do
       {:error, :not_found} ->
         socket
         |> put_flash(:error, "simulation not found, create a new one")
-        |> push_redirect(to: Routes.lotka_volterra_new_path(socket, :new))
+        |> push_redirect(to: ~p"/lotka-volterra/new")
 
       {vegation, herbivore, predator} = field ->
         if connected?(socket), do: subscribe_to_sim(sim_id)

@@ -1,22 +1,22 @@
 <header class="bg-gray-800 py-3 px-8 mb-8 flex justify-between content-center shadow-lg">
   <%= link to: "/", class: "logo" do %>
-    <%= img_tag Routes.static_path(@conn, "/images/thunderbirdmoon.gif"), class: "w-20 rounded-full shadow", alt: "Thundermoon"%>
+    <%= img_tag ~p"/images/thunderbirdmoon.gif", class: "w-20 rounded-full shadow", alt: "Thundermoon"%>
   <% end %>
     <nav role="navigation" class="self-center">
       <ul class="flex space-x-4">
         <%= if signed_in?(@conn) do %>
-          <li><%= link "Dashboard", to: "/dashboard" %></li>
-          <li><%= link "Users", to: Routes.user_path(@conn, :index) %></li>
+          <li><%= link "Dashboard", to: ~p"/dashboard" %></li>
+          <li><%= link "Users", to: ~p"/users" %></li>
         <% end %>
         <%= if signed_in?(@conn) do %>
           <li>
-            <%= link to: Routes.auth_path(@conn, :delete), method: :delete  do %>
+            <%= link to: ~p"/auth", method: :delete  do %>
               Logout <i class="la la-sign-out"></i>
             <% end %>
           </li>
         <% else %>
           <li>
-            <%= link to: Routes.auth_path(@conn, :request) do %>
+            <%= link to: ~p"/auth/github" do %>
               <span>Login</span>
               <i class="la la-lg la-github align-middle"></i>
             <% end %>
