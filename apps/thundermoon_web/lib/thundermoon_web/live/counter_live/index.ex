@@ -70,6 +70,6 @@ defmodule ThundermoonWeb.CounterLive.Index do
   defp not_authorized(socket) do
     socket
     |> put_flash(:error, "You are not authorized for this action")
-    |> redirect(to: Routes.page_path(socket, :index))
+    |> redirect(to: ~p"/")
   end
 end

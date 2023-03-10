@@ -17,15 +17,16 @@ defmodule ThundermoonWeb do
   and import those modules here.
   """
 
+  def static_paths, do: ~w(assets fonts images favicon.ico robots.txt)
+
   def controller do
     quote do
       use Phoenix.Controller, namespace: ThundermoonWeb
       import Plug.Conn
       import ThundermoonWeb.Gettext
-      import Phoenix.LiveView.Controller
       import Canary.Plugs
       import Canada.Can
-      alias ThundermoonWeb.Router.Helpers, as: Routes
+      unquote(verified_routes())
     end
   end
 
@@ -91,7 +92,16 @@ defmodule ThundermoonWeb do
       import ThundermoonWeb.ErrorHelpers
       import ThundermoonWeb.Gettext
       import Canada.Can
-      alias ThundermoonWeb.Router.Helpers, as: Routes
+      unquote(verified_routes())
+    end
+  end
+
+  def verified_routes do
+    quote do
+      use Phoenix.VerifiedRoutes,
+        endpoint: ThundermoonWeb.Endpoint,
+        router: ThundermoonWeb.Router,
+        statics: ThundermoonWeb.static_paths()
     end
   end
 

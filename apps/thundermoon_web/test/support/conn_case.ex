@@ -17,13 +17,15 @@ defmodule ThundermoonWeb.ConnCase do
 
   using do
     quote do
+      # The default endpoint for testing
+      @endpoint ThundermoonWeb.Endpoint
+
+      use ThundermoonWeb, :verified_routes
+
       # Import conveniences for testing with connections
       import Plug.Conn
       import Phoenix.ConnTest
-      alias ThundermoonWeb.Router.Helpers, as: Routes
-
-      # The default endpoint for testing
-      @endpoint ThundermoonWeb.Endpoint
+      import ThundermoonWeb.ConnCase
     end
   end
 

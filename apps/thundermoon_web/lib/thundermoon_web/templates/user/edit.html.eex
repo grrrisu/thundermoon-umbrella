@@ -3,7 +3,7 @@
     <h1>Edit User</h1>
     <div class="flex">
       <div class="w-2/4 mr-12">
-        <%= form_for @user, Routes.user_path(@conn, :update, @user.data.id), fn f -> %>
+        <%= form_for @user, ~p"/users/#{@user.data.id}", fn f -> %>
           <fieldset>
             <div class="mb-3">
               <label for="user_name">Full Name</label>
@@ -25,7 +25,7 @@
 
             <div>
               <%= submit "Update", class: "btn btn-primary" %>
-              <%= link("Cancel", to: Routes.user_path(@conn, :index), class: "btn btn-outline") %>
+              <%= link("Cancel", to: ~p"/users", class: "btn btn-outline") %>
             </div>
           </fieldset>
         <% end %>
