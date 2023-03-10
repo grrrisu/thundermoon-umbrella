@@ -16,7 +16,7 @@ RUN mix release
 
 ########################################################
 # docker build -t thundermoon:app --target=app .
-FROM alpine:3.16.2 AS app
+FROM alpine:3.17.2 AS app
 RUN apk add --no-cache libstdc++ openssl ncurses-libs
 
 ENV MIX_ENV=prod
