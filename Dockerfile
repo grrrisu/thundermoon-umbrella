@@ -1,5 +1,5 @@
 # docker build -t thundermoon:build .
-FROM elixir:1.14.1-alpine
+FROM elixir:1.14.3-alpine
 
 RUN apk add --no-cache build-base npm git python3 curl
 
