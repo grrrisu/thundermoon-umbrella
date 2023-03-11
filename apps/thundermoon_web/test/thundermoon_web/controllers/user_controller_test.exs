@@ -48,7 +48,7 @@ defmodule ThundermoonWeb.UserControllerTest do
 
     test "update my own user", %{conn: conn, users: users} do
       conn = put(conn, "/users/#{List.first(users).id}", %{"user" => %{"username" => "foo"}})
-      assert get_flash(conn, :info) == "User has been updated"
+      assert conn.assigns.flash["info"] == "User has been updated"
       assert redirected_to(conn) == "/users"
     end
 
@@ -86,19 +86,19 @@ defmodule ThundermoonWeb.UserControllerTest do
 
     test "update another user", %{conn: conn, users: users} do
       conn = put(conn, "/users/#{List.first(users).id}", %{"user" => %{"username" => "foo"}})
-      assert get_flash(conn, :info) == "User has been updated"
+      assert conn.assigns.flash["info"] == "User has been updated"
       assert redirected_to(conn) == "/users"
     end
 
     test "delete own user", %{conn: conn, users: users} do
       conn = delete(conn, "/users/#{List.last(users).id}")
-      assert get_flash(conn, :error) == "You are not authorized to access this page!"
+      assert conn.assigns.flash["error"] == "You are not authorized to access this page!"
       assert redirected_to(conn) == "/"
     end
 
     test "delete another user", %{conn: conn, users: users} do
       conn = delete(conn, "/users/#{List.first(users).id}")
-      assert get_flash(conn, :info) == "User has been deleted"
+      assert conn.assigns.flash["info"] == "User has been deleted"
       assert redirected_to(conn) == "/users"
     end
   end

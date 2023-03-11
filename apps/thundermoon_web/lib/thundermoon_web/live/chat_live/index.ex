@@ -10,7 +10,7 @@ defmodule ThundermoonWeb.ChatLive.Index do
 
   alias ThundermoonWeb.Presence
 
-  alias ThundermoonWeb.ChatLive.Message
+  import ThundermoonWeb.ChatLive.Message
 
   @impl true
   def mount(_params, session, socket) do
