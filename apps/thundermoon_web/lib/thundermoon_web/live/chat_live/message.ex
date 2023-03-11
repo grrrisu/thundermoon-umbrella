@@ -2,7 +2,7 @@ defmodule ThundermoonWeb.ChatLive.Message do
   use Phoenix.Component
   use Phoenix.HTML
 
-  def row(assigns) do
+  def message(assigns) do
     assigns = assign(assigns, color: message_color(assigns), aligne: align_message(assigns))
 
     ~H"""
@@ -18,7 +18,7 @@ defmodule ThundermoonWeb.ChatLive.Message do
   def input_form(assigns) do
     ~H"""
     <div>
-      <.form :let={f} for={:message} phx-submit={:send} class="flex">
+      <.form :let={f} for={%{}} as={:message} phx-submit={:send} class="flex">
         <%= text_input(f, :text,
           class: "input text-input",
           "data-version": @version,

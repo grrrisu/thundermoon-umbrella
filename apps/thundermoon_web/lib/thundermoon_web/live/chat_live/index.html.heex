@@ -7,13 +7,13 @@
 <section class="w-1/2 mb-12">
   <h3>Messages</h3>
   <div id="messages" class="mb-6">
-    <Message.row
+    <.message
       :for={message <- Enum.reverse(@messages)}
       message={message}
       current_user={@current_user}
     />
   </div>
-  <Message.input_form version={@version} />
+  <.input_form version={@version} />
 </section>
 
 <section class="w-1/2 mb-12">
