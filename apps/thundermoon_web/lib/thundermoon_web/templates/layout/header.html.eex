@@ -2,26 +2,26 @@
   <%= link to: "/", class: "logo" do %>
     <%= img_tag ~p"/images/thunderbirdmoon.gif", class: "w-20 rounded-full shadow", alt: "Thundermoon"%>
   <% end %>
-    <nav role="navigation" class="self-center">
-      <ul class="flex space-x-4">
-        <%= if signed_in?(@conn) do %>
-          <li><%= link "Dashboard", to: ~p"/dashboard" %></li>
-          <li><%= link "Users", to: ~p"/users" %></li>
-        <% end %>
-        <%= if signed_in?(@conn) do %>
-          <li>
-            <%= link to: ~p"/auth", method: :delete  do %>
-              Logout <i class="la la-sign-out"></i>
-            <% end %>
-          </li>
-        <% else %>
-          <li>
-            <%= link to: ~p"/auth/github" do %>
-              <span>Login</span>
-              <i class="la la-lg la-github align-middle"></i>
-            <% end %>
-          </li>
-        <% end %>
-      </ul>
-    </nav>
-  </header>
+  <nav role="navigation" class="self-center">
+    <ul class="flex space-x-4">
+      <%= if signed_in?(@conn) do %>
+        <li><%= link "Dashboard", to: ~p"/dashboard" %></li>
+        <li><%= link "Users", to: ~p"/users" %></li>
+      <% end %>
+      <%= if signed_in?(@conn) do %>
+        <li>
+          <%= link to: ~p"/auth", method: :delete  do %>
+            Logout <i class="la la-sign-out"></i>
+          <% end %>
+        </li>
+      <% else %>
+        <li>
+          <%= link to: ~p"/auth/github" do %>
+            <span>Login</span>
+            <i class="la la-lg la-github align-middle"></i>
+          <% end %>
+        </li>
+      <% end %>
+    </ul>
+  </nav>
+</header>

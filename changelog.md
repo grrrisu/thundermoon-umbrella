@@ -1,5 +1,11 @@
 # Changelog
 
+## dev
+
+- General:
+  - update Phoenix to 1.17
+  - refactor web app replacing views with components
+
 ## 0.10.0
 
 - Sim:
