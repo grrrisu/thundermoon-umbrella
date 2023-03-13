@@ -6,6 +6,8 @@ defmodule ThundermoonWeb.SharedComponents do
   """
   use Phoenix.Component
 
+  alias ThundermoonWeb.Endpoint
+
   @doc """
   a div for a text section
   """
@@ -19,7 +21,28 @@ defmodule ThundermoonWeb.SharedComponents do
     """
   end
 
+  attr :link, :string, required: true
+  attr :title, :string, required: true
+  attr :description, :string, required: true
+  attr :icon, :string, required: true
+
+  def card_section(assigns) do
+    ~H"""
+    <.link navigate={@link}>
+      <div class="bg-indigo-900 rounded ring-1 ring-indigo-400 shadow p-4 h-full hover:bg-indigo-800">
+        <i class={"la la-5x #{@icon} ml-3 float-right"}></i>
+        <h3 class="text-bold text-xl mb-3"><%= @title %></h3>
+        <p class="mb-3"><%= @description %></p>
+      </div>
+    </.link>
+    """
+  end
+
   def signed_in?(conn) do
     Map.get(conn.assigns, :current_user)
+  end
+
+  def local? do
+    Endpoint.url() =~ "localhost"
   end
 end
