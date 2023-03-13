@@ -1,0 +1,57 @@
+<.text_section>
+  <section class="bg-gray-700 my-8 p-8 rounded-lg shadow-lg text-center">
+    <h1 class="text-4xl font-semibold mb-4">
+      <%= gettext("Welcome %{name}!", name: @current_user.username) %>
+    </h1>
+    <p>Dashboard</p>
+  </section>
+
+  <section class="row">
+    <article class="column">
+      <p class="mb-4">Live View examples:</p>
+      <div class="grid grid-cols-4 gap-4 mb-8">
+        <.card_section
+          title="Chat"
+          description="A simple chat with just one room"
+          link={~p"/chat"}
+          icon="la-comments"
+        />
+        <.card_section
+          title="Counter"
+          description="Another simple example: A counter with three digits"
+          link={~p"/counter"}
+          icon="la-plus-square"
+        />
+        <.card_section
+          title="Game o Life"
+          description="Conways Game of Life (needs admin rights to create)"
+          link={~p"/game_of_life"}
+          icon="la-ethernet"
+        />
+        <.card_section
+          title="Lotka Volterr"
+          description="Population growth: vegatation, herbivores and predators"
+          link={~p"/lotka-volterra"}
+          icon="la-paw"
+        />
+      </div>
+      <p class="mb-4">Other stuff:</p>
+      <div class="grid grid-cols-4 gap-4 mb-8">
+        <%= if local?() do %>
+          <.card_section
+            title="Life Dashboard"
+            description="See the interiors of the Erlang VM"
+            link={~p"/live_dashboard"}
+            icon="la-tachometer-alt"
+          />
+        <% end %>
+        <.card_section
+          title="Users"
+          description="All registered users"
+          link={~p"/users"}
+          icon="la-user"
+        />
+      </div>
+    </article>
+  </section>
+</.text_section>
