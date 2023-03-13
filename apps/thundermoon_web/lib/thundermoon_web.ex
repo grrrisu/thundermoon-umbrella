@@ -24,7 +24,7 @@ defmodule ThundermoonWeb do
       use Phoenix.Controller,
         namespace: ThundermoonWeb,
         formats: [:html, :json],
-        layouts: [html: ThundermoonWeb.LayoutView]
+        layouts: [html: ThundermoonWeb.Layouts]
 
       import Plug.Conn
       import ThundermoonWeb.Gettext
@@ -52,9 +52,10 @@ defmodule ThundermoonWeb do
   def live_view do
     quote do
       use Phoenix.LiveView,
-        layout: {ThundermoonWeb.LayoutView, :live}
+        layout: {ThundermoonWeb.Layouts, :app}
 
       unquote(view_helpers())
+      # unquote(html_helpers())
     end
   end
 

@@ -1,7 +1,0 @@
-<%= link to: @link do %>
-  <div class="bg-indigo-900 rounded ring-1 ring-indigo-400 shadow p-4 h-full hover:bg-indigo-800">
-    <i class="la la-5x <%= @icon %> ml-3 float-right"></i>
-    <h3 class="text-bold text-xl mb-3"><%= @title %></h3>
-    <p class="mb-3"><%= @description %></p>
-  </div>
-<% end %>

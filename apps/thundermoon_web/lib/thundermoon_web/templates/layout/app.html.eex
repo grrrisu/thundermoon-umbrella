@@ -1,9 +1,0 @@
-<%= render_layout ThundermoonWeb.PageView, "text_section.html", conn: @conn do %>
-  <%= if Phoenix.Flash.get(@flash, :info) do %>
-    <p class="rounded bg-blue-400 text-blue-900 py-3 px-4" role="alert"><%= Phoenix.Flash.get(@flash, :info) %></p>
-  <% end %>
-  <%= if Phoenix.Flash.get(@flash, :error) do %>
-    <p class="rounded bg-red-300 text-red-900 py-3 px-4" role="alert"><%= Phoenix.Flash.get(@flash, :error) %></p>
-  <% end %>
-<% end %>
-<%= @inner_content %>
