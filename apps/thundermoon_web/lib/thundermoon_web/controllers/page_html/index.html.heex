@@ -47,7 +47,7 @@
         <a href="https://github.com/grrrisu/thundermoon-umbrella" target="_blank">Github.</a>
       </p>
       <p class="mb-3">To keep the usual bots away a login is required.</p>
-      <%= unless signed_in?(@conn) do %>
+      <%= unless @current_user do %>
         <div class="mb-3">
           <.link href={~p"/auth/github"} class="btn btn-primary">
             Login <i class="la la-2x la-github align-middle"></i>
