@@ -103,6 +103,7 @@ defmodule ThundermoonWeb do
       import ThundermoonWeb.CoreComponents
       import ThundermoonWeb.SharedComponents
       import ThundermoonWeb.Gettext
+      import Canada.Can
 
       # Shortcut for generating JS commands
       alias Phoenix.LiveView.JS

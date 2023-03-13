@@ -1,0 +1,53 @@
+<section class="">
+  <article class="w-3/4">
+    <h1>Users</h1>
+
+    <div class="shadow overflow-hidden border-b border-gray-900 rounded-lg">
+      <table class="min-w-full divide-y divide-gray-500">
+        <thead class="bg-gray-700">
+          <tr>
+            <th class="px-6 py-3 text-left text-sm font-medium text-gray-300 uppercase tracking-wider">
+            </th>
+            <th class="px-6 py-3 text-left text-sm font-medium text-gray-300 uppercase tracking-wider">
+              Username
+            </th>
+            <th class="px-6 py-3 text-left text-sm font-medium text-gray-300 uppercase tracking-wider">
+            </th>
+          </tr>
+        </thead>
+        <tbody class="bg-gray-800 divide-y divide-gray-600">
+          <%= for user <- @users do %>
+            <tr>
+              <td class="px-6 py-4 whitespace-nowrap">
+                <%= if user.avatar do %>
+                  <img src={user.avatar} class="w-10 h-10 rounded-full" />
+                <% end %>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap">
+                <%= user.username %>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap">
+                <%= if can? @current_user, :edit, user do %>
+                  <.link href={~p"/users/#{user}/edit"} class="text-blue-300 hover:underline">
+                    <i class="la la-pencil"></i> edit
+                  </.link>
+                <% end %>
+                <%= if can? @current_user, :delete, user do %>
+                  &nbsp;|&nbsp;
+                  <.link
+                    href={~p"/users/#{user}"}
+                    class="text-blue-300 hover:underline"
+                    method="delete"
+                    data-confirm={"Do you really want to delete user #{user.username}"}
+                  >
+                    <i class="la la-trash"></i> delete
+                  </.link>
+                <% end %>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  </article>
+</section>
