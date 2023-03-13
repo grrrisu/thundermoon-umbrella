@@ -38,10 +38,6 @@ defmodule ThundermoonWeb.SharedComponents do
     """
   end
 
-  def signed_in?(conn) do
-    Map.get(conn.assigns, :current_user)
-  end
-
   def local? do
     Endpoint.url() =~ "localhost"
   end

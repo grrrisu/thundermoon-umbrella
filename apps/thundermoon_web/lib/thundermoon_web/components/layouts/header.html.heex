@@ -1,0 +1,27 @@
+<header class="bg-gray-800 py-3 px-8 mb-8 flex justify-between content-center shadow-lg">
+  <.link href="/" class="logo">
+    <img src={~p"/images/thunderbirdmoon.gif"} class="w-20 rounded-full shadow" alt="Thundermoon" />
+  </.link>
+  <nav role="navigation" class="self-center">
+    <ul class="flex space-x-4">
+      <%= if @current_user do %>
+        <li><.link href={~p"/dashboard"}>Dashboard</.link></li>
+        <li><.link href={~p"/users"}>Users</.link></li>
+      <% end %>
+      <%= if @current_user do %>
+        <li>
+          <.link href={~p"/auth"} method="delete">
+            Logout <i class="la la-sign-out"></i>
+          </.link>
+        </li>
+      <% else %>
+        <li>
+          <.link href={~p"/auth/github"}>
+            <span>Login</span>
+            <i class="la la-lg la-github align-middle"></i>
+          </.link>
+        </li>
+      <% end %>
+    </ul>
+  </nav>
+</header>
