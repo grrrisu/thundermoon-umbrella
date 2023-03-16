@@ -34,21 +34,6 @@ defmodule ThundermoonWeb do
     end
   end
 
-  # deprecated
-  def view do
-    quote do
-      use Phoenix.View,
-        root: "lib/thundermoon_web/templates",
-        namespace: ThundermoonWeb
-
-      # Import convenience functions from controllers
-      import Phoenix.Controller, only: [get_flash: 1, get_flash: 2, view_module: 1]
-
-      # Include shared imports and aliases for views
-      unquote(view_helpers())
-    end
-  end
-
   def live_view do
     quote do
       use Phoenix.LiveView,
