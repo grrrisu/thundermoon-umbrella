@@ -21,7 +21,7 @@
           <%= submit("Update", class: "btn btn-primary") %>
         <% end %>
       </div>
-      <%= live_flash_alerts(alert: @flash) %>
+      <.flash_alert flash={@flash} />
     </fieldset>
   </.form>
 </div>
