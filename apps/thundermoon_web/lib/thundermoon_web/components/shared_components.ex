@@ -38,6 +38,29 @@ defmodule ThundermoonWeb.SharedComponents do
     """
   end
 
+  attr :flash, :map, default: %{}, doc: "the map of flash messages to display"
+
+  def flash_alert(assigns) do
+    ~H"""
+    <p
+      :if={Phoenix.Flash.get(@flash, :info)}
+      class="rounded bg-blue-400 text-blue-900 py-3 px-4"
+      phx-click="lv:clear-flash"
+      phx-value-key="info"
+    >
+      <%= Phoenix.Flash.get(@flash, :info) %>
+    </p>
+    <p
+      :if={Phoenix.Flash.get(@flash, :error)}
+      class="rounded bg-red-300 text-red-900 py-3 px-4"
+      phx-click="lv:clear-flash"
+      phx-value-key="error"
+    >
+      <%= Phoenix.Flash.get(@flash, :error) %>
+    </p>
+    """
+  end
+
   def local? do
     Endpoint.url() =~ "localhost"
   end

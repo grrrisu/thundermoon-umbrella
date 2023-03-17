@@ -49,6 +49,7 @@ defmodule ThundermoonWeb do
       use Phoenix.LiveComponent
 
       unquote(view_helpers())
+      # unquote(html_helpers())
     end
   end
 
@@ -107,6 +108,8 @@ defmodule ThundermoonWeb do
       # Import LiveView helpers (live_render, live_component, live_patch, etc)
       import Phoenix.LiveView.Helpers
       import ThundermoonWeb.LiveHelpers
+
+      import ThundermoonWeb.SharedComponents
 
       # Import basic rendering functionality (render, render_layout, etc)
       import Phoenix.View

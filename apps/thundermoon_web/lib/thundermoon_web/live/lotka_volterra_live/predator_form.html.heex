@@ -20,7 +20,7 @@
       <div class="mb-3">
         <%= submit("Create", class: "btn btn-primary") %>
       </div>
-      <%= live_flash_alerts(alert: @flash) %>
+      <.flash_alert flash={@flash} />
     </fieldset>
   </.form>
 </div>
