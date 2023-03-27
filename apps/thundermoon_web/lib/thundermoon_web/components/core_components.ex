@@ -96,7 +96,7 @@ defmodule ThundermoonWeb.CoreComponents do
                 </header>
                 <%= render_slot(@inner_block) %>
                 <div :if={@confirm != [] or @cancel != []} class="ml-6 mb-4 flex items-center gap-5">
-                  <.button
+                  <.core_button
                     :for={confirm <- @confirm}
                     id={"#{@id}-confirm"}
                     phx-click={@on_confirm}
@@ -104,7 +104,7 @@ defmodule ThundermoonWeb.CoreComponents do
                     class="py-2 px-3"
                   >
                     <%= render_slot(confirm) %>
-                  </.button>
+                  </.core_button>
                   <.link
                     :for={cancel <- @cancel}
                     phx-click={hide_modal(@on_cancel, @id)}
@@ -250,7 +250,7 @@ defmodule ThundermoonWeb.CoreComponents do
 
   slot :inner_block, required: true
 
-  def button(assigns) do
+  def core_button(assigns) do
     ~H"""
     <button
       type={@type}
