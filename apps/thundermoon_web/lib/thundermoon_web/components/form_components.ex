@@ -37,6 +37,7 @@ defmodule ThundermoonWeb.FormComponents do
   attr :field, :any
   attr :label, :string, default: nil
   attr :id, :any, default: nil
+  attr :value, :any, default: nil
   attr :class, :string, default: nil
 
   attr :type, :string,
@@ -50,7 +51,7 @@ defmodule ThundermoonWeb.FormComponents do
   def text_input(%{field: %FormField{} = field} = assigns) do
     assigns =
       assign(assigns,
-        value: Form.normalize_value(assigns.type, field.value),
+        value: assigns.value || Form.normalize_value(assigns.type, field.value),
         name: field.name,
         id: assigns.id || field.name,
         errors: Enum.map(field.errors, &translate_error(&1)),
