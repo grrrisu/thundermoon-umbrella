@@ -108,7 +108,6 @@ defmodule ThundermoonWeb do
 
       # Import LiveView helpers (live_render, live_component, live_patch, etc)
       import Phoenix.LiveView.Helpers
-      import ThundermoonWeb.LiveHelpers
 
       import ThundermoonWeb.SharedComponents
       import ThundermoonWeb.FormComponents
