@@ -88,6 +88,7 @@ defmodule ThundermoonWeb do
       # Core UI components and translation
       import ThundermoonWeb.CoreComponents
       import ThundermoonWeb.SharedComponents
+      import ThundermoonWeb.FormComponents
       import ThundermoonWeb.Gettext
       import Canada.Can
 
@@ -110,6 +111,7 @@ defmodule ThundermoonWeb do
       import ThundermoonWeb.LiveHelpers
 
       import ThundermoonWeb.SharedComponents
+      import ThundermoonWeb.FormComponents
 
       # Import basic rendering functionality (render, render_layout, etc)
       import Phoenix.View

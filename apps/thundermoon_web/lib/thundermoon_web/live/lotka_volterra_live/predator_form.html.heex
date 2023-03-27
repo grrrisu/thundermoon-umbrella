@@ -11,12 +11,12 @@
     phx-target={@myself}
   >
     <fieldset>
-      <%= live_text_input(f, :birth_rate, label: "Birth Rate") %>
-      <%= live_text_input(f, :death_rate, label: "Death Rate") %>
-      <%= live_text_input(f, :needed_food, label: "Needed food") %>
-      <%= live_text_input(f, :starving_rate, label: "Starving Rate") %>
-      <%= live_text_input(f, :graze_rate, label: "Graze Rate") %>
-      <%= live_text_input(f, :size) %>
+      <.text_input field={f[:birth_rate]} label="Birth Rate" />
+      <.text_input field={f[:death_rate]} label="Death Rate" />
+      <.text_input field={f[:needed_food]} label="Needed food" />
+      <.text_input field={f[:starving_rate]} label="Starving Rate" />
+      <.text_input field={f[:graze_rate]} label="Graze Rate" />
+      <.text_input field={f[:size]} />
       <div class="mb-3">
         <%= submit("Create", class: "btn btn-primary") %>
       </div>
