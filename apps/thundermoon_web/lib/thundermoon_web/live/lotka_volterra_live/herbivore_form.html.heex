@@ -5,18 +5,23 @@
 
   <.form :let={f} for={@changeset} phx-submit="create" phx-change="validate" phx-target={@myself}>
     <fieldset>
-      <%= live_text_input(f, :birth_rate, label: "Birth Rate") %>
-      <%= live_text_input(f, :death_rate, label: "Death Rate") %>
-      <%= live_text_input(f, :needed_food, label: "Needed food") %>
-      <%= live_text_input(f, :starving_rate, label: "Starving Rate") %>
-      <%= live_text_input(f, :graze_rate, label: "Graze Rate") %>
-      <%= live_text_input(f, :size) %>
+      <.text_input field={f[:birth_rate]} label="Birth Rate" />
+      <.text_input field={f[:death_rate]} label="Death Rate" />
+      <.text_input field={f[:needed_food]} label="Needed food" />
+      <.text_input field={f[:starving_rate]} label="Starving Rate" />
+      <.text_input field={f[:graze_rate]} label="Graze Rate" />
+      <.text_input field={f[:size]} />
       <div class="mb-3">
         <%= if @creating do %>
           <%= submit("Create", class: "btn btn-primary") %> or
-          <%= link to: "#", phx_click: "add_predator", phx_target: @myself, id: "button-add-predator", class: "btn btn-primary" do %>
+          <.link
+            phx-click="add_predator"
+            phx-target={@myself}
+            id="button-add-predator"
+            class="btn btn-primary"
+          >
             Add Predator
-          <% end %>
+          </.link>
         <% else %>
           <%= submit("Update", class: "btn btn-primary") %>
         <% end %>
