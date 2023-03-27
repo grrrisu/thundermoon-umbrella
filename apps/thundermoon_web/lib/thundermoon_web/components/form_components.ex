@@ -8,6 +8,20 @@ defmodule ThundermoonWeb.FormComponents do
 
   alias Phoenix.HTML.{Form, FormField}
 
+  slot :row, required: true
+  slot :inner_block, required: true
+
+  def fieldset(assigns) do
+    ~H"""
+    <fieldset>
+      <div :for={row <- @row} class="mb-3">
+        <%= render_slot(row) %>
+      </div>
+      <%= render_slot(@inner_block) %>
+    </fieldset>
+    """
+  end
+
   @doc """
   Renders an input with label and error messages.
 
@@ -23,6 +37,7 @@ defmodule ThundermoonWeb.FormComponents do
   attr :field, :any
   attr :label, :string, default: nil
   attr :id, :any, default: nil
+  attr :class, :string, default: nil
 
   attr :type, :string,
     default: "text",
@@ -37,7 +52,6 @@ defmodule ThundermoonWeb.FormComponents do
       assign(assigns,
         value: Form.normalize_value(assigns.type, field.value),
         name: field.name,
-        label: assigns.label || field.field |> Atom.to_string() |> String.capitalize(),
         id: assigns.id || field.name,
         errors: Enum.map(field.errors, &translate_error(&1)),
         input_bg_color:
@@ -48,7 +62,7 @@ defmodule ThundermoonWeb.FormComponents do
       )
 
     ~H"""
-    <div class="mb-3">
+    <div class={["w-full", @class]} phx-feedback-for={@name}>
       <.label :if={@label} for={@id}><%= @label %></.label>
       <input
         type={@type}
@@ -56,8 +70,8 @@ defmodule ThundermoonWeb.FormComponents do
         name={@name}
         id={@id}
         class={[
-          "text-gray-100 focus:outline-none",
-          "font-light p-2 w-full rounded-md focus:shadow-inner focus:ring-1 focus:ring-gray-400",
+          "text-gray-100 focus:outline-none w-full",
+          "font-light p-2 rounded-md focus:shadow-inner focus:ring-1 focus:ring-gray-400",
           @input_bg_color
         ]}
         {@rest}

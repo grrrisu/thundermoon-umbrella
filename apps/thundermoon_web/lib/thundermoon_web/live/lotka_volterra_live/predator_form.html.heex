@@ -10,17 +10,17 @@
     phx-change={:validate}
     phx-target={@myself}
   >
-    <fieldset>
-      <.text_input field={f[:birth_rate]} label="Birth Rate" />
-      <.text_input field={f[:death_rate]} label="Death Rate" />
-      <.text_input field={f[:needed_food]} label="Needed food" />
-      <.text_input field={f[:starving_rate]} label="Starving Rate" />
-      <.text_input field={f[:graze_rate]} label="Graze Rate" />
-      <.text_input field={f[:size]} />
+    <.fieldset>
+      <:row><.text_input field={f[:birth_rate]} label="Birth Rate" /></:row>
+      <:row><.text_input field={f[:death_rate]} label="Death Rate" /></:row>
+      <:row><.text_input field={f[:needed_food]} label="Needed food" /></:row>
+      <:row><.text_input field={f[:starving_rate]} label="Starving Rate" /></:row>
+      <:row><.text_input field={f[:graze_rate]} label="Graze Rate" /></:row>
+      <:row><.text_input field={f[:size]} label="Size" /></:row>
       <div class="mb-3">
         <%= submit("Create", class: "btn btn-primary") %>
       </div>
       <.flash_alert flash={@flash} />
-    </fieldset>
+    </.fieldset>
   </.form>
 </div>

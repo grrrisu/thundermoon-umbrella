@@ -10,11 +10,11 @@
     phx-change={:validate}
     phx-target={@myself}
   >
-    <fieldset>
-      <.text_input field={f[:capacity]} />
-      <.text_input field={f[:birth_rate]} label="Birth Rate" />
-      <.text_input field={f[:death_rate]} label="Death Rate" />
-      <.text_input field={f[:size]} />
+    <.fieldset>
+      <:row><.text_input field={f[:capacity]} label="Capacity" /></:row>
+      <:row><.text_input field={f[:birth_rate]} label="Birth Rate" /></:row>
+      <:row><.text_input field={f[:death_rate]} label="Death Rate" /></:row>
+      <:row><.text_input field={f[:size]} label="Size" /></:row>
       <div class="mb-3">
         <%= if @creating do %>
           <%= submit("Create", class: "btn btn-primary") %> or
@@ -31,6 +31,6 @@
         <% end %>
       </div>
       <.flash_alert flash={@flash} />
-    </fieldset>
+    </.fieldset>
   </.form>
 </div>
