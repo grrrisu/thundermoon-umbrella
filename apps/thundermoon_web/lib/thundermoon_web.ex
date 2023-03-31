@@ -39,8 +39,7 @@ defmodule ThundermoonWeb do
       use Phoenix.LiveView,
         layout: {ThundermoonWeb.Layouts, :app}
 
-      unquote(view_helpers())
-      # unquote(html_helpers())
+      unquote(html_helpers())
     end
   end
 
@@ -48,8 +47,7 @@ defmodule ThundermoonWeb do
     quote do
       use Phoenix.LiveComponent
 
-      unquote(view_helpers())
-      # unquote(html_helpers())
+      unquote(html_helpers())
     end
   end
 
@@ -96,28 +94,6 @@ defmodule ThundermoonWeb do
       alias Phoenix.LiveView.JS
 
       # Routes generation with the ~p sigil
-      unquote(verified_routes())
-    end
-  end
-
-  # deprecate this
-  defp view_helpers do
-    quote do
-      # Use all HTML functionality (forms, tags, etc)
-      use Phoenix.HTML
-
-      # Import LiveView helpers (live_render, live_component, live_patch, etc)
-      import Phoenix.LiveView.Helpers
-
-      import ThundermoonWeb.SharedComponents
-      import ThundermoonWeb.FormComponents
-
-      # Import basic rendering functionality (render, render_layout, etc)
-      import Phoenix.View
-
-      import ThundermoonWeb.ErrorHelpers
-      import ThundermoonWeb.Gettext
-      import Canada.Can
       unquote(verified_routes())
     end
   end
