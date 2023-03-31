@@ -42,7 +42,6 @@ defmodule ThundermoonWeb.MixProject do
       {:phoenix_html, "~> 3.1"},
       {:phoenix_live_view, "~> 0.18.3"},
       {:phoenix_live_dashboard, "~> 0.7"},
-      {:phoenix_view, "~> 2.0"},
       {:telemetry_metrics, "~> 0.6"},
       {:telemetry_poller, "~> 1.0"},
       {:gettext, "~> 0.18"},
