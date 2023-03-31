@@ -53,7 +53,7 @@ defmodule ThundermoonWeb.FormComponents do
       assign(assigns,
         value: assigns.value || Form.normalize_value(assigns.type, field.value),
         name: field.name,
-        id: assigns.id || field.name,
+        id: assigns.id || field.id || field.name,
         errors: Enum.map(field.errors, &translate_error(&1)),
         input_bg_color:
           if(field.errors == [],
