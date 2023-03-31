@@ -39,15 +39,15 @@ describe("game of life page", function () {
     it("I see a grid and can run it", function () {
       cy.get("#grid").children(".cell").should("have.length", 25);
       cy.get("#start-button").contains("start").click();
-      cy.get("#stop-button").contains("stop").click();
+      cy.get("#start-button").contains("stop").click();
     });
 
     it("I can recreate it", function () {
       cy.get("#grid").children(".cell").should("have.length", 25);
       cy.get("#start-button").contains("start").click();
-      cy.get("#reset-button").contains("recreate").click();
+      cy.get("#recreate-button").contains("recreate").click();
       cy.get("#start-button").contains("start").click();
-      cy.get("#stop-button").contains("stop").click();
+      cy.get("#start-button").contains("stop").click();
     });
 
     it("I can clear it", function () {
@@ -89,7 +89,7 @@ describe("game of life page", function () {
       cy.get("form").submit();
       cy.get("#grid").children(".cell").should("have.length", 25);
       cy.get("#start-button").contains("start").click();
-      cy.get("#stop-button").contains("stop").click();
+      cy.get("#start-button").contains("stop").click();
     });
 
     it("create a grid and recreate it", function () {
@@ -99,7 +99,7 @@ describe("game of life page", function () {
       cy.get("#start-button").contains("start").click();
       cy.get("#recreate-button").contains("recreate").click();
       cy.get("#start-button").contains("start").click();
-      cy.get("#stop-button").contains("stop").click();
+      cy.get("#start-button").contains("stop").click();
     });
 
     it("reset a grid and run it", function () {
@@ -113,7 +113,7 @@ describe("game of life page", function () {
       cy.get("form").submit();
       cy.get("#grid").children(".cell").should("have.length", 16);
       cy.get("#start-button").contains("start").click();
-      cy.get("#stop-button").contains("stop").click();
+      cy.get("#start-button").contains("stop").click();
     });
   });
 });
