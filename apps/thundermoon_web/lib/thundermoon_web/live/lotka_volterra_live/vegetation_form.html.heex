@@ -17,17 +17,13 @@
       <:row><.text_input field={f[:size]} label="Size" /></:row>
       <div class="mb-3">
         <%= if @creating do %>
-          <%= submit("Create", class: "btn btn-primary") %> or
-          <.link
-            phx-click="add_herbivore"
-            phx-target={@myself}
-            id="button-add-herbivore"
-            class="btn btn-primary"
-          >
+          <.button type="submit">Create</.button>
+          or
+          <.button phx-click="add_herbivore" phx-target={@myself} id="button-add-herbivore">
             Add Herbivore
-          </.link>
+          </.button>
         <% else %>
-          <%= submit("Update", class: "btn btn-primary") %>
+          <.button type="submit">Update</.button>
         <% end %>
       </div>
       <.flash_alert flash={@flash} />

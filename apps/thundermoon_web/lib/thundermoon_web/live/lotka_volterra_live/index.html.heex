@@ -5,9 +5,9 @@
 <.box>
   <.start_button started={@started} />
 
-  <.link navigate={~p"/lotka-volterra/new"} class="btn btn-warning">
+  <.button navigate={~p"/lotka-volterra/new"} color="warning">
     <i class="align-middle text-xl la la-reply-all"></i> recreate
-  </.link>
+  </.button>
 
   <.live_component module={EditButton} button_label="Vegetation" id="button-vegetation">
     <.live_component module={VegetationForm} id="vegetation" sim_id={@sim_id} data={@vegetation} />

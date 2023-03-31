@@ -1,25 +1,28 @@
 defmodule ThundermoonWeb.CounterLive.Digit do
-  use Phoenix.Component
-  use Phoenix.HTML
+  use ThundermoonWeb, :html
 
   def digit(assigns) do
     ~H"""
     <div class="flex flex-col space-y-4">
-      <%= link("+",
-        to: "#",
-        id: "#{@id}-inc",
-        class: "btn text-2xl btn-primary",
-        phx_click: "inc",
-        phx_value_digit: @digit
-      ) %>
+      <.button
+        id={"#{@id}-inc"}
+        class="text-2xl"
+        color="primary"
+        phx-click="inc"
+        phx-value-digit={@digit}
+      >
+        +
+      </.button>
       <div id={@id} class="digit font-mono text-6xl"><%= @value %></div>
-      <%= link("-",
-        to: "#",
-        id: "#{@id}-dec",
-        class: "btn text-2xl btn-primary",
-        phx_click: "dec",
-        phx_value_digit: @digit
-      ) %>
+      <.button
+        id={"#{@id}-dec"}
+        class="text-2xl"
+        color="primary"
+        phx-click="dec"
+        phx-value-digit={@digit}
+      >
+        -
+      </.button>
     </div>
     """
   end

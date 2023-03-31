@@ -1,5 +1,5 @@
 defmodule ThundermoonWeb.Component.Actions do
-  use Phoenix.Component
+  use ThundermoonWeb, :html
 
   def box(assigns) do
     ~H"""
@@ -19,16 +19,15 @@ defmodule ThundermoonWeb.Component.Actions do
       )
 
     ~H"""
-    <a
-      href="#"
+    <.button
       id="start-button"
       phx-click={@action}
       phx-value-action={@label}
       phx-disable-with={@disable}
-      class="btn btn-primary phx-click-loading:animate-pulse"
+      class="phx-click-loading:animate-pulse"
     >
       <i class={"align-middle la text-xl #{@icon}"}></i><%= @label %>
-    </a>
+    </.button>
     """
   end
 
@@ -46,25 +45,25 @@ defmodule ThundermoonWeb.Component.Actions do
 
   def recreate_button(assigns) do
     ~H"""
-    <a href="#" id="recreate-button" phx-click="recreate" class="btn btn-warning">
+    <.button id="recreate-button" phx-click="recreate" color="warning">
       <i class="align-middle text-xl la la-reply"></i> recreate
-    </a>
+    </.button>
     """
   end
 
   def clear_button(assigns) do
     ~H"""
-    <a href="#" id="clear-button" phx-click="clear" class="btn btn-warning">
+    <.button id="clear-button" phx-click="clear" color="warning">
       <i class="align-middle text-xl la la-eraser"></i> clear
-    </a>
+    </.button>
     """
   end
 
   def reset_button(assigns) do
     ~H"""
-    <a href="#" id="reset-button" phx-click="reset" class="btn btn-warning">
+    <.button id="reset-button" phx-click="reset" color="warning">
       <i class="align-middle text-xl la la-reply-all"></i> reset
-    </a>
+    </.button>
     """
   end
 end
