@@ -9,8 +9,8 @@
             <:row><.text_input field={f[:username]} label="Username" /></:row>
             <:row><.text_input field={f[:email]} label="E-Mail" /></:row>
             <div class="mt-3">
-              <.submit>Save</.submit>
-              <.link href={~p"/users"} class="btn btn-outline">Cancel</.link>
+              <.button type="submit">Save</.button>
+              <.button href={~p"/users"} color="outline">Cancel</.button>
             </div>
           </.fieldset>
         </.form>

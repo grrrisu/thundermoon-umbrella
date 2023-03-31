@@ -15,25 +15,6 @@
 }
 
 @layer components {
-  .btn {
-    @apply rounded-md shadow focus:outline-none;
-  }
-  a.btn,
-  button.btn {
-    @apply px-4 py-2 mr-2;
-  }
-  .btn-primary {
-    @apply bg-purple-800 text-gray-100 focus:bg-purple-700 focus:ring-1 focus:ring-offset-purple-400 focus:ring-offset-1 hover:bg-purple-700;
-  }
-
-  .btn-warning {
-    @apply bg-pink-700 text-gray-100 focus:bg-pink-600 focus:ring-1 focus:ring-offset-pink-300 focus:ring-offset-1 hover:bg-pink-600;
-  }
-
-  .btn-outline {
-    @apply bg-gray-800 text-gray-100 border border-gray-300 focus:bg-gray-700 focus:ring-1 focus:ring-offset-gray-200 focus:ring-offset-1 hover:bg-gray-700;
-  }
-
   iframe[hidden] {
     display: none;
   }

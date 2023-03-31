@@ -64,11 +64,14 @@ defmodule ThundermoonWeb.SharedComponents do
   attr(:class, :string, default: nil)
   attr(:color, :string, default: "primary")
   attr(:rest, :global, include: ~w(disabled form name value))
-
   slot(:inner_block, required: true)
 
-  def submit(assigns) do
+  def submit_button(assigns) do
     assigns |> assign(type: "submit") |> button()
+  end
+
+  defp button_css(:base) do
+    "text-gray-100 rounded-md shadow px-4 py-2 mr-2 focus:ring-1 focus:ring-offset-1 focus:outline-none active:text-white/80"
   end
 
   defp button_css("primary") do
@@ -91,22 +94,30 @@ defmodule ThundermoonWeb.SharedComponents do
       <.button>Send!</.button>
       <.button phx-click="go" class="ml-2">Send!</.button>
   """
-  attr(:type, :string, default: nil)
-  attr(:class, :string, default: nil)
-  attr(:color, :string, default: "primary")
-  attr(:rest, :global, include: ~w(disabled form name value))
+  attr :type, :string
+  attr :class, :string, default: nil
+  attr :color, :string, default: "primary"
+  attr :navigate, :string
+  attr :patch, :string
+  attr :href, :any
+  attr :replace, :boolean
+  attr :method, :string
+  attr :csrf_token, :any
+
+  attr :rest, :global,
+    include: ~w(disabled form name value download hreflang referrerpolicy rel target type)
 
   slot(:inner_block, required: true)
 
-  def button(assigns) do
-    assigns = assign(assigns, color_class: button_css(assigns.color))
+  def button(%{type: _} = assigns) do
+    css = "#{button_css(:base)} #{button_css(assigns.color)}"
+    assigns = assign(assigns, color_class: css)
 
     ~H"""
     <button
       type={@type}
       class={[
-        "text-gray-100 rounded-md shadow  px-4 py-2 mr-2",
-        "phx-submit-loading:opacity-75 focus:ring-1 focus:ring-offset-1 focus:outline-none active:text-white/80",
+        "phx-submit-loading:opacity-75",
         @color_class,
         @class
       ]}
@@ -115,6 +126,12 @@ defmodule ThundermoonWeb.SharedComponents do
       <%= render_slot(@inner_block) %>
     </button>
     """
+  end
+
+  def button(assigns) do
+    css = [button_css(:base), button_css(assigns.color), assigns.class]
+    rest = Map.merge(assigns.rest, %{class: css})
+    assigns |> assign(rest: rest) |> link()
   end
 
   def local? do

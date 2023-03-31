@@ -49,9 +49,9 @@
       <p class="mb-3">To keep the usual bots away a login is required.</p>
       <%= unless @current_user do %>
         <div class="mb-3">
-          <.link href={~p"/auth/github"} class="btn btn-primary">
+          <.button href={~p"/auth/github"} color="primary">
             Login <i class="la la-2x la-github align-middle"></i>
-          </.link>
+          </.button>
         </div>
       <% end %>
     </article>

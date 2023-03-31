@@ -18,7 +18,7 @@
       <:row><.text_input field={f[:graze_rate]} label="Graze Rate" /></:row>
       <:row><.text_input field={f[:size]} label="Size" /></:row>
       <div class="mb-3">
-        <%= submit("Create", class: "btn btn-primary") %>
+        <.button type="submit">Create</.button>
       </div>
       <.flash_alert flash={@flash} />
     </.fieldset>
