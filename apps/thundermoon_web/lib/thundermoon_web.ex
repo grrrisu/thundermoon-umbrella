@@ -85,7 +85,7 @@ defmodule ThundermoonWeb do
       import Phoenix.HTML
       # Core UI components and translation
       import ThundermoonWeb.CoreComponents
-      import ThundermoonWeb.SharedComponents
+      import ThundermoonWeb.MainComponents
       import ThundermoonWeb.FormComponents
       import ThundermoonWeb.Gettext
       import Canada.Can
