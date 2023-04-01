@@ -1,10 +1,7 @@
 <.text_section>
-  <section class="bg-gray-700 my-8 p-8 rounded-lg shadow-lg text-center">
-    <h1 class="text-4xl font-semibold mb-4">
-      <%= gettext("Welcome %{name}!", name: @current_user.username) %>
-    </h1>
-    <p>Dashboard</p>
-  </section>
+  <.hero_section title={gettext("Welcome %{name}!", name: @current_user.username)}>
+    Dashboard
+  </.hero_section>
 
   <section class="row">
     <article class="column">
