@@ -5,7 +5,7 @@
 <% end %>
 
 <section class="w-1/2 mb-12">
-  <h3>Messages</h3>
+  <.subtitle>Messages</.subtitle>
   <div id="messages" class="mb-6">
     <.message
       :for={message <- Enum.reverse(@messages)}
@@ -17,7 +17,7 @@
 </section>
 
 <section class="w-1/2 mb-12">
-  <h3>Users online</h3>
+  <.subtitle>Users online</.subtitle>
   <div class="users">
     <div :for={user <- @users} class="user"><%= user.username %></div>
   </div>

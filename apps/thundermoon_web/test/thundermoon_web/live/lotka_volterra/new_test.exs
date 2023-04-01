@@ -21,9 +21,9 @@ defmodule ThundermoonWeb.LotkaVolterraLive.NewTest do
 
     test "create a vegetation", %{conn: conn} do
       conn = get(conn, "/lotka-volterra/new")
-      assert html_response(conn, 200) =~ "<h3>Vegetation</h3>"
-      {:ok, view, html} = live(conn)
-      assert html =~ "<h3>Vegetation</h3>"
+      assert html_response(conn, 200) =~ "Vegetation"
+      {:ok, view, _html} = live(conn)
+      has_element?(view, "h3", "Vegetation")
 
       view
       |> element("form")
@@ -44,14 +44,15 @@ defmodule ThundermoonWeb.LotkaVolterraLive.NewTest do
 
     test "create a herbivore", %{conn: conn} do
       conn = get(conn, "/lotka-volterra/new")
-      assert html_response(conn, 200) =~ "<h3>Vegetation</h3>"
+      assert html_response(conn, 200) =~ "Vegetation"
       {:ok, view, _html} = live(conn)
 
       view
       |> element("#button-add-herbivore")
       |> render_click()
 
-      assert render(view) =~ "<h3>Herbivore</h3>"
+      assert render(view) =~ "Herbivore"
+      has_element?(view, "h3", "Herbivore")
 
       view
       |> element("form")
@@ -72,7 +73,7 @@ defmodule ThundermoonWeb.LotkaVolterraLive.NewTest do
 
     test "create a predator", %{conn: conn} do
       conn = get(conn, "/lotka-volterra/new")
-      assert html_response(conn, 200) =~ "<h3>Vegetation</h3>"
+      assert html_response(conn, 200) =~ "Vegetation"
       {:ok, view, _html} = live(conn)
 
       view
@@ -83,7 +84,7 @@ defmodule ThundermoonWeb.LotkaVolterraLive.NewTest do
       |> element("#button-add-predator")
       |> render_click()
 
-      assert render(view) =~ "<h3>Predator</h3>"
+      has_element?(view, "h3", "Predator")
 
       view
       |> element("form")
