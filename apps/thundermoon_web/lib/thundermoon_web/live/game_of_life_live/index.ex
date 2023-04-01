@@ -27,7 +27,7 @@ defmodule ThundermoonWeb.GameOfLifeLive.Index do
   @impl true
   def render(%{grid: nil} = assigns) do
     ~H"""
-    <h1>Game of Life</h1>
+    <.main_title>Game of Life</.main_title>
     <%= if can?(@current_user, :create, GameOfLife) do %>
       <.live_component module={FormComponent} id="form" />
     <% else %>
@@ -39,7 +39,7 @@ defmodule ThundermoonWeb.GameOfLifeLive.Index do
   @impl true
   def render(%{grid: grid} = assigns) when not is_nil(grid) do
     ~H"""
-    <h1>Game of Life</h1>
+    <.main_title>Game of Life</.main_title>
     <.matrix grid={@grid} />
     <.action_buttons current_user={@current_user} started={@started} />
     """

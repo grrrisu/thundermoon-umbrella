@@ -3,15 +3,6 @@
 @tailwind utilities;
 
 @layer base {
-  /* headlines */
-
-  h1 {
-    @apply text-4xl font-light mb-6;
-  }
-
-  h3 {
-    @apply text-2xl font-normal mb-3;
-  }
 }
 
 @layer components {
