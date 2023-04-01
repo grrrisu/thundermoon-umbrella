@@ -1,4 +1,4 @@
-defmodule ThundermoonWeb.SharedComponents do
+defmodule ThundermoonWeb.MainComponents do
   @moduledoc """
   Provides core UI components.
 
