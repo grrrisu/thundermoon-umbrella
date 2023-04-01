@@ -93,7 +93,7 @@ run the application
 
 `MIX_ENV=integration mix phx.server`
 
-start the cypress Test Runner
+start the cypress Test Runner in `app/thundermoon_web/assets`
 
 `npm run cypress`
 
