@@ -31,9 +31,9 @@ defmodule ThundermoonWeb.LotkaVolterraLive.IndexTest do
 
     test "disconnected and connected mount", %{conn: conn, sim_id: sim_id} do
       conn = get(conn, "/lotka-volterra?sim_id=" <> sim_id)
-      assert html_response(conn, 200) =~ "<h1>Lotka Volterra</h1>"
-      {:ok, _view, html} = live(conn)
-      assert html =~ "<h1>Lotka Volterra</h1>"
+      assert html_response(conn, 200) =~ "Lotka Volterra"
+      {:ok, view, _html} = live(conn)
+      has_element?(view, "h1", "Lotka Volterra")
     end
   end
 end

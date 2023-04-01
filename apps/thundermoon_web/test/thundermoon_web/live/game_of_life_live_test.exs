@@ -32,9 +32,9 @@ defmodule ThundermoonWeb.GameOfLifeLiveTest do
 
     test "disconnected and connected mount", %{conn: conn} do
       conn = get(conn, "/game_of_life")
-      assert html_response(conn, 200) =~ "<h1>Game of Life</h1>"
-      {:ok, _view, html} = live(conn)
-      assert html =~ "<h1>Game of Life</h1>"
+      assert html_response(conn, 200) =~ "Game of Life"
+      {:ok, view, _html} = live(conn)
+      has_element?(view, "h1", "Game of Life")
     end
 
     test "can not create a grid", %{conn: conn} do

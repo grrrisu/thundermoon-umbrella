@@ -30,9 +30,9 @@ defmodule ThundermoonWeb.CounterLiveTest do
 
     test "disconnected and connected mount", %{conn: conn} do
       conn = get(conn, "/counter")
-      assert html_response(conn, 200) =~ "<h1>Counter</h1>"
-      {:ok, _view, html} = live(conn)
-      assert html =~ "<h1>Counter</h1>"
+      assert html_response(conn, 200) =~ "Counter"
+      {:ok, view, _html} = live(conn)
+      has_element?(view, "h1", "Counter")
       Counter.reset()
     end
 

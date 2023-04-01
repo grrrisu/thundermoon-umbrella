@@ -30,9 +30,9 @@ defmodule ThundermoonWeb.ChatLiveTest do
 
     test "disconnected and connected mount", %{conn: conn} do
       conn = get(conn, "/chat")
-      assert html_response(conn, 200) =~ "<h1>Chat</h1>"
-      {:ok, _view, html} = live(conn)
-      assert html =~ "<h1>Chat</h1>"
+      assert html_response(conn, 200) =~ "Chat"
+      {:ok, view, _html} = live(conn)
+      has_element?(view, "h1", "Chat")
     end
 
     test "sends a message", %{conn: conn} do

@@ -21,6 +21,22 @@ defmodule ThundermoonWeb.MainComponents do
     """
   end
 
+  slot :inner_block, required: true
+
+  def main_title(assigns) do
+    ~H"""
+    <h1 class="text-4xl font-light mb-6"><%= render_slot(@inner_block) %></h1>
+    """
+  end
+
+  slot :inner_block, required: true
+
+  def subtitle(assigns) do
+    ~H"""
+    <h3 class="text-2xl font-normal mb-3"><%= render_slot(@inner_block) %></h3>
+    """
+  end
+
   attr(:link, :string, required: true)
   attr(:title, :string, required: true)
   attr(:description, :string, required: true)
