@@ -1,5 +1,9 @@
 defmodule ThundermoonWeb.CoreComponents do
   @moduledoc """
+
+  THIS MODULE IS NOT USED!
+  Just kept it as a reference.
+
   Provides core UI components.
 
   The components in this module use Tailwind CSS, a utility-first CSS framework.

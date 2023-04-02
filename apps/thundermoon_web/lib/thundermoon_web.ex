@@ -84,7 +84,6 @@ defmodule ThundermoonWeb do
       # HTML escaping functionality
       import Phoenix.HTML
       # Core UI components and translation
-      import ThundermoonWeb.CoreComponents
       import ThundermoonWeb.MainComponents
       import ThundermoonWeb.FormComponents
       import ThundermoonWeb.Gettext
