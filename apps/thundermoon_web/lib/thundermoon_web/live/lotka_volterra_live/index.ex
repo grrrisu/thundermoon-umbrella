@@ -45,7 +45,12 @@ defmodule ThundermoonWeb.LotkaVolterraLive.Index do
     {vegetation, herbivore, predator} = field
 
     {:noreply,
-     assign(socket, field: field, vegetation: vegetation, herbivore: herbivore, predator: predator)}
+     assign(socket,
+       field: field,
+       vegetation: vegetation,
+       herbivore: herbivore,
+       predator: predator
+     )}
   end
 
   @impl true
