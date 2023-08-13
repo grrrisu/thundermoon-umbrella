@@ -102,7 +102,7 @@ defmodule ThundermoonWeb.GameOfLifeLive.Index do
 
   @impl true
   def handle_info({:error, message}, socket) do
-    Logger.warn("error: #{message}")
+    Logger.warning("error: #{message}")
     {:noreply, put_flash(socket, :error, "Error: #{message}")}
   end
 
