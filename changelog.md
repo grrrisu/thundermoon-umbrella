@@ -3,8 +3,12 @@
 ## dev
 
 - General:
+
   - update Phoenix to 1.17
   - refactor web app replacing views with components
+
+- Sim:
+  - Sim.AccessProxy to block concurrent updates, but allow concurrent reads
 
 ## 0.10.0
 
