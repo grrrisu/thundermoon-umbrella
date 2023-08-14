@@ -68,6 +68,27 @@ defmodule Sim.Grid do
     map_size(grid[0])
   end
 
+  # return the grid as a list
+  # note: the order of the values may be in random
+  def values(grid) do
+    Enum.map(grid, fn {_x, col} ->
+      Enum.map(col, fn {_y, value} ->
+        value
+      end)
+    end)
+    |> List.flatten()
+  end
+
+  # note: the order of the values may be in random
+  def filter(grid, func) do
+    Enum.map(grid, fn {x, col} ->
+      Enum.filter(col, fn {y, value} ->
+        func.(x, y, value)
+      end)
+    end)
+    |> List.flatten()
+  end
+
   # [{x0, y0, value}, {x1, y0, value}, ...]
   def map(grid, func \\ &{&1, &2, &3}) do
     Enum.map(grid, fn {x, col} ->

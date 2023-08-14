@@ -9,6 +9,7 @@
 
 - Sim:
   - Sim.AccessProxy to block concurrent updates, but allow concurrent reads
+  - more functions for grid: Sim.Grid.values/1 and Sim.Grid.filter/2
 
 ## 0.10.0
 
