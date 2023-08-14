@@ -63,7 +63,6 @@ defmodule Sim.AccessProxy do
   end
 
   def handle_call({:exclusive_get, func}, {pid, _}, %{caller: {pid, _}} = state) do
-    Logger.warning("handle_call 2")
     {:reply, get_data(state.agent, func), state}
   end
 
@@ -97,15 +96,18 @@ defmodule Sim.AccessProxy do
         {:DOWN, _ref, :process, pid, _reason},
         %{caller: {pid, _}, requests: []} = state
       ) do
+    Logger.info("AccessProxy remove caller #{inspect(pid)}")
     {:noreply, %{state | caller: nil}}
   end
 
   def handle_info({:DOWN, _ref, :process, pid, _reason}, %{caller: {pid, _}} = state) do
+    Logger.info("AccessProxy remove caller #{inspect(pid)}")
     {next_caller, requests} = reply_to_next_caller(state)
     {:noreply, %{state | caller: next_caller, requests: requests}}
   end
 
   def handle_info({:DOWN, _ref, :process, pid, _reason}, state) do
+    Logger.info("AccessProxy remove caller #{inspect(pid)}")
     requests = Enum.reject(state.requests, fn {req_pid, _ref, _func} -> pid == req_pid end)
     {:noreply, %{state | requests: requests}}
   end
