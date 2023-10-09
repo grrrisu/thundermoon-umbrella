@@ -1,8 +1,6 @@
 defmodule Sim.AccessProxy do
   use GenServer
 
-  require Logger
-
   @doc """
   Keeps updates on an agent in sequence to avoid race conditions by overwriting data,
   while remaining responsive to just read operations.
@@ -33,20 +31,22 @@ defmodule Sim.AccessProxy do
     GenServer.start_link(__MODULE__, Keyword.delete(opts, :name), name: opts[:name] || __MODULE__)
   end
 
-  def get(func \\ & &1) do
-    GenServer.call(__MODULE__, {:get, func})
+  def get(func \\ & &1, server \\ __MODULE__) do
+    GenServer.call(server, {:get, func})
   end
 
-  def exclusive_get(func \\ & &1) do
-    GenServer.call(__MODULE__, {:exclusive_get, func})
+  def exclusive_get(func \\ & &1, server \\ __MODULE__) do
+    GenServer.call(server, {:exclusive_get, func})
   end
 
-  def update(func) when is_function(func) do
-    GenServer.call(__MODULE__, {:update, func})
+  def update(data, server \\ __MODULE__)
+
+  def update(func, server) when is_function(func) do
+    GenServer.call(server, {:update, func})
   end
 
-  def update(data) do
-    GenServer.call(__MODULE__, {:update, fn _ -> data end})
+  def update(data, server) do
+    GenServer.call(server, {:update, fn _ -> data end})
   end
 
   def init(agent: agent) do
@@ -96,18 +96,15 @@ defmodule Sim.AccessProxy do
         {:DOWN, _ref, :process, pid, _reason},
         %{caller: {pid, _}, requests: []} = state
       ) do
-    Logger.info("AccessProxy remove caller #{inspect(pid)}")
     {:noreply, %{state | caller: nil}}
   end
 
   def handle_info({:DOWN, _ref, :process, pid, _reason}, %{caller: {pid, _}} = state) do
-    Logger.info("AccessProxy remove caller #{inspect(pid)}")
     {next_caller, requests} = reply_to_next_caller(state)
     {:noreply, %{state | caller: next_caller, requests: requests}}
   end
 
   def handle_info({:DOWN, _ref, :process, pid, _reason}, state) do
-    Logger.info("AccessProxy remove caller #{inspect(pid)}")
     requests = Enum.reject(state.requests, fn {req_pid, _ref, _func} -> pid == req_pid end)
     {:noreply, %{state | requests: requests}}
   end
