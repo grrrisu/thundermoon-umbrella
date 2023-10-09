@@ -63,9 +63,9 @@ defmodule Sim.GridTest do
   end
 
   test "filter" do
-    grid = Grid.create(2, 3, fn x, y -> x + y end)
+    grid = Grid.create(2, 3, fn x, y -> %{sum: x + y} end)
     results = Grid.filter(grid, fn x, y, _v -> rem(x, 2) == 0 && rem(y, 2) == 0 end)
-    assert [{0, 0}, {2, 2}] = results
+    assert [%{sum: 0}, %{sum: 2}] = results
   end
 
   test "map grid" do
