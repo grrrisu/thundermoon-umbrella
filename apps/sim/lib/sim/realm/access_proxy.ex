@@ -1,8 +1,6 @@
 defmodule Sim.AccessProxy do
   use GenServer
 
-  require Logger
-
   @doc """
   Keeps updates on an agent in sequence to avoid race conditions by overwriting data,
   while remaining responsive to just read operations.
@@ -33,20 +31,22 @@ defmodule Sim.AccessProxy do
     GenServer.start_link(__MODULE__, Keyword.delete(opts, :name), name: opts[:name] || __MODULE__)
   end
 
-  def get(func \\ & &1) do
-    GenServer.call(__MODULE__, {:get, func})
+  def get(func \\ & &1, server \\ __MODULE__) do
+    GenServer.call(server, {:get, func})
   end
 
-  def exclusive_get(func \\ & &1) do
-    GenServer.call(__MODULE__, {:exclusive_get, func})
+  def exclusive_get(func \\ & &1, server \\ __MODULE__) do
+    GenServer.call(server, {:exclusive_get, func})
   end
 
-  def update(func) when is_function(func) do
-    GenServer.call(__MODULE__, {:update, func})
+  def update(data, server \\ __MODULE__)
+
+  def update(func, server) when is_function(func) do
+    GenServer.call(server, {:update, func})
   end
 
-  def update(data) do
-    GenServer.call(__MODULE__, {:update, fn _ -> data end})
+  def update(data, server) do
+    GenServer.call(server, {:update, fn _ -> data end})
   end
 
   def init(agent: agent) do
