@@ -27,6 +27,9 @@ defmodule Sim.AccessProxy do
   45 = Sim.AccessProxy.get()
   """
 
+  # milliseconds
+  @max_duration 5_000
+
   def start_link(opts) do
     GenServer.start_link(__MODULE__, Keyword.delete(opts, :name), name: opts[:name] || __MODULE__)
   end
@@ -49,43 +52,73 @@ defmodule Sim.AccessProxy do
     GenServer.call(server, {:update, fn _ -> data end})
   end
 
-  def init(agent: agent) do
-    {:ok, %{caller: nil, agent: agent, requests: []}}
+  def init(opts) do
+    {:ok,
+     %{
+       caller: nil,
+       agent: opts[:agent],
+       requests: [],
+       max_duration: opts[:max_duration] || @max_duration
+     }}
   end
 
   def handle_call({:get, func}, _from, state) do
     {:reply, get_data(state.agent, func), state}
   end
 
-  def handle_call({:exclusive_get, func}, {pid, _}, %{caller: nil} = state) do
-    ref = Process.monitor(pid)
-    {:reply, get_data(state.agent, func), %{state | caller: {pid, ref}}}
+  def handle_call({:exclusive_get, func}, {pid, _} = from, %{caller: nil} = state) do
+    monitor_ref = Process.monitor(pid)
+    start_check_timeout(from, monitor_ref, state.max_duration)
+    {:reply, get_data(state.agent, func), %{state | caller: {pid, monitor_ref}}}
   end
 
   def handle_call({:exclusive_get, func}, {pid, _}, %{caller: {pid, _}} = state) do
     {:reply, get_data(state.agent, func), state}
   end
 
-  def handle_call({:exclusive_get, func}, {pid, _} = from, state) do
-    ref = Process.monitor(pid)
-    {:noreply, %{state | requests: state.requests ++ [{from, ref, func}]}}
+  def handle_call({:exclusive_get, func}, {pid, _} = from, %{caller: caller} = state) do
+    monitor_ref = Process.monitor(pid)
+    {:noreply, %{state | requests: state.requests ++ [{from, monitor_ref, func}]}}
   end
 
-  def handle_call({:update, func}, {pid, _}, %{caller: {pid, ref}, requests: []} = state) do
+  def handle_call({:update, func}, {pid, _}, %{caller: {pid, monitor_ref}, requests: []} = state) do
     update_data(state.agent, func)
-    Process.demonitor(ref, [:flush])
+    Process.demonitor(monitor_ref, [:flush])
     {:reply, :ok, %{state | caller: nil}}
   end
 
-  def handle_call({:update, func}, {pid, _}, %{caller: {pid, ref}} = state) do
+  def handle_call({:update, func}, {pid, _}, %{caller: {pid, monitor_ref}} = state) do
     update_data(state.agent, func)
-    Process.demonitor(ref, [:flush])
-    {next_caller, requests} = reply_to_next_caller(state)
-    {:reply, :ok, %{state | caller: next_caller, requests: requests}}
+    Process.demonitor(monitor_ref, [:flush])
+    {next_caller, state} = reply_to_next_caller(state)
+    {:reply, :ok, %{state | caller: next_caller}}
   end
 
   def handle_call({:update, _func}, _from, state) do
     {:reply, {:error, "request the data first with AccessProxy#exclusive_get"}, state}
+  end
+
+  def handle_info(
+        {:check_timeout, {pid, _ref} = caller, monitor_ref},
+        %{caller: {pid, monitor_ref}, requests: []} = state
+      ) do
+    Process.demonitor(monitor_ref, [:flush])
+    reply_with_timeout(caller)
+    {:noreply, %{state | caller: nil}}
+  end
+
+  def handle_info(
+        {:check_timeout, {pid, _ref} = caller, monitor_ref},
+        %{caller: {pid, monitor_ref}} = state
+      ) do
+    Process.demonitor(monitor_ref, [:flush])
+    reply_with_timeout(caller)
+    {next_caller, state} = reply_to_next_caller(state)
+    {:noreply, %{state | caller: next_caller}}
+  end
+
+  def handle_info({:check_timeout, _}, state) do
+    {:noreply, state}
   end
 
   def handle_info({:DOWN, _ref, :process, _pid, _reason}, %{caller: nil} = state) do
@@ -100,8 +133,8 @@ defmodule Sim.AccessProxy do
   end
 
   def handle_info({:DOWN, _ref, :process, pid, _reason}, %{caller: {pid, _}} = state) do
-    {next_caller, requests} = reply_to_next_caller(state)
-    {:noreply, %{state | caller: next_caller, requests: requests}}
+    {next_caller, state} = reply_to_next_caller(state)
+    {:noreply, %{state | caller: next_caller}}
   end
 
   def handle_info({:DOWN, _ref, :process, pid, _reason}, state) do
@@ -124,6 +157,17 @@ defmodule Sim.AccessProxy do
   defp reply_to_next_caller(state) do
     [{{pid, _ref} = next_caller, monitor_ref, get_func} | requests] = state.requests
     :ok = GenServer.reply(next_caller, get_data(state.agent, get_func))
-    {{pid, monitor_ref}, requests}
+    start_check_timeout(next_caller, monitor_ref, state.max_duration)
+    {{pid, monitor_ref}, %{state | requests: requests}}
+  end
+
+  defp start_check_timeout(current_caller, monitor_ref, max_duration) do
+    Process.send_after(self(), {:check_timeout, current_caller, monitor_ref}, max_duration)
+  end
+
+  defp reply_with_timeout(caller) do
+    msg = "Timeout: exclusive_get took too long to release it again with an update call"
+    # we don't care if the caller receives the message or not
+    :ok = GenServer.reply(caller, {:error, msg})
   end
 end
