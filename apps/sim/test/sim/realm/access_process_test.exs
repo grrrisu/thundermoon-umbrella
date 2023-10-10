@@ -12,13 +12,13 @@ defmodule Sim.AccessProxyTest do
   end
 
   describe "exclusive_get" do
-    test "are executed in sequence" do
+    test "are executed in sequence", %{proxy: proxy} do
       1..3
       |> Enum.map(fn _n ->
         Task.async(fn ->
-          value = AccessProxy.exclusive_get()
+          value = AccessProxy.exclusive_get(proxy)
           Process.sleep(100)
-          :ok = AccessProxy.update(value + 1)
+          :ok = AccessProxy.update(proxy, value + 1)
         end)
       end)
       |> Task.await_many()
@@ -26,19 +26,19 @@ defmodule Sim.AccessProxyTest do
       assert 45 == AccessProxy.get()
     end
 
-    test "allow update only after exclusive_get" do
-      value = AccessProxy.get()
-      assert {:error, _} = AccessProxy.update(value + 1)
-      assert 42 == AccessProxy.get()
+    test "allow update only after exclusive_get", %{proxy: proxy} do
+      value = AccessProxy.get(proxy)
+      assert {:error, _} = AccessProxy.update(proxy, value + 1)
+      assert 42 == AccessProxy.get(proxy)
     end
 
-    test "get never blocks" do
+    test "get never blocks", %{proxy: proxy} do
       result =
         [
           Task.async(fn ->
-            value = AccessProxy.exclusive_get()
+            value = AccessProxy.exclusive_get(proxy)
             Process.sleep(100)
-            :ok = AccessProxy.update(value + 1)
+            :ok = AccessProxy.update(proxy, value + 1)
             AccessProxy.get()
           end),
           Task.async(fn ->
@@ -46,9 +46,9 @@ defmodule Sim.AccessProxyTest do
             AccessProxy.get()
           end),
           Task.async(fn ->
-            value = AccessProxy.exclusive_get()
+            value = AccessProxy.exclusive_get(proxy)
             Process.sleep(100)
-            :ok = AccessProxy.update(value + 1)
+            :ok = AccessProxy.update(proxy, value + 1)
             AccessProxy.get()
           end)
         ]
@@ -57,18 +57,18 @@ defmodule Sim.AccessProxyTest do
       assert [43, 42, 44] = result
     end
 
-    test "remove lock if current client crashes", %{supervisor: supervisor} do
+    test "remove lock if current client crashes", %{proxy: proxy, supervisor: supervisor} do
       result =
         [
           Task.Supervisor.async_stream_nolink(supervisor, [1], fn _n ->
-            _value = AccessProxy.exclusive_get()
+            _value = AccessProxy.exclusive_get(proxy)
             Process.sleep(10)
             Process.exit(self(), :upps)
           end),
           Task.Supervisor.async_stream_nolink(supervisor, [2], fn _n ->
-            value = AccessProxy.exclusive_get()
+            value = AccessProxy.exclusive_get(proxy)
             Process.sleep(100)
-            :ok = AccessProxy.update(value + 1)
+            :ok = AccessProxy.update(proxy, value + 1)
             AccessProxy.get()
           end)
         ]
@@ -78,24 +78,24 @@ defmodule Sim.AccessProxyTest do
       assert [exit: :upps, ok: 43] = result
     end
 
-    test "remove from requests if queued client crashes", %{supervisor: supervisor} do
+    test "remove from requests if queued client crashes", %{proxy: proxy, supervisor: supervisor} do
       result =
         [
           Task.Supervisor.async_stream_nolink(supervisor, [2], fn _n ->
-            value = AccessProxy.exclusive_get()
+            value = AccessProxy.exclusive_get(proxy)
             Process.sleep(100)
-            :ok = AccessProxy.update(value + 1)
+            :ok = AccessProxy.update(proxy, value + 1)
             AccessProxy.get()
           end),
           Task.Supervisor.async_stream_nolink(supervisor, [1], fn _n ->
-            _value = AccessProxy.exclusive_get()
+            _value = AccessProxy.exclusive_get(proxy)
             Process.sleep(10)
             Process.exit(self(), :upps)
           end),
           Task.Supervisor.async_stream_nolink(supervisor, [2], fn _n ->
-            value = AccessProxy.exclusive_get()
+            value = AccessProxy.exclusive_get(proxy)
             Process.sleep(100)
-            :ok = AccessProxy.update(value + 1)
+            :ok = AccessProxy.update(proxy, value + 1)
             AccessProxy.get()
           end)
         ]
@@ -103,6 +103,33 @@ defmodule Sim.AccessProxyTest do
         |> List.flatten()
 
       assert [ok: 43, exit: :upps, ok: 44] = result
+    end
+
+    test "timeouted request should not be able to update", %{agent: agent} do
+      proxy =
+        start_supervised!(
+          {AccessProxy, [name: :fast_access, agent: agent, max_duration: 50]},
+          id: :fast_access
+        )
+
+      [
+        Task.async(fn ->
+          value = AccessProxy.exclusive_get(proxy)
+          Process.sleep(100)
+          {:error, _msg} = AccessProxy.update(proxy, value + 10)
+        end),
+        Task.async(fn ->
+          value = AccessProxy.exclusive_get(proxy)
+          :ok = AccessProxy.update(proxy, value + 1)
+        end),
+        Task.async(fn ->
+          value = AccessProxy.exclusive_get(proxy)
+          :ok = AccessProxy.update(proxy, value + 1)
+        end)
+      ]
+      |> Task.await_many()
+
+      assert 44 == AccessProxy.get()
     end
   end
 end
