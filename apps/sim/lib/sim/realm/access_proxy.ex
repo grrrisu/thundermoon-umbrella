@@ -34,21 +34,21 @@ defmodule Sim.AccessProxy do
     GenServer.start_link(__MODULE__, Keyword.delete(opts, :name), name: opts[:name] || __MODULE__)
   end
 
-  def get(func \\ & &1, server \\ __MODULE__) do
+  def get(server \\ __MODULE__, func \\ & &1) do
     GenServer.call(server, {:get, func})
   end
 
-  def exclusive_get(func \\ & &1, server \\ __MODULE__) do
+  def exclusive_get(server \\ __MODULE__, func \\ & &1) do
     GenServer.call(server, {:exclusive_get, func})
   end
 
-  def update(data, server \\ __MODULE__)
+  def update(server \\ __MODULE__, data)
 
-  def update(func, server) when is_function(func) do
+  def update(server, func) when is_function(func) do
     GenServer.call(server, {:update, func})
   end
 
-  def update(data, server) do
+  def update(server, data) do
     GenServer.call(server, {:update, fn _ -> data end})
   end
 
@@ -95,24 +95,25 @@ defmodule Sim.AccessProxy do
   end
 
   def handle_call({:update, _func}, _from, state) do
-    {:reply, {:error, "request the data first with AccessProxy#exclusive_get"}, state}
+    {:reply,
+     {:error,
+      "request the data first with AccessProxy#exclusive_get or maybe too much time elapsed since exclusive_get was called"},
+     state}
   end
 
   def handle_info(
-        {:check_timeout, {pid, _ref} = caller, monitor_ref},
+        {:check_timeout, {pid, _ref}, monitor_ref},
         %{caller: {pid, monitor_ref}, requests: []} = state
       ) do
     Process.demonitor(monitor_ref, [:flush])
-    reply_with_timeout(caller)
     {:noreply, %{state | caller: nil}}
   end
 
   def handle_info(
-        {:check_timeout, {pid, _ref} = caller, monitor_ref},
+        {:check_timeout, {pid, _ref}, monitor_ref},
         %{caller: {pid, monitor_ref}} = state
       ) do
     Process.demonitor(monitor_ref, [:flush])
-    reply_with_timeout(caller)
     {next_caller, state} = reply_to_next_caller(state)
     {:noreply, %{state | caller: next_caller}}
   end
@@ -163,11 +164,5 @@ defmodule Sim.AccessProxy do
 
   defp start_check_timeout(current_caller, monitor_ref, max_duration) do
     Process.send_after(self(), {:check_timeout, current_caller, monitor_ref}, max_duration)
-  end
-
-  defp reply_with_timeout(caller) do
-    msg = "Timeout: exclusive_get took too long to release it again with an update call"
-    # we don't care if the caller receives the message or not
-    :ok = GenServer.reply(caller, {:error, msg})
   end
 end
