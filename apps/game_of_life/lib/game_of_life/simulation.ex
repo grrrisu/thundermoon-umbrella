@@ -1,5 +1,5 @@
 defmodule GameOfLife.Simulation do
-  alias Sim.Torus, as: Grid
+  alias Ximula.Torus, as: Grid
 
   def sim(grid) do
     Enum.reduce(0..(Grid.width(grid) - 1), %{}, fn x, changes ->

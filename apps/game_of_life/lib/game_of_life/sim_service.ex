@@ -4,12 +4,13 @@ defmodule GameOfLife.SimService do
   @behaviour Sim.CommandHandler
 
   alias GameOfLife.Simulation
+  alias Ximula.Grid
 
   @impl true
   def execute(:tick, []) do
     change_data(fn grid ->
       changes = grid |> Simulation.sim()
-      grid = Sim.Grid.apply_changes(grid, changes)
+      grid = Grid.apply_changes(grid, changes)
       {grid, [{:changed, changes: changes}]}
     end)
   end

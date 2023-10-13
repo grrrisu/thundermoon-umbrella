@@ -32,6 +32,7 @@ defmodule GameOfLife.MixProject do
   defp deps do
     [
       {:sim, in_umbrella: true},
+      {:ximula, github: "grrrisu/Ximula"},
       {:phoenix_pubsub, "~> 2.0"},
       {:credo, "~> 1.5", only: [:dev, :test], runtime: false}
     ]
