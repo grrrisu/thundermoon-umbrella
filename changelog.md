@@ -1,6 +1,6 @@
 # Changelog
 
-## dev
+## 0.11.0
 
 - General:
 
@@ -10,6 +10,7 @@
 - Sim:
   - Sim.AccessProxy to block concurrent updates, but allow concurrent reads
   - more functions for grid: Sim.Grid.values/1 and Sim.Grid.filter/2
+  - Grid, Torus and the new AccessProxy have been extracted to [Ximula](https://github.com/grrrisu/Ximula)
 
 ## 0.10.0
 
