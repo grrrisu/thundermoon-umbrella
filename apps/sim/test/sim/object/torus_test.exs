@@ -1,7 +1,7 @@
 defmodule Sim.TorusTest do
   use ExUnit.Case, async: true
 
-  alias Sim.Torus, as: Grid
+  alias Ximula.Torus, as: Grid
 
   test "create a new grid" do
     grid = Grid.create(2, 3)

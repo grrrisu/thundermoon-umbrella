@@ -1,7 +1,7 @@
 defmodule GameOfLife.Grid do
-  alias Sim.Torus, as: Grid
+  alias Ximula.Torus, as: Grid
 
-  defdelegate height(grid), to: Sim.Torus
+  defdelegate height(grid), to: Ximula.Torus
 
   def toggle(grid, x, y) do
     current = Grid.get(grid, x, y)

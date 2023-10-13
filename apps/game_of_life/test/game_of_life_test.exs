@@ -1,7 +1,7 @@
 defmodule GameOfLifeTest do
   use ExUnit.Case, async: false
 
-  alias Sim.Torus, as: Grid
+  alias Ximula.Torus, as: Grid
 
   setup do
     Phoenix.PubSub.subscribe(ThundermoonWeb.PubSub, "GameOfLife")

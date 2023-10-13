@@ -1,7 +1,7 @@
 defmodule GameOfLife.SimulationTest do
   use ExUnit.Case, async: true
 
-  alias Sim.Torus, as: Grid
+  alias Ximula.Torus, as: Grid
   alias GameOfLife.Simulation
 
   # https://de.wikipedia.org/wiki/Conways_Spiel_des_Lebens#Die_Spielregeln
