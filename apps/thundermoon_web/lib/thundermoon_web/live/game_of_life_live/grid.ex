@@ -1,7 +1,7 @@
 defmodule ThundermoonWeb.GameOfLifeLive.Grid do
   use Phoenix.Component
 
-  alias Sim.Grid
+  alias Ximula.Grid
 
   def matrix(assigns) do
     assigns = matrix_assigns(assigns)
