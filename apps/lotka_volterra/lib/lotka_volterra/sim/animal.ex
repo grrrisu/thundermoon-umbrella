@@ -21,49 +21,36 @@ defmodule LotkaVolterra.Sim.Animal do
   def sim(producer, nil), do: {producer, nil}
 
   def sim(%{size: producer_size} = producer, %{size: size} = animal, step \\ 1) do
-    producer_size = producer_size - delta_producer(animal, producer_size) * step
-    animal_size = size + delta_animal(animal, producer_size) * step
+    {consumed_food, animal_size} =
+      calculate_delta(
+        size * animal.needed_food / animal.graze_rate <= producer_size,
+        producer,
+        animal
+      )
 
-    {Map.put(producer, :size, producer_size), Map.put(animal, :size, animal_size)}
+    {Map.put(producer, :size, (producer_size - consumed_food * step) |> min_zero()),
+     Map.put(animal, :size, size + animal_size * step)}
   end
 
-  def delta_producer(
-        %{
-          needed_food: needed_food,
-          graze_rate: graze_rate,
-          size: size
-        },
-        producer_size
-      ) do
-    (needed_food * size * graze_rate)
-    |> max_consumed_food(producer_size)
+  # enough food
+  def calculate_delta(true, _producer, %{size: size} = animal) do
+    growth = size * (animal.birth_rate - animal.death_rate)
+    {size * animal.needed_food, growth}
   end
 
-  defp max_consumed_food(consumed_food, producer) when producer - consumed_food < 0 do
-    0
+  # not enough food
+  def calculate_delta(false, %{size: producer_size}, %{size: size} = animal) do
+    needed_producers = size * animal.needed_food / animal.graze_rate
+
+    starving_rate =
+      animal.starving_rate * (needed_producers - producer_size) / needed_producers
+
+    starved = size * starving_rate
+    growth = size * (animal.birth_rate - animal.death_rate)
+
+    {(size - starved) * animal.needed_food, growth - starved}
   end
 
-  defp max_consumed_food(consumed_food, _producer), do: consumed_food
-
-  def delta_animal(
-        %{
-          birth_rate: birth_rate,
-          death_rate: death_rate,
-          needed_food: needed_food,
-          starving_rate: starving_rate,
-          size: size
-        },
-        producer_size
-      ) do
-    hunger_rate = starving_rate * (size * needed_food / producer_size)
-
-    (size * (birth_rate - hunger_rate - death_rate))
-    |> min_grown_size(size, starving_rate)
-  end
-
-  defp min_grown_size(grown_size, size, starving_rate) when size + grown_size < 0 do
-    -size * starving_rate * 2
-  end
-
-  defp min_grown_size(grown_size, _size, _starving_rate), do: grown_size
+  def min_zero(n) when n < 0, do: 0
+  def min_zero(n), do: n
 end

@@ -9,7 +9,7 @@ defmodule Thundermoon.LotkaVolterra.VegetationFormDataTest do
   describe "changeset" do
     test "set default values" do
       changeset = VegetationFormData.changeset(%Vegetation{})
-      assert 650 == Changeset.get_field(changeset, :size)
+      assert 12_000 == Changeset.get_field(changeset, :size)
     end
 
     test "load values" do
