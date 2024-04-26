@@ -4,6 +4,16 @@ Lotka Volterra Equations
 
 <https://en.wikipedia.org/wiki/Lotka%E2%80%93Volterra_equations>
 
+## default values
+
+With the default values the simulation will end up with this values:
+
+Vegetation: 24'700
+
+Herbivore:     407
+
+Predator:       58
+
 ## Installation
 
 If [available in Hex](https://hex.pm/docs/publish), the package can be installed
