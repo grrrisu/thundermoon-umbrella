@@ -26,14 +26,14 @@ defmodule ThundermoonWeb.ChatLive.Message do
   end
 
   defp align_message(assigns) do
-    if is_current_user?(assigns), do: "justify-end", else: "justify-start"
+    if current_user?(assigns), do: "justify-end", else: "justify-start"
   end
 
   defp message_color(assigns) do
-    if is_current_user?(assigns), do: "bg-indigo-500", else: "bg-gray-500"
+    if current_user?(assigns), do: "bg-indigo-500", else: "bg-gray-500"
   end
 
-  defp is_current_user?(%{current_user: current_user, message: message}) do
+  defp current_user?(%{current_user: current_user, message: message}) do
     current_user.id == message.user_id
   end
 end
