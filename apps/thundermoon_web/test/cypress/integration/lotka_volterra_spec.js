@@ -14,7 +14,7 @@ describe("lotka volterra page", function () {
     });
 
     it("I can start a simulation", function () {
-      cy.get("input#vegetation_capacity").clear().type("5000");
+      cy.get("input#vegetation_capacity").clear().type("50000");
       cy.get("input#vegetation_birth_rate").clear().type("0.5");
       cy.get("input#vegetation_death_rate").clear().type("0.1");
       cy.get("input#vegetation_size").clear().type("150");
@@ -43,7 +43,7 @@ describe("lotka volterra page", function () {
     });
 
     it("I can recreate a simulation", function () {
-      cy.get("input#vegetation_capacity").clear().type("5000");
+      cy.get("input#vegetation_capacity").clear().type("50000");
       cy.get("form").submit();
       cy.get("#chart");
       cy.contains("recreate").click();
