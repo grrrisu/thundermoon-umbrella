@@ -54,7 +54,7 @@ defmodule ThundermoonWeb.MixProject do
       {:ueberauth, "~> 0.6"},
       {:ueberauth_github, "~> 0.8.0"},
       {:canary, "~> 1.1.1", github: "runhyve/canary"},
-      {:sentry, "~> 8.0"},
+      {:sentry, "~> 10.4"},
       {:hackney, "~> 1.8"},
       {:observer_cli, "~> 1.5"},
       {:phoenix_live_reload, "~> 1.2", only: :dev},
