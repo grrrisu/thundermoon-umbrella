@@ -45,10 +45,14 @@ defmodule LotkaVolterra.Sim.Animal do
     starving_rate =
       animal.starving_rate * (needed_producers - producer_size) / needed_producers
 
-    starved = size * starving_rate
-    growth = size * (animal.birth_rate - animal.death_rate)
+    # consumed_food =
+    #   producer_size * animal.graze_rate +
+    #     (size * animal.needed_food - producer_size * animal.graze_rate) *
+    #       (producer_size *
+    #          animal.graze_rate) / (size * animal.needed_food)
 
-    {(size - starved) * animal.needed_food, growth - starved}
+    {producer_size * animal.graze_rate,
+     size * (animal.birth_rate - animal.death_rate - starving_rate)}
   end
 
   def min_zero(n) when n < 0, do: 0

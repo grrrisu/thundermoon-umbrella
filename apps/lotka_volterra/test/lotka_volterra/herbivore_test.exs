@@ -23,7 +23,7 @@ defmodule LotkaVolterra.HerbivoreTest do
     herbivore = %Herbivore{size: 20}
 
     {new_vegetation, new_herbivore} = Animal.sim(vegetation, herbivore)
-    assert 76.0 == new_vegetation.size
+    assert 95.0 == new_vegetation.size
     assert 15.0 == Float.round(new_herbivore.size)
   end
 end

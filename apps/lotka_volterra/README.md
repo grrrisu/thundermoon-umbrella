@@ -8,11 +8,11 @@ Lotka Volterra Equations
 
 With the default values the simulation will end up with this values:
 
-Vegetation: 24'700
+Vegetation: 28'400
 
-Herbivore:     407
+Herbivore:     570
 
-Predator:       58
+Predator:       75
 
 ## Installation
 
