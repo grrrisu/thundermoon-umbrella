@@ -131,3 +131,4 @@ promotions:
       - result: passed
         branch:
           - main
+          - deploy-argon
