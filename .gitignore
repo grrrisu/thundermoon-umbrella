@@ -19,6 +19,10 @@ erl_crash.dump
 # Also ignore archive artifacts (built via "mix archive.build").
 *.ez
 
+# DB Dumps
+/import/*_prod.dump
+/import/*_prod.sql
+
 # elixir language server
 .elixir_ls
 
