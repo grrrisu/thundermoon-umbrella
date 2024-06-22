@@ -25,3 +25,4 @@ services:
       PG_DATA_DIR: data
     volumes:
       - ./data:/var/lib/postgresql/data
+      - /srv/backup/weekly/thundermoon.zero-x.net:/import
