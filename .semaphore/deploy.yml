@@ -43,7 +43,6 @@ blocks:
         - name: SITE_PATH
           value: /srv/sites/thundermoon.zero-x.net
       secrets:
-        # SSH_USER_AT_HOST=grrrisu@139.162.147.122
         - name: thundermoon-secrets
         - name: dockerhub-secrets
         - name: deploy-key
