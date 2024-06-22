@@ -134,6 +134,11 @@ restart docker swarm
 
 `TAG=<container_tag> deploy.sh`
 
+
+docker service ls 
+
+docker service ps --no-trunc thundermoon_app
+
 ### Debug
 
 ssh into production server, then
