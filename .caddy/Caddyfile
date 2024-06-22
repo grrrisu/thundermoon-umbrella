@@ -1,0 +1,7 @@
+http://thundermoon.zero-x.net {
+  redir https://thundermoon.zero-x.net{uri}
+}
+
+https://thundermoon.zero-x.net {
+  reverse_proxy app:4000
+}
