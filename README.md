@@ -173,7 +173,8 @@ sem create secret thundermoon-secrets \
   -e SECRET_LIVE_VIEW_KEY=<secret> \
   -e SENTRY_DSN=<secret> \
   -e GITHUB_CLIENT_ID=<secret> \
-  -e GITHUB_CLIENT_SECRET=<secret>
+  -e GITHUB_CLIENT_SECRET=<secret> \
+  -e SSH_USER_AT_HOST=<deploy_user@ip_address>
 ```
 
 add `deploy-key` containing the private key to the secrets and add the pub key to the deploy server
