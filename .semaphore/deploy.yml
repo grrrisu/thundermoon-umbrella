@@ -70,6 +70,7 @@ blocks:
             - "scp $SSH_OPTIONS .env_files/app $SSH_USER_AT_HOST:$SITE_PATH/.env_files/app"
             - "scp $SSH_OPTIONS .env_files/db $SSH_USER_AT_HOST:$SITE_PATH/.env_files/db"
             - "scp $SSH_OPTIONS docker-compose.yml $SSH_USER_AT_HOST:$SITE_PATH"
+            - "scp $SSH_OPTIONS .semaphore/Caddyfile $SSH_USER_AT_HOST:$SITE_PATH"
             - "scp $SSH_OPTIONS .semaphore/deploy.sh $SSH_USER_AT_HOST:$SITE_PATH"
             - "ssh $SSH_OPTIONS $SSH_USER_AT_HOST chmod u+x $SITE_PATH/deploy.sh"
             - ssh $SSH_OPTIONS $SSH_USER_AT_HOST TAG=$SEMAPHORE_GIT_BRANCH sh $SITE_PATH/deploy.sh

@@ -14,8 +14,6 @@ COPY config/runtime.exs config/
 RUN mix phx.digest
 RUN mix release
 
-COPY .caddy/Caddyfile .caddy/
-
 ########################################################
 # docker build -t thundermoon:app --target=app .
 FROM alpine:3.18.2 AS app
@@ -43,6 +41,5 @@ USER "${USER}"
 
 COPY --from=releaser --chown="${USER}":"${USER}" /app/_build/"${MIX_ENV}"/rel/thundermoon_umbrella ./
 COPY --chown="${USER}":"${USER}" *.sh ./
-COPY --from=releaser --chown="${USER}":"${USER}" /app/.caddy/Caddyfile ./.caddy/Caddyfile
 
 CMD ["/app/run.sh"]

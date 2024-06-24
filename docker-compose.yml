@@ -14,8 +14,6 @@ services:
     depends_on:
       - db
       - web
-    volumes:
-      - caddyfile:/app/.caddy
     command: sh -c './wait-for.sh db:5432 -- ./run.sh'
 
   db:
@@ -38,8 +36,8 @@ services:
       - "443:443"
       - "443:443/udp"
     volumes:
-      - caddyfile:/etc/caddy/
-      #- ./site:/srv
+      - /srv/sites/thundermoon.zero-x.net/Caddyfile:/etc/caddy/Caddyfile
+      #- ./site:/srv # static files
       - caddy_data:/data
       - caddy_config:/config
 

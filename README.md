@@ -135,9 +135,17 @@ restart docker swarm
 `TAG=<container_tag> deploy.sh`
 
 
-docker service ls 
+show all services
 
+```
+docker service ls 
+```
+
+see details of one service
+
+```
 docker service ps --no-trunc thundermoon_app
+```
 
 ### Debug
 
