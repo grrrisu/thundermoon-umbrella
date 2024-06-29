@@ -17,7 +17,7 @@ services:
     command: sh -c './wait-for.sh db:5432 -- ./run.sh'
 
   db:
-    image: postgres:11.4-alpine # 16.3-apline
+    image: postgres:16.3-alpine
     env_file:
       - .env_files/db
     environment:
@@ -44,4 +44,3 @@ services:
 volumes:
   caddy_data:
   caddy_config:
-  caddyfile:

@@ -17,7 +17,7 @@ services:
     command: sh ./run_integration.sh
 
   db:
-    image: postgres:11.4-alpine
+    image: postgres:16.3-alpine
     environment:
       POSTGRES_PASSWORD: postgres
       POSTGRES_USER: postgres
