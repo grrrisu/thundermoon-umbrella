@@ -131,4 +131,4 @@ promotions:
       - result: passed
         branch:
           - main
-          - caddy
+          - postgres-16
