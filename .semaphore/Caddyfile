@@ -4,4 +4,5 @@ http://thundermoon.zero-x.net {
 
 https://thundermoon.zero-x.net {
   reverse_proxy app:4000
+  encode zstd gzip
 }
