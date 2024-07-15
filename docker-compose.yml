@@ -40,7 +40,16 @@ services:
       #- ./site:/srv # static files
       - caddy_data:/data
       - caddy_config:/config
+    networks:
+      - ipv6pub
 
 volumes:
   caddy_data:
   caddy_config:
+
+networks:
+  ipv6pub:
+    enable_ipv6: true
+    ipam:
+      config:
+        - subnet: 2001:db8::/64

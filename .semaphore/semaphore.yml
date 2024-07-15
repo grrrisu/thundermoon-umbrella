@@ -131,4 +131,4 @@ promotions:
       - result: passed
         branch:
           - main
-          - postgres-16
+          - ipv6-network
