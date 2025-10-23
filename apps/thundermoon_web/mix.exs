@@ -60,7 +60,7 @@ defmodule ThundermoonWeb.MixProject do
       {:phoenix_live_reload, "~> 1.2", only: :dev},
       {:esbuild, "~> 0.2", runtime: Mix.env() == :dev},
       {:floki, "~> 0.30", only: :test},
-      {:credo, "~> 1.5", only: [:dev, :test], runtime: false}
+      {:credo, "~> 1.7", only: [:dev, :test], runtime: false}
     ]
   end
 

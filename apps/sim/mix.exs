@@ -32,7 +32,7 @@ defmodule Sim.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      {:credo, "~> 1.5", only: [:dev, :test], runtime: false},
+      {:credo, "~> 1.7", only: [:dev, :test], runtime: false},
       {:gen_stage, "~> 1.0"},
       {:phoenix_pubsub, "~> 2.0"}
     ]
