@@ -53,7 +53,7 @@ defmodule ThundermoonWeb.MixProject do
       {:plug_cowboy, "~> 2.5"},
       {:ueberauth, "~> 0.6"},
       {:ueberauth_github, "~> 0.8.0"},
-      {:canary, "~> 1.1.1", github: "runhyve/canary"},
+      {:canary, "~> 1.2.0"},
       {:sentry, "~> 10.4"},
       {:hackney, "~> 1.8"},
       {:observer_cli, "~> 1.5"},
