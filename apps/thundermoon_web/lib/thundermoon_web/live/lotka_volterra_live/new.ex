@@ -45,7 +45,7 @@ defmodule ThundermoonWeb.LotkaVolterraLive.New do
     {:noreply,
      socket
      |> put_flash(:info, "successfully created")
-     |> push_redirect(to: ~p"/lotka-volterra?sim_id=#{sim_id}")}
+     |> push_navigate(to: ~p"/lotka-volterra?sim_id=#{sim_id}")}
   end
 
   @impl true

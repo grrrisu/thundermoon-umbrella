@@ -10,7 +10,7 @@ defmodule ThundermoonWeb.LotkaVolterraLive.EditButton do
       </.button>
       <div x-show="showForm" class="absolute left-0 bottom-7">
         <div class="border bg-gray-800 border-gray-600 rounded-md p-4">
-          <%= render_block(@inner_block) %>
+          <%= render_slot(@inner_block) %>
         </div>
         <i class="las la-angle-down"></i>
       </div>
