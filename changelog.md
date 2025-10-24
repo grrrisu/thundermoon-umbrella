@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.11.1
+
+- General:
+  - update credo, canary and sentry
+  - update to live_view 0.20.17
+
 ## 0.11.0
 
 - General:
