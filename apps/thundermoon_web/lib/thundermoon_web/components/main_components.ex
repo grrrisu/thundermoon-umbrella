@@ -16,7 +16,7 @@ defmodule ThundermoonWeb.MainComponents do
   def text_section(assigns) do
     ~H"""
     <div class="w-full xl:w-4/5 mx-auto">
-      <%= render_slot(@inner_block) %>
+      {render_slot(@inner_block)}
     </div>
     """
   end
@@ -25,7 +25,7 @@ defmodule ThundermoonWeb.MainComponents do
 
   def main_title(assigns) do
     ~H"""
-    <h1 class="text-4xl font-light mb-6"><%= render_slot(@inner_block) %></h1>
+    <h1 class="text-4xl font-light mb-6">{render_slot(@inner_block)}</h1>
     """
   end
 
@@ -33,7 +33,7 @@ defmodule ThundermoonWeb.MainComponents do
 
   def subtitle(assigns) do
     ~H"""
-    <h3 class="text-2xl font-normal mb-3"><%= render_slot(@inner_block) %></h3>
+    <h3 class="text-2xl font-normal mb-3">{render_slot(@inner_block)}</h3>
     """
   end
 
@@ -47,8 +47,8 @@ defmodule ThundermoonWeb.MainComponents do
     <.link navigate={@link}>
       <div class="bg-indigo-900 rounded ring-1 ring-indigo-400 shadow p-4 h-full hover:bg-indigo-800">
         <i class={"la la-5x #{@icon} ml-3 float-right"}></i>
-        <h3 class="text-bold text-xl mb-3"><%= @title %></h3>
-        <p class="mb-3"><%= @description %></p>
+        <h3 class="text-bold text-xl mb-3">{@title}</h3>
+        <p class="mb-3">{@description}</p>
       </div>
     </.link>
     """
@@ -64,7 +64,7 @@ defmodule ThundermoonWeb.MainComponents do
       phx-click="lv:clear-flash"
       phx-value-key="info"
     >
-      <%= Phoenix.Flash.get(@flash, :info) %>
+      {Phoenix.Flash.get(@flash, :info)}
     </p>
     <p
       :if={Phoenix.Flash.get(@flash, :error)}
@@ -72,7 +72,7 @@ defmodule ThundermoonWeb.MainComponents do
       phx-click="lv:clear-flash"
       phx-value-key="error"
     >
-      <%= Phoenix.Flash.get(@flash, :error) %>
+      {Phoenix.Flash.get(@flash, :error)}
     </p>
     """
   end
@@ -139,7 +139,7 @@ defmodule ThundermoonWeb.MainComponents do
       ]}
       {@rest}
     >
-      <%= render_slot(@inner_block) %>
+      {render_slot(@inner_block)}
     </button>
     """
   end

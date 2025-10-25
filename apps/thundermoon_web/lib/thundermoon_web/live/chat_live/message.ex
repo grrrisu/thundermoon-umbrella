@@ -7,8 +7,8 @@ defmodule ThundermoonWeb.ChatLive.Message do
     ~H"""
     <div class={"flex #{@aligne}"}>
       <div class={"#{@color} rounded-md px-4 py-2 mb-2 w-9/12"}>
-        <div class="font-bold"><%= @message.user %></div>
-        <div class="font-light"><%= @message.text %></div>
+        <div class="font-bold">{@message.user}</div>
+        <div class="font-light">{@message.text}</div>
       </div>
     </div>
     """

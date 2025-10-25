@@ -15,9 +15,9 @@ defmodule ThundermoonWeb.FormComponents do
     ~H"""
     <fieldset>
       <div :for={row <- @row} class="mb-3">
-        <%= render_slot(row) %>
+        {render_slot(row)}
       </div>
-      <%= render_slot(@inner_block) %>
+      {render_slot(@inner_block)}
     </fieldset>
     """
   end
@@ -65,8 +65,8 @@ defmodule ThundermoonWeb.FormComponents do
       )
 
     ~H"""
-    <div class={["w-full", @class]} phx-feedback-for={@name}>
-      <.label :if={@label} for={@id}><%= @label %></.label>
+    <div class={["w-full", @class]}>
+      <.label :if={@label} for={@id}>{@label}</.label>
       <input
         type={@type}
         value={@value}
@@ -79,7 +79,7 @@ defmodule ThundermoonWeb.FormComponents do
         ]}
         {@rest}
       />
-      <.form_error :for={msg <- @errors}><%= msg %></.form_error>
+      <.form_error :for={msg <- @errors}>{msg}</.form_error>
     </div>
     """
   end
@@ -90,7 +90,7 @@ defmodule ThundermoonWeb.FormComponents do
   def label(assigns) do
     ~H"""
     <label for={@for}>
-      <%= render_slot(@inner_block) %>
+      {render_slot(@inner_block)}
     </label>
     """
   end
@@ -99,7 +99,7 @@ defmodule ThundermoonWeb.FormComponents do
 
   def form_error(assigns) do
     ~H"""
-    <span class="text-pink-400"><%= render_slot(@inner_block) %></span>
+    <span class="text-pink-400">{render_slot(@inner_block)}</span>
     """
   end
 

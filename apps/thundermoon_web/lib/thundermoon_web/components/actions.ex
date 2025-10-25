@@ -4,7 +4,7 @@ defmodule ThundermoonWeb.Component.Actions do
   def box(assigns) do
     ~H"""
     <div class="border bg-gray-800 border-gray-600 rounded-md py-4 px-8">
-      <%= render_slot(@inner_block) %>
+      {render_slot(@inner_block)}
     </div>
     """
   end
@@ -26,7 +26,7 @@ defmodule ThundermoonWeb.Component.Actions do
       phx-disable-with={@disable}
       class="phx-click-loading:animate-pulse"
     >
-      <i class={"align-middle la text-xl #{@icon}"}></i><%= @label %>
+      <i class={"align-middle la text-xl #{@icon}"}></i>{@label}
     </.button>
     """
   end

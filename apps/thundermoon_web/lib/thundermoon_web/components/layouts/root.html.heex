@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <.live_title>
-      <%= assigns[:page_title] || "Thundermoon" %>
+      {assigns[:page_title] || "Thundermoon"}
     </.live_title>
     <link phx-track-static rel="stylesheet" href={~p"/assets/app.css"} />
     <script defer phx-track-static type="text/javascript" src={~p"/assets/app.js"}>
@@ -15,7 +15,7 @@
   <body class="bg-gray-900 text-white flex flex-col min-h-screen">
     <.header current_user={@current_user} />
     <main role="main" class="container mx-auto mb-8">
-      <%= @inner_content %>
+      {@inner_content}
     </main>
     <footer class="bg-gray-800 border-black mt-auto py-8">
       <div class="container mx-auto">
