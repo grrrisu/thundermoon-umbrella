@@ -49,12 +49,14 @@ defmodule ThundermoonWeb.FormComponents do
                                    pattern placeholder readonly required rows size step)
 
   def text_input(%{field: %FormField{} = field} = assigns) do
+    errors = if Phoenix.Component.used_input?(field), do: field.errors, else: []
+
     assigns =
       assign(assigns,
         value: assigns.value || Form.normalize_value(assigns.type, field.value),
         name: field.name,
         id: assigns.id || field.id || field.name,
-        errors: Enum.map(field.errors, &translate_error(&1)),
+        errors: Enum.map(errors, &translate_error(&1)),
         input_bg_color:
           if(field.errors == [],
             do: "bg-gray-700 focus:bg-gray-600",
