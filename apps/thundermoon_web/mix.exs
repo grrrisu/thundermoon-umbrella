@@ -40,7 +40,7 @@ defmodule ThundermoonWeb.MixProject do
       {:phoenix_pubsub, "~> 2.0"},
       {:phoenix_ecto, "~> 4.4"},
       {:phoenix_html, "~> 3.1"},
-      {:phoenix_live_view, "~> 0.20.17"},
+      {:phoenix_live_view, "~> 1.0.18"},
       {:phoenix_live_dashboard, "~> 0.7"},
       {:telemetry_metrics, "~> 1.0"},
       {:telemetry_poller, "~> 1.0"},

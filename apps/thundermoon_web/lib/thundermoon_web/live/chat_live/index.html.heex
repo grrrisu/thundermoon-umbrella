@@ -19,6 +19,6 @@
 <section class="w-1/2 mb-12">
   <.subtitle>Users online</.subtitle>
   <div class="users">
-    <div :for={user <- @users} class="user"><%= user.username %></div>
+    <div :for={user <- @users} class="user">{user.username}</div>
   </div>
 </section>

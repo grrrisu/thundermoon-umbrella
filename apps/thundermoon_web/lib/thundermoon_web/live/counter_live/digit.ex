@@ -13,7 +13,7 @@ defmodule ThundermoonWeb.CounterLive.Digit do
       >
         +
       </.button>
-      <div id={@id} class="digit font-mono text-6xl"><%= @value %></div>
+      <div id={@id} class="digit font-mono text-6xl">{@value}</div>
       <.button
         id={"#{@id}-dec"}
         class="text-2xl"
