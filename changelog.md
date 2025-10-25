@@ -3,7 +3,8 @@
 ## 0.11.1
 
 - General:
-  - update credo, canary and sentry
+  - update credo and canary
+  - update sentry to 11.0 and move its config to runtime.exs
   - update to live_view 0.20.17
 
 ## 0.11.0

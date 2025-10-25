@@ -64,11 +64,6 @@ config :canary,
   unauthorized_handler: {ThundermoonWeb.AuthorizationHelpers, :handle_unauthorized},
   not_found_handler: {ThundermoonWeb.AuthorizationHelpers, :handle_not_found}
 
-config :sentry,
-  dsn: System.get_env("SENTRY_DSN"),
-  included_environments: [:prod],
-  environment_name: Mix.env()
-
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
 import_config "#{config_env()}.exs"
