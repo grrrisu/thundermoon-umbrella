@@ -4,13 +4,14 @@ defmodule ThundermoonWeb.MixProject do
   def project do
     [
       app: :thundermoon_web,
-      version: "0.9.1",
+      version: "0.9.2",
       build_path: "../../_build",
       # config_path: "../../config/config.exs",
       deps_path: "../../deps",
       lockfile: "../../mix.lock",
       elixir: "~> 1.14",
       elixirc_paths: elixirc_paths(Mix.env()),
+      compilers: [:phoenix_live_view] ++ Mix.compilers(),
       start_permanent: Mix.env() == :prod,
       aliases: aliases(),
       deps: deps()
@@ -40,7 +41,7 @@ defmodule ThundermoonWeb.MixProject do
       {:phoenix_pubsub, "~> 2.0"},
       {:phoenix_ecto, "~> 4.4"},
       {:phoenix_html, "~> 3.1"},
-      {:phoenix_live_view, "~> 1.0.18"},
+      {:phoenix_live_view, "~> 1.1"},
       {:phoenix_live_dashboard, "~> 0.7"},
       {:telemetry_metrics, "~> 1.0"},
       {:telemetry_poller, "~> 1.0"},
@@ -59,7 +60,7 @@ defmodule ThundermoonWeb.MixProject do
       {:observer_cli, "~> 1.5"},
       {:phoenix_live_reload, "~> 1.2", only: :dev},
       {:esbuild, "~> 0.2", runtime: Mix.env() == :dev},
-      {:floki, "~> 0.30", only: :test},
+      {:lazy_html, ">= 0.0.0", only: :test},
       {:credo, "~> 1.7", only: [:dev, :test], runtime: false}
     ]
   end

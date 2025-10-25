@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.11.2
+
+- General:
+  - update live_view to 1.1.16
+
 ## 0.11.1
 
 - General:
