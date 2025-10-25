@@ -32,5 +32,6 @@ if config_env() == :prod do
 
   config :sentry,
     dsn: System.get_env("SENTRY_DSN"),
-    release: System.get_env("SENTRY_RELEASE")
+    release: System.get_env("SENTRY_RELEASE"),
+    environment_name: :prod
 end
